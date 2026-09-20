@@ -1,0 +1,59 @@
+import Foundation
+
+public enum SyncKind: Sendable { case none, token, notification }
+
+public struct SourceCapabilities: Equatable, Sendable {
+    public var canWrite: Bool
+    public var canEditAttendees: Bool
+    public var canRespondToInvite: Bool
+    public var providesConference: Bool
+    public var syncKind: SyncKind
+    public var supportsPush: Bool
+
+    public init(
+        canWrite: Bool = false, canEditAttendees: Bool = false, canRespondToInvite: Bool = false,
+        providesConference: Bool = false, syncKind: SyncKind = .none, supportsPush: Bool = false
+    ) {
+        self.canWrite = canWrite
+        self.canEditAttendees = canEditAttendees
+        self.canRespondToInvite = canRespondToInvite
+        self.providesConference = providesConference
+        self.syncKind = syncKind
+        self.supportsPush = supportsPush
+    }
+}
+
+/// What the library reports through `changes()`. Sources throw `SourceError`; they never leak provider types.
+public enum SourceError: Error, Sendable, Equatable {
+    case authExpired
+    case network(String)
+    case rateLimited(retryAfter: TimeInterval?)
+    case server(status: Int)
+    case invalidResponse(String)
+}
+
+public enum CalendarChange: Equatable, Sendable {
+    /// The calendar set changed. Consumers must reload the calendar list AND events; event changes detected in the
+    /// same check are not reported separately.
+    case calendarsChanged
+    /// nil calendar ids mean the scope is unknown.
+    case eventsChanged(calendarIDs: Set<String>?)
+    /// Terminal: the stream finishes after this (e.g. `.authExpired`) so the app can surface it and re-authorize.
+    case sourceFailed(SourceError)
+}
+
+public protocol CalendarSource: Sendable {
+    var id: String { get }
+    var displayName: String { get }
+    var capabilities: SourceCapabilities { get }
+    func calendars() async throws -> [CalendarDescriptor]
+    /// Events of every visible calendar of the account that overlap `interval`.
+    func events(in interval: DateInterval) async throws -> [CalendarEvent]
+    func changes() -> AsyncStream<CalendarChange>
+}
+
+public protocol PollingCalendarSource: CalendarSource {
+    /// One cheap incremental check (sync token / delta). Returns the change since the last call, or nil for none.
+    /// The first call establishes the baseline and returns nil.
+    func checkForChanges() async throws -> CalendarChange?
+}
