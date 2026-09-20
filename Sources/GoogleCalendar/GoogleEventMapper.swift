@@ -31,7 +31,7 @@ enum GoogleEventMapper {
                      isSelf: $0.isSelf ?? false, isOrganizer: true)
         }
         return CalendarEvent(
-            eventID: dto.id, uid: dto.iCalUID, calendarID: calendar.id, title: dto.summary ?? "",
+            eventID: dto.id, uid: dto.iCalUID, calendarID: calendar.id, title: dto.summary ?? "(No title)",
             notes: dto.description, location: dto.location, start: start.date, end: end.date,
             timeZone: start.zone, isAllDay: start.isAllDay, status: dto.status == "tentative" ? .tentative : .confirmed,
             availability: dto.transparency == "transparent" ? .free : .busy,
@@ -53,10 +53,8 @@ enum GoogleEventMapper {
         guard let time else { return nil }
         if let day = time.date {
             let parts = day.split(separator: "-").compactMap { Int($0) }
-            var calendar = Calendar(identifier: .gregorian)
-            calendar.timeZone = calendarZone
             guard parts.count == 3,
-                  let date = calendar.date(from: DateComponents(year: parts[0], month: parts[1], day: parts[2]))
+                  let date = AllDay.startOfDay(CalendarDate(year: parts[0], month: parts[1], day: parts[2]), in: calendarZone)
             else { return nil }
             return Resolved(date: date, zone: calendarZone, isAllDay: true)
         }

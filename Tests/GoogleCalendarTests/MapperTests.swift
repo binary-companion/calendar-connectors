@@ -1,4 +1,5 @@
 import CalendarCore
+import CalendarTestSupport
 import Foundation
 import Testing
 @testable import GoogleCalendar
@@ -35,6 +36,7 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     var cal = Calendar(identifier: .gregorian)
     cal.timeZone = tokyo
     #expect(e.isAllDay)
+    #expect(AllDayConformance.violations(e).isEmpty)
     #expect(e.timeZone?.identifier == "Asia/Tokyo")
     #expect(e.start == cal.date(from: DateComponents(year: 2026, month: 9, day: 20)))
     #expect(e.end == cal.date(from: DateComponents(year: 2026, month: 9, day: 22)))
@@ -46,6 +48,15 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     let e = try #require(GoogleEventMapper.map(dto, calendar: bare))
     #expect(e.timeZone?.identifier == "UTC" || e.timeZone?.identifier == "GMT")
     #expect(e.start == instant("2026-09-20T00:00:00Z"))
+    #expect(AllDayConformance.violations(e).isEmpty)
+}
+
+@Test func allDayInTokyoIsCanonical() throws {
+    let e = try #require(try map(#"{"id":"a","summary":"Off","start":{"date":"2026-09-18"},"end":{"date":"2026-09-19"}}"#))
+    #expect(e.start == instant("2026-09-17T15:00:00Z"))
+    #expect(e.end == instant("2026-09-18T15:00:00Z"))
+    #expect(e.timeZone?.identifier == "Asia/Tokyo")
+    #expect(AllDayConformance.violations(e).isEmpty)
 }
 
 @Test func cancelledEventsAreDropped() throws {
@@ -100,7 +111,7 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
 
 @Test func toleratesFractionalSecondsAndMissingTitle() throws {
     let e = try #require(try map(#"{"id":"f","start":{"dateTime":"2026-09-21T10:00:00.500Z"},"end":{"dateTime":"2026-09-21T11:00:00Z"}}"#))
-    #expect(e.title == "")
+    #expect(e.title == "(No title)")
     #expect(e.start == instant("2026-09-21T10:00:00Z").addingTimeInterval(0.5))
 }
 

@@ -30,6 +30,8 @@ public enum SourceError: Error, Sendable, Equatable {
     case rateLimited(retryAfter: TimeInterval?)
     case server(status: Int)
     case invalidResponse(String)
+    /// The OS or user has not granted access to a local data store (EventKit). Never thrown by network connectors.
+    case needsPermission
 }
 
 public enum CalendarChange: Equatable, Sendable {
