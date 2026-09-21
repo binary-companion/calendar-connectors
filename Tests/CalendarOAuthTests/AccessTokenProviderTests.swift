@@ -1,7 +1,8 @@
 import CalendarTestSupport
 import Foundation
 import Testing
-@testable import CalendarCore
+@testable import CalendarOAuth
+import CalendarCore
 
 private actor Refresher {
     private(set) var calls = 0

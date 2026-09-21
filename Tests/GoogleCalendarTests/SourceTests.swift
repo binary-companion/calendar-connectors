@@ -1,4 +1,5 @@
 import CalendarCore
+import CalendarOAuth
 import CalendarTestSupport
 import Foundation
 import Testing

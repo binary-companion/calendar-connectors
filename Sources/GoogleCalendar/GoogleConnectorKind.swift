@@ -1,4 +1,5 @@
 import CalendarCore
+import CalendarOAuth
 import Foundation
 
 /// The host app's Google Cloud OAuth client (type Desktop). Supplied from git-ignored configuration; never embedded here.
@@ -28,11 +29,12 @@ public struct GoogleConnectorKind: ConnectorKind {
     private let now: @Sendable () -> Date
     private let sleep: Sleeper
     private let pollInterval: Duration
+    private let hasher: any SHA256Hashing
 
     public init(
         config: GoogleOAuthConfig, transport: any HTTPTransport = URLSessionTransport(),
         now: @escaping @Sendable () -> Date = { Date() }, sleep: @escaping Sleeper = defaultSleeper,
-        pollInterval: Duration = .seconds(60)
+        pollInterval: Duration = .seconds(60), hasher: any SHA256Hashing = PureSwiftSHA256()
     ) {
         self.oauth = OAuthClient(
             config: OAuthConfig(
@@ -45,6 +47,7 @@ public struct GoogleConnectorKind: ConnectorKind {
         self.now = now
         self.sleep = sleep
         self.pollInterval = pollInterval
+        self.hasher = hasher
     }
 
     public func authorize(using interaction: any AuthorizationInteraction, credentials: any CredentialStore) async throws -> Connection {
@@ -87,7 +90,7 @@ public struct GoogleConnectorKind: ConnectorKind {
             let redirectURI = session.redirectURI
             let verifier = PKCE.randomString(length: 64)
             let state = PKCE.randomString(length: 32)
-            let url = oauth.authorizationURL(redirectURI: redirectURI, state: state, codeChallenge: PKCE.challenge(for: verifier))
+            let url = oauth.authorizationURL(redirectURI: redirectURI, state: state, codeChallenge: PKCE.challenge(for: verifier, hasher: hasher))
             let redirect = try await session.authorize(at: url)
             let code = try oauth.authorizationCode(from: redirect, expectedState: state)
             tokens = try await oauth.exchange(code: code, verifier: verifier, redirectURI: redirectURI)

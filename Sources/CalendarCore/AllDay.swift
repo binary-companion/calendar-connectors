@@ -54,3 +54,9 @@ public enum AllDay {
     /// For providers that report the last covered day: the exclusive end date.
     public static func endExclusive(afterLast last: CalendarDate) -> CalendarDate { last.adding(days: 1) }
 }
+
+extension CalendarDate: Comparable {
+    public static func < (a: CalendarDate, b: CalendarDate) -> Bool {
+        (a.year, a.month, a.day) < (b.year, b.month, b.day)
+    }
+}

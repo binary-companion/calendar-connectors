@@ -1,3 +1,4 @@
+import CalendarCore
 import Foundation
 
 public enum AuthorizationError: Error, Sendable, Equatable {

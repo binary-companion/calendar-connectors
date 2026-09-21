@@ -1,6 +1,7 @@
 import Foundation
 import Testing
-@testable import CalendarCore
+@testable import CalendarOAuth
+import CalendarCore
 
 @Test func pkceChallengeMatchesRFC7636Vector() {
     #expect(PKCE.challenge(for: "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk")

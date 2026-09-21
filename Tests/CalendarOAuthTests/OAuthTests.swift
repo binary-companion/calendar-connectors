@@ -1,7 +1,8 @@
 import CalendarTestSupport
 import Foundation
 import Testing
-@testable import CalendarCore
+@testable import CalendarOAuth
+import CalendarCore
 
 private let config = OAuthConfig(
     authorizationEndpoint: URL(string: "https://accounts.example.com/auth")!,

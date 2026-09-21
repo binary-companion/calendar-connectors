@@ -1,3 +1,4 @@
+import CalendarCore
 import Foundation
 
 /// Hands out a valid access token, refreshing with the stored refresh token when it is about to expire.

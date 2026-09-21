@@ -1,4 +1,5 @@
 import CalendarCore
+import CalendarOAuth
 import Foundation
 
 /// Provider-specific outcomes that callers handle; never leaves the `GoogleCalendar` module.
