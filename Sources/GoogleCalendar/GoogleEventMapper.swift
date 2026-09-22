@@ -14,7 +14,14 @@ enum GoogleEventMapper {
         return CalendarDescriptor(
             id: dto.id, title: dto.summaryOverride ?? dto.summary ?? dto.id, colorHex: dto.backgroundColor,
             accessRole: role, isPrimary: dto.primary ?? false,
-            timeZone: dto.timeZone.flatMap { TimeZone(identifier: $0) }, accountName: accountName)
+            timeZone: dto.timeZone.flatMap { TimeZone(identifier: $0) }, accountName: accountName, kind: kind(ofCalendarID: dto.id))
+    }
+
+    /// Google's built-in feeds have well-known ids: contacts' birthdays and the regional holiday calendars.
+    private static func kind(ofCalendarID id: String) -> CalendarKind {
+        if id.hasSuffix("#contacts@group.v.calendar.google.com") { return .birthdays }
+        if id.hasSuffix("#holiday@group.v.calendar.google.com") { return .subscribed }
+        return .standard
     }
 
     /// Returns nil for cancelled events and for events whose times cannot be understood.

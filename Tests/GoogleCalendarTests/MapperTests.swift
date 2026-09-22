@@ -132,3 +132,14 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     let deleted = try JSONDecoder().decode(GoogleCalendarListEntryDTO.self, from: Data(#"{"id":"d","deleted":true}"#.utf8))
     #expect(GoogleEventMapper.descriptor(from: deleted, accountName: nil) == nil)
 }
+
+@Test func googleBirthdayAndHolidayCalendarsAreNotStandard() throws {
+    func kind(_ id: String) throws -> CalendarKind {
+        let dto = try JSONDecoder().decode(GoogleCalendarListEntryDTO.self, from: Data(#"{"id":"\#(id)","summary":"x"}"#.utf8))
+        return try #require(GoogleEventMapper.descriptor(from: dto, accountName: nil)).kind
+    }
+    #expect(try kind("addressbook#contacts@group.v.calendar.google.com") == .birthdays)
+    #expect(try kind("en.usa#holiday@group.v.calendar.google.com") == .subscribed)
+    #expect(try kind("me@x.com") == .standard)
+    #expect(try kind("abc123@group.calendar.google.com") == .standard)
+}

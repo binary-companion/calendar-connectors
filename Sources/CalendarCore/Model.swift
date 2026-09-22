@@ -1,5 +1,8 @@
 import Foundation
 
+/// What a calendar is, for grouping and defaults: `birthdays` and `subscribed` (holidays, read-only feeds) are
+/// system-style calendars that rarely deserve a takeover.
+public enum CalendarKind: String, Sendable { case standard, subscribed, birthdays }
 public enum AccessRole: String, Sendable { case owner, writer, reader, freeBusyReader }
 public enum EventStatus: String, Sendable { case confirmed, tentative, cancelled }
 public enum Availability: String, Sendable { case busy, free }
@@ -56,10 +59,11 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
     public var timeZone: TimeZone?
     /// The owning account, e.g. the signed-in email.
     public var accountName: String?
+    public var kind: CalendarKind
 
     public init(
         id: String, title: String, colorHex: String? = nil, accessRole: AccessRole = .reader,
-        isPrimary: Bool = false, timeZone: TimeZone? = nil, accountName: String? = nil
+        isPrimary: Bool = false, timeZone: TimeZone? = nil, accountName: String? = nil, kind: CalendarKind = .standard
     ) {
         self.id = id
         self.title = title
@@ -68,6 +72,7 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
         self.isPrimary = isPrimary
         self.timeZone = timeZone
         self.accountName = accountName
+        self.kind = kind
     }
 
     /// "#RGB", "#RRGGBB" or "RRGGBB" (any case) to "#RRGGBB" uppercase; nil for anything else.

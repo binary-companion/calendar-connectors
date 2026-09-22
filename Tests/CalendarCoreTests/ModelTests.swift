@@ -31,3 +31,9 @@ import Testing
     #expect(!c.canWrite && !c.canEditAttendees && !c.canRespondToInvite && !c.providesConference && !c.supportsPush)
     #expect(c.syncKind == .none)
 }
+
+@Test func descriptorsAreStandardCalendarsUnlessToldOtherwise() {
+    #expect(CalendarDescriptor(id: "c", title: "C").kind == .standard)
+    #expect(CalendarDescriptor(id: "c", title: "C", kind: .birthdays).kind == .birthdays)
+    #expect(CalendarDescriptor(id: "c", title: "C", kind: .subscribed).kind == .subscribed)
+}
