@@ -65,7 +65,7 @@ public final class FakeWritableSource: WritableCalendarSource, @unchecked Sendab
                 attendees: draft.attendees.map { Attendee(name: $0.name, email: $0.email, role: $0.role) },
                 reminders: draft.reminders ?? [], version: "v\(counter)", sourceID: id)
             if draft.conference == .generate {
-                event.conference = ConferenceInfo(url: URL(string: "https://meet.example/\(counter)")!, provider: .meet)
+                event.conferences = [ConferenceInfo(url: URL(string: "https://meet.example/\(counter)")!, provider: .meet)]
             }
             events[event.id] = event
             return event
@@ -101,7 +101,7 @@ public final class FakeWritableSource: WritableCalendarSource, @unchecked Sendab
             if let version, current.version != version { return .stale }
             var updated = patch.applied(to: current)
             if patch.conference == .generate {
-                updated.conference = ConferenceInfo(url: URL(string: "https://meet.example/\(counter + 1)")!, provider: .meet)
+                updated.conferences = [ConferenceInfo(url: URL(string: "https://meet.example/\(counter + 1)")!, provider: .meet)]
             }
             counter += 1
             writes += 1

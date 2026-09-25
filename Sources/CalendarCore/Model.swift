@@ -10,7 +10,9 @@ public enum Visibility: String, Sendable { case `default`, publicEvent, privateE
 public enum EventKind: String, Sendable { case standard, focusTime, outOfOffice, workingLocation, birthday, other }
 public enum ResponseStatus: String, Sendable { case accepted, tentative, declined, needsAction }
 public enum AttendeeRole: String, Sendable { case required, optional, resource }
-public enum ConferenceProvider: String, Sendable { case meet, teams, zoom, other }
+public enum ConferenceProvider: String, Sendable { case meet, teams, zoom, webex, goToMeeting, whereby, jitsi, slack, other }
+/// Where a conference link came from, so consumers can decide how far to trust it.
+public enum ConferenceOrigin: String, Sendable { case structured, location, url, notes, eventURL }
 
 public struct Attendee: Hashable, Sendable {
     public var name: String?
@@ -37,9 +39,26 @@ public struct Attendee: Hashable, Sendable {
 public struct ConferenceInfo: Hashable, Sendable {
     public var url: URL
     public var provider: ConferenceProvider
-    public init(url: URL, provider: ConferenceProvider) {
+    public var origin: ConferenceOrigin
+    public init(url: URL, provider: ConferenceProvider, origin: ConferenceOrigin = .structured) {
         self.url = url
         self.provider = provider
+        self.origin = origin
+    }
+
+    /// Lowercased host plus path without trailing slashes, plus `?mtid=` for Webex (which keeps the meeting id
+    /// in that query item). Two links with the same identity are the same meeting.
+    public var identity: String {
+        let host = url.host?.lowercased() ?? ""
+        var path = url.path.lowercased()
+        while path.hasSuffix("/") { path.removeLast() }
+        var identity = host + path
+        if host == "webex.com" || host.hasSuffix(".webex.com"),
+           let meetingID = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?
+               .first(where: { $0.name.lowercased() == "mtid" })?.value {
+            identity += "?mtid=" + meetingID.lowercased()
+        }
+        return identity
     }
 }
 
@@ -111,7 +130,11 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
     public var originalStart: Date?
     public var attendees: [Attendee]
     public var organizer: Attendee?
-    public var conference: ConferenceInfo?
+    /// Join links, most likely first: the provider's structured links, then links found in the location, url and
+    /// notes (see `ConferenceDetector`).
+    public var conferences: [ConferenceInfo]
+    /// The first (most likely) link.
+    public var conference: ConferenceInfo? { conferences.first }
     public var reminders: [Reminder]
     public var url: URL?
     /// Opaque provider version (Google etag, EventKit modification date); the base of optimistic writes.
@@ -127,7 +150,7 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
         timeZone: TimeZone? = nil, isAllDay: Bool = false, status: EventStatus = .confirmed,
         availability: Availability = .busy, visibility: Visibility = .default, kind: EventKind = .standard,
         seriesID: String? = nil, originalStart: Date? = nil, attendees: [Attendee] = [],
-        organizer: Attendee? = nil, conference: ConferenceInfo? = nil, reminders: [Reminder] = [],
+        organizer: Attendee? = nil, conferences: [ConferenceInfo] = [], reminders: [Reminder] = [],
         url: URL? = nil, version: String? = nil, myResponse: ResponseStatus? = nil,
         sourceID: String? = nil
     ) {
@@ -149,7 +172,7 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
         self.originalStart = originalStart
         self.attendees = attendees
         self.organizer = organizer
-        self.conference = conference
+        self.conferences = conferences
         self.reminders = reminders
         self.url = url
         self.version = version

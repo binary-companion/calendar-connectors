@@ -100,7 +100,7 @@ public struct EventPatch: Sendable, Equatable {
         if edited.visibility != original.visibility { visibility = edited.visibility }
         if edited.reminders != original.reminders { reminders = .set(edited.reminders) }
         attendees = Self.attendeeChanges(from: original.attendees, to: edited.attendees)
-        if original.conference != nil && edited.conference == nil { conference = .remove }
+        if original.conferences.contains(where: { $0.origin == .structured }) && !edited.conferences.contains(where: { $0.origin == .structured }) { conference = .remove }
         base = original
     }
 
@@ -156,7 +156,7 @@ public struct EventPatch: Sendable, Equatable {
                 }
             }
         }
-        if conference == .remove { e.conference = nil }
+        if conference == .remove { e.conferences = [] }
         return e
     }
 }

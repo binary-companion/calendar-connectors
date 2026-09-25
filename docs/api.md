@@ -86,7 +86,7 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
 | `seriesID`, `originalStart` | `String?`, `Date?` | Set on an instance of a recurring series (Google `recurringEventId` and `originalStartTime`; EventKit `eventIdentifier` and `occurrenceDate`, for events that recur or are detached occurrences) |
 | `attendees` | `[Attendee]` | `name?`, `email?` (trimmed, lowercased), `role` (`required/optional/resource`), `response`, `isSelf`, `isOrganizer` |
 | `organizer` | `Attendee?` | |
-| `conference` | `ConferenceInfo?` | `url` + `provider` (`meet/teams/zoom/other`) |
+| `conferences` | `[ConferenceInfo]` | Join links, most likely first: `url`, `provider` (`meet/teams/zoom/webex/goToMeeting/whereby/jitsi/slack/other`), `origin` (`structured/location/url/notes/eventURL`), computed `identity`. Filled by every connector through `ConferenceDetector`. `conference` is the first entry (get-only). |
 | `reminders` | `[Reminder]` | `minutesBefore`; empty means none *or* provider defaults (not distinguished today) |
 | `url` | `URL?` | Link to the event in the provider's UI |
 | `version` | `String?` | Opaque provider version (Google etag, EventKit `lastModifiedDate` as a fractional-epoch string); the base of optimistic writes (part 10) |

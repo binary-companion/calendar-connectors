@@ -45,7 +45,7 @@ enum GoogleEventMapper {
             visibility: visibility(dto.visibility), kind: kind(dto.eventType),
             seriesID: dto.recurringEventId,
             originalStart: dto.originalStartTime.flatMap { resolve($0, calendarZone: calendarZone)?.date },
-            attendees: attendees, organizer: organizer, conference: conference(dto),
+            attendees: attendees, organizer: organizer, conferences: conferences(dto),
             reminders: reminders(dto.reminders), url: dto.htmlLink.flatMap(URL.init(string:)),
             version: dto.etag, myResponse: attendees.first(where: \.isSelf)?.response, sourceID: sourceID)
     }
@@ -111,29 +111,28 @@ enum GoogleEventMapper {
         }
     }
 
-    private static func conference(_ dto: GoogleEventDTO) -> ConferenceInfo? {
-        if let video = dto.conferenceData?.entryPoints?.first(where: { $0.entryPointType == "video" }),
-           let text = video.uri, let url = URL(string: text)
-        {
-            let solution = dto.conferenceData?.conferenceSolution
-            let name = (solution?.name ?? "").lowercased()
-            let host = (url.host ?? "").lowercased()
-            let provider: ConferenceProvider
-            if solution?.key?.type == "hangoutsMeet" || host.contains("meet.google.com") {
-                provider = .meet
-            } else if name.contains("zoom") || host.contains("zoom.") {
-                provider = .zoom
-            } else if name.contains("teams") || host.contains("teams.microsoft") {
-                provider = .teams
-            } else {
-                provider = .other
-            }
-            return ConferenceInfo(url: url, provider: provider)
+    /// Every video entry point, then `hangoutLink`, then links found in the description (an event imported from an
+    /// invite carries its Teams or Zoom link only there). `url` is not scanned: Google's `htmlLink` is never a join link.
+    private static func conferences(_ dto: GoogleEventDTO) -> [ConferenceInfo] {
+        var structured: [ConferenceInfo] = []
+        let solution = dto.conferenceData?.conferenceSolution
+        for entry in dto.conferenceData?.entryPoints ?? [] where entry.entryPointType == "video" {
+            guard let text = entry.uri, let url = URL(string: text) else { continue }
+            structured.append(ConferenceInfo(url: url, provider: provider(of: url, solution: solution)))
         }
         if let text = dto.hangoutLink, let url = URL(string: text) {
-            return ConferenceInfo(url: url, provider: .meet)
+            structured.append(ConferenceInfo(url: url, provider: .meet))
         }
-        return nil
+        return ConferenceDetector.conferences(structured: structured, location: dto.location, url: nil, notes: dto.description)
+    }
+
+    private static func provider(of url: URL, solution: GoogleConferenceDTO.Solution?) -> ConferenceProvider {
+        if solution?.key?.type == "hangoutsMeet" { return .meet }
+        if let known = ConferenceDetector.provider(of: url) { return known }
+        let name = (solution?.name ?? "").lowercased()
+        if name.contains("zoom") { return .zoom }
+        if name.contains("teams") { return .teams }
+        return .other
     }
 
     private static func reminders(_ dto: GoogleRemindersDTO?) -> [Reminder] {

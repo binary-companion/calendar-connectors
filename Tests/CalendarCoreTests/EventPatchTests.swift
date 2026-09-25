@@ -12,7 +12,7 @@ private func original() -> CalendarEvent {
         status: .confirmed, attendees: [Attendee(email: "me@x.com", isSelf: true), Attendee(email: "bob@x.com"),
                                         Attendee(email: "cy@x.com", role: .optional)],
         organizer: Attendee(email: "me@x.com", isSelf: true, isOrganizer: true),
-        conference: ConferenceInfo(url: URL(string: "https://meet.google.com/abc")!, provider: .meet),
+        conferences: [ConferenceInfo(url: URL(string: "https://meet.google.com/abc")!, provider: .meet)],
         reminders: [Reminder(minutesBefore: 10)], url: URL(string: "https://x.test/e")!, version: "v1", myResponse: .accepted)
 }
 
@@ -64,9 +64,9 @@ private func original() -> CalendarEvent {
     edit.event.url = nil
     edit.event.organizer = nil
     edit.event.sourceID = "other"
-    edit.event.conference = ConferenceInfo(url: URL(string: "https://zoom.us/j/1")!, provider: .zoom)   // changed, not removable
+    edit.event.conferences = [ConferenceInfo(url: URL(string: "https://zoom.us/j/1")!, provider: .zoom)]   // changed, not removable
     #expect(edit.patch.isEmpty)
-    edit.event.conference = nil
+    edit.event.conferences = []
     #expect(edit.patch.conference == .remove && edit.patch.touchedFields == [.conference])
 }
 
@@ -152,7 +152,7 @@ private func original() -> CalendarEvent {
     edit.event.attendees.append(Attendee(name: "Dee", email: "dee@x.com"))
     edit.event.attendees[1].role = .required
     edit.event.reminders = []
-    edit.event.conference = nil
+    edit.event.conferences = []
     let result = edit.patch.applied(to: original())
     #expect(result.title == "T" && result.reminders.isEmpty && result.conference == nil)
     #expect(Set(result.attendees.map(\.email)) == Set(edit.event.attendees.map(\.email)))

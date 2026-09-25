@@ -87,7 +87,7 @@ private func source() -> CalendarEvent {
         availability: .free, visibility: .privateEvent, seriesID: "s",
         attendees: [Attendee(email: "me@x.com", isSelf: true), Attendee(email: "Bob@x.com", role: .optional),
                     Attendee(name: "No Email")],
-        conference: ConferenceInfo(url: URL(string: "https://meet.google.com/abc")!, provider: .meet),
+        conferences: [ConferenceInfo(url: URL(string: "https://meet.google.com/abc")!, provider: .meet)],
         reminders: [Reminder(minutesBefore: 10)])
 }
 
@@ -127,7 +127,7 @@ private func source() -> CalendarEvent {
 
 @Test func copyingDoesNotReRequestANonMeetConference() {
     var event = source()
-    event.conference = ConferenceInfo(url: URL(string: "https://zoom.us/j/1")!, provider: .zoom)
+    event.conferences = [ConferenceInfo(url: URL(string: "https://zoom.us/j/1")!, provider: .zoom)]
     let draft = EventDraft(copying: event, for: SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases)))
     #expect(draft.conference == .none)
 }

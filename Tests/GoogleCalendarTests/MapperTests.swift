@@ -97,6 +97,32 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     #expect(c.conference?.provider == .meet)
 }
 
+@Test func aTeamsLinkOnlyInTheDescriptionIsFound() throws {
+    // An invite imported from ICS carries its link in the description, not in `conferenceData`.
+    let e = try #require(try map("""
+    {"id":"c4","description":"Join https://teams.microsoft.com/l/meetup-join/19%3ameeting_x/0","start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTime":"2026-09-21T11:00:00Z"}}
+    """))
+    #expect(e.conferences.map(\.provider) == [.teams] && e.conferences[0].origin == .notes)
+}
+
+@Test func structuredLinksComeBeforeOnesFoundInTheDescription() throws {
+    let e = try #require(try map("""
+    {"id":"c5","description":"Backup: https://acme.zoom.us/j/9","hangoutLink":"https://meet.google.com/aaa-bbbb-ccc",
+     "start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTime":"2026-09-21T11:00:00Z"},
+     "htmlLink":"https://www.google.com/calendar/event?eid=abc"}
+    """))
+    #expect(e.conferences.map(\.provider) == [.meet, .zoom])
+    #expect(e.conferences.map(\.origin) == [.structured, .notes])
+}
+
+@Test func everyVideoEntryPointIsKept() throws {
+    let e = try #require(try map("""
+    {"id":"c6","start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTime":"2026-09-21T11:00:00Z"},
+     "conferenceData":{"entryPoints":[{"entryPointType":"video","uri":"https://acme.zoom.us/j/1"},{"entryPointType":"video","uri":"https://meet.google.com/aaa-bbbb-ccc"}]}}
+    """))
+    #expect(e.conferences.map(\.provider) == [.zoom, .meet])
+}
+
 @Test func mapsKindAvailabilityVisibilityRemindersAndSeries() throws {
     let e = try #require(try map("""
     {"id":"r_20260921","recurringEventId":"r","eventType":"focusTime","transparency":"transparent","visibility":"private",

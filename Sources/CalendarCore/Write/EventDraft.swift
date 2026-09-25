@@ -129,7 +129,7 @@ public struct EventDraft: Sendable, Equatable {
                     .compactMap { a in a.email.map { AttendeeDraft(email: $0, name: a.name, role: a.role) } }
                     .filter { AttendeeDraft.isValidEmail($0.email) }
                 : [],
-            conference: writable.contains(.conference) && event.conference?.provider == .meet ? .generate : .none,
+            conference: writable.contains(.conference) && event.conferences.contains { $0.origin == .structured && $0.provider == .meet } ? .generate : .none,
             recurrence: nil)
     }
 }

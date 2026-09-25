@@ -31,11 +31,14 @@ public enum PatchMerge {
             case .reminders: if minutes(current.reminders) != minutes(base.reminders) { found.insert(field) }
             case .attendees: if attendeesDiffer(patch.attendees, base: base, current: current) { found.insert(field) }
             case .recurrence: found.insert(field)
-            case .conference: if current.conference?.url != base.conference?.url { found.insert(field) }
+            case .conference: if structuredURLs(current) != structuredURLs(base) { found.insert(field) }
             }
         }
         return found
     }
+
+    /// The provider's own conference links; links found in the notes change whenever the notes do, which is not a conference change.
+    private static func structuredURLs(_ event: CalendarEvent) -> [URL] { event.conferences.filter { $0.origin == .structured }.map(\.url) }
 
     /// Providers do not promise to keep reminder order, so compare them as a sorted list.
     private static func minutes(_ reminders: [Reminder]) -> [Int] { reminders.map(\.minutesBefore).sorted() }
