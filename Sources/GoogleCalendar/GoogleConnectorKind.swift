@@ -15,7 +15,7 @@ public struct GoogleOAuthConfig: Sendable {
 public struct GoogleConnectorKind: ConnectorKind {
     public static let kindID = "google"
     public static let scopes = [
-        "https://www.googleapis.com/auth/calendar.events",
+        "https://www.googleapis.com/auth/calendar.events.readonly",
         "https://www.googleapis.com/auth/calendar.calendarlist.readonly",
     ]
 

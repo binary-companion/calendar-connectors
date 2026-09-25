@@ -67,7 +67,7 @@ private func routes(_ transport: FakeTransport, email: String = "me@x.com", refr
     let q = Dictionary(uniqueKeysWithValues: URLComponents(url: url, resolvingAgainstBaseURL: false)!.queryItems!.map { ($0.name, $0.value ?? "") })
     #expect(q["client_id"] == "cid" && q["redirect_uri"] == "http://127.0.0.1:53211")
     #expect(q["access_type"] == "offline" && q["prompt"] == "consent" && q["code_challenge_method"] == "S256")
-    #expect(q["scope"] == "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar.calendarlist.readonly")
+    #expect(q["scope"] == "https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.calendarlist.readonly")
     #expect(await interaction.recorder.closeCount == 1)
 
     let exchange = try #require(await transport.requests(matching: "oauth2.googleapis.com/token").first)
