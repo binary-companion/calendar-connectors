@@ -552,3 +552,7 @@ provider metadata; a `metadata` field and capability can be added later without 
 - `RecurrenceSet { rules, extraDates?, excludedDates?, unparsed }`, `init(iCalendarLines:timeZone:isAllDay:)` and `iCalendarLines(timeZone:isAllDay:)` read and write `RRULE`, `EXDATE` and `RDATE` (`TZID=`, UTC, floating and `VALUE=DATE` forms); lines it does not model are kept in `unparsed`.
 - `CalendarSeries { seriesID, calendarID, start, timeZone, isAllDay, recurrence }` and `protocol SeriesSource: CalendarSource { func series(id:calendarID:) async throws -> CalendarSeries }`. A source declares `ProvidedField.recurrenceRules` exactly when it conforms. An unknown id or an id that does not recur throws `SourceError.notFound`.
 - Google: the master's `recurrence` lines and `start`. EventKit: `EKRecurrenceRule` mapped; `extraDates` and `excludedDates` are nil (EventKit cannot list them).
+
+## Attendee addresses
+
+`Attendee.email` is the only identifier: a connector resolves a participant to an email before creating the `Attendee`, and if it cannot the attendee keeps its name with a nil email (no raw id is kept). `CalendarUserAddress.email(from:)` is the shared, I/O-free parser. EventKit resolves the rest through Contacts inside the connector (automatic, non-blocking access; see ADR 0012), which is why the host app needs `NSContactsUsageDescription` and the `com.apple.security.personal-information.addressbook` entitlement.
