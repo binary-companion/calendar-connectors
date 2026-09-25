@@ -115,14 +115,14 @@ public struct EventDraft: Sendable, Equatable {
     /// Timing is copied as is: a source event with a zero-length or inverted interval still fails `validate()`.
     public init(copying event: CalendarEvent, for capabilities: SourceCapabilities) {
         let writable = capabilities.writableFields
-        let reminders = event.reminders.filter { $0.minutesBefore >= 0 }
+        let reminders = (event.reminders ?? []).filter { $0.minutesBefore >= 0 }
         self.init(
             title: event.title,
             timing: EventTiming(start: event.start, end: event.end, timeZone: event.timeZone, isAllDay: event.isAllDay),
             notes: writable.contains(.notes) ? event.notes : nil,
             location: writable.contains(.location) ? event.location : nil,
-            availability: writable.contains(.availability) ? event.availability : .busy,
-            visibility: writable.contains(.visibility) ? event.visibility : .default,
+            availability: writable.contains(.availability) ? event.availability ?? .busy : .busy,
+            visibility: writable.contains(.visibility) ? event.visibility ?? .default : .default,
             reminders: writable.contains(.reminders) && !reminders.isEmpty ? reminders : nil,
             attendees: writable.contains(.attendees)
                 ? event.attendees.filter { !$0.isSelf }

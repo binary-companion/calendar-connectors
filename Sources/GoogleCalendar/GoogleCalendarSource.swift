@@ -22,7 +22,8 @@ public final class GoogleCalendarSource: PollingCalendarSource {
     public var displayName: String { connection.displayName }
     public var capabilities: SourceCapabilities {
         SourceCapabilities(
-            canWrite: true, canEditAttendees: true, canRespondToInvite: true, providesConference: true, syncKind: .token,
+            canWrite: true, canEditAttendees: true, canRespondToInvite: true, providedFields: [.kind, .visibility, .availability, .reminders, .series, .participation, .structuredConference, .version],
+            syncKind: .token,
             writableFields: Set(EventField.allCases), controlsNotifications: true, recurrenceScopes: Set(RecurrenceScope.allCases))
     }
 

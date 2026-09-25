@@ -180,3 +180,46 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     #expect(try kind("me@x.com") == .standard)
     #expect(try kind("abc123@group.calendar.google.com") == .standard)
 }
+
+// Provided fields (Issue 2).
+
+private let withDefaults = CalendarDescriptor(
+    id: "cal1", title: "Work", accessRole: .owner, timeZone: tokyo,
+    defaultReminders: [Reminder(minutesBefore: 30), Reminder(minutesBefore: 5)])
+private let times = #""start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTime":"2026-09-21T11:00:00Z"}"#
+
+@Test func useDefaultRemindersResolveToTheCalendarsDefaults() throws {
+    let dto = try event(#"{"id":"d","reminders":{"useDefault":true},\#(times)}"#)
+    #expect(GoogleEventMapper.map(dto, calendar: withDefaults)?.reminders == [Reminder(minutesBefore: 30), Reminder(minutesBefore: 5)])
+    let none = try event(#"{"id":"n","reminders":{"useDefault":false},\#(times)}"#)
+    #expect(GoogleEventMapper.map(none, calendar: withDefaults)?.reminders == [])
+}
+
+@Test func aRecurringInstanceIsAnOccurrenceAndASingleEventIsNotRecurring() throws {
+    let instance = try #require(try map(#"{"id":"i","recurringEventId":"master","originalStartTime":{"dateTime":"2026-09-21T10:00:00Z"},\#(times)}"#))
+    #expect(instance.series == .occurrence(seriesID: "master", originalStart: instant("2026-09-21T10:00:00Z")))
+    let single = try #require(try map(#"{"id":"s",\#(times)}"#))
+    #expect(single.series == .notRecurring)
+}
+
+@Test func participationSeparatesInvitedFromNotInvited() throws {
+    let selfAttendee = try #require(try map(#"{"id":"a","attendees":[{"email":"me@x.com","self":true,"responseStatus":"tentative"}],\#(times)}"#))
+    #expect(selfAttendee.participation == .invited(.tentative))
+    let organizerOnly = try #require(try map(#"{"id":"b","organizer":{"email":"me@x.com","self":true},\#(times)}"#))
+    #expect(organizerOnly.participation == .invited(.accepted))
+    let someoneElses = try #require(try map(#"{"id":"c","organizer":{"email":"boss@x.com"},"attendees":[{"email":"boss@x.com"}],\#(times)}"#))
+    #expect(someoneElses.participation == .notInvited)
+}
+
+@Test func everyFieldGoogleDeclaresIsPresent() throws {
+    let capabilities = SourceCapabilities(providedFields: [.kind, .visibility, .availability, .reminders, .series, .participation, .structuredConference, .version])
+    let minimal = try #require(try map(#"{"id":"m","etag":"\"1\"",\#(times)}"#))
+    #expect(ProvidedFieldsConformance.violations(event: minimal, capabilities: capabilities).isEmpty)
+    let dto = try event(#"{"id":"r","etag":"\"2\"","reminders":{"useDefault":true},\#(times)}"#)
+    #expect(ProvidedFieldsConformance.violations(event: try #require(GoogleEventMapper.map(dto, calendar: withDefaults)), capabilities: capabilities).isEmpty)
+}
+
+@Test func calendarListEntriesCarryTheirDefaultReminders() throws {
+    let dto = try JSONDecoder().decode(GoogleCalendarListEntryDTO.self, from: Data(#"{"id":"c","defaultReminders":[{"method":"popup","minutes":10}]}"#.utf8))
+    #expect(GoogleEventMapper.descriptor(from: dto, accountName: nil)?.defaultReminders == [Reminder(minutesBefore: 10)])
+}

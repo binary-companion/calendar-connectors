@@ -99,6 +99,8 @@ struct GoogleCalendarListEntryDTO: Decodable {
     var timeZone: String?
     var hidden: Bool?
     var deleted: Bool?
+    struct DefaultReminder: Decodable { var minutes: Int? }
+    var defaultReminders: [DefaultReminder]?
 }
 
 struct GoogleCalendarListPageDTO: Decodable {

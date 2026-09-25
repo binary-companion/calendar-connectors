@@ -4,7 +4,7 @@ import Testing
 
 private func event(series: String? = nil, original: Date? = nil) -> CalendarEvent {
     CalendarEvent(eventID: "e1", calendarID: "cal", title: "T", start: Date(timeIntervalSince1970: 1000),
-                  end: Date(timeIntervalSince1970: 2000), seriesID: series, originalStart: original, version: "v1")
+                  end: Date(timeIntervalSince1970: 2000), series: series.map { .occurrence(seriesID: $0, originalStart: original) }, version: "v1")
 }
 
 @Test func eventRefCopiesTheFieldsAWriteNeeds() {

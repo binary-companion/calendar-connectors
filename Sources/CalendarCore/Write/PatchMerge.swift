@@ -26,15 +26,21 @@ public enum PatchMerge {
                 let same = current.start == base.start && current.end == base.end
                     && current.timeZone.identifier == base.timeZone.identifier && current.isAllDay == base.isAllDay
                 if !same { found.insert(field) }
-            case .availability: if current.availability != base.availability { found.insert(field) }
-            case .visibility: if current.visibility != base.visibility { found.insert(field) }
-            case .reminders: if minutes(current.reminders) != minutes(base.reminders) { found.insert(field) }
+            case .availability: if differs(current.availability, base.availability) { found.insert(field) }
+            case .visibility: if differs(current.visibility, base.visibility) { found.insert(field) }
+            case .reminders: if let c = current.reminders, let b = base.reminders, minutes(c) != minutes(b) { found.insert(field) }
             case .attendees: if attendeesDiffer(patch.attendees, base: base, current: current) { found.insert(field) }
             case .recurrence: found.insert(field)
             case .conference: if structuredURLs(current) != structuredURLs(base) { found.insert(field) }
             }
         }
         return found
+    }
+
+    /// A value the source does not say (nil) can neither conflict nor be conflicted with.
+    private static func differs<Value: Equatable>(_ current: Value?, _ base: Value?) -> Bool {
+        guard let current, let base else { return false }
+        return current != base
     }
 
     /// The provider's own conference links; links found in the notes change whenever the notes do, which is not a conference change.

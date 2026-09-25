@@ -172,8 +172,7 @@ extension GoogleCalendarSource: WritableCalendarSource {
         // expand series and never return one. Mark it as its own series, starting at its own slot, so that a delete
         // with `.thisInstance` cannot be mistaken for a single event and remove the whole series.
         if dto.recurrence?.isEmpty == false {
-            event.seriesID = dto.id
-            event.originalStart = event.start
+            event.series = .occurrence(seriesID: dto.id, originalStart: event.start)
         }
         return event
     }

@@ -2,11 +2,23 @@ import Foundation
 
 public enum SyncKind: Sendable { case none, token, notification }
 
+/// A field a source reliably fills on the events (or calendars) it reads. A listed field is never nil; an unlisted one
+/// may be nil or partly filled, and nil means "this source does not say", never "none".
+public enum ProvidedField: String, Sendable, Hashable, CaseIterable {
+    // Events
+    case kind, visibility, availability, reminders, series, participation
+    /// Supplies structured conference data (Google `conferenceData`); says nothing about whether an event has links.
+    case structuredConference
+    case version
+}
+
 public struct SourceCapabilities: Equatable, Sendable {
     public var canWrite: Bool
     public var canEditAttendees: Bool
     public var canRespondToInvite: Bool
-    public var providesConference: Bool
+    /// What this source reliably fills on the events it reads (see `ProvidedField`). Separate from `writableFields`,
+    /// which is what a write can change; a few names overlap (reminders, availability) with different meanings.
+    public var providedFields: Set<ProvidedField>
     public var syncKind: SyncKind
     public var supportsPush: Bool
     /// The fields create/update can write; drives validation and `EventDraft(copying:for:)`. Empty when read-only.
@@ -18,14 +30,14 @@ public struct SourceCapabilities: Equatable, Sendable {
 
     public init(
         canWrite: Bool = false, canEditAttendees: Bool = false, canRespondToInvite: Bool = false,
-        providesConference: Bool = false, syncKind: SyncKind = .none, supportsPush: Bool = false,
+        providedFields: Set<ProvidedField> = [], syncKind: SyncKind = .none, supportsPush: Bool = false,
         writableFields: Set<EventField> = [], controlsNotifications: Bool = false,
         recurrenceScopes: Set<RecurrenceScope> = []
     ) {
         self.canWrite = canWrite
         self.canEditAttendees = canEditAttendees
         self.canRespondToInvite = canRespondToInvite
-        self.providesConference = providesConference
+        self.providedFields = providedFields
         self.syncKind = syncKind
         self.supportsPush = supportsPush
         self.writableFields = writableFields

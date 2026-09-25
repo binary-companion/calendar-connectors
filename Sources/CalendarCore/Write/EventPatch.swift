@@ -84,7 +84,7 @@ public struct EventPatch: Sendable, Equatable {
     /// The minimal patch that turns `original` into `edited`. Compares title, notes, location, timing, availability,
     /// visibility, reminders and attendees (by normalized email; a changed role or name is an upsert), plus the
     /// removal of a conference. Ignores provider-owned fields (ids, uid, calendar, source, organizer, status, kind,
-    /// url, version, series fields, `myResponse`, attendee responses and flags), a changed or added conference
+    /// url, version, `series`, `participation`, attendee responses and flags), a changed or added conference
     /// (only `.generate` and `.remove` are writable) and recurrence (reads carry none).
     public init(from original: CalendarEvent, to edited: CalendarEvent) {
         self.init()
@@ -96,9 +96,10 @@ public struct EventPatch: Sendable, Equatable {
         if !sameTiming {
             timing = EventTiming(start: edited.start, end: edited.end, timeZone: edited.timeZone, isAllDay: edited.isAllDay)
         }
-        if edited.availability != original.availability { availability = edited.availability }
-        if edited.visibility != original.visibility { visibility = edited.visibility }
-        if edited.reminders != original.reminders { reminders = .set(edited.reminders) }
+        // A nil value on the edited copy means "unknown", which is never a change.
+        if let value = edited.availability, value != original.availability { availability = value }
+        if let value = edited.visibility, value != original.visibility { visibility = value }
+        if let value = edited.reminders, value != original.reminders { reminders = .set(value) }
         attendees = Self.attendeeChanges(from: original.attendees, to: edited.attendees)
         if original.conferences.contains(where: { $0.origin == .structured }) && !edited.conferences.contains(where: { $0.origin == .structured }) { conference = .remove }
         base = original
@@ -143,7 +144,7 @@ public struct EventPatch: Sendable, Equatable {
         }
         if let availability { e.availability = availability }
         if let visibility { e.visibility = visibility }
-        switch reminders { case .keep: break; case .set(let v): e.reminders = v; case .clear: e.reminders = [] }
+        switch reminders { case .keep: break; case .set(let v): e.reminders = v; case .clear: e.reminders = nil }
         if let attendees {
             let removed = Set(attendees.remove)
             e.attendees.removeAll { $0.email.map(removed.contains) ?? false }

@@ -5,11 +5,25 @@ import Foundation
 public enum CalendarKind: String, Sendable { case standard, subscribed, birthdays }
 public enum AccessRole: String, Sendable { case owner, writer, reader, freeBusyReader }
 public enum EventStatus: String, Sendable { case confirmed, tentative, cancelled }
-public enum Availability: String, Sendable { case busy, free }
+public enum Availability: String, Sendable { case busy, free, tentative, unavailable }
 public enum Visibility: String, Sendable { case `default`, publicEvent, privateEvent, confidential }
 public enum EventKind: String, Sendable { case standard, focusTime, outOfOffice, workingLocation, birthday, other }
 public enum ResponseStatus: String, Sendable { case accepted, tentative, declined, needsAction }
 public enum AttendeeRole: String, Sendable { case required, optional, resource }
+
+/// Whether an event repeats. A real "no" has its own case, so nil stays "the source does not say".
+public enum SeriesInfo: Hashable, Sendable {
+    case notRecurring
+    /// An instance of a series. `originalStart` is the instance's slot in the series (it differs from `start` for a
+    /// moved instance); nil when the provider knows the series but not the slot.
+    case occurrence(seriesID: String, originalStart: Date?)
+}
+
+/// The account owner's relation to an event. `.notInvited` is a real answer (an event you are not on).
+public enum Participation: Hashable, Sendable {
+    case notInvited
+    case invited(ResponseStatus)
+}
 public enum ConferenceProvider: String, Sendable { case meet, teams, zoom, webex, goToMeeting, whereby, jitsi, slack, other }
 /// Where a conference link came from, so consumers can decide how far to trust it.
 public enum ConferenceOrigin: String, Sendable { case structured, location, url, notes, eventURL }
@@ -79,10 +93,14 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
     /// The owning account, e.g. the signed-in email.
     public var accountName: String?
     public var kind: CalendarKind
+    /// The reminders a new event on this calendar gets when it does not set its own (Google's calendar defaults);
+    /// nil when the source does not say. Events with `useDefault` reminders carry these.
+    public var defaultReminders: [Reminder]?
 
     public init(
         id: String, title: String, colorHex: String? = nil, accessRole: AccessRole = .reader,
-        isPrimary: Bool = false, timeZone: TimeZone? = nil, accountName: String? = nil, kind: CalendarKind = .standard
+        isPrimary: Bool = false, timeZone: TimeZone? = nil, accountName: String? = nil, kind: CalendarKind = .standard,
+        defaultReminders: [Reminder]? = nil
     ) {
         self.id = id
         self.title = title
@@ -92,6 +110,7 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
         self.timeZone = timeZone
         self.accountName = accountName
         self.kind = kind
+        self.defaultReminders = defaultReminders
     }
 
     /// "#RGB", "#RRGGBB" or "RRGGBB" (any case) to "#RRGGBB" uppercase; nil for anything else.
@@ -126,11 +145,18 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
     public var timeZone: TimeZone
     public var isAllDay: Bool
     public var status: EventStatus
-    public var availability: Availability
-    public var visibility: Visibility
-    public var kind: EventKind
-    public var seriesID: String?
-    public var originalStart: Date?
+    /// The fields below marked "provided" follow one rule: a field listed in `SourceCapabilities.providedFields` is
+    /// never nil on that source's events. A field that is not listed may be nil, and nil always means "this source
+    /// does not say", never "none". A real "none" has its own value (`[]`, `.notRecurring`, `.notInvited`).
+    /// Content fields every source supports (`notes`, `location`, `url`, `uid`, `organizer`) use nil for "empty".
+    public var availability: Availability?
+    public var visibility: Visibility?
+    public var kind: EventKind?
+    /// Whether the event repeats and where it sits in its series.
+    public var series: SeriesInfo?
+    /// The series id when this is an instance of a series; nil for a single event and when unknown.
+    public var seriesID: String? { if case .occurrence(let id, _)? = series { id } else { nil } }
+    public var originalStart: Date? { if case .occurrence(_, let start)? = series { start } else { nil } }
     public var attendees: [Attendee]
     public var organizer: Attendee?
     /// Join links, most likely first: the provider's structured links, then links found in the location, url and
@@ -138,12 +164,15 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
     public var conferences: [ConferenceInfo]
     /// The first (most likely) link.
     public var conference: ConferenceInfo? { conferences.first }
-    public var reminders: [Reminder]
+    /// `[]` means none; nil means the source does not say.
+    public var reminders: [Reminder]?
     public var url: URL?
     /// Opaque provider version (Google etag, EventKit modification date); the base of optimistic writes.
     public var version: String?
-    /// The account owner's own response, when the provider says.
-    public var myResponse: ResponseStatus?
+    /// The account owner's relation to the event, when the provider says.
+    public var participation: Participation?
+    /// The account owner's own response; nil both when unknown and when not invited (use `participation` to tell them apart).
+    public var myResponse: ResponseStatus? { if case .invited(let response)? = participation { response } else { nil } }
     /// The source that produced this event (`Connection.sourceID`; "eventkit" for EventKit). Stamped by the source.
     public var sourceID: String?
 
@@ -151,10 +180,10 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
         eventID: String, uid: String? = nil, calendarID: String, title: String,
         notes: String? = nil, location: String? = nil, start: Date, end: Date,
         timeZone: TimeZone = TimeZone(identifier: "UTC")!, isAllDay: Bool = false, status: EventStatus = .confirmed,
-        availability: Availability = .busy, visibility: Visibility = .default, kind: EventKind = .standard,
-        seriesID: String? = nil, originalStart: Date? = nil, attendees: [Attendee] = [],
-        organizer: Attendee? = nil, conferences: [ConferenceInfo] = [], reminders: [Reminder] = [],
-        url: URL? = nil, version: String? = nil, myResponse: ResponseStatus? = nil,
+        availability: Availability? = nil, visibility: Visibility? = nil, kind: EventKind? = nil,
+        series: SeriesInfo? = nil, attendees: [Attendee] = [],
+        organizer: Attendee? = nil, conferences: [ConferenceInfo] = [], reminders: [Reminder]? = nil,
+        url: URL? = nil, version: String? = nil, participation: Participation? = nil,
         sourceID: String? = nil
     ) {
         self.eventID = eventID
@@ -171,15 +200,14 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
         self.availability = availability
         self.visibility = visibility
         self.kind = kind
-        self.seriesID = seriesID
-        self.originalStart = originalStart
+        self.series = series
         self.attendees = attendees
         self.organizer = organizer
         self.conferences = conferences
         self.reminders = reminders
         self.url = url
         self.version = version
-        self.myResponse = myResponse
+        self.participation = participation
         self.sourceID = sourceID
     }
 }

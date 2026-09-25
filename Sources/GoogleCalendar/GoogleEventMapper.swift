@@ -14,7 +14,8 @@ enum GoogleEventMapper {
         return CalendarDescriptor(
             id: dto.id, title: dto.summaryOverride ?? dto.summary ?? dto.id, colorHex: dto.backgroundColor,
             accessRole: role, isPrimary: dto.primary ?? false,
-            timeZone: dto.timeZone.flatMap { TimeZone(identifier: $0) }, accountName: accountName, kind: kind(ofCalendarID: dto.id))
+            timeZone: dto.timeZone.flatMap { TimeZone(identifier: $0) }, accountName: accountName, kind: kind(ofCalendarID: dto.id),
+            defaultReminders: (dto.defaultReminders ?? []).compactMap { $0.minutes.map(Reminder.init(minutesBefore:)) })
     }
 
     /// Google's built-in feeds have well-known ids: contacts' birthdays and the regional holiday calendars.
@@ -43,11 +44,10 @@ enum GoogleEventMapper {
             timeZone: start.zone ?? calendarZone, isAllDay: start.isAllDay, status: dto.status == "tentative" ? .tentative : .confirmed,
             availability: dto.transparency == "transparent" ? .free : .busy,
             visibility: visibility(dto.visibility), kind: kind(dto.eventType),
-            seriesID: dto.recurringEventId,
-            originalStart: dto.originalStartTime.flatMap { resolve($0, calendarZone: calendarZone)?.date },
+            series: series(dto, calendarZone: calendarZone),
             attendees: attendees, organizer: organizer, conferences: conferences(dto),
-            reminders: reminders(dto.reminders), url: dto.htmlLink.flatMap(URL.init(string:)),
-            version: dto.etag, myResponse: attendees.first(where: \.isSelf)?.response, sourceID: sourceID)
+            reminders: reminders(dto.reminders, calendar: calendar), url: dto.htmlLink.flatMap(URL.init(string:)),
+            version: dto.etag, participation: participation(attendees: attendees, organizer: organizer), sourceID: sourceID)
     }
 
     struct Resolved {
@@ -135,8 +135,24 @@ enum GoogleEventMapper {
         return .other
     }
 
-    private static func reminders(_ dto: GoogleRemindersDTO?) -> [Reminder] {
-        guard let dto, dto.useDefault != true else { return [] }
+    /// `useDefault` resolves to the calendar's own default reminders, so an event never reads as having none because
+    /// it uses the defaults. An event without a `reminders` object has none.
+    private static func reminders(_ dto: GoogleRemindersDTO?, calendar: CalendarDescriptor) -> [Reminder] {
+        guard let dto else { return [] }
+        if dto.useDefault == true { return calendar.defaultReminders ?? [] }
         return (dto.overrides ?? []).compactMap { $0.minutes.map(Reminder.init(minutesBefore:)) }
+    }
+
+    private static func series(_ dto: GoogleEventDTO, calendarZone: TimeZone) -> SeriesInfo {
+        guard let id = dto.recurringEventId else { return .notRecurring }
+        return .occurrence(seriesID: id, originalStart: dto.originalStartTime.flatMap { resolve($0, calendarZone: calendarZone)?.date })
+    }
+
+    /// A `self` attendee gives their response; an organizer who is you with no attendee entry (an event with no
+    /// guests) counts as accepted; anything else is an event you are not on.
+    static func participation(attendees: [Attendee], organizer: Attendee?) -> Participation {
+        if let me = attendees.first(where: \.isSelf) { return .invited(me.response) }
+        if organizer?.isSelf == true { return .invited(.accepted) }
+        return .notInvited
     }
 }

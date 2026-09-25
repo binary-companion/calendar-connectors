@@ -84,7 +84,7 @@ private func source() -> CalendarEvent {
     CalendarEvent(
         eventID: "e", calendarID: "c", title: "Planning", notes: "n", location: "Room",
         start: instant("2026-09-21T10:00:00Z"), end: instant("2026-09-21T11:00:00Z"), timeZone: utc,
-        availability: .free, visibility: .privateEvent, seriesID: "s",
+        availability: .free, visibility: .privateEvent, series: .occurrence(seriesID: "s", originalStart: nil),
         attendees: [Attendee(email: "me@x.com", isSelf: true), Attendee(email: "Bob@x.com", role: .optional),
                     Attendee(name: "No Email")],
         conferences: [ConferenceInfo(url: URL(string: "https://meet.google.com/abc")!, provider: .meet)],
@@ -155,4 +155,11 @@ private func source() -> CalendarEvent {
     let draft = EventDraft(copying: event, for: SourceCapabilities())
     #expect(draft.timing.isAllDay && draft.timing.timeZone == newYork)
     try draft.validate()
+}
+
+@Test func copyingAnEventWithUnknownFieldsUsesTheDraftDefaults() {
+    let event = CalendarEvent(eventID: "e", calendarID: "c", title: "T", start: Date(timeIntervalSince1970: 1000), end: Date(timeIntervalSince1970: 2000))
+    let draft = EventDraft(copying: event, for: SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases)))
+    #expect(draft.availability == .busy && draft.visibility == .default && draft.reminders == nil)
+    #expect(draft.usedFields == [.title, .timing])
 }

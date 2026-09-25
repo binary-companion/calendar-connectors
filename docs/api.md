@@ -83,17 +83,17 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
 | `timeZone` | `TimeZone` | Always set; see Time above |
 | `isAllDay` | `Bool` | |
 | `status` | `EventStatus` | `confirmed`, `tentative`, `cancelled` |
-| `availability` | `Availability` | `busy`, `free` |
-| `visibility` | `Visibility` | `default`, `publicEvent`, `privateEvent`, `confidential` |
-| `kind` | `EventKind` | `standard`, `focusTime`, `outOfOffice`, `workingLocation`, `birthday`, `other` |
-| `seriesID`, `originalStart` | `String?`, `Date?` | Set on an instance of a recurring series (Google `recurringEventId` and `originalStartTime`; EventKit `eventIdentifier` and `occurrenceDate`, for events that recur or are detached occurrences) |
+| `availability` | `Availability?` | `busy`, `free`, `tentative`, `unavailable`; nil when the source does not say (EventKit `.notSupported`) |
+| `visibility` | `Visibility?` | `default`, `publicEvent`, `privateEvent`, `confidential`; nil when the source does not say |
+| `kind` | `EventKind?` | `standard`, `focusTime`, `outOfOffice`, `workingLocation`, `birthday`, `other`; nil when the source does not say |
+| `series` | `SeriesInfo?` | `.notRecurring`, or `.occurrence(seriesID:originalStart:)` on an instance of a recurring series (Google `recurringEventId` and `originalStartTime`; EventKit `eventIdentifier` and `occurrenceDate`, for events that recur or are detached occurrences); nil when the source does not say. `seriesID` and `originalStart` are get-only accessors |
 | `attendees` | `[Attendee]` | `name?`, `email?` (trimmed, lowercased), `role` (`required/optional/resource`), `response`, `isSelf`, `isOrganizer` |
 | `organizer` | `Attendee?` | |
 | `conferences` | `[ConferenceInfo]` | Join links, most likely first: `url`, `provider` (`meet/teams/zoom/webex/goToMeeting/whereby/jitsi/slack/other`), `origin` (`structured/location/url/notes/eventURL`), computed `identity`. Filled by every connector through `ConferenceDetector`. `conference` is the first entry (get-only). |
-| `reminders` | `[Reminder]` | `minutesBefore`; empty means none *or* provider defaults (not distinguished today) |
+| `reminders` | `[Reminder]?` | `minutesBefore`; `[]` means none, nil means the source does not say. Google `useDefault` resolves to the calendar's `defaultReminders` |
 | `url` | `URL?` | Link to the event in the provider's UI |
 | `version` | `String?` | Opaque provider version (Google etag, EventKit `lastModifiedDate` as a fractional-epoch string); the base of optimistic writes (part 10) |
-| `myResponse` | `ResponseStatus?` | The account owner's own response, when the provider says |
+| `participation` | `Participation?` | `.notInvited` or `.invited(ResponseStatus)`; nil when the source does not say. `myResponse` is a get-only accessor (nil for both unknown and not invited) |
 | `sourceID` | `String?` | The source that produced the event (`Connection.sourceID`; `"eventkit"` for EventKit); lets a host route an event to its account. Does not change `id` |
 
 Reads return recurring events already expanded into instances. No read path returns a recurrence rule.
@@ -132,7 +132,7 @@ public struct SourceCapabilities: Equatable, Sendable {
     var canWrite: Bool              // by convention true exactly when the source conforms to WritableCalendarSource
     var canEditAttendees: Bool      // true exactly when writableFields contains .attendees (checked by the conformance suite)
     var canRespondToInvite: Bool
-    var providesConference: Bool
+    var providedFields: Set<ProvidedField>   // what the source reliably fills on reads; a listed field is never nil
     var syncKind: SyncKind          // .none, .token, .notification
     var supportsPush: Bool
     var writableFields: Set<EventField>          // what create/update can write; empty when read-only
@@ -144,7 +144,7 @@ public struct SourceCapabilities: Equatable, Sendable {
 Capabilities are what a source *can* do, declared per connector; the per-calendar `accessRole` says which of its
 calendars are writable. The three write fields default to the read-only value. Current values:
 
-| | `canWrite` | `canEditAttendees` | `canRespondToInvite` | `providesConference` | `syncKind` | `writableFields` | `controlsNotifications` | `recurrenceScopes` |
+| | `canWrite` | `canEditAttendees` | `canRespondToInvite` | `providedFields` | `syncKind` | `writableFields` | `controlsNotifications` | `recurrenceScopes` |
 |---|---|---|---|---|---|---|---|---|
 | Google | true | true | true | true | `.token` | all | true | all three |
 | EventKit | true | false | false | false | `.notification` | title, notes, location, timing, availability, reminders, recurrence | false | all three (subject to the EventKit spike, part 11) |
@@ -283,7 +283,7 @@ and the `CalendarSource` returned by `makeSource` (id `google-<connectionID>`).
   `.authExpired`; 429 and rate-limit 403 retry up to three times honoring `Retry-After` (else jittered exponential
   backoff) and then throw `.rateLimited`; 5xx throws `.server`; anything else is `.invalidResponse`.
 - **Writes:** `GoogleCalendarSource` conforms to `WritableCalendarSource` (part 10). Create, update (only the changed fields, `If-Match` from `ref.version`), delete and RSVP, with all three recurrence scopes; `.thisAndFollowing` truncates the master's `RRULE` and inserts a new series (two calls; see part 10 for the failure handling). Write requests use a write mode of the client: 412 is a stale version (handled by `PatchMerge`), 400 is `.invalid`, and a 403 with any reason but `insufficientPermissions` is `.forbidden`, except quota reasons, which are `SourceError.rateLimited`. Reads keep their original mapping.
-- **Capabilities:** `canWrite`, `canEditAttendees`, `canRespondToInvite`, `providesConference`, `.token` sync, every field writable, `controlsNotifications`, all three scopes.
+- **Capabilities:** `canWrite`, `canEditAttendees`, `canRespondToInvite`, `providedFields`, `.token` sync, every field writable, `controlsNotifications`, all three scopes.
 
 ## 6. `CalendarApple` (macOS adapters)
 

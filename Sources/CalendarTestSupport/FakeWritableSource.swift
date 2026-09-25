@@ -63,7 +63,7 @@ public final class FakeWritableSource: WritableCalendarSource, @unchecked Sendab
                 start: draft.timing.start, end: draft.timing.end, timeZone: draft.timing.timeZone ?? TimeZone(identifier: "UTC")!, isAllDay: draft.timing.isAllDay,
                 availability: draft.availability, visibility: draft.visibility,
                 attendees: draft.attendees.map { Attendee(name: $0.name, email: $0.email, role: $0.role) },
-                reminders: draft.reminders ?? [], version: "v\(counter)", sourceID: id)
+                reminders: draft.reminders, version: "v\(counter)", sourceID: id)
             if draft.conference == .generate {
                 event.conferences = [ConferenceInfo(url: URL(string: "https://meet.example/\(counter)")!, provider: .meet)]
             }
@@ -126,7 +126,7 @@ public final class FakeWritableSource: WritableCalendarSource, @unchecked Sendab
             guard var event = events[key] else { throw WriteError.notFound }
             guard let index = event.attendees.firstIndex(where: \.isSelf) else { throw WriteError.invalid("you are not an attendee of this event") }
             event.attendees[index].response = response
-            event.myResponse = response
+            event.participation = .invited(response)
             counter += 1
             writes += 1
             event.version = "v\(counter)"
