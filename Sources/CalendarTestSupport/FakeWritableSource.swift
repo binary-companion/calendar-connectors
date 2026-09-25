@@ -60,7 +60,7 @@ public final class FakeWritableSource: WritableCalendarSource, @unchecked Sendab
             writes += 1
             var event = CalendarEvent(
                 eventID: "ev\(counter)", calendarID: calendarID, title: draft.title, notes: draft.notes, location: draft.location,
-                start: draft.timing.start, end: draft.timing.end, timeZone: draft.timing.timeZone, isAllDay: draft.timing.isAllDay,
+                start: draft.timing.start, end: draft.timing.end, timeZone: draft.timing.timeZone ?? TimeZone(identifier: "UTC")!, isAllDay: draft.timing.isAllDay,
                 availability: draft.availability, visibility: draft.visibility,
                 attendees: draft.attendees.map { Attendee(name: $0.name, email: $0.email, role: $0.role) },
                 reminders: draft.reminders ?? [], version: "v\(counter)", sourceID: id)

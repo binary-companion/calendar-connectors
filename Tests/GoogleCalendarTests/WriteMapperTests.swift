@@ -166,9 +166,8 @@ private func same(_ a: Any, _ b: Any) -> Bool {
 
 @Test func aPatchTimingWithoutAZoneDoesNotBorrowTheBaseZoneForRecurrence() async throws {
     let base = CalendarEvent(eventID: "e", calendarID: "c", title: "T", start: instant("2026-09-21T10:00:00Z"), end: instant("2026-09-21T10:30:00Z"), timeZone: newYork)
-    var edited = base
-    edited.timeZone = nil
-    var patch = EventPatch(from: base, to: edited)
+    var patch = EventPatch(from: base, to: base)
+    patch.timing = EventTiming(start: base.start, end: base.end, timeZone: nil, isAllDay: false)   // "no preference"
     patch.recurrence = .set(RecurrenceRule(frequency: .daily))
     await expectWriteError(.invalid("recurring events need a time zone")) { _ = try GoogleWriteMapper.patchBody(patch, currentAttendees: nil) }
     // With no timing in the patch the base's zone is what the series will use.

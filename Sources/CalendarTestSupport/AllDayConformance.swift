@@ -6,7 +6,7 @@ import Foundation
 public enum AllDayConformance {
     public static func violations(_ event: CalendarEvent) -> [String] {
         guard event.isAllDay else { return [] }
-        guard let zone = event.timeZone else { return ["all-day event has no timeZone"] }
+        let zone = event.timeZone
         var found: [String] = []
         func isMidnight(_ instant: Date) -> Bool {
             AllDay.startOfDay(AllDay.date(of: instant, in: zone), in: zone) == instant

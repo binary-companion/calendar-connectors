@@ -24,7 +24,7 @@ public enum PatchMerge {
             case .location: if (current.location ?? "") != (base.location ?? "") { found.insert(field) }
             case .timing:
                 let same = current.start == base.start && current.end == base.end
-                    && current.timeZone?.identifier == base.timeZone?.identifier && current.isAllDay == base.isAllDay
+                    && current.timeZone.identifier == base.timeZone.identifier && current.isAllDay == base.isAllDay
                 if !same { found.insert(field) }
             case .availability: if current.availability != base.availability { found.insert(field) }
             case .visibility: if current.visibility != base.visibility { found.insert(field) }

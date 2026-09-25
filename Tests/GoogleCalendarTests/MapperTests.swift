@@ -24,7 +24,7 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     #expect(e.uid == "uid@google.com")
     #expect(e.title == "Standup" && e.notes == "notes" && e.location == "Room 1")
     #expect(e.start == instant("2026-09-21T10:00:00-07:00") && e.end == instant("2026-09-21T10:30:00-07:00"))
-    #expect(e.timeZone?.identifier == "America/Los_Angeles")
+    #expect(e.timeZone.identifier == "America/Los_Angeles")
     #expect(!e.isAllDay && e.status == .confirmed && e.availability == .busy && e.kind == .standard)
     #expect(e.url?.absoluteString == "https://www.google.com/calendar/event?eid=x")
     #expect(e.version == "\"123\"")
@@ -37,7 +37,7 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     cal.timeZone = tokyo
     #expect(e.isAllDay)
     #expect(AllDayConformance.violations(e).isEmpty)
-    #expect(e.timeZone?.identifier == "Asia/Tokyo")
+    #expect(e.timeZone.identifier == "Asia/Tokyo")
     #expect(e.start == cal.date(from: DateComponents(year: 2026, month: 9, day: 20)))
     #expect(e.end == cal.date(from: DateComponents(year: 2026, month: 9, day: 22)))
 }
@@ -46,16 +46,27 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     let bare = CalendarDescriptor(id: "c", title: "C")
     let dto = try event(#"{"id":"a","start":{"date":"2026-09-20"},"end":{"date":"2026-09-21"}}"#)
     let e = try #require(GoogleEventMapper.map(dto, calendar: bare))
-    #expect(e.timeZone?.identifier == "UTC" || e.timeZone?.identifier == "GMT")
+    #expect(e.timeZone.identifier == "UTC" || e.timeZone.identifier == "GMT")
     #expect(e.start == instant("2026-09-20T00:00:00Z"))
     #expect(AllDayConformance.violations(e).isEmpty)
+}
+
+@Test func aTimedEventWithoutItsOwnZoneTakesTheCalendarsZoneThenUTC() throws {
+    let noZone = #"{"id":"t","start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTime":"2026-09-21T11:00:00Z"}}"#
+    #expect(try #require(try map(noZone)).timeZone.identifier == "Asia/Tokyo")              // the fixture calendar's zone
+    let bare = CalendarDescriptor(id: "c", title: "C")
+    let dto = try event(noZone)
+    let e = try #require(GoogleEventMapper.map(dto, calendar: bare))
+    #expect(e.timeZone.identifier == "UTC" || e.timeZone.identifier == "GMT")
+    let own = #"{"id":"t","start":{"dateTime":"2026-09-21T10:00:00-07:00","timeZone":"America/Los_Angeles"},"end":{"dateTime":"2026-09-21T11:00:00-07:00","timeZone":"America/Los_Angeles"}}"#
+    #expect(try #require(try map(own)).timeZone.identifier == "America/Los_Angeles")
 }
 
 @Test func allDayInTokyoIsCanonical() throws {
     let e = try #require(try map(#"{"id":"a","summary":"Off","start":{"date":"2026-09-18"},"end":{"date":"2026-09-19"}}"#))
     #expect(e.start == instant("2026-09-17T15:00:00Z"))
     #expect(e.end == instant("2026-09-18T15:00:00Z"))
-    #expect(e.timeZone?.identifier == "Asia/Tokyo")
+    #expect(e.timeZone.identifier == "Asia/Tokyo")
     #expect(AllDayConformance.violations(e).isEmpty)
 }
 

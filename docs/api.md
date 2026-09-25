@@ -33,9 +33,12 @@ Dependency direction: `GoogleCalendar` → `CalendarOAuth` → `CalendarCore`; a
   language mode (the Apple adapters build in Swift 5 mode because of AppKit/Network types).
 - **Errors.** Sources throw `SourceError` (part 3.6) and never leak provider or transport types. Cancellation
   surfaces as `CancellationError`.
-- **Time.** Instants are `Date`. A timed event's `timeZone` is the zone it was authored in (informational for
-  timed events).
-- **All-day events (canonical form).** `isAllDay == true` ⇒ `timeZone` is non-nil, `start` is midnight of the
+- **Time.** Instants are `Date` and authoritative. `timeZone` is always set (non-optional): the zone the event is
+  shown in, a display hint for timed events. When the provider gives an event no zone the connector fills its
+  fallback: Google the calendar's zone, then UTC; EventKit the device zone. On writes `EventTiming.timeZone` stays
+  optional: nil means "no preference" (Google leaves out the zone name so the event takes the calendar's zone;
+  EventKit leaves the event's zone nil, a floating time), and a given zone is sent as it is.
+- **All-day events (canonical form).** `isAllDay == true` ⇒ `start` is midnight of the
   first day in that zone, `end` is midnight of the day after the last day (exclusive). Days are interpreted in the
   event's own zone, not the device's. Connectors build and read this form only through the `AllDay` helpers, and
   their tests run fixtures through `AllDayConformance.violations`.
@@ -77,7 +80,7 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
 | `title` | `String` | Non-optional; a connector substitutes its own placeholder for an untitled event ("(No title)" today) |
 | `notes`, `location` | `String?` | |
 | `start`, `end` | `Date` | See the all-day convention; `end` is exclusive |
-| `timeZone` | `TimeZone?` | Non-nil whenever `isAllDay` |
+| `timeZone` | `TimeZone` | Always set; see Time above |
 | `isAllDay` | `Bool` | |
 | `status` | `EventStatus` | `confirmed`, `tentative`, `cancelled` |
 | `availability` | `Availability` | `busy`, `free` |

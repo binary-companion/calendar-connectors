@@ -119,8 +119,11 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
     /// All-day: midnight of the first day in `timeZone`, `end` exclusive (midnight after the last day).
     public var start: Date
     public var end: Date
-    /// Always non-nil when `isAllDay`; interpret an all-day event's days in this zone, not the device's.
-    public var timeZone: TimeZone?
+    /// The zone the event is shown in; always set. `start` and `end` (instants) are authoritative and this is a
+    /// display hint: when the provider gives the event no zone the connector fills its fallback (Google: the
+    /// calendar's zone, then UTC; EventKit: the device zone). An all-day event's days are read in this zone, not the
+    /// device's.
+    public var timeZone: TimeZone
     public var isAllDay: Bool
     public var status: EventStatus
     public var availability: Availability
@@ -147,7 +150,7 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
     public init(
         eventID: String, uid: String? = nil, calendarID: String, title: String,
         notes: String? = nil, location: String? = nil, start: Date, end: Date,
-        timeZone: TimeZone? = nil, isAllDay: Bool = false, status: EventStatus = .confirmed,
+        timeZone: TimeZone = TimeZone(identifier: "UTC")!, isAllDay: Bool = false, status: EventStatus = .confirmed,
         availability: Availability = .busy, visibility: Visibility = .default, kind: EventKind = .standard,
         seriesID: String? = nil, originalStart: Date? = nil, attendees: [Attendee] = [],
         organizer: Attendee? = nil, conferences: [ConferenceInfo] = [], reminders: [Reminder] = [],

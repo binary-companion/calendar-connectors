@@ -40,7 +40,7 @@ enum GoogleEventMapper {
         return CalendarEvent(
             eventID: dto.id, uid: dto.iCalUID, calendarID: calendar.id, title: dto.summary ?? "(No title)",
             notes: dto.description, location: dto.location, start: start.date, end: end.date,
-            timeZone: start.zone, isAllDay: start.isAllDay, status: dto.status == "tentative" ? .tentative : .confirmed,
+            timeZone: start.zone ?? calendarZone, isAllDay: start.isAllDay, status: dto.status == "tentative" ? .tentative : .confirmed,
             availability: dto.transparency == "transparent" ? .free : .busy,
             visibility: visibility(dto.visibility), kind: kind(dto.eventType),
             seriesID: dto.recurringEventId,

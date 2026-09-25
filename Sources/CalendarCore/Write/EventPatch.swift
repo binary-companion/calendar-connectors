@@ -92,7 +92,7 @@ public struct EventPatch: Sendable, Equatable {
         notes = Self.update(from: original.notes, to: edited.notes)
         location = Self.update(from: original.location, to: edited.location)
         let sameTiming = original.start == edited.start && original.end == edited.end
-            && original.timeZone?.identifier == edited.timeZone?.identifier && original.isAllDay == edited.isAllDay
+            && original.timeZone.identifier == edited.timeZone.identifier && original.isAllDay == edited.isAllDay
         if !sameTiming {
             timing = EventTiming(start: edited.start, end: edited.end, timeZone: edited.timeZone, isAllDay: edited.isAllDay)
         }
@@ -138,7 +138,7 @@ public struct EventPatch: Sendable, Equatable {
         if let timing {
             e.start = timing.start
             e.end = timing.end
-            e.timeZone = timing.timeZone
+            if let zone = timing.timeZone { e.timeZone = zone }
             e.isAllDay = timing.isAllDay
         }
         if let availability { e.availability = availability }
