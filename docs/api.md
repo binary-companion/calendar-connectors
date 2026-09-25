@@ -545,3 +545,10 @@ provider metadata; a `metadata` field and capability can be added later without 
 - **Event dates.** `lastModified` and `created` (nil when the source does not say); `version` stays the opaque equality token.
 
 - **Copying and duplicates.** `EventDraft.uid` (only a `.global` uid is copied) makes `create` look for that event on the target calendar first; if it exists, `create` throws `WriteError.alreadyExists(storedCopy)` and writes nothing. Google stores the uid as `iCalUID` (unverified live); EventKit cannot set a UID and matches on `calendarItemExternalIdentifier` among the events around the draft's time.
+
+## Recurrence
+
+- `RecurrenceRule` (in `CalendarCore/Recurrence/`) is one type for reading and writing; see ADR 0015. `RecurrenceRule(rrule:in:)` throws `RecurrenceParseError.malformed` only for malformed text; `validate()` decides whether a rule can be written and throws `WriteError.unsupported(fields: [.recurrence])` for what no writer can express (sub-daily frequencies, `BYYEARDAY`, `BYWEEKNO`, `BYSETPOS`, `BYHOUR`, `BYMINUTE`, `BYSECOND`, a non-Monday `WKST`, unrecognized parts). `rruleString(allDay:in:)` renders every part in a fixed order.
+- `RecurrenceSet { rules, extraDates?, excludedDates?, unparsed }`, `init(iCalendarLines:timeZone:isAllDay:)` and `iCalendarLines(timeZone:isAllDay:)` read and write `RRULE`, `EXDATE` and `RDATE` (`TZID=`, UTC, floating and `VALUE=DATE` forms); lines it does not model are kept in `unparsed`.
+- `CalendarSeries { seriesID, calendarID, start, timeZone, isAllDay, recurrence }` and `protocol SeriesSource: CalendarSource { func series(id:calendarID:) async throws -> CalendarSeries }`. A source declares `ProvidedField.recurrenceRules` exactly when it conforms. An unknown id or an id that does not recur throws `SourceError.notFound`.
+- Google: the master's `recurrence` lines and `start`. EventKit: `EKRecurrenceRule` mapped; `extraDates` and `excludedDates` are nil (EventKit cannot list them).

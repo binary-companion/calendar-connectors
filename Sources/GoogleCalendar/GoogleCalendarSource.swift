@@ -9,7 +9,7 @@ public final class GoogleCalendarSource: PollingCalendarSource {
     let api: GoogleAPIClient
     let syncState: any SyncStateStore
     let monitor: ChangeMonitor
-    private let calendarList = CalendarListCache()
+    let calendarList = CalendarListCache()
 
     init(connection: Connection, api: GoogleAPIClient, syncState: any SyncStateStore, monitor: ChangeMonitor) {
         self.connection = connection
@@ -22,7 +22,7 @@ public final class GoogleCalendarSource: PollingCalendarSource {
     public var displayName: String { connection.displayName }
     public var capabilities: SourceCapabilities {
         SourceCapabilities(
-            canWrite: true, canEditAttendees: true, canRespondToInvite: true, providedFields: [.kind, .visibility, .availability, .reminders, .series, .participation, .structuredConference, .version, .lastModified, .created, .uidScope,
+            canWrite: true, canEditAttendees: true, canRespondToInvite: true, providedFields: [.kind, .visibility, .availability, .reminders, .series, .participation, .structuredConference, .version, .lastModified, .created, .uidScope, .recurrenceRules,
                              .isDefault, .calendarTimeZone, .defaultReminders, .provider, .supportedAvailabilities, .permissionDetails],
             syncKind: .token,
             writableFields: Set(EventField.allCases), controlsNotifications: true, recurrenceScopes: Set(RecurrenceScope.allCases))
@@ -166,7 +166,7 @@ public final class GoogleCalendarSource: PollingCalendarSource {
 }
 
 /// The last calendar list this source fetched. `events(in:)` reads it; `calendars()` and each poll refresh it.
-private actor CalendarListCache {
+actor CalendarListCache {
     private(set) var list: [CalendarDescriptor]?
     func store(_ list: [CalendarDescriptor]) { self.list = list }
 }

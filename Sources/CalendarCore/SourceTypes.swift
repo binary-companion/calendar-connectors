@@ -10,6 +10,8 @@ public enum ProvidedField: String, Sendable, Hashable, CaseIterable {
     /// Supplies structured conference data (Google `conferenceData`); says nothing about whether an event has links.
     case structuredConference
     case version, lastModified, created, uidScope
+    /// The source can return a series' recurrence rules (`SeriesSource`); declared exactly when it conforms.
+    case recurrenceRules
     // Calendars
     case isDefault, calendarTimeZone, defaultReminders, provider, supportedAvailabilities
     /// `permissions.canShare` and `canViewPrivate` are never nil.
@@ -59,6 +61,8 @@ public enum SourceError: Error, Sendable, Equatable {
     case invalidResponse(String)
     /// The OS or user has not granted access to a local data store (EventKit). Never thrown by network connectors.
     case needsPermission
+    /// The id names nothing the source can find (a series that does not exist, or an event that does not recur).
+    case notFound
 }
 
 public enum CalendarChange: Equatable, Sendable {
@@ -85,4 +89,12 @@ public protocol PollingCalendarSource: CalendarSource {
     /// One cheap incremental check (sync token / delta). Returns the change since the last call, or nil for none.
     /// The first call establishes the baseline and returns nil.
     func checkForChanges() async throws -> CalendarChange?
+}
+
+/// A source that can return a recurring series' rules on demand, so `events(in:)` stays cheap. Declared through
+/// `ProvidedField.recurrenceRules`; a source declares it exactly when it conforms.
+public protocol SeriesSource: CalendarSource {
+    /// The series with this id (an instance's `SeriesInfo.occurrence(seriesID:...)`). Throws `SourceError.notFound` for
+    /// an unknown id or an id that is not a recurring series.
+    func series(id: String, calendarID: String) async throws -> CalendarSeries
 }

@@ -251,3 +251,41 @@ private func calendarListRequests(_ h: Harness) async -> Int {
     let events = try await h.source.events(in: eventsWindow)
     #expect(events.map(\.eventID) == ["n"])
 }
+
+// Series (Issue 3).
+
+private let masterPath = "calendars/me%40x.com/events/master1"
+nonisolated(unsafe) private let masterJSON: [String: Any] = [
+    "id": "master1", "start": ["dateTime": "2026-09-14T10:00:00-06:00", "timeZone": "America/Denver"],
+    "end": ["dateTime": "2026-09-14T10:30:00-06:00", "timeZone": "America/Denver"],
+    "recurrence": ["RRULE:FREQ=WEEKLY;BYDAY=MO", "EXDATE;TZID=America/Denver:20260921T100000"],
+]
+
+@Test func aMasterWithRruleAndExdateGivesTheFullSeries() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route(masterPath, [.json(masterJSON)])
+    let series = try await h.source.series(id: "master1", calendarID: "me@x.com")
+    let denver = TimeZone(identifier: "America/Denver")!
+    #expect(series.seriesID == "master1" && series.calendarID == "me@x.com" && series.timeZone == denver && !series.isAllDay)
+    #expect(series.start == ISO8601DateFormatter().date(from: "2026-09-14T16:00:00Z"))
+    #expect(series.recurrence.rules.map(\.frequency) == [.weekly])
+    #expect(series.recurrence.excludedDates == [ISO8601DateFormatter().date(from: "2026-09-21T16:00:00Z")!])
+}
+
+@Test func aNonRecurringOrCancelledOrMissingSeriesIsNotFound() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route(masterPath, [
+        .json(["id": "master1", "start": ["dateTime": "2026-09-14T10:00:00Z"], "end": ["dateTime": "2026-09-14T10:30:00Z"]]),
+        .json(["id": "master1", "status": "cancelled", "recurrence": ["RRULE:FREQ=DAILY"]]),
+        .json(["error": ["errors": [["reason": "notFound"]]]], status: 404),
+    ])
+    for _ in 0..<3 {
+        await #expect(throws: SourceError.notFound) { _ = try await h.source.series(id: "master1", calendarID: "me@x.com") }
+    }
+}
+
+@Test func googleDeclaresRecurrenceRulesExactlyBecauseItIsASeriesSource() async throws {
+    let h = try await Harness()
+    #expect(h.source.capabilities.providedFields.contains(.recurrenceRules))
+    #expect(ProvidedFieldsConformance.violations(source: h.source).isEmpty)
+}

@@ -20,6 +20,7 @@ public enum ProvidedFieldsConformance {
             case .lastModified: missing = event.lastModified == nil
             case .created: missing = event.created == nil
             case .uidScope: missing = event.uidScope == nil
+            case .recurrenceRules: missing = false        // a source-level capability
             case .structuredConference: missing = false   // a source without a conference has none to provide
             case .isDefault, .calendarTimeZone, .defaultReminders, .provider, .supportedAvailabilities, .permissionDetails:
                 missing = false                           // calendar fields
@@ -27,6 +28,14 @@ public enum ProvidedFieldsConformance {
             if missing { found.append("declared field \(field.rawValue) is nil") }
         }
         return found
+    }
+
+    /// A source declares `.recurrenceRules` exactly when it conforms to `SeriesSource`.
+    public static func violations(source: any CalendarSource) -> [String] {
+        let declares = source.capabilities.providedFields.contains(.recurrenceRules)
+        let conforms = source is any SeriesSource
+        if declares == conforms { return [] }
+        return [declares ? "declares recurrenceRules but does not conform to SeriesSource" : "conforms to SeriesSource but does not declare recurrenceRules"]
     }
 
     /// The declared calendar fields that are missing on `calendar`.

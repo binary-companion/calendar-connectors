@@ -75,7 +75,14 @@ extension GoogleCalendarSource: WritableCalendarSource {
                         attendees = raw.attendees
                         ifMatch = raw.etag ?? expected
                     }
-                    let body = try GoogleWriteMapper.patchBody(patch, currentAttendees: attendees)
+                    var body = try GoogleWriteMapper.patchBody(patch, currentAttendees: attendees)
+                    // Setting a series' rule replaces Google's whole `recurrence` array, which also holds the skipped
+                    // (EXDATE) and extra (RDATE) dates: keep every line that is not a rule, or cancelled occurrences return.
+                    if case .set = patch.recurrence, ref.seriesID != nil, var lines = body.json["recurrence"] as? [String] {
+                        let master = try await self.fetchRaw(ref.calendarID, targetID)
+                        lines += (master.json["recurrence"] as? [String] ?? []).filter { !GoogleWriteMapper.isRRule($0) }
+                        body.json["recurrence"] = lines
+                    }
                     var headers: [String: String] = [:]
                     if let ifMatch { headers["If-Match"] = ifMatch }
                     do {

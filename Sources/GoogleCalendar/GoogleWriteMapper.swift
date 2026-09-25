@@ -246,7 +246,7 @@ extension GoogleWriteMapper {
         "originalStartTime", "conferenceData", "hangoutLink", "kind", "status", "recurrence",
     ]
 
-    private static func isRRule(_ line: String) -> Bool { line.uppercased().hasPrefix("RRULE:") }
+    static func isRRule(_ line: String) -> Bool { line.uppercased().hasPrefix("RRULE:") }
 
     private static func parts(of line: String) -> [String] {
         line.dropFirst("RRULE:".count).split(separator: ";").map(String.init)

@@ -488,3 +488,17 @@ private func draftWithUID(_ uid: String?) -> EventDraft {
     source.uidScope = .provider   // an Exchange-style id is never sent as an iCalendar UID
     #expect(EventDraft(copying: source, for: h.source.capabilities).uid == nil)
 }
+
+// Setting a series' rule must not drop its skipped and extra dates.
+
+@Test func settingASeriesRuleKeepsTheMastersExdateAndRdateLines() async throws {
+    let h = try await Harness()
+    let master = googleEvent(id: "master1", extra: ["start": masterStart, "end": masterEnd,
+        "recurrence": ["RRULE:FREQ=WEEKLY", "EXDATE;TZID=UTC:20260921T100000", "RDATE;TZID=UTC:20261001T100000"]])
+    await h.transport.route("\(calPath)/master1", [.json(master), .json(googleEvent(id: "master1", etag: "m2"))])
+    var change = EventPatch(from: base(), to: base())   // the base gives the series' zone
+    change.recurrence = .set(RecurrenceRule(frequency: .daily))
+    _ = try await h.source.update(laterOccurrence(), change, scope: .allInSeries, notify: .none)
+    let patch = try #require(await masterRequests(h).first { $0.method == "PATCH" })
+    #expect(bodyJSON(patch)["recurrence"] as? [String] == ["RRULE:FREQ=DAILY", "EXDATE;TZID=UTC:20260921T100000", "RDATE;TZID=UTC:20261001T100000"])
+}
