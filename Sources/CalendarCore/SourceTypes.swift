@@ -2,11 +2,29 @@ import Foundation
 
 public enum SyncKind: Sendable { case none, token, notification }
 
+/// A field a source reliably fills on the events (or calendars) it reads. A listed field is never nil; an unlisted one
+/// may be nil or partly filled, and nil means "this source does not say", never "none".
+public enum ProvidedField: String, Sendable, Hashable, CaseIterable {
+    // Events
+    case kind, visibility, availability, reminders, series, participation
+    /// Supplies structured conference data (Google `conferenceData`); says nothing about whether an event has links.
+    case structuredConference
+    case version, lastModified, created, uidScope
+    /// The source can return a series' recurrence rules (`SeriesSource`); declared exactly when it conforms.
+    case recurrenceRules
+    // Calendars
+    case isDefault, calendarTimeZone, defaultReminders, provider, supportedAvailabilities
+    /// `permissions.canShare` and `canViewPrivate` are never nil.
+    case permissionDetails
+}
+
 public struct SourceCapabilities: Equatable, Sendable {
     public var canWrite: Bool
     public var canEditAttendees: Bool
     public var canRespondToInvite: Bool
-    public var providesConference: Bool
+    /// What this source reliably fills on the events it reads (see `ProvidedField`). Separate from `writableFields`,
+    /// which is what a write can change; a few names overlap (reminders, availability) with different meanings.
+    public var providedFields: Set<ProvidedField>
     public var syncKind: SyncKind
     public var supportsPush: Bool
     /// The fields create/update can write; drives validation and `EventDraft(copying:for:)`. Empty when read-only.
@@ -18,14 +36,14 @@ public struct SourceCapabilities: Equatable, Sendable {
 
     public init(
         canWrite: Bool = false, canEditAttendees: Bool = false, canRespondToInvite: Bool = false,
-        providesConference: Bool = false, syncKind: SyncKind = .none, supportsPush: Bool = false,
+        providedFields: Set<ProvidedField> = [], syncKind: SyncKind = .none, supportsPush: Bool = false,
         writableFields: Set<EventField> = [], controlsNotifications: Bool = false,
         recurrenceScopes: Set<RecurrenceScope> = []
     ) {
         self.canWrite = canWrite
         self.canEditAttendees = canEditAttendees
         self.canRespondToInvite = canRespondToInvite
-        self.providesConference = providesConference
+        self.providedFields = providedFields
         self.syncKind = syncKind
         self.supportsPush = supportsPush
         self.writableFields = writableFields
@@ -43,6 +61,8 @@ public enum SourceError: Error, Sendable, Equatable {
     case invalidResponse(String)
     /// The OS or user has not granted access to a local data store (EventKit). Never thrown by network connectors.
     case needsPermission
+    /// The id names nothing the source can find (a series that does not exist, or an event that does not recur).
+    case notFound
 }
 
 public enum CalendarChange: Equatable, Sendable {
@@ -69,4 +89,12 @@ public protocol PollingCalendarSource: CalendarSource {
     /// One cheap incremental check (sync token / delta). Returns the change since the last call, or nil for none.
     /// The first call establishes the baseline and returns nil.
     func checkForChanges() async throws -> CalendarChange?
+}
+
+/// A source that can return a recurring series' rules on demand, so `events(in:)` stays cheap. Declared through
+/// `ProvidedField.recurrenceRules`; a source declares it exactly when it conforms.
+public protocol SeriesSource: CalendarSource {
+    /// The series with this id (an instance's `SeriesInfo.occurrence(seriesID:...)`). Throws `SourceError.notFound` for
+    /// an unknown id or an id that is not a recurring series.
+    func series(id: String, calendarID: String) async throws -> CalendarSeries
 }

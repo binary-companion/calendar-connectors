@@ -237,3 +237,15 @@ private final class Box<T>: @unchecked Sendable {
     upsert.event.attendees[0].role = .resource
     #expect(PatchMerge.conflicts(patch: upsert.patch, current: current) == [.attendees])
 }
+
+@Test func aReorderedReminderListIsNotAConflictButAChangedAlertTypeIs() {
+    var mine = base(); mine.reminders = [.before(minutes: 10), .before(minutes: 60)]
+    var edit = EventEdit(mine)
+    edit.event.title = "New"
+    edit.event.reminders = [.before(minutes: 5)]
+    var current = mine
+    current.reminders = [.before(minutes: 60, isCalendarDefault: false), .before(minutes: 10)]   // reordered, flagged by the provider
+    #expect(PatchMerge.conflicts(patch: edit.patch, current: current).isEmpty)
+    current.reminders = [.before(minutes: 60, type: .email(address: nil)), .before(minutes: 10)]
+    #expect(PatchMerge.conflicts(patch: edit.patch, current: current) == [.reminders])
+}

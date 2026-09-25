@@ -166,9 +166,8 @@ private func same(_ a: Any, _ b: Any) -> Bool {
 
 @Test func aPatchTimingWithoutAZoneDoesNotBorrowTheBaseZoneForRecurrence() async throws {
     let base = CalendarEvent(eventID: "e", calendarID: "c", title: "T", start: instant("2026-09-21T10:00:00Z"), end: instant("2026-09-21T10:30:00Z"), timeZone: newYork)
-    var edited = base
-    edited.timeZone = nil
-    var patch = EventPatch(from: base, to: edited)
+    var patch = EventPatch(from: base, to: base)
+    patch.timing = EventTiming(start: base.start, end: base.end, timeZone: nil, isAllDay: false)   // "no preference"
     patch.recurrence = .set(RecurrenceRule(frequency: .daily))
     await expectWriteError(.invalid("recurring events need a time zone")) { _ = try GoogleWriteMapper.patchBody(patch, currentAttendees: nil) }
     // With no timing in the patch the base's zone is what the series will use.
@@ -193,4 +192,24 @@ private func same(_ a: Any, _ b: Any) -> Bool {
     // The same zone gates and renders a recurrence, so a series on a GMT zone still gets its rule.
     let draft = EventDraft(title: "Daily", timing: timed(try #require(TimeZone(identifier: "GMT"))), recurrence: RecurrenceRule(frequency: .daily))
     #expect(try GoogleWriteMapper.createBody(draft).json["recurrence"] != nil)
+}
+
+@Test func aTentativeAvailabilityIsWrittenAsOpaqueAndReportedAsAnAdjustment() throws {
+    let draft = EventDraft(title: "T", timing: timed(), availability: .tentative)
+    #expect(try GoogleWriteMapper.createBody(draft).json["transparency"] as? String == "opaque")
+    let stored = CalendarEvent(eventID: "e", calendarID: "c", title: "T", start: draft.timing.start, end: draft.timing.end, availability: .busy)
+    #expect(draft.adjustments(comparedTo: stored) == [.availability])
+    let patched = try GoogleWriteMapper.patchBody(EventPatch(availability: .unavailable), currentAttendees: nil).json
+    #expect(patched["transparency"] as? String == "opaque")
+}
+
+@Test func remindersBecomePopupOrEmailAndUnsupportedOnesAreRefused() throws {
+    let json = try GoogleWriteMapper.remindersJSON([.before(minutes: 10), .before(minutes: 60, type: .email(address: nil))])
+    let overrides = json["overrides"] as? [[String: Any]] ?? []
+    #expect(overrides.map { $0["method"] as? String } == ["popup", "email"] && overrides.map { $0["minutes"] as? Int } == [10, 60])
+    for reminder in [Reminder(trigger: .relative(offset: -60, to: .end)), Reminder(trigger: .absolute(Date())),
+                     .before(minutes: 5, type: .audio(soundName: nil)), .before(minutes: 5, type: .email(address: "a@x.test")),
+                     Reminder(trigger: .relative(offset: -60, to: .start), repeatCount: 1, repeatInterval: 60)] {
+        #expect(throws: WriteError.unsupported(fields: [.reminders])) { _ = try GoogleWriteMapper.remindersJSON([reminder]) }
+    }
 }

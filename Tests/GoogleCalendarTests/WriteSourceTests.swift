@@ -431,3 +431,74 @@ private func createdSeries(_ h: Harness) async throws -> (event: CalendarEvent, 
     await h.transport.route("\(calPath)/ev1", [.json(googleEvent(id: "ev1", etag: "e2"))])
     _ = try await h.source.update(EventRef(calendarID: cal, eventID: "ev1", version: "e1"), EventPatch(timing: timing(), recurrence: .set(weekly)), scope: .thisInstance, notify: .none)
 }
+
+// Copying a meeting that may already be on the calendar (Issue 11).
+
+private func draftWithUID(_ uid: String?) -> EventDraft {
+    EventDraft(title: "Sync", timing: timing(), uid: uid)
+}
+
+@Test func createWithAUIDThatIsAlreadyOnTheCalendarThrowsAlreadyExistsAndInsertsNothing() async throws {
+    let h = try await Harness()
+    await h.transport.route(calPath, [.json(["items": [googleEvent(id: "there", etag: "e5", extra: ["iCalUID": "u-1"])]])])
+    do {
+        _ = try await h.source.create(draftWithUID("u-1"), in: cal, notify: .none)
+        Issue.record("expected alreadyExists")
+    } catch WriteError.alreadyExists(let existing) {
+        #expect(existing.eventID == "there" && existing.version == "e5" && existing.calendarID == cal)
+    }
+    let requests = await h.transport.requests(matching: calPath)
+    #expect(requests.count == 1 && requests[0].method == "GET" && requests[0].url.absoluteString.contains("iCalUID=u-1"))
+}
+
+@Test func createWithAnUnknownUIDLooksThenInsertsWithTheICalUID() async throws {
+    let h = try await Harness()
+    await h.transport.route(calPath, [.json(["items": []]), .json(googleEvent(id: "new", extra: ["iCalUID": "u-2"]))])
+    let created = try await h.source.create(draftWithUID("u-2"), in: cal, notify: .none)
+    let requests = await h.transport.requests(matching: calPath)
+    #expect(requests.map(\.method) == ["GET", "POST"])
+    #expect(bodyJSON(requests[1])["iCalUID"] as? String == "u-2")
+    #expect(created.eventID == "new" && created.uid == "u-2")
+}
+
+@Test func createWithoutAUIDMakesNoLookup() async throws {
+    let h = try await Harness()
+    await h.transport.route(calPath, [.json(googleEvent(id: "new"))])
+    _ = try await h.source.create(draftWithUID(nil), in: cal, notify: .none)
+    #expect(await h.transport.requests(matching: calPath).map(\.method) == ["POST"])
+}
+
+@Test func aCancelledMatchIsIgnored() async throws {
+    let h = try await Harness()
+    await h.transport.route(calPath, [.json(["items": [googleEvent(id: "gone", extra: ["status": "cancelled", "iCalUID": "u-3"])]]), .json(googleEvent(id: "new"))])
+    let created = try await h.source.create(draftWithUID("u-3"), in: cal, notify: .none)
+    #expect(created.eventID == "new")
+}
+
+@Test func copyingAnEventKitShapedEventCreatesACompleteGoogleEvent() async throws {
+    let h = try await Harness()
+    var source = CalendarEvent(eventID: "x", uid: "u-4", uidScope: .global, calendarID: "ek", title: "Sync", start: instant("2026-09-21T10:00:00Z"),
+                               end: instant("2026-09-21T10:30:00Z"), timeZone: utc)
+    let draft = EventDraft(copying: source, for: h.source.capabilities)
+    #expect(draft.uid == "u-4" && draft.availability == .busy && draft.visibility == .default && draft.reminders == nil)
+    await h.transport.route(calPath, [.json(["items": []]), .json(googleEvent(id: "new", extra: ["iCalUID": "u-4", "reminders": ["useDefault": true]]))])
+    let created = try await h.source.create(draft, in: cal, notify: .none)
+    let capabilities = SourceCapabilities(providedFields: [.kind, .visibility, .availability, .reminders, .series, .participation, .version])
+    #expect(ProvidedFieldsConformance.violations(event: created, capabilities: capabilities).isEmpty)
+    source.uidScope = .provider   // an Exchange-style id is never sent as an iCalendar UID
+    #expect(EventDraft(copying: source, for: h.source.capabilities).uid == nil)
+}
+
+// Setting a series' rule must not drop its skipped and extra dates.
+
+@Test func settingASeriesRuleKeepsTheMastersExdateAndRdateLines() async throws {
+    let h = try await Harness()
+    let master = googleEvent(id: "master1", extra: ["start": masterStart, "end": masterEnd,
+        "recurrence": ["RRULE:FREQ=WEEKLY", "EXDATE;TZID=UTC:20260921T100000", "RDATE;TZID=UTC:20261001T100000"]])
+    await h.transport.route("\(calPath)/master1", [.json(master), .json(googleEvent(id: "master1", etag: "m2"))])
+    var change = EventPatch(from: base(), to: base())   // the base gives the series' zone
+    change.recurrence = .set(RecurrenceRule(frequency: .daily))
+    _ = try await h.source.update(laterOccurrence(), change, scope: .allInSeries, notify: .none)
+    let patch = try #require(await masterRequests(h).first { $0.method == "PATCH" })
+    #expect(bodyJSON(patch)["recurrence"] as? [String] == ["RRULE:FREQ=DAILY", "EXDATE;TZID=UTC:20260921T100000", "RDATE;TZID=UTC:20261001T100000"])
+}

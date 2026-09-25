@@ -49,6 +49,12 @@ enum GoogleWriteMapper {
         return identifier == "GMT" ? "UTC" : identifier
     }
 
+    /// Google has two values (opaque, transparent); a value it cannot store is mapped to the closest one
+    /// (`Availability.closest`), and `adjustments(comparedTo:)` on the draft or patch reports the change.
+    static func transparency(_ availability: Availability) -> String {
+        (availability.closest(in: GoogleEventMapper.supportedAvailabilities) ?? .busy) == .free ? "transparent" : "opaque"
+    }
+
     /// Google cannot store times outside years 1 to 9999; an out-of-range date would render as a malformed string.
     private static func requireRepresentable(_ timing: EventTiming) throws {
         for date in [timing.start, timing.end] where !representableSeconds.contains(date.timeIntervalSince1970) {
@@ -91,12 +97,23 @@ enum GoogleWriteMapper {
         }
     }
 
+    /// Google reminders are minutes before the start, shown as a popup or sent as an email to the account owner; any
+    /// other trigger or type is refused before a request is made ("rejected, not mangled").
     static func remindersJSON(_ reminders: [Reminder]) throws -> JSON {
         guard reminders.count <= 5 else { throw WriteError.invalid("Google allows at most 5 reminders") }
-        guard reminders.allSatisfy({ reminderMinutes.contains($0.minutesBefore) }) else {
-            throw WriteError.invalid("reminder minutes must be between 0 and 40320")
+        var overrides: [JSON] = []
+        for reminder in reminders {
+            let method: String
+            switch reminder.type {
+            case .display: method = "popup"
+            case .email(let address) where address == nil: method = "email"
+            default: throw WriteError.unsupported(fields: [.reminders])
+            }
+            guard let minutes = reminder.minutesBefore, reminder.repeatCount == 0 else { throw WriteError.unsupported(fields: [.reminders]) }
+            guard reminderMinutes.contains(minutes) else { throw WriteError.invalid("reminder minutes must be between 0 and 40320") }
+            overrides.append(["method": method, "minutes": minutes])
         }
-        return ["useDefault": false, "overrides": reminders.map { ["method": "popup", "minutes": $0.minutesBefore] as JSON }]
+        return ["useDefault": false, "overrides": overrides]
     }
 
     static func attendeeJSON(_ attendee: AttendeeDraft) -> JSON {
@@ -126,8 +143,9 @@ enum GoogleWriteMapper {
         let time = timeJSON(draft.timing)
         json["start"] = time.start
         json["end"] = time.end
-        json["transparency"] = draft.availability == .free ? "transparent" : "opaque"
+        json["transparency"] = transparency(draft.availability)
         json["visibility"] = visibilityText(draft.visibility)
+        if let uid = draft.uid, !uid.isEmpty { json["iCalUID"] = uid }
         if let reminders = draft.reminders { json["reminders"] = try remindersJSON(reminders) }
         if !draft.attendees.isEmpty { json["attendees"] = draft.attendees.map(attendeeJSON) }
         if let rule = draft.recurrence {
@@ -151,7 +169,7 @@ enum GoogleWriteMapper {
             json["start"] = time.start
             json["end"] = time.end
         }
-        if let availability = patch.availability { json["transparency"] = availability == .free ? "transparent" : "opaque" }
+        if let availability = patch.availability { json["transparency"] = transparency(availability) }
         if let visibility = patch.visibility { json["visibility"] = visibilityText(visibility) }
         switch patch.reminders {
         case .keep: break
@@ -228,7 +246,7 @@ extension GoogleWriteMapper {
         "originalStartTime", "conferenceData", "hangoutLink", "kind", "status", "recurrence",
     ]
 
-    private static func isRRule(_ line: String) -> Bool { line.uppercased().hasPrefix("RRULE:") }
+    static func isRRule(_ line: String) -> Bool { line.uppercased().hasPrefix("RRULE:") }
 
     private static func parts(of line: String) -> [String] {
         line.dropFirst("RRULE:".count).split(separator: ";").map(String.init)

@@ -4,17 +4,26 @@ import Foundation
 enum GoogleEventMapper {
     static func descriptor(from dto: GoogleCalendarListEntryDTO, accountName: String?) -> CalendarDescriptor? {
         if dto.deleted == true || dto.hidden == true { return nil }
-        let role: AccessRole
-        switch dto.accessRole {
-        case "owner": role = .owner
-        case "writer": role = .writer
-        case "freeBusyReader": role = .freeBusyReader
-        default: role = .reader
-        }
+        let calendarKind = kind(ofCalendarID: dto.id)
         return CalendarDescriptor(
-            id: dto.id, title: dto.summaryOverride ?? dto.summary ?? dto.id, colorHex: dto.backgroundColor,
-            accessRole: role, isPrimary: dto.primary ?? false,
-            timeZone: dto.timeZone.flatMap { TimeZone(identifier: $0) }, accountName: accountName, kind: kind(ofCalendarID: dto.id))
+            id: dto.id, title: dto.summaryOverride ?? dto.summary ?? dto.id, service: .google, colorHex: dto.backgroundColor,
+            permissions: permissions(forRole: dto.accessRole), isDefault: dto.primary ?? false,
+            timeZone: dto.timeZone.flatMap { TimeZone(identifier: $0) }, accountName: accountName, kind: calendarKind,
+            defaultReminders: (dto.defaultReminders ?? []).compactMap { reminder(method: $0.method, minutes: $0.minutes, isCalendarDefault: true) },
+            provider: calendarKind == .standard ? .google : .subscription, supportedAvailabilities: supportedAvailabilities)
+    }
+
+    /// Google's transparency has two values.
+    static let supportedAvailabilities: Set<Availability> = [.busy, .free]
+
+    /// owner: everything; writer: edit but not share; reader: read only; freeBusyReader: no details.
+    static func permissions(forRole role: String?) -> CalendarPermissions {
+        switch role {
+        case "owner": CalendarPermissions(canViewDetails: true, canEdit: true, canShare: true, canViewPrivate: true)
+        case "writer": CalendarPermissions(canViewDetails: true, canEdit: true, canShare: false, canViewPrivate: true)
+        case "freeBusyReader": CalendarPermissions(canViewDetails: false, canEdit: false, canShare: false, canViewPrivate: false)
+        default: CalendarPermissions(canViewDetails: true, canEdit: false, canShare: false, canViewPrivate: false)
+        }
     }
 
     /// Google's built-in feeds have well-known ids: contacts' birthdays and the regional holiday calendars.
@@ -38,16 +47,15 @@ enum GoogleEventMapper {
                      isSelf: $0.isSelf ?? false, isOrganizer: true)
         }
         return CalendarEvent(
-            eventID: dto.id, uid: dto.iCalUID, calendarID: calendar.id, title: dto.summary ?? "(No title)",
+            eventID: dto.id, uid: dto.iCalUID, uidScope: .global, calendarID: calendar.id, title: dto.summary ?? "(No title)",
             notes: dto.description, location: dto.location, start: start.date, end: end.date,
-            timeZone: start.zone, isAllDay: start.isAllDay, status: dto.status == "tentative" ? .tentative : .confirmed,
+            timeZone: start.zone ?? calendarZone, isAllDay: start.isAllDay, status: dto.status == "tentative" ? .tentative : .confirmed,
             availability: dto.transparency == "transparent" ? .free : .busy,
             visibility: visibility(dto.visibility), kind: kind(dto.eventType),
-            seriesID: dto.recurringEventId,
-            originalStart: dto.originalStartTime.flatMap { resolve($0, calendarZone: calendarZone)?.date },
-            attendees: attendees, organizer: organizer, conference: conference(dto),
-            reminders: reminders(dto.reminders), url: dto.htmlLink.flatMap(URL.init(string:)),
-            version: dto.etag, myResponse: attendees.first(where: \.isSelf)?.response, sourceID: sourceID)
+            series: series(dto, calendarZone: calendarZone),
+            attendees: attendees, organizer: organizer, conferences: conferences(dto),
+            reminders: reminders(dto.reminders, calendar: calendar), url: dto.htmlLink.flatMap(URL.init(string:)),
+            version: dto.etag, lastModified: dto.updated.flatMap(parseInstant), created: dto.created.flatMap(parseInstant), participation: participation(attendees: attendees, organizer: organizer), sourceID: sourceID)
     }
 
     struct Resolved {
@@ -111,33 +119,61 @@ enum GoogleEventMapper {
         }
     }
 
-    private static func conference(_ dto: GoogleEventDTO) -> ConferenceInfo? {
-        if let video = dto.conferenceData?.entryPoints?.first(where: { $0.entryPointType == "video" }),
-           let text = video.uri, let url = URL(string: text)
-        {
-            let solution = dto.conferenceData?.conferenceSolution
-            let name = (solution?.name ?? "").lowercased()
-            let host = (url.host ?? "").lowercased()
-            let provider: ConferenceProvider
-            if solution?.key?.type == "hangoutsMeet" || host.contains("meet.google.com") {
-                provider = .meet
-            } else if name.contains("zoom") || host.contains("zoom.") {
-                provider = .zoom
-            } else if name.contains("teams") || host.contains("teams.microsoft") {
-                provider = .teams
-            } else {
-                provider = .other
-            }
-            return ConferenceInfo(url: url, provider: provider)
+    /// Every video entry point, then `hangoutLink`, then links found in the description (an event imported from an
+    /// invite carries its Teams or Zoom link only there). `url` is not scanned: Google's `htmlLink` is never a join link.
+    private static func conferences(_ dto: GoogleEventDTO) -> [ConferenceInfo] {
+        var structured: [ConferenceInfo] = []
+        let solution = dto.conferenceData?.conferenceSolution
+        for entry in dto.conferenceData?.entryPoints ?? [] where entry.entryPointType == "video" {
+            guard let text = entry.uri, let url = URL(string: text) else { continue }
+            structured.append(ConferenceInfo(url: url, provider: provider(of: url, solution: solution)))
         }
         if let text = dto.hangoutLink, let url = URL(string: text) {
-            return ConferenceInfo(url: url, provider: .meet)
+            structured.append(ConferenceInfo(url: url, provider: .meet))
         }
-        return nil
+        return ConferenceDetector.conferences(structured: structured, location: dto.location, url: nil, notes: dto.description)
     }
 
-    private static func reminders(_ dto: GoogleRemindersDTO?) -> [Reminder] {
-        guard let dto, dto.useDefault != true else { return [] }
-        return (dto.overrides ?? []).compactMap { $0.minutes.map(Reminder.init(minutesBefore:)) }
+    private static func provider(of url: URL, solution: GoogleConferenceDTO.Solution?) -> ConferenceProvider {
+        if solution?.key?.type == "hangoutsMeet" { return .meet }
+        if let known = ConferenceDetector.provider(of: url) { return known }
+        let name = (solution?.name ?? "").lowercased()
+        if name.contains("zoom") { return .zoom }
+        if name.contains("teams") { return .teams }
+        return .other
+    }
+
+    /// `useDefault` resolves to the calendar's own default reminders, so an event never reads as having none because
+    /// it uses the defaults. An event without a `reminders` object has none.
+    private static func reminders(_ dto: GoogleRemindersDTO?, calendar: CalendarDescriptor) -> [Reminder] {
+        guard let dto else { return [] }
+        if dto.useDefault == true { return (calendar.defaultReminders ?? []).map { var r = $0; r.isCalendarDefault = true; return r } }
+        return (dto.overrides ?? []).compactMap { reminder(method: $0.method, minutes: $0.minutes, isCalendarDefault: false) }
+    }
+
+    /// `popup` is an on-screen alert, `email` an email to the account owner (no address); another method is kept as
+    /// `.other`. Google counts minutes before the start (all-day: before midnight in the calendar's zone).
+    private static func reminder(method: String?, minutes: Int?, isCalendarDefault: Bool) -> Reminder? {
+        guard let minutes else { return nil }
+        let type: ReminderType
+        switch method {
+        case "popup", nil: type = .display
+        case "email": type = .email(address: nil)
+        case let other?: type = .other(other)
+        }
+        return .before(minutes: minutes, type: type, isCalendarDefault: isCalendarDefault)
+    }
+
+    private static func series(_ dto: GoogleEventDTO, calendarZone: TimeZone) -> SeriesInfo {
+        guard let id = dto.recurringEventId else { return .notRecurring }
+        return .occurrence(seriesID: id, originalStart: dto.originalStartTime.flatMap { resolve($0, calendarZone: calendarZone)?.date })
+    }
+
+    /// A `self` attendee gives their response; an organizer who is you with no attendee entry (an event with no
+    /// guests) counts as accepted; anything else is an event you are not on.
+    static func participation(attendees: [Attendee], organizer: Attendee?) -> Participation {
+        if let me = attendees.first(where: \.isSelf) { return .invited(me.response) }
+        if organizer?.isSelf == true { return .invited(.accepted) }
+        return .notInvited
     }
 }

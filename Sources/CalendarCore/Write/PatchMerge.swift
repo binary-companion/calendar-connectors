@@ -24,21 +24,27 @@ public enum PatchMerge {
             case .location: if (current.location ?? "") != (base.location ?? "") { found.insert(field) }
             case .timing:
                 let same = current.start == base.start && current.end == base.end
-                    && current.timeZone?.identifier == base.timeZone?.identifier && current.isAllDay == base.isAllDay
+                    && current.timeZone.identifier == base.timeZone.identifier && current.isAllDay == base.isAllDay
                 if !same { found.insert(field) }
-            case .availability: if current.availability != base.availability { found.insert(field) }
-            case .visibility: if current.visibility != base.visibility { found.insert(field) }
-            case .reminders: if minutes(current.reminders) != minutes(base.reminders) { found.insert(field) }
+            case .availability: if differs(current.availability, base.availability) { found.insert(field) }
+            case .visibility: if differs(current.visibility, base.visibility) { found.insert(field) }
+            case .reminders: if let c = current.reminders, let b = base.reminders, !Reminder.sameSet(c, b) { found.insert(field) }
             case .attendees: if attendeesDiffer(patch.attendees, base: base, current: current) { found.insert(field) }
             case .recurrence: found.insert(field)
-            case .conference: if current.conference?.url != base.conference?.url { found.insert(field) }
+            case .conference: if structuredURLs(current) != structuredURLs(base) { found.insert(field) }
             }
         }
         return found
     }
 
-    /// Providers do not promise to keep reminder order, so compare them as a sorted list.
-    private static func minutes(_ reminders: [Reminder]) -> [Int] { reminders.map(\.minutesBefore).sorted() }
+    /// A value the source does not say (nil) can neither conflict nor be conflicted with.
+    private static func differs<Value: Equatable>(_ current: Value?, _ base: Value?) -> Bool {
+        guard let current, let base else { return false }
+        return current != base
+    }
+
+    /// The provider's own conference links; links found in the notes change whenever the notes do, which is not a conference change.
+    private static func structuredURLs(_ event: CalendarEvent) -> [URL] { event.conferences.filter { $0.origin == .structured }.map(\.url) }
 
     /// An email conflicts when its role changed between `base` and `current` and `current` does not already hold
     /// what the patch wants (an added attendee with the requested role, or one that is already gone).

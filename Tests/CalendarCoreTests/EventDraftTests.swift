@@ -84,10 +84,10 @@ private func source() -> CalendarEvent {
     CalendarEvent(
         eventID: "e", calendarID: "c", title: "Planning", notes: "n", location: "Room",
         start: instant("2026-09-21T10:00:00Z"), end: instant("2026-09-21T11:00:00Z"), timeZone: utc,
-        availability: .free, visibility: .privateEvent, seriesID: "s",
+        availability: .free, visibility: .privateEvent, series: .occurrence(seriesID: "s", originalStart: nil),
         attendees: [Attendee(email: "me@x.com", isSelf: true), Attendee(email: "Bob@x.com", role: .optional),
                     Attendee(name: "No Email")],
-        conference: ConferenceInfo(url: URL(string: "https://meet.google.com/abc")!, provider: .meet),
+        conferences: [ConferenceInfo(url: URL(string: "https://meet.google.com/abc")!, provider: .meet)],
         reminders: [Reminder(minutesBefore: 10)])
 }
 
@@ -111,11 +111,29 @@ private func source() -> CalendarEvent {
     #expect(draft.recurrence == nil)
 }
 
-@Test func copyingTurnsEmptyRemindersIntoCalendarDefaults() {
+private let allWritable = SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases))
+
+private func copiedReminders(_ reminders: [Reminder]?) -> [Reminder]? {
     var event = source()
-    event.reminders = []
-    let draft = EventDraft(copying: event, for: SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases)))
-    #expect(draft.reminders == nil)
+    event.reminders = reminders
+    return EventDraft(copying: event, for: allWritable).reminders
+}
+
+@Test func copyingKeepsUnknownAsDefaultsAndARealNoneAsNone() {
+    #expect(copiedReminders(nil) == nil)
+    #expect(copiedReminders([]) == [])
+}
+
+@Test func copyingAListThatIsAllCalendarDefaultsUsesTheTargetsDefaults() {
+    #expect(copiedReminders([.before(minutes: 10, isCalendarDefault: true), .before(minutes: 60, isCalendarDefault: true)]) == nil)
+}
+
+@Test func copyingKeepsOnlyPlainRemindersRelativeToTheStart() {
+    let location = Reminder(trigger: .location(StructuredLocation(title: "Home"), .enter))
+    let email = Reminder.before(minutes: 30, type: .email(address: nil))
+    let repeating = Reminder(trigger: .relative(offset: -60, to: .start), repeatCount: 2, repeatInterval: 60)
+    #expect(copiedReminders([.before(minutes: 10, isCalendarDefault: false), location, email, repeating]) == [.before(minutes: 10)])
+    #expect(copiedReminders([location, email]) == nil)   // nothing copyable: the target's defaults
 }
 
 @Test func copyingToAReadOnlyTargetKeepsOnlyTheRequiredParts() {
@@ -127,7 +145,7 @@ private func source() -> CalendarEvent {
 
 @Test func copyingDoesNotReRequestANonMeetConference() {
     var event = source()
-    event.conference = ConferenceInfo(url: URL(string: "https://zoom.us/j/1")!, provider: .zoom)
+    event.conferences = [ConferenceInfo(url: URL(string: "https://zoom.us/j/1")!, provider: .zoom)]
     let draft = EventDraft(copying: event, for: SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases)))
     #expect(draft.conference == .none)
 }
@@ -155,4 +173,21 @@ private func source() -> CalendarEvent {
     let draft = EventDraft(copying: event, for: SourceCapabilities())
     #expect(draft.timing.isAllDay && draft.timing.timeZone == newYork)
     try draft.validate()
+}
+
+@Test func copyingAnEventWithUnknownFieldsUsesTheDraftDefaults() {
+    let event = CalendarEvent(eventID: "e", calendarID: "c", title: "T", start: Date(timeIntervalSince1970: 1000), end: Date(timeIntervalSince1970: 2000))
+    let draft = EventDraft(copying: event, for: SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases)))
+    #expect(draft.availability == .busy && draft.visibility == .default && draft.reminders == nil)
+    #expect(draft.usedFields == [.title, .timing])
+}
+
+@Test func copyingCarriesAUIDOnlyWhenItIsGlobal() {
+    var event = CalendarEvent(eventID: "e", uid: "u-1", uidScope: .global, calendarID: "c", title: "T", start: Date(timeIntervalSince1970: 1000), end: Date(timeIntervalSince1970: 2000))
+    let capabilities = SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases))
+    #expect(EventDraft(copying: event, for: capabilities).uid == "u-1")
+    event.uidScope = .provider
+    #expect(EventDraft(copying: event, for: capabilities).uid == nil)
+    event.uidScope = nil
+    #expect(EventDraft(copying: event, for: capabilities).uid == nil)
 }

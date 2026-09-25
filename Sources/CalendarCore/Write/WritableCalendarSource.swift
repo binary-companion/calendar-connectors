@@ -3,9 +3,11 @@ import Foundation
 /// A source that can also write. Read-only connectors never adopt it; callers check `source as? WritableCalendarSource`.
 /// What a conforming source can write is in `capabilities` (`writableFields`, `controlsNotifications`,
 /// `recurrenceScopes`, `canEditAttendees`, `canRespondToInvite`); which calendars are writable is each
-/// `CalendarDescriptor.accessRole`. An operation the source cannot perform throws `WriteError.unsupported` before
+/// `CalendarDescriptor.permissions` (`canEdit`). An operation the source cannot perform throws `WriteError.unsupported` before
 /// changing anything. Writes return the event in the provider's resulting form, including its new `version`.
 public protocol WritableCalendarSource: CalendarSource {
+    /// If the draft has a `uid` and the target calendar already has that event, throws `WriteError.alreadyExists` with
+    /// the stored copy and writes nothing.
     func create(_ draft: EventDraft, in calendarID: String, notify: NotifyPolicy) async throws -> CalendarEvent
     /// An empty patch writes nothing and returns the patch's base event, or the current event when it has none.
     func update(_ ref: EventRef, _ patch: EventPatch, scope: RecurrenceScope, notify: NotifyPolicy) async throws -> CalendarEvent

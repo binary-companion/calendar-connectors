@@ -65,11 +65,16 @@ public struct EventDraft: Sendable, Equatable {
     public var attendees: [AttendeeDraft]
     public var conference: ConferenceRequest
     public var recurrence: RecurrenceRule?
+    /// An iCalendar UID identifying the meeting. Not content: a create that finds it already on the calendar throws
+    /// `WriteError.alreadyExists`, and otherwise stores it so later copies are recognized. `EventDraft(copying:)`
+    /// fills it only from a `.global` uid.
+    public var uid: String?
 
     public init(
         title: String, timing: EventTiming, notes: String? = nil, location: String? = nil,
         availability: Availability = .busy, visibility: Visibility = .default, reminders: [Reminder]? = nil,
-        attendees: [AttendeeDraft] = [], conference: ConferenceRequest = .none, recurrence: RecurrenceRule? = nil
+        attendees: [AttendeeDraft] = [], conference: ConferenceRequest = .none, recurrence: RecurrenceRule? = nil,
+        uid: String? = nil
     ) {
         self.title = title
         self.timing = timing
@@ -81,6 +86,7 @@ public struct EventDraft: Sendable, Equatable {
         self.attendees = attendees
         self.conference = conference
         self.recurrence = recurrence
+        self.uid = uid
     }
 
     public func validate() throws {
@@ -89,7 +95,8 @@ public struct EventDraft: Sendable, Equatable {
         for attendee in attendees where !AttendeeDraft.isValidEmail(attendee.email) {
             throw WriteError.invalid("attendee email is not valid: \(attendee.email)")
         }
-        if let reminders, reminders.contains(where: { $0.minutesBefore < 0 }) {
+        // A reminder relative to the event must fire at or before the point it counts from.
+        if let reminders, reminders.contains(where: { if case .relative(let offset, _) = $0.trigger { offset > 0 } else { false } }) {
             throw WriteError.invalid("reminder minutes must not be negative")
         }
     }
@@ -108,6 +115,31 @@ public struct EventDraft: Sendable, Equatable {
         return fields
     }
 
+    /// The enum-valued fields a connector maps to the closest value the calendar supports, when the stored copy differs
+    /// from what was requested. Other provider normalization (reminder defaults, attendee order, all-day zones, text)
+    /// is deliberately not reported: it is visible in the returned event but is not an adjustment the library made.
+    public func adjustments(comparedTo stored: CalendarEvent) -> Set<EventField> {
+        var changed: Set<EventField> = []
+        if let value = stored.availability, value != availability { changed.insert(.availability) }
+        if let value = stored.visibility, value != visibility { changed.insert(.visibility) }
+        return changed
+    }
+
+    /// What to write for a copied event's reminders. Unknown (nil) stays nil, the calendar's defaults; a real "none"
+    /// (`[]`) stays `[]`; a list that is all calendar defaults becomes nil; otherwise only plain on-screen reminders
+    /// relative to the start are copied (the common denominator every writer accepts), and a list that leaves nothing
+    /// after that becomes nil too.
+    private static func copiedReminders(_ reminders: [Reminder]?) -> [Reminder]? {
+        guard let reminders else { return nil }
+        if reminders.isEmpty { return [] }
+        if reminders.allSatisfy({ $0.isCalendarDefault == true }) { return nil }
+        let copyable = reminders.filter {
+            guard let minutes = $0.minutesBefore, minutes >= 0, $0.type == .display, $0.repeatCount == 0 else { return false }
+            return true
+        }.map { Reminder.before(minutes: $0.minutesBefore ?? 0) }
+        return copyable.isEmpty ? nil : copyable
+    }
+
     /// A best-effort copy of `event` for a target with `capabilities`: only fields in `writableFields` are carried
     /// over. Self and email-less attendees are dropped, an empty reminder list becomes "calendar defaults" (reads
     /// cannot tell the two apart), only a Meet link is re-requested, and recurrence is never copied (reads carry none).
@@ -115,21 +147,21 @@ public struct EventDraft: Sendable, Equatable {
     /// Timing is copied as is: a source event with a zero-length or inverted interval still fails `validate()`.
     public init(copying event: CalendarEvent, for capabilities: SourceCapabilities) {
         let writable = capabilities.writableFields
-        let reminders = event.reminders.filter { $0.minutesBefore >= 0 }
+        let reminders = Self.copiedReminders(event.reminders)
         self.init(
             title: event.title,
             timing: EventTiming(start: event.start, end: event.end, timeZone: event.timeZone, isAllDay: event.isAllDay),
             notes: writable.contains(.notes) ? event.notes : nil,
             location: writable.contains(.location) ? event.location : nil,
-            availability: writable.contains(.availability) ? event.availability : .busy,
-            visibility: writable.contains(.visibility) ? event.visibility : .default,
-            reminders: writable.contains(.reminders) && !reminders.isEmpty ? reminders : nil,
+            availability: writable.contains(.availability) ? event.availability ?? .busy : .busy,
+            visibility: writable.contains(.visibility) ? event.visibility ?? .default : .default,
+            reminders: writable.contains(.reminders) ? reminders : nil,
             attendees: writable.contains(.attendees)
                 ? event.attendees.filter { !$0.isSelf }
                     .compactMap { a in a.email.map { AttendeeDraft(email: $0, name: a.name, role: a.role) } }
                     .filter { AttendeeDraft.isValidEmail($0.email) }
                 : [],
-            conference: writable.contains(.conference) && event.conference?.provider == .meet ? .generate : .none,
-            recurrence: nil)
+            conference: writable.contains(.conference) && event.conferences.contains { $0.origin == .structured && $0.provider == .meet } ? .generate : .none,
+            recurrence: nil, uid: event.uidScope == .global ? event.uid : nil)
     }
 }

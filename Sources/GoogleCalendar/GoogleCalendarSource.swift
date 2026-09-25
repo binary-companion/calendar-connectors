@@ -2,13 +2,14 @@ import CalendarCore
 import Foundation
 
 public final class GoogleCalendarSource: PollingCalendarSource {
-    private static let eventFields =
-        "nextPageToken,items(id,iCalUID,status,summary,description,location,htmlLink,etag,hangoutLink,transparency,visibility,eventType,recurringEventId,start,end,originalStartTime,attendees(email,displayName,responseStatus,optional,resource,organizer,self),organizer(email,displayName,self),conferenceData(entryPoints(entryPointType,uri),conferenceSolution(key(type),name)),reminders(useDefault,overrides(minutes)))"
+    static let eventFields =
+        "nextPageToken,items(id,iCalUID,updated,created,status,summary,description,location,htmlLink,etag,hangoutLink,transparency,visibility,eventType,recurringEventId,start,end,originalStartTime,attendees(email,displayName,responseStatus,optional,resource,organizer,self),organizer(email,displayName,self),conferenceData(entryPoints(entryPointType,uri),conferenceSolution(key(type),name)),reminders(useDefault,overrides(method,minutes)))"
 
     let connection: Connection
     let api: GoogleAPIClient
     let syncState: any SyncStateStore
     let monitor: ChangeMonitor
+    let calendarList = CalendarListCache()
 
     init(connection: Connection, api: GoogleAPIClient, syncState: any SyncStateStore, monitor: ChangeMonitor) {
         self.connection = connection
@@ -21,17 +22,25 @@ public final class GoogleCalendarSource: PollingCalendarSource {
     public var displayName: String { connection.displayName }
     public var capabilities: SourceCapabilities {
         SourceCapabilities(
-            canWrite: true, canEditAttendees: true, canRespondToInvite: true, providesConference: true, syncKind: .token,
+            canWrite: true, canEditAttendees: true, canRespondToInvite: true, providedFields: [.kind, .visibility, .availability, .reminders, .series, .participation, .structuredConference, .version, .lastModified, .created, .uidScope, .recurrenceRules,
+                             .isDefault, .calendarTimeZone, .defaultReminders, .provider, .supportedAvailabilities, .permissionDetails],
+            syncKind: .token,
             writableFields: Set(EventField.allCases), controlsNotifications: true, recurrenceScopes: Set(RecurrenceScope.allCases))
     }
 
+    /// Always asks Google (an explicit request) and remembers the answer for `events(in:)`.
     public func calendars() async throws -> [CalendarDescriptor] {
         let account = connection.config["email"]
-        return try await api.calendarList().compactMap { GoogleEventMapper.descriptor(from: $0, accountName: account) }
+        let list = try await api.calendarList().compactMap { GoogleEventMapper.descriptor(from: $0, accountName: account) }
+        await calendarList.store(list)
+        return list
     }
 
+    /// Uses the calendar list the last `calendars()` call or poll stored, so a refresh (which asks for the list and
+    /// then the events) makes one `calendarList` request. A calendar removed since then answers 404 or 403 and is skipped.
     public func events(in interval: DateInterval) async throws -> [CalendarEvent] {
-        let calendars = try await calendars()
+        let calendars: [CalendarDescriptor]
+        if let stored = await calendarList.list { calendars = stored } else { calendars = try await self.calendars() }
         return try await withThrowingTaskGroup(of: [CalendarEvent].self) { group in
             for calendar in calendars {
                 group.addTask { try await self.events(for: calendar, in: interval) }
@@ -154,4 +163,10 @@ public final class GoogleCalendarSource: PollingCalendarSource {
         await syncState.setToken(newToken, for: connection.connectionID, scope: calendarID)
         return anyItems
     }
+}
+
+/// The last calendar list this source fetched. `events(in:)` reads it; `calendars()` and each poll refresh it.
+actor CalendarListCache {
+    private(set) var list: [CalendarDescriptor]?
+    func store(_ list: [CalendarDescriptor]) { self.list = list }
 }

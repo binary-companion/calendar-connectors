@@ -58,6 +58,15 @@ public struct EventPatch: Sendable, Equatable {
         self.base = nil
     }
 
+    /// The fields the stored copy shows differently from what this patch asked for (availability and visibility only;
+    /// see `EventDraft.adjustments(comparedTo:)`).
+    public func adjustments(comparedTo stored: CalendarEvent) -> Set<EventField> {
+        var changed: Set<EventField> = []
+        if let requested = availability, let value = stored.availability, value != requested { changed.insert(.availability) }
+        if let requested = visibility, let value = stored.visibility, value != requested { changed.insert(.visibility) }
+        return changed
+    }
+
     public var touchedFields: Set<EventField> {
         var fields = Set<EventField>()
         if title != nil { fields.insert(.title) }
@@ -84,7 +93,7 @@ public struct EventPatch: Sendable, Equatable {
     /// The minimal patch that turns `original` into `edited`. Compares title, notes, location, timing, availability,
     /// visibility, reminders and attendees (by normalized email; a changed role or name is an upsert), plus the
     /// removal of a conference. Ignores provider-owned fields (ids, uid, calendar, source, organizer, status, kind,
-    /// url, version, series fields, `myResponse`, attendee responses and flags), a changed or added conference
+    /// url, version, `series`, `participation`, attendee responses and flags), a changed or added conference
     /// (only `.generate` and `.remove` are writable) and recurrence (reads carry none).
     public init(from original: CalendarEvent, to edited: CalendarEvent) {
         self.init()
@@ -92,15 +101,18 @@ public struct EventPatch: Sendable, Equatable {
         notes = Self.update(from: original.notes, to: edited.notes)
         location = Self.update(from: original.location, to: edited.location)
         let sameTiming = original.start == edited.start && original.end == edited.end
-            && original.timeZone?.identifier == edited.timeZone?.identifier && original.isAllDay == edited.isAllDay
+            && original.timeZone.identifier == edited.timeZone.identifier && original.isAllDay == edited.isAllDay
         if !sameTiming {
             timing = EventTiming(start: edited.start, end: edited.end, timeZone: edited.timeZone, isAllDay: edited.isAllDay)
         }
-        if edited.availability != original.availability { availability = edited.availability }
-        if edited.visibility != original.visibility { visibility = edited.visibility }
-        if edited.reminders != original.reminders { reminders = .set(edited.reminders) }
+        // A nil value on the edited copy means "unknown", which is never a change.
+        if let value = edited.availability, value != original.availability { availability = value }
+        if let value = edited.visibility, value != original.visibility { visibility = value }
+        if let value = edited.reminders, !Reminder.sameSet(value, original.reminders ?? []) || original.reminders == nil {
+            reminders = !value.isEmpty && value.allSatisfy({ $0.isCalendarDefault == true }) ? .clear : .set(value)
+        }
         attendees = Self.attendeeChanges(from: original.attendees, to: edited.attendees)
-        if original.conference != nil && edited.conference == nil { conference = .remove }
+        if original.conferences.contains(where: { $0.origin == .structured }) && !edited.conferences.contains(where: { $0.origin == .structured }) { conference = .remove }
         base = original
     }
 
@@ -138,12 +150,12 @@ public struct EventPatch: Sendable, Equatable {
         if let timing {
             e.start = timing.start
             e.end = timing.end
-            e.timeZone = timing.timeZone
+            if let zone = timing.timeZone { e.timeZone = zone }
             e.isAllDay = timing.isAllDay
         }
         if let availability { e.availability = availability }
         if let visibility { e.visibility = visibility }
-        switch reminders { case .keep: break; case .set(let v): e.reminders = v; case .clear: e.reminders = [] }
+        switch reminders { case .keep: break; case .set(let v): e.reminders = v; case .clear: e.reminders = nil }
         if let attendees {
             let removed = Set(attendees.remove)
             e.attendees.removeAll { $0.email.map(removed.contains) ?? false }
@@ -156,7 +168,7 @@ public struct EventPatch: Sendable, Equatable {
                 }
             }
         }
-        if conference == .remove { e.conference = nil }
+        if conference == .remove { e.conferences = [] }
         return e
     }
 }

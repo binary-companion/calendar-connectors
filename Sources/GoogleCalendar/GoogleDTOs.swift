@@ -47,7 +47,7 @@ struct GoogleConferenceDTO: Decodable {
 }
 
 struct GoogleRemindersDTO: Decodable {
-    struct Override: Decodable { var minutes: Int? }
+    struct Override: Decodable { var method: String?; var minutes: Int? }
     var useDefault: Bool?
     var overrides: [Override]?
 }
@@ -61,6 +61,8 @@ struct GoogleEventDTO: Decodable {
     var location: String?
     var htmlLink: String?
     var etag: String?
+    var updated: String?
+    var created: String?
     var hangoutLink: String?
     var transparency: String?
     var visibility: String?
@@ -99,6 +101,8 @@ struct GoogleCalendarListEntryDTO: Decodable {
     var timeZone: String?
     var hidden: Bool?
     var deleted: Bool?
+    struct DefaultReminder: Decodable { var method: String?; var minutes: Int? }
+    var defaultReminders: [DefaultReminder]?
 }
 
 struct GoogleCalendarListPageDTO: Decodable {

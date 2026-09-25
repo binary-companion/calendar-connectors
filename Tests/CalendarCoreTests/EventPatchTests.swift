@@ -12,8 +12,8 @@ private func original() -> CalendarEvent {
         status: .confirmed, attendees: [Attendee(email: "me@x.com", isSelf: true), Attendee(email: "bob@x.com"),
                                         Attendee(email: "cy@x.com", role: .optional)],
         organizer: Attendee(email: "me@x.com", isSelf: true, isOrganizer: true),
-        conference: ConferenceInfo(url: URL(string: "https://meet.google.com/abc")!, provider: .meet),
-        reminders: [Reminder(minutesBefore: 10)], url: URL(string: "https://x.test/e")!, version: "v1", myResponse: .accepted)
+        conferences: [ConferenceInfo(url: URL(string: "https://meet.google.com/abc")!, provider: .meet)],
+        reminders: [Reminder(minutesBefore: 10)], url: URL(string: "https://x.test/e")!, version: "v1", participation: .invited(.accepted))
 }
 
 @Test func anUntouchedEditProducesAnEmptyPatch() {
@@ -59,14 +59,14 @@ private func original() -> CalendarEvent {
 @Test func diffIgnoresProviderOwnedFieldsAndUnwritableConferenceChanges() {
     var edit = EventEdit(original())
     edit.event.status = .tentative
-    edit.event.myResponse = .declined
+    edit.event.participation = .invited(.declined)
     edit.event.version = "v9"
     edit.event.url = nil
     edit.event.organizer = nil
     edit.event.sourceID = "other"
-    edit.event.conference = ConferenceInfo(url: URL(string: "https://zoom.us/j/1")!, provider: .zoom)   // changed, not removable
+    edit.event.conferences = [ConferenceInfo(url: URL(string: "https://zoom.us/j/1")!, provider: .zoom)]   // changed, not removable
     #expect(edit.patch.isEmpty)
-    edit.event.conference = nil
+    edit.event.conferences = []
     #expect(edit.patch.conference == .remove && edit.patch.touchedFields == [.conference])
 }
 
@@ -101,7 +101,7 @@ private func original() -> CalendarEvent {
     let e = patch.applied(to: original())
     #expect(e.title == "New" && e.notes == nil && e.location == "Lab")
     #expect(e.start == instant("2026-09-22T10:00:00Z") && e.availability == .free && e.visibility == .confidential)
-    #expect(e.reminders.isEmpty && e.conference == nil)
+    #expect(e.reminders == [] && e.conference == nil)
     #expect(e.attendees.map(\.email) == ["me@x.com", "cy@x.com", "dee@x.com"])
     #expect(e.attendees.first { $0.email == "cy@x.com" }?.role == .required)
 }
@@ -152,9 +152,9 @@ private func original() -> CalendarEvent {
     edit.event.attendees.append(Attendee(name: "Dee", email: "dee@x.com"))
     edit.event.attendees[1].role = .required
     edit.event.reminders = []
-    edit.event.conference = nil
+    edit.event.conferences = []
     let result = edit.patch.applied(to: original())
-    #expect(result.title == "T" && result.reminders.isEmpty && result.conference == nil)
+    #expect(result.title == "T" && result.reminders == [] && result.conference == nil)
     #expect(Set(result.attendees.map(\.email)) == Set(edit.event.attendees.map(\.email)))
     #expect(result.attendees.first { $0.email == "cy@x.com" }?.role == .required)
 }
@@ -169,4 +169,30 @@ private func original() -> CalendarEvent {
     // A removal by normalised address removes the mixed-case attendee.
     let removed = EventPatch(attendees: AttendeeChanges(remove: ["CY@x.com"])).applied(to: event)
     #expect(removed.attendees.map(\.email) == ["bob@x.com"])
+}
+
+@Test func aNilAvailabilityVisibilityOrRemindersOnTheEditedCopyIsNeverAChange() {
+    var edit = EventEdit(original())
+    edit.event.availability = nil
+    edit.event.visibility = nil
+    edit.event.reminders = nil
+    #expect(edit.patch.availability == nil && edit.patch.visibility == nil && edit.patch.reminders == .keep)
+}
+
+@Test func clearingRemindersLeavesThemUnknownOnTheInMemoryResult() {
+    let cleared = EventPatch(reminders: .clear).applied(to: original())
+    #expect(cleared.reminders == nil)
+}
+
+@Test func aReorderedOrDefaultFlaggedReminderListIsNotAChangeButANewOneIs() {
+    var edit = EventEdit(original())
+    edit.event.reminders = [.before(minutes: 20), .before(minutes: 10)]
+    var base = original(); base.reminders = [.before(minutes: 10), .before(minutes: 20)]
+    let sameSet = EventEdit(base)
+    var reordered = sameSet; reordered.event.reminders = [.before(minutes: 20, isCalendarDefault: false), .before(minutes: 10)]
+    #expect(reordered.patch.reminders == .keep)
+    var changed = sameSet; changed.event.reminders = [.before(minutes: 20)]
+    #expect(changed.patch.reminders == .set([.before(minutes: 20)]))
+    var defaults = sameSet; defaults.event.reminders = [.before(minutes: 10, isCalendarDefault: true)]
+    #expect(defaults.patch.reminders == .clear)
 }

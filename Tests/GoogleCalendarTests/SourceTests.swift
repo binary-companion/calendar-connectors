@@ -69,7 +69,7 @@ actor SleepRecorder {
     let h = try await Harness()
     let cals = try await h.source.calendars()
     #expect(cals.map(\.id) == ["me@x.com", "team@group.calendar.google.com"])
-    #expect(cals[0].accountName == "me@x.com" && cals[0].colorHex == "#112233" && cals[0].isPrimary)
+    #expect(cals[0].accountName == "me@x.com" && cals[0].colorHex == "#112233" && cals[0].isDefault == true)
     let request = try #require(await h.transport.requests.first)
     #expect(request.headers["Authorization"] == "Bearer at1")
     #expect(request.url.absoluteString.contains("showHidden=false"))
@@ -178,7 +178,7 @@ actor SleepRecorder {
 @Test func capabilitiesDescribeAWritableTokenSyncedSourceWithoutPush() async throws {
     let h = try await Harness()
     let c = h.source.capabilities
-    #expect(c.canWrite && c.providesConference && c.syncKind == .token && !c.supportsPush)
+    #expect(c.canWrite && c.providedFields.contains(.structuredConference) && c.syncKind == .token && !c.supportsPush)
     #expect(h.source.id == "google-c1" && h.source.displayName == "me@x.com")
 }
 
@@ -208,4 +208,84 @@ actor SleepRecorder {
     await h.transport.route("calendars/me%40x.com/events", [.json(["items": [bad, eventJSON("good", start: "2026-09-21T10:00:00Z")]])])
     let events = try await h.source.events(in: DateInterval(start: .now, duration: 3600))
     #expect(events.map(\.eventID) == ["good"])
+}
+
+private let eventsWindow = DateInterval(start: .now, duration: 3600)
+
+private func calendarListRequests(_ h: Harness) async -> Int {
+    await h.transport.requests(matching: "users/me/calendarList").count
+}
+
+@Test func calendarsThenEventsMakesOneCalendarListRequest() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route("calendars/me%40x.com/events", [.json(["items": []])])
+    _ = try await h.source.calendars()
+    _ = try await h.source.events(in: eventsWindow)
+    #expect(await calendarListRequests(h) == 1)
+}
+
+@Test func eventsOnAFreshSourceFetchesTheCalendarListOnce() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route("calendars/me%40x.com/events", [.json(["items": []]), .json(["items": []])])
+    _ = try await h.source.events(in: eventsWindow)
+    _ = try await h.source.events(in: eventsWindow)
+    #expect(await calendarListRequests(h) == 1)
+}
+
+@Test func aPollStoresTheListForEvents() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route("calendars/me%40x.com/events", [.json(["nextSyncToken": "t1"]), .json(["items": []])])
+    _ = try await h.source.checkForChanges()
+    #expect(await calendarListRequests(h) == 1)
+    _ = try await h.source.events(in: eventsWindow)
+    #expect(await calendarListRequests(h) == 1)
+}
+
+@Test func aCalendarAddedBetweenPollsAppearsAfterTheNextCalendarsCall() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route("calendars/me%40x.com/events", [.json(["items": []]), .json(["items": []])])
+    await h.transport.route("calendars/new%40x.com/events", [.json(["items": [eventJSON("n", start: "2026-09-21T10:00:00Z")]])])
+    _ = try await h.source.events(in: eventsWindow)
+    await h.transport.route("users/me/calendarList", [.json(listJSON(["me@x.com", "new@x.com"]))])
+    _ = try await h.source.calendars()
+    let events = try await h.source.events(in: eventsWindow)
+    #expect(events.map(\.eventID) == ["n"])
+}
+
+// Series (Issue 3).
+
+private let masterPath = "calendars/me%40x.com/events/master1"
+nonisolated(unsafe) private let masterJSON: [String: Any] = [
+    "id": "master1", "start": ["dateTime": "2026-09-14T10:00:00-06:00", "timeZone": "America/Denver"],
+    "end": ["dateTime": "2026-09-14T10:30:00-06:00", "timeZone": "America/Denver"],
+    "recurrence": ["RRULE:FREQ=WEEKLY;BYDAY=MO", "EXDATE;TZID=America/Denver:20260921T100000"],
+]
+
+@Test func aMasterWithRruleAndExdateGivesTheFullSeries() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route(masterPath, [.json(masterJSON)])
+    let series = try await h.source.series(id: "master1", calendarID: "me@x.com")
+    let denver = TimeZone(identifier: "America/Denver")!
+    #expect(series.seriesID == "master1" && series.calendarID == "me@x.com" && series.timeZone == denver && !series.isAllDay)
+    #expect(series.start == ISO8601DateFormatter().date(from: "2026-09-14T16:00:00Z"))
+    #expect(series.recurrence.rules.map(\.frequency) == [.weekly])
+    #expect(series.recurrence.excludedDates == [ISO8601DateFormatter().date(from: "2026-09-21T16:00:00Z")!])
+}
+
+@Test func aNonRecurringOrCancelledOrMissingSeriesIsNotFound() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route(masterPath, [
+        .json(["id": "master1", "start": ["dateTime": "2026-09-14T10:00:00Z"], "end": ["dateTime": "2026-09-14T10:30:00Z"]]),
+        .json(["id": "master1", "status": "cancelled", "recurrence": ["RRULE:FREQ=DAILY"]]),
+        .json(["error": ["errors": [["reason": "notFound"]]]], status: 404),
+    ])
+    for _ in 0..<3 {
+        await #expect(throws: SourceError.notFound) { _ = try await h.source.series(id: "master1", calendarID: "me@x.com") }
+    }
+}
+
+@Test func googleDeclaresRecurrenceRulesExactlyBecauseItIsASeriesSource() async throws {
+    let h = try await Harness()
+    #expect(h.source.capabilities.providedFields.contains(.recurrenceRules))
+    #expect(ProvidedFieldsConformance.violations(source: h.source).isEmpty)
 }
