@@ -209,3 +209,45 @@ actor SleepRecorder {
     let events = try await h.source.events(in: DateInterval(start: .now, duration: 3600))
     #expect(events.map(\.eventID) == ["good"])
 }
+
+private let eventsWindow = DateInterval(start: .now, duration: 3600)
+
+private func calendarListRequests(_ h: Harness) async -> Int {
+    await h.transport.requests(matching: "users/me/calendarList").count
+}
+
+@Test func calendarsThenEventsMakesOneCalendarListRequest() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route("calendars/me%40x.com/events", [.json(["items": []])])
+    _ = try await h.source.calendars()
+    _ = try await h.source.events(in: eventsWindow)
+    #expect(await calendarListRequests(h) == 1)
+}
+
+@Test func eventsOnAFreshSourceFetchesTheCalendarListOnce() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route("calendars/me%40x.com/events", [.json(["items": []]), .json(["items": []])])
+    _ = try await h.source.events(in: eventsWindow)
+    _ = try await h.source.events(in: eventsWindow)
+    #expect(await calendarListRequests(h) == 1)
+}
+
+@Test func aPollStoresTheListForEvents() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route("calendars/me%40x.com/events", [.json(["nextSyncToken": "t1"]), .json(["items": []])])
+    _ = try await h.source.checkForChanges()
+    #expect(await calendarListRequests(h) == 1)
+    _ = try await h.source.events(in: eventsWindow)
+    #expect(await calendarListRequests(h) == 1)
+}
+
+@Test func aCalendarAddedBetweenPollsAppearsAfterTheNextCalendarsCall() async throws {
+    let h = try await Harness(calendarList: listJSON(["me@x.com"]))
+    await h.transport.route("calendars/me%40x.com/events", [.json(["items": []]), .json(["items": []])])
+    await h.transport.route("calendars/new%40x.com/events", [.json(["items": [eventJSON("n", start: "2026-09-21T10:00:00Z")]])])
+    _ = try await h.source.events(in: eventsWindow)
+    await h.transport.route("users/me/calendarList", [.json(listJSON(["me@x.com", "new@x.com"]))])
+    _ = try await h.source.calendars()
+    let events = try await h.source.events(in: eventsWindow)
+    #expect(events.map(\.eventID) == ["n"])
+}
