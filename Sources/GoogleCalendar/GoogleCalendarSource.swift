@@ -20,7 +20,9 @@ public final class GoogleCalendarSource: PollingCalendarSource {
     public var id: String { connection.sourceID }
     public var displayName: String { connection.displayName }
     public var capabilities: SourceCapabilities {
-        SourceCapabilities(providesConference: true, syncKind: .token)
+        SourceCapabilities(
+            canWrite: true, canEditAttendees: true, canRespondToInvite: true, providesConference: true, syncKind: .token,
+            writableFields: Set(EventField.allCases), controlsNotifications: true, recurrenceScopes: Set(RecurrenceScope.allCases))
     }
 
     public func calendars() async throws -> [CalendarDescriptor] {
@@ -56,7 +58,7 @@ public final class GoogleCalendarSource: PollingCalendarSource {
             try await api.pages(
                 GoogleEventsPageDTO.self, path: GoogleAPIClient.calendarPath(calendar.id, "/events"), query: query,
                 next: { $0.nextPageToken },
-                handle: { events += ($0.items ?? []).compactMap(\.value).compactMap { GoogleEventMapper.map($0, calendar: calendar) } })
+                handle: { events += ($0.items ?? []).compactMap(\.value).compactMap { GoogleEventMapper.map($0, calendar: calendar, sourceID: self.connection.sourceID) } })
         } catch let error as GoogleAPIError {
             // A calendar that was removed or lost access is skipped; anything else is not ours to interpret.
             if error == .notFound || error == .forbidden { return [] }

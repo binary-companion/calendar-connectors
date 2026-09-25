@@ -66,6 +66,8 @@ struct GoogleEventDTO: Decodable {
     var visibility: String?
     var eventType: String?
     var recurringEventId: String?
+    /// Present on a series master only (reads expand series, so they never see it); the write path uses it.
+    var recurrence: [String]?
     var start: GoogleTimeDTO?
     var end: GoogleTimeDTO?
     var originalStartTime: GoogleTimeDTO?

@@ -32,7 +32,11 @@ struct Harness {
     let sleeps = SleepRecorder()
 
     /// `calendarList` is what the account's calendar list returns; pass a shared `sync` to simulate a relaunch.
-    init(calendarList: [String: Any] = calendarListJSON, sync: InMemorySyncStateStore = InMemorySyncStateStore()) async throws {
+    /// `wrap` puts a decorator in front of `transport` (which still records every request that reaches it).
+    init(
+        calendarList: [String: Any] = calendarListJSON, sync: InMemorySyncStateStore = InMemorySyncStateStore(),
+        wrap: (@Sendable (FakeTransport) -> any HTTPTransport)? = nil
+    ) async throws {
         self.sync = sync
         let connection = Connection(kindID: "google", connectionID: "c1", displayName: "me@x.com", config: ["email": "me@x.com"])
         try await store.setSecrets([AccessTokenProvider.refreshTokenKey: "rt"], for: "c1")
@@ -43,7 +47,7 @@ struct Harness {
         let provider = AccessTokenProvider(
             connectionID: "c1", credentials: store,
             refresh: { _ in OAuthTokens(accessToken: "at\(counter.next())", expiresAt: now.date.addingTimeInterval(3600)) }, now: now.provider)
-        let api = GoogleAPIClient(transport: transport, tokens: provider, sleep: { await sleeps.record($0) })
+        let api = GoogleAPIClient(transport: wrap?(transport) ?? transport, tokens: provider, sleep: { await sleeps.record($0) })
         source = GoogleCalendarSource(connection: connection, api: api, syncState: sync, monitor: ChangeMonitor(sleep: { _ in }))
         await transport.route("users/me/calendarList", [.json(calendarList)])
     }
@@ -171,11 +175,19 @@ actor SleepRecorder {
     await #expect(throws: SourceError.self) { try await h.source.checkForChanges() }
 }
 
-@Test func capabilitiesDescribeAReadOnlyTokenSyncedSource() async throws {
+@Test func capabilitiesDescribeAWritableTokenSyncedSourceWithoutPush() async throws {
     let h = try await Harness()
     let c = h.source.capabilities
-    #expect(!c.canWrite && c.providesConference && c.syncKind == .token && !c.supportsPush)
+    #expect(c.canWrite && c.providesConference && c.syncKind == .token && !c.supportsPush)
     #expect(h.source.id == "google-c1" && h.source.displayName == "me@x.com")
+}
+
+@Test func eventsCarryTheSourceIDOfTheirConnection() async throws {
+    let h = try await Harness()
+    await h.transport.route("calendars/team%40group.calendar.google.com/events", [.json(["items": []])])
+    await h.transport.route("calendars/me%40x.com/events", [.json(["items": [eventJSON("one", start: "2026-09-21T10:00:00Z")]])])
+    let events = try await h.source.events(in: DateInterval(start: .now, duration: 3600))
+    #expect(events.count == 1 && events.allSatisfy { $0.sourceID == "google-c1" })
 }
 
 @Test func anItemWithoutAnIdIsDroppedNotFatal() async throws {

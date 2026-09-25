@@ -4,13 +4,20 @@ import Foundation
 
 /// Provider-specific outcomes that callers handle; never leaves the `GoogleCalendar` module.
 enum GoogleAPIError: Error, Equatable {
-    case gone       // 410: the sync token is no longer valid
+    case gone       // 410: the sync token is no longer valid (or the event was already deleted)
     case notFound   // 404
     case forbidden  // 403 without a rate-limit reason
+    case preconditionFailed   // 412 (write mode only): the `If-Match` version is stale
+    case badRequest(String)   // 400 (write mode only), with Google's message
+    case conflict             // 409 (write mode only): e.g. an insert with a client-chosen id that already exists
 
     /// What a public `CalendarSource` method throws if it cannot handle the case itself.
     var sourceError: SourceError { .invalidResponse("google: \(self)") }
 }
+
+/// Reads keep the original error mapping. Writes additionally map a 400 to `badRequest`, a 409 to `conflict` and a 412 to
+/// `preconditionFailed`, and treat every non-rate-limit 403 (other than `insufficientPermissions`) as `forbidden`.
+enum GoogleRequestMode: Sendable { case read, write }
 
 struct GoogleAPIClient: Sendable {
     static let base = "https://www.googleapis.com/calendar/v3"
@@ -20,13 +27,31 @@ struct GoogleAPIClient: Sendable {
     let tokens: AccessTokenProvider
     let sleep: Sleeper
 
+    /// ASCII-only allow-list: `CharacterSet.alphanumerics` also admits non-ASCII letters, which are not valid in
+    /// `URLComponents.percentEncodedPath` (setting one traps).
+    static func percentEncode(_ text: String) -> String {
+        let allowed = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~")
+        return text.addingPercentEncoding(withAllowedCharacters: allowed) ?? text
+    }
+
     /// `path` must already be percent-encoded, e.g. `/calendars/me%40x.com/events`.
     static func calendarPath(_ calendarID: String, _ tail: String) -> String {
-        let allowed = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-._~"))
-        return "/calendars/\(calendarID.addingPercentEncoding(withAllowedCharacters: allowed) ?? calendarID)\(tail)"
+        "/calendars/\(percentEncode(calendarID))\(tail)"
+    }
+
+    static func eventPath(_ calendarID: String, _ eventID: String) -> String {
+        calendarPath(calendarID, "/events/\(percentEncode(eventID))")
     }
 
     func get(path: String, query: [URLQueryItem]) async throws -> Data {
+        try await send(method: "GET", path: path, query: query)
+    }
+
+    /// One request with the shared 401-refresh, rate-limit backoff and 5xx handling. `path` is percent-encoded.
+    func send(
+        method: String, path: String, query: [URLQueryItem] = [], body: Data? = nil,
+        headers extraHeaders: [String: String] = [:], mode: GoogleRequestMode = .read
+    ) async throws -> Data {
         var rateLimitRetries = 0
         var refreshedAfter401 = false
         while true {
@@ -34,9 +59,11 @@ struct GoogleAPIClient: Sendable {
             let token = try await tokens.accessToken()
             var components = URLComponents(string: Self.base)!
             components.percentEncodedPath += path
-            components.queryItems = query
-            let response = try await transport.send(HTTPRequest(
-                url: components.url!, headers: ["Authorization": "Bearer \(token)", "Accept": "application/json"]))
+            components.queryItems = query.isEmpty ? nil : query
+            var headers = ["Authorization": "Bearer \(token)", "Accept": "application/json"]
+            if body != nil { headers["Content-Type"] = "application/json" }
+            for (name, value) in extraHeaders { headers[name] = value }
+            let response = try await transport.send(HTTPRequest(url: components.url!, method: method, headers: headers, body: body))
             switch response.status {
             case 200..<300:
                 return response.body
@@ -44,13 +71,19 @@ struct GoogleAPIClient: Sendable {
                 if refreshedAfter401 { throw SourceError.authExpired }
                 refreshedAfter401 = true
                 await tokens.invalidate()
+            case 400 where mode == .write:
+                throw GoogleAPIError.badRequest(Self.message(response))
             case 410:
                 throw GoogleAPIError.gone
             case 404:
                 throw GoogleAPIError.notFound
+            case 409 where mode == .write:
+                throw GoogleAPIError.conflict
+            case 412 where mode == .write:
+                throw GoogleAPIError.preconditionFailed
             case 403, 429:
                 guard Self.isRateLimit(response) else {
-                    if response.status == 403 { throw Self.classifyForbidden(response) }
+                    if response.status == 403 { throw Self.classifyForbidden(response, mode: mode) }
                     throw SourceError.invalidResponse("HTTP \(response.status)")
                 }
                 let retryAfter = response.header("retry-after").flatMap(TimeInterval.init)
@@ -69,17 +102,35 @@ struct GoogleAPIClient: Sendable {
 
     private struct ErrorBody: Decodable {
         struct Detail: Decodable { let reason: String? }
-        struct Inner: Decodable { let errors: [Detail]? }
+        struct Inner: Decodable {
+            let errors: [Detail]?
+            let message: String?
+        }
         let error: Inner?
     }
 
-    /// A non-rate-limit 403. Only reason `forbidden` (one unreadable calendar) is skippable; the rest affect every calendar.
-    private static func classifyForbidden(_ response: HTTPResponse) -> Error {
-        let reason = (try? JSONDecoder().decode(ErrorBody.self, from: response.body))?.error?.errors?.first?.reason
-        switch reason {
+    private static func message(_ response: HTTPResponse) -> String {
+        (try? JSONDecoder().decode(ErrorBody.self, from: response.body))?.error?.message ?? "HTTP \(response.status)"
+    }
+
+    private static let quotaReasons: Set<String> = ["quotaExceeded", "calendarUsageLimitsExceeded", "dailyLimitExceeded"]
+
+    /// A non-rate-limit 403. Reads: only reason `forbidden` (one unreadable calendar) is skippable and the rest affect
+    /// every calendar. Writes: a quota reason is a rate limit (retry later, not a permission problem); any other reason
+    /// but `insufficientPermissions` is a permission problem on this event.
+    private static func classifyForbidden(_ response: HTTPResponse, mode: GoogleRequestMode) -> Error {
+        let errors = (try? JSONDecoder().decode(ErrorBody.self, from: response.body))?.error?.errors ?? []
+        // Only the write-mode quota check looks at every error; reads judge the first error's own reason, as they always did.
+        if mode == .write, errors.contains(where: { $0.reason.map(quotaReasons.contains) ?? false }) {
+            return SourceError.rateLimited(retryAfter: response.header("retry-after").flatMap(TimeInterval.init))
+        }
+        let firstReason = errors.first?.reason
+        switch firstReason {
         case "forbidden": return GoogleAPIError.forbidden
         case "insufficientPermissions": return SourceError.authExpired
-        default: return SourceError.invalidResponse("HTTP 403: \(reason ?? "unknown")")
+        default:
+            if mode == .write { return GoogleAPIError.forbidden }
+            return SourceError.invalidResponse("HTTP 403: \(firstReason ?? "unknown")")
         }
     }
 

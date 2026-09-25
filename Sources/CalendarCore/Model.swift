@@ -114,10 +114,12 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
     public var conference: ConferenceInfo?
     public var reminders: [Reminder]
     public var url: URL?
-    /// Opaque provider version (Google etag); Phase 3 uses it for optimistic writes.
+    /// Opaque provider version (Google etag, EventKit modification date); the base of optimistic writes.
     public var version: String?
     /// The account owner's own response, when the provider says.
     public var myResponse: ResponseStatus?
+    /// The source that produced this event (`Connection.sourceID`; "eventkit" for EventKit). Stamped by the source.
+    public var sourceID: String?
 
     public init(
         eventID: String, uid: String? = nil, calendarID: String, title: String,
@@ -126,7 +128,8 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
         availability: Availability = .busy, visibility: Visibility = .default, kind: EventKind = .standard,
         seriesID: String? = nil, originalStart: Date? = nil, attendees: [Attendee] = [],
         organizer: Attendee? = nil, conference: ConferenceInfo? = nil, reminders: [Reminder] = [],
-        url: URL? = nil, version: String? = nil, myResponse: ResponseStatus? = nil
+        url: URL? = nil, version: String? = nil, myResponse: ResponseStatus? = nil,
+        sourceID: String? = nil
     ) {
         self.eventID = eventID
         self.uid = uid
@@ -151,5 +154,6 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
         self.url = url
         self.version = version
         self.myResponse = myResponse
+        self.sourceID = sourceID
     }
 }

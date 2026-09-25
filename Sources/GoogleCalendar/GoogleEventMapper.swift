@@ -25,7 +25,7 @@ enum GoogleEventMapper {
     }
 
     /// Returns nil for cancelled events and for events whose times cannot be understood.
-    static func map(_ dto: GoogleEventDTO, calendar: CalendarDescriptor) -> CalendarEvent? {
+    static func map(_ dto: GoogleEventDTO, calendar: CalendarDescriptor, sourceID: String? = nil) -> CalendarEvent? {
         if dto.status == "cancelled" { return nil }
         let calendarZone = calendar.timeZone ?? TimeZone(identifier: "UTC")!
         guard let start = resolve(dto.start, calendarZone: calendarZone),
@@ -47,16 +47,16 @@ enum GoogleEventMapper {
             originalStart: dto.originalStartTime.flatMap { resolve($0, calendarZone: calendarZone)?.date },
             attendees: attendees, organizer: organizer, conference: conference(dto),
             reminders: reminders(dto.reminders), url: dto.htmlLink.flatMap(URL.init(string:)),
-            version: dto.etag, myResponse: attendees.first(where: \.isSelf)?.response)
+            version: dto.etag, myResponse: attendees.first(where: \.isSelf)?.response, sourceID: sourceID)
     }
 
-    private struct Resolved {
+    struct Resolved {
         var date: Date
         var zone: TimeZone?
         var isAllDay: Bool
     }
 
-    private static func resolve(_ time: GoogleTimeDTO?, calendarZone: TimeZone) -> Resolved? {
+    static func resolve(_ time: GoogleTimeDTO?, calendarZone: TimeZone) -> Resolved? {
         guard let time else { return nil }
         if let day = time.date {
             let parts = day.split(separator: "-").compactMap { Int($0) }

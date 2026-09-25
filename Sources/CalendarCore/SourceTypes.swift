@@ -9,10 +9,18 @@ public struct SourceCapabilities: Equatable, Sendable {
     public var providesConference: Bool
     public var syncKind: SyncKind
     public var supportsPush: Bool
+    /// The fields create/update can write; drives validation and `EventDraft(copying:for:)`. Empty when read-only.
+    public var writableFields: Set<EventField>
+    /// Honors `NotifyPolicy` (Google: `sendUpdates`); false means the server decides.
+    public var controlsNotifications: Bool
+    /// Scopes accepted for update/delete on a recurring series. Empty when read-only.
+    public var recurrenceScopes: Set<RecurrenceScope>
 
     public init(
         canWrite: Bool = false, canEditAttendees: Bool = false, canRespondToInvite: Bool = false,
-        providesConference: Bool = false, syncKind: SyncKind = .none, supportsPush: Bool = false
+        providesConference: Bool = false, syncKind: SyncKind = .none, supportsPush: Bool = false,
+        writableFields: Set<EventField> = [], controlsNotifications: Bool = false,
+        recurrenceScopes: Set<RecurrenceScope> = []
     ) {
         self.canWrite = canWrite
         self.canEditAttendees = canEditAttendees
@@ -20,6 +28,9 @@ public struct SourceCapabilities: Equatable, Sendable {
         self.providesConference = providesConference
         self.syncKind = syncKind
         self.supportsPush = supportsPush
+        self.writableFields = writableFields
+        self.controlsNotifications = controlsNotifications
+        self.recurrenceScopes = recurrenceScopes
     }
 }
 
