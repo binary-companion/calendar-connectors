@@ -27,6 +27,9 @@ public enum WriteError: Error, Sendable, Equatable {
     case forbidden(String?)
     /// Malformed input: end before start, RSVP of `.needsAction`, a bad recurrence rule, ...
     case invalid(String)
+    /// A create found an event with the draft's `uid` already on the target calendar; nothing was written. The payload
+    /// is the calendar's stored copy, so the caller can decide whether to update it.
+    case alreadyExists(CalendarEvent)
     /// A multi-step write stopped half way (Google `.thisAndFollowing`: series truncated, new series not created).
     case partial(String)
 }

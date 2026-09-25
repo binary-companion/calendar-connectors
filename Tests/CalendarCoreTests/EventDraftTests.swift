@@ -163,3 +163,13 @@ private func source() -> CalendarEvent {
     #expect(draft.availability == .busy && draft.visibility == .default && draft.reminders == nil)
     #expect(draft.usedFields == [.title, .timing])
 }
+
+@Test func copyingCarriesAUIDOnlyWhenItIsGlobal() {
+    var event = CalendarEvent(eventID: "e", uid: "u-1", uidScope: .global, calendarID: "c", title: "T", start: Date(timeIntervalSince1970: 1000), end: Date(timeIntervalSince1970: 2000))
+    let capabilities = SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases))
+    #expect(EventDraft(copying: event, for: capabilities).uid == "u-1")
+    event.uidScope = .provider
+    #expect(EventDraft(copying: event, for: capabilities).uid == nil)
+    event.uidScope = nil
+    #expect(EventDraft(copying: event, for: capabilities).uid == nil)
+}

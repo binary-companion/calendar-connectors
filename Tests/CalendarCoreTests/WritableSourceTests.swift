@@ -263,3 +263,14 @@ private func theConformanceChecksReportBrokenSources(flaw: BrokenSource.Flaw) as
     let found = await WritableSourceConformance.violations(of: FakeWritableSource(), calendarID: "nope", window: window)
     #expect(found.count == 1 && found[0].hasPrefix("create threw"))
 }
+
+@Test func theFakeSourceRefusesAduplicateUIDOnTheSameCalendar() async throws {
+    let source = FakeWritableSource(calendarIDs: ["a", "b"])
+    let timing = EventTiming(start: Date(timeIntervalSince1970: 1000), end: Date(timeIntervalSince1970: 2000), timeZone: nil, isAllDay: false)
+    let first = try await source.create(EventDraft(title: "T", timing: timing, uid: "u-1"), in: "a", notify: .none)
+    do {
+        _ = try await source.create(EventDraft(title: "T", timing: timing, uid: "u-1"), in: "a", notify: .none)
+        Issue.record("expected alreadyExists")
+    } catch WriteError.alreadyExists(let existing) { #expect(existing.eventID == first.eventID) }
+    _ = try await source.create(EventDraft(title: "T", timing: timing, uid: "u-1"), in: "b", notify: .none)   // another calendar
+}

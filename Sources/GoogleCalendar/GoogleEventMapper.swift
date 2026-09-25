@@ -47,7 +47,7 @@ enum GoogleEventMapper {
                      isSelf: $0.isSelf ?? false, isOrganizer: true)
         }
         return CalendarEvent(
-            eventID: dto.id, uid: dto.iCalUID, calendarID: calendar.id, title: dto.summary ?? "(No title)",
+            eventID: dto.id, uid: dto.iCalUID, uidScope: .global, calendarID: calendar.id, title: dto.summary ?? "(No title)",
             notes: dto.description, location: dto.location, start: start.date, end: end.date,
             timeZone: start.zone ?? calendarZone, isAllDay: start.isAllDay, status: dto.status == "tentative" ? .tentative : .confirmed,
             availability: dto.transparency == "transparent" ? .free : .busy,

@@ -134,6 +134,7 @@ enum GoogleWriteMapper {
         json["end"] = time.end
         json["transparency"] = transparency(draft.availability)
         json["visibility"] = visibilityText(draft.visibility)
+        if let uid = draft.uid, !uid.isEmpty { json["iCalUID"] = uid }
         if let reminders = draft.reminders { json["reminders"] = try remindersJSON(reminders) }
         if !draft.attendees.isEmpty { json["attendees"] = draft.attendees.map(attendeeJSON) }
         if let rule = draft.recurrence {

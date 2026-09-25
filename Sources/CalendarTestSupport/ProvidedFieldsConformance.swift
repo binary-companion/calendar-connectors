@@ -19,6 +19,7 @@ public enum ProvidedFieldsConformance {
             case .version: missing = event.version == nil
             case .lastModified: missing = event.lastModified == nil
             case .created: missing = event.created == nil
+            case .uidScope: missing = event.uidScope == nil
             case .structuredConference: missing = false   // a source without a conference has none to provide
             case .isDefault, .calendarTimeZone, .defaultReminders, .provider, .supportedAvailabilities, .permissionDetails:
                 missing = false                           // calendar fields

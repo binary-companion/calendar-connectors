@@ -2,7 +2,7 @@ import CalendarCore
 import Foundation
 
 public final class GoogleCalendarSource: PollingCalendarSource {
-    private static let eventFields =
+    static let eventFields =
         "nextPageToken,items(id,iCalUID,updated,created,status,summary,description,location,htmlLink,etag,hangoutLink,transparency,visibility,eventType,recurringEventId,start,end,originalStartTime,attendees(email,displayName,responseStatus,optional,resource,organizer,self),organizer(email,displayName,self),conferenceData(entryPoints(entryPointType,uri),conferenceSolution(key(type),name)),reminders(useDefault,overrides(minutes)))"
 
     let connection: Connection
@@ -22,7 +22,7 @@ public final class GoogleCalendarSource: PollingCalendarSource {
     public var displayName: String { connection.displayName }
     public var capabilities: SourceCapabilities {
         SourceCapabilities(
-            canWrite: true, canEditAttendees: true, canRespondToInvite: true, providedFields: [.kind, .visibility, .availability, .reminders, .series, .participation, .structuredConference, .version, .lastModified, .created,
+            canWrite: true, canEditAttendees: true, canRespondToInvite: true, providedFields: [.kind, .visibility, .availability, .reminders, .series, .participation, .structuredConference, .version, .lastModified, .created, .uidScope,
                              .isDefault, .calendarTimeZone, .defaultReminders, .provider, .supportedAvailabilities, .permissionDetails],
             syncKind: .token,
             writableFields: Set(EventField.allCases), controlsNotifications: true, recurrenceScopes: Set(RecurrenceScope.allCases))

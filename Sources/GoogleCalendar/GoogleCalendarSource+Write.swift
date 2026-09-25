@@ -9,11 +9,30 @@ extension GoogleCalendarSource: WritableCalendarSource {
             // Build (and so validate) the body before the first request.
             let body = try GoogleWriteMapper.createBody(draft)
             let calendar = try await writableCalendar(calendarID)
+            if let uid = draft.uid, !uid.isEmpty, let existing = try await existingEvent(uid: uid, in: calendar) {
+                throw WriteError.alreadyExists(existing)
+            }
             let data = try await api.send(
                 method: "POST", path: GoogleAPIClient.calendarPath(calendarID, "/events"),
                 query: query(notify, conference: body.needsConferenceVersion), body: try GoogleWriteMapper.data(body.json), mode: .write)
             return try mapped(data, calendar: calendar)
         }
+    }
+
+    /// The calendar's own copy of the meeting with this iCalendar UID, if any (a series master, else the first
+    /// instance or exception). Unverified live: Google accepts a caller-supplied `iCalUID` on `events.insert`.
+    private func existingEvent(uid: String, in calendar: CalendarDescriptor) async throws -> CalendarEvent? {
+        var found: [GoogleEventDTO] = []
+        try await api.pages(
+            GoogleEventsPageDTO.self, path: GoogleAPIClient.calendarPath(calendar.id, "/events"),
+            query: [
+                URLQueryItem(name: "iCalUID", value: uid), URLQueryItem(name: "showDeleted", value: "false"),
+                URLQueryItem(name: "maxResults", value: "250"),
+                URLQueryItem(name: "fields", value: Self.eventFields.replacingOccurrences(of: "items(id,", with: "items(id,recurrence,")),
+            ],
+            next: { $0.nextPageToken }, handle: { found += ($0.items ?? []).compactMap(\.value).filter { $0.status != "cancelled" } })
+        guard let match = found.first(where: { $0.recurrence?.isEmpty == false }) ?? found.first else { return nil }
+        return try mapped(dto: match, calendar: calendar)
     }
 
     /// Callers read expanded instances, so a `timing` in `patch` is the instance's absolute date. Sent to the series
@@ -163,7 +182,10 @@ extension GoogleCalendarSource: WritableCalendarSource {
     }
 
     private func mapped(_ data: Data, calendar: CalendarDescriptor) throws -> CalendarEvent {
-        let dto = try api.decode(GoogleEventDTO.self, from: data)
+        try mapped(dto: try api.decode(GoogleEventDTO.self, from: data), calendar: calendar)
+    }
+
+    private func mapped(dto: GoogleEventDTO, calendar: CalendarDescriptor) throws -> CalendarEvent {
         if dto.status == "cancelled" { throw WriteError.notFound }
         guard var event = GoogleEventMapper.map(dto, calendar: calendar, sourceID: id) else {
             throw SourceError.invalidResponse("google: unreadable event")

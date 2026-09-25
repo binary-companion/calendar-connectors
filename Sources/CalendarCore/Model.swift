@@ -24,6 +24,9 @@ public enum Availability: String, Sendable, Hashable {
 }
 public enum Visibility: String, Sendable { case `default`, publicEvent, privateEvent, confidential }
 public enum EventKind: String, Sendable { case standard, focusTime, outOfOffice, workingLocation, birthday, other }
+/// Where an event's `uid` can be compared: `.global` is an iCalendar UID, the same across any source; `.provider` is
+/// a provider-specific id (an Exchange object id) that only equals the ids of events from the same service and provider.
+public enum UIDScope: String, Sendable { case global, provider }
 public enum ResponseStatus: String, Sendable { case accepted, tentative, declined, needsAction }
 public enum AttendeeRole: String, Sendable { case required, optional, resource }
 
@@ -217,6 +220,8 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
     public var id: String { "\(calendarID)/\(eventID)" }
     /// iCalendar UID (Google `iCalUID`); stable across copies of the same meeting.
     public var uid: String?
+    /// What kind of id `uid` is; nil when the source does not say (treated as `.provider`).
+    public var uidScope: UIDScope?
     public var calendarID: String
     public var title: String
     public var notes: String?
@@ -267,7 +272,7 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
     public var sourceID: String?
 
     public init(
-        eventID: String, uid: String? = nil, calendarID: String, title: String,
+        eventID: String, uid: String? = nil, uidScope: UIDScope? = nil, calendarID: String, title: String,
         notes: String? = nil, location: String? = nil, start: Date, end: Date,
         timeZone: TimeZone = TimeZone(identifier: "UTC")!, isAllDay: Bool = false, status: EventStatus = .confirmed,
         availability: Availability? = nil, visibility: Visibility? = nil, kind: EventKind? = nil,
@@ -278,6 +283,7 @@ public struct CalendarEvent: Hashable, Sendable, Identifiable {
     ) {
         self.eventID = eventID
         self.uid = uid
+        self.uidScope = uidScope
         self.calendarID = calendarID
         self.title = title
         self.notes = notes

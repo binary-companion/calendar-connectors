@@ -55,11 +55,14 @@ public final class FakeWritableSource: WritableCalendarSource, @unchecked Sendab
         try draft.validate()
         try WriteValidation.requireWritable(draft.usedFields, capabilities)
         guard calendarIDs.contains(calendarID) else { throw WriteError.notFound }
-        return lock.withLock {
+        return try lock.withLock {
+            if let uid = draft.uid, let existing = events.values.first(where: { $0.calendarID == calendarID && $0.uid == uid }) {
+                throw WriteError.alreadyExists(existing)
+            }
             counter += 1
             writes += 1
             var event = CalendarEvent(
-                eventID: "ev\(counter)", calendarID: calendarID, title: draft.title, notes: draft.notes, location: draft.location,
+                eventID: "ev\(counter)", uid: draft.uid, uidScope: draft.uid == nil ? nil : .global, calendarID: calendarID, title: draft.title, notes: draft.notes, location: draft.location,
                 start: draft.timing.start, end: draft.timing.end, timeZone: draft.timing.timeZone ?? TimeZone(identifier: "UTC")!, isAllDay: draft.timing.isAllDay,
                 availability: draft.availability, visibility: draft.visibility,
                 attendees: draft.attendees.map { Attendee(name: $0.name, email: $0.email, role: $0.role) },

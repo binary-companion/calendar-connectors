@@ -100,6 +100,7 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
 | `url` | `URL?` | Link to the event in the provider's UI |
 | `version` | `String?` | Opaque provider version (Google etag, EventKit `lastModifiedDate` as a fractional-epoch string); the base of optimistic writes (part 10) |
 | `participation` | `Participation?` | `.notInvited` or `.invited(ResponseStatus)`; nil when the source does not say. `myResponse` is a get-only accessor (nil for both unknown and not invited) |
+| `uidScope` | `UIDScope?` | `.global` (an iCalendar UID, comparable across sources), `.provider` (a provider id, comparable only within one service and provider), nil = unknown (treated as `.provider`) |
 | `sourceID` | `String?` | The source that produced the event (`Connection.sourceID`; `"eventkit"` for EventKit); lets a host route an event to its account. Does not change `id` |
 
 Reads return recurring events already expanded into instances. No read path returns a recurrence rule.
@@ -542,3 +543,5 @@ provider metadata; a `metadata` field and capability can be added later without 
 - **Permissions.** Google roles map onto Graph-style flags (owner: view, edit, share, private; writer: view, edit, private; reader: view; freeBusyReader: none). EventKit: `canViewDetails` true, `canEdit` = `allowsContentModifications`, `canShare` and `canViewPrivate` nil (listed as `.permissionDetails` only by sources that fill them).
 - **Availability.** `Availability.closest(in:)` maps a value a calendar cannot store to the nearest one it can (tentative and unavailable to busy then free, busy to free, free to busy). A write returns the provider's stored copy; `EventDraft.adjustments(comparedTo:)` and `EventPatch.adjustments(comparedTo:)` report `.availability` and `.visibility` when the stored value differs. Reminder defaults, attendee order, all-day zones and text are provider normalization, not reported.
 - **Event dates.** `lastModified` and `created` (nil when the source does not say); `version` stays the opaque equality token.
+
+- **Copying and duplicates.** `EventDraft.uid` (only a `.global` uid is copied) makes `create` look for that event on the target calendar first; if it exists, `create` throws `WriteError.alreadyExists(storedCopy)` and writes nothing. Google stores the uid as `iCalUID` (unverified live); EventKit cannot set a UID and matches on `calendarItemExternalIdentifier` among the events around the draft's time.

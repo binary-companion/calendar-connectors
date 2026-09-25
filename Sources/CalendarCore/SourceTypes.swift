@@ -9,7 +9,7 @@ public enum ProvidedField: String, Sendable, Hashable, CaseIterable {
     case kind, visibility, availability, reminders, series, participation
     /// Supplies structured conference data (Google `conferenceData`); says nothing about whether an event has links.
     case structuredConference
-    case version, lastModified, created
+    case version, lastModified, created, uidScope
     // Calendars
     case isDefault, calendarTimeZone, defaultReminders, provider, supportedAvailabilities
     /// `permissions.canShare` and `canViewPrivate` are never nil.

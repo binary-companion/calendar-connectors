@@ -65,11 +65,16 @@ public struct EventDraft: Sendable, Equatable {
     public var attendees: [AttendeeDraft]
     public var conference: ConferenceRequest
     public var recurrence: RecurrenceRule?
+    /// An iCalendar UID identifying the meeting. Not content: a create that finds it already on the calendar throws
+    /// `WriteError.alreadyExists`, and otherwise stores it so later copies are recognized. `EventDraft(copying:)`
+    /// fills it only from a `.global` uid.
+    public var uid: String?
 
     public init(
         title: String, timing: EventTiming, notes: String? = nil, location: String? = nil,
         availability: Availability = .busy, visibility: Visibility = .default, reminders: [Reminder]? = nil,
-        attendees: [AttendeeDraft] = [], conference: ConferenceRequest = .none, recurrence: RecurrenceRule? = nil
+        attendees: [AttendeeDraft] = [], conference: ConferenceRequest = .none, recurrence: RecurrenceRule? = nil,
+        uid: String? = nil
     ) {
         self.title = title
         self.timing = timing
@@ -81,6 +86,7 @@ public struct EventDraft: Sendable, Equatable {
         self.attendees = attendees
         self.conference = conference
         self.recurrence = recurrence
+        self.uid = uid
     }
 
     public func validate() throws {
@@ -140,6 +146,6 @@ public struct EventDraft: Sendable, Equatable {
                     .filter { AttendeeDraft.isValidEmail($0.email) }
                 : [],
             conference: writable.contains(.conference) && event.conferences.contains { $0.origin == .structured && $0.provider == .meet } ? .generate : .none,
-            recurrence: nil)
+            recurrence: nil, uid: event.uidScope == .global ? event.uid : nil)
     }
 }
