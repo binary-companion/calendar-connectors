@@ -4,18 +4,26 @@ import Foundation
 enum GoogleEventMapper {
     static func descriptor(from dto: GoogleCalendarListEntryDTO, accountName: String?) -> CalendarDescriptor? {
         if dto.deleted == true || dto.hidden == true { return nil }
-        let role: AccessRole
-        switch dto.accessRole {
-        case "owner": role = .owner
-        case "writer": role = .writer
-        case "freeBusyReader": role = .freeBusyReader
-        default: role = .reader
-        }
+        let calendarKind = kind(ofCalendarID: dto.id)
         return CalendarDescriptor(
-            id: dto.id, title: dto.summaryOverride ?? dto.summary ?? dto.id, colorHex: dto.backgroundColor,
-            accessRole: role, isPrimary: dto.primary ?? false,
-            timeZone: dto.timeZone.flatMap { TimeZone(identifier: $0) }, accountName: accountName, kind: kind(ofCalendarID: dto.id),
-            defaultReminders: (dto.defaultReminders ?? []).compactMap { $0.minutes.map(Reminder.init(minutesBefore:)) })
+            id: dto.id, title: dto.summaryOverride ?? dto.summary ?? dto.id, service: .google, colorHex: dto.backgroundColor,
+            permissions: permissions(forRole: dto.accessRole), isDefault: dto.primary ?? false,
+            timeZone: dto.timeZone.flatMap { TimeZone(identifier: $0) }, accountName: accountName, kind: calendarKind,
+            defaultReminders: (dto.defaultReminders ?? []).compactMap { $0.minutes.map(Reminder.init(minutesBefore:)) },
+            provider: calendarKind == .standard ? .google : .subscription, supportedAvailabilities: supportedAvailabilities)
+    }
+
+    /// Google's transparency has two values.
+    static let supportedAvailabilities: Set<Availability> = [.busy, .free]
+
+    /// owner: everything; writer: edit but not share; reader: read only; freeBusyReader: no details.
+    static func permissions(forRole role: String?) -> CalendarPermissions {
+        switch role {
+        case "owner": CalendarPermissions(canViewDetails: true, canEdit: true, canShare: true, canViewPrivate: true)
+        case "writer": CalendarPermissions(canViewDetails: true, canEdit: true, canShare: false, canViewPrivate: true)
+        case "freeBusyReader": CalendarPermissions(canViewDetails: false, canEdit: false, canShare: false, canViewPrivate: false)
+        default: CalendarPermissions(canViewDetails: true, canEdit: false, canShare: false, canViewPrivate: false)
+        }
     }
 
     /// Google's built-in feeds have well-known ids: contacts' birthdays and the regional holiday calendars.
@@ -47,7 +55,7 @@ enum GoogleEventMapper {
             series: series(dto, calendarZone: calendarZone),
             attendees: attendees, organizer: organizer, conferences: conferences(dto),
             reminders: reminders(dto.reminders, calendar: calendar), url: dto.htmlLink.flatMap(URL.init(string:)),
-            version: dto.etag, participation: participation(attendees: attendees, organizer: organizer), sourceID: sourceID)
+            version: dto.etag, lastModified: dto.updated.flatMap(parseInstant), created: dto.created.flatMap(parseInstant), participation: participation(attendees: attendees, organizer: organizer), sourceID: sourceID)
     }
 
     struct Resolved {

@@ -13,7 +13,7 @@ import Testing
 
 @Test func descriptorNormalizesColor() {
     func hex(_ raw: String?) -> String? {
-        CalendarDescriptor(id: "c", title: "C", colorHex: raw).colorHex
+        CalendarDescriptor(id: "c", title: "C", service: .google, colorHex: raw).colorHex
     }
     #expect(hex("#9fe1e7") == "#9FE1E7")
     #expect(hex("9fe1e7") == "#9FE1E7")
@@ -34,9 +34,9 @@ import Testing
 }
 
 @Test func descriptorsAreStandardCalendarsUnlessToldOtherwise() {
-    #expect(CalendarDescriptor(id: "c", title: "C").kind == .standard)
-    #expect(CalendarDescriptor(id: "c", title: "C", kind: .birthdays).kind == .birthdays)
-    #expect(CalendarDescriptor(id: "c", title: "C", kind: .subscribed).kind == .subscribed)
+    #expect(CalendarDescriptor(id: "c", title: "C", service: .google).kind == .standard)
+    #expect(CalendarDescriptor(id: "c", title: "C", service: .google, kind: .birthdays).kind == .birthdays)
+    #expect(CalendarDescriptor(id: "c", title: "C", service: .google, kind: .subscribed).kind == .subscribed)
 }
 
 // Provided fields.
@@ -60,4 +60,44 @@ import Testing
     event.series = .occurrence(seriesID: "s", originalStart: Date(timeIntervalSince1970: 30))
     event.participation = .invited(.tentative)
     #expect(event.seriesID == "s" && event.originalStart == Date(timeIntervalSince1970: 30) && event.myResponse == .tentative)
+}
+
+// Availability, permissions and calendar identity (Issues 6 and 7).
+
+@Test func closestAvailabilityFollowsTheFallbackLists() {
+    let all: Set<Availability> = [.busy, .free, .tentative, .unavailable]
+    for value in all { #expect(value.closest(in: all) == value) }
+    #expect(Availability.tentative.closest(in: [.busy, .free]) == .busy)
+    #expect(Availability.unavailable.closest(in: [.busy, .free]) == .busy)
+    #expect(Availability.tentative.closest(in: [.free]) == .free)
+    #expect(Availability.busy.closest(in: [.free]) == .free)
+    #expect(Availability.free.closest(in: [.busy]) == .busy)
+    #expect(Availability.busy.closest(in: [.tentative]) == nil)   // no fallback in the list
+    #expect(Availability.busy.closest(in: []) == nil)
+}
+
+@Test func permissionsSummarizeIntoAnAccessRole() {
+    #expect(CalendarPermissions(canViewDetails: false).accessRole == .freeBusyReader)
+    #expect(CalendarPermissions(canViewDetails: true, canEdit: false, canShare: true).accessRole == .reader)
+    #expect(CalendarPermissions(canViewDetails: true, canEdit: true, canShare: true).accessRole == .owner)
+    #expect(CalendarPermissions(canViewDetails: true, canEdit: true, canShare: false).accessRole == .writer)
+    #expect(CalendarPermissions(canViewDetails: true, canEdit: true, canShare: nil).accessRole == nil)   // EventKit, writable
+}
+
+@Test func serviceAndProviderAreStringBackedAndOpen() {
+    #expect(CalendarService.eventKit.rawValue == "eventkit" && CalendarService(rawValue: "eventkit") == .eventKit)
+    #expect(CalendarProvider(rawValue: "example.org") != .calDAV)
+    #expect(CalendarProvider.iCloud.rawValue == "icloud")
+}
+
+@Test func draftAndPatchReportOnlyAvailabilityAndVisibilityAdjustments() {
+    var stored = CalendarEvent(eventID: "e", calendarID: "c", title: "T", start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 60))
+    stored.availability = .busy
+    stored.visibility = .default
+    let draft = EventDraft(title: "T", timing: EventTiming(start: stored.start, end: stored.end, timeZone: nil, isAllDay: false), availability: .tentative, visibility: .default)
+    #expect(draft.adjustments(comparedTo: stored) == [.availability])
+    #expect(EventPatch(availability: .tentative, visibility: .confidential).adjustments(comparedTo: stored) == [.availability, .visibility])
+    #expect(EventPatch(availability: .busy).adjustments(comparedTo: stored).isEmpty)
+    stored.availability = nil   // unknown is never an adjustment
+    #expect(draft.adjustments(comparedTo: stored).isEmpty)
 }

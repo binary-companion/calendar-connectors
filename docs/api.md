@@ -61,10 +61,16 @@ Dependency direction: `GoogleCalendar` → `CalendarOAuth` → `CalendarCore`; a
 public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
     var id: String; var title: String
     private(set) var colorHex: String?   // "#RRGGBB" uppercase, or nil if unknown/invalid
-    var accessRole: AccessRole           // owner, writer, reader, freeBusyReader
-    var isPrimary: Bool; var timeZone: TimeZone?
+    var service: CalendarService         // the connector reading it ("eventkit", "google"); always known
+    var provider: CalendarProvider?      // who hosts it (.iCloud, .google, .microsoft, .local, .subscription, .calDAV); nil = can't tell
+    var permissions: CalendarPermissions // canViewDetails, canEdit, canShare?, canViewPrivate?
+    var accessRole: AccessRole? { get }  // read-only summary: owner, writer, reader, freeBusyReader; nil for EventKit writable
+    var isDefault: Bool?                 // where new events go in its account; nil = can't tell
+    var timeZone: TimeZone?
     var accountName: String?             // the owning account, e.g. the signed-in email
     var kind: CalendarKind               // standard, subscribed, birthdays
+    var defaultReminders: [Reminder]?    // the calendar's own default reminders (Google); nil = source does not say
+    var supportedAvailabilities: Set<Availability>?   // what the calendar accepts; [] = none tracked; nil = unknown
     static func normalizedHex(_:) -> String?   // "#RGB" | "#RRGGBB" | "RRGGBB" → "#RRGGBB"
 }
 ```
@@ -141,7 +147,7 @@ public struct SourceCapabilities: Equatable, Sendable {
 }
 ```
 
-Capabilities are what a source *can* do, declared per connector; the per-calendar `accessRole` says which of its
+Capabilities are what a source *can* do, declared per connector; the per-calendar `permissions` say which of its
 calendars are writable. The three write fields default to the read-only value. Current values:
 
 | | `canWrite` | `canEditAttendees` | `canRespondToInvite` | `providedFields` | `syncKind` | `writableFields` | `controlsNotifications` | `recurrenceScopes` |
@@ -298,7 +304,7 @@ and the `CalendarSource` returned by `makeSource` (id `google-<connectionID>`).
 
 - `EventKitSource` (`CalendarSource`, id `"eventkit"`, display name "Apple Calendar"): `requestAccess()` prompts for
   full calendar access; every read requires it and otherwise throws `.needsPermission`. Calendars map
-  `allowsContentModifications` to `accessRole` `.writer` / `.reader` and EventKit's calendar types to `CalendarKind`.
+  `allowsContentModifications` to `permissions.canEdit` and EventKit's calendar types to `CalendarKind`.
   All-day events are normalised from EventKit's floating device-local dates to the canonical form in the device zone.
   `changes()` yields `.calendarsChanged` on every `EKEventStoreChanged`. `init(store:)` lets a host or test share an
   `EKEventStore`. Reads fill `version` (`lastModifiedDate`), `sourceID`, and, for events that recur or are detached
@@ -329,7 +335,7 @@ Core defines its own `CalendarSource` (`calendars() -> [CalendarInfo]`, `events(
 3. Emit canonical all-day events and run your mapper fixtures through `AllDayConformance`.
 4. Set `id` to `Connection.sourceID` (unless a documented compatibility reason applies) and keep it stable across
    `reauthorize`.
-5. Declare `capabilities` honestly; `calendars()` must set `accessRole` per calendar.
+5. Declare `capabilities` honestly; `calendars()` must set `service` and `permissions` per calendar.
 6. Keep secrets in the injected `CredentialStore` and persist nothing during a failed `authorize`.
 7. Test against `FakeTransport` (network) or pure mappers (local stores); no test may need a real account.
 8. To support writing, also conform to `WritableCalendarSource` (part 10), declare `writableFields`, `controlsNotifications` and `recurrenceScopes` honestly, throw `WriteError.unsupported` before changing anything for what you cannot write, and run `WritableSourceConformance` against a scratch calendar or a fake backend.
@@ -366,7 +372,7 @@ whole series). EventKit: the first occurrence. `scope` is ignored for an event t
 2. `capabilities` (part 3.3): `writableFields` (what create/update can write, including `.recurrence`),
    `controlsNotifications` and `recurrenceScopes`, alongside `canEditAttendees` (true exactly when `.attendees` is
    writable) and `canRespondToInvite`. `writableFields` and `recurrenceScopes` are empty unless `canWrite`, and `canRespondToInvite` implies `canWrite` (conventions upheld by the read-only defaults and unit tests; the conformance checks verify only `canEditAttendees == writableFields.contains(.attendees)`).
-3. `CalendarDescriptor.accessRole` per calendar (a read-only calendar is `.forbidden`).
+3. `CalendarDescriptor.permissions` per calendar (`canEdit == false` is `.forbidden`).
 
 **Unsupported means an error, never a partial write.** A write that touches something the connector cannot represent
 throws `WriteError.unsupported`, naming the fields, before any write request or store change. `WriteValidation.requireWritable(_:_:)`
@@ -528,3 +534,11 @@ provider metadata; a `metadata` field and capability can be added later without 
   injection for release builds is a separate follow-up.
 - **No CalDAV or Microsoft connector yet.** They are the next providers; their `AuthorizationMethod` cases (`.password`,
   `.oauth`) are already in the contract.
+
+## Calendar identity and permissions
+
+- **Service vs provider.** `service` is the connector a calendar is read through; `provider` is who hosts it. A Google calendar read directly has service and provider Google; read through Apple Calendar its service is EventKit and its provider is whatever EventKit reports. EventKit's provider comes from the account **type** only (`.local`, `.exchange` gives Microsoft, `.mobileMe` gives iCloud, `.calDAV` gives CalDAV, subscribed and birthday feeds give subscription); the account title is user-editable and never read. The same calendar may therefore read as CalDAV through EventKit and as Google through a direct connection.
+- **`isDefault`.** Google: `primary`. EventKit has one default calendar across all accounts: true for it, false for its siblings in the same account, nil for other accounts.
+- **Permissions.** Google roles map onto Graph-style flags (owner: view, edit, share, private; writer: view, edit, private; reader: view; freeBusyReader: none). EventKit: `canViewDetails` true, `canEdit` = `allowsContentModifications`, `canShare` and `canViewPrivate` nil (listed as `.permissionDetails` only by sources that fill them).
+- **Availability.** `Availability.closest(in:)` maps a value a calendar cannot store to the nearest one it can (tentative and unavailable to busy then free, busy to free, free to busy). A write returns the provider's stored copy; `EventDraft.adjustments(comparedTo:)` and `EventPatch.adjustments(comparedTo:)` report `.availability` and `.visibility` when the stored value differs. Reminder defaults, attendee order, all-day zones and text are provider normalization, not reported.
+- **Event dates.** `lastModified` and `created` (nil when the source does not say); `version` stays the opaque equality token.

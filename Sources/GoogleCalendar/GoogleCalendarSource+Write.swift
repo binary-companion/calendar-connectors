@@ -158,7 +158,7 @@ extension GoogleCalendarSource: WritableCalendarSource {
     /// The calendar, provided it exists and the account can write to it.
     private func writableCalendar(_ calendarID: String) async throws -> CalendarDescriptor {
         guard let calendar = try await calendars().first(where: { $0.id == calendarID }) else { throw WriteError.notFound }
-        guard calendar.accessRole == .owner || calendar.accessRole == .writer else { throw WriteError.forbidden("read-only calendar") }
+        guard calendar.permissions.canEdit else { throw WriteError.forbidden("read-only calendar") }
         return calendar
     }
 

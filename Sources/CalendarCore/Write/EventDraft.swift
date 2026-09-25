@@ -108,6 +108,16 @@ public struct EventDraft: Sendable, Equatable {
         return fields
     }
 
+    /// The enum-valued fields a connector maps to the closest value the calendar supports, when the stored copy differs
+    /// from what was requested. Other provider normalization (reminder defaults, attendee order, all-day zones, text)
+    /// is deliberately not reported: it is visible in the returned event but is not an adjustment the library made.
+    public func adjustments(comparedTo stored: CalendarEvent) -> Set<EventField> {
+        var changed: Set<EventField> = []
+        if let value = stored.availability, value != availability { changed.insert(.availability) }
+        if let value = stored.visibility, value != visibility { changed.insert(.visibility) }
+        return changed
+    }
+
     /// A best-effort copy of `event` for a target with `capabilities`: only fields in `writableFields` are carried
     /// over. Self and email-less attendees are dropped, an empty reminder list becomes "calendar defaults" (reads
     /// cannot tell the two apart), only a Meet link is re-requested, and recurrence is never copied (reads carry none).

@@ -193,3 +193,12 @@ private func same(_ a: Any, _ b: Any) -> Bool {
     let draft = EventDraft(title: "Daily", timing: timed(try #require(TimeZone(identifier: "GMT"))), recurrence: RecurrenceRule(frequency: .daily))
     #expect(try GoogleWriteMapper.createBody(draft).json["recurrence"] != nil)
 }
+
+@Test func aTentativeAvailabilityIsWrittenAsOpaqueAndReportedAsAnAdjustment() throws {
+    let draft = EventDraft(title: "T", timing: timed(), availability: .tentative)
+    #expect(try GoogleWriteMapper.createBody(draft).json["transparency"] as? String == "opaque")
+    let stored = CalendarEvent(eventID: "e", calendarID: "c", title: "T", start: draft.timing.start, end: draft.timing.end, availability: .busy)
+    #expect(draft.adjustments(comparedTo: stored) == [.availability])
+    let patched = try GoogleWriteMapper.patchBody(EventPatch(availability: .unavailable), currentAttendees: nil).json
+    #expect(patched["transparency"] as? String == "opaque")
+}

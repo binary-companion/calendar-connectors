@@ -61,6 +61,8 @@ struct GoogleEventDTO: Decodable {
     var location: String?
     var htmlLink: String?
     var etag: String?
+    var updated: String?
+    var created: String?
     var hangoutLink: String?
     var transparency: String?
     var visibility: String?

@@ -5,7 +5,7 @@ import Testing
 @testable import GoogleCalendar
 
 private let tokyo = TimeZone(identifier: "Asia/Tokyo")!
-private let calendar = CalendarDescriptor(id: "cal1", title: "Work", accessRole: .owner, isPrimary: true, timeZone: tokyo)
+private let calendar = CalendarDescriptor(id: "cal1", title: "Work", service: .google, permissions: CalendarPermissions(canViewDetails: true, canEdit: true, canShare: true, canViewPrivate: true), isDefault: true, timeZone: tokyo)
 
 private func event(_ json: String) throws -> GoogleEventDTO {
     try JSONDecoder().decode(GoogleEventDTO.self, from: Data(json.utf8))
@@ -43,7 +43,7 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
 }
 
 @Test func allDayFallsBackToUTCWhenTheCalendarHasNoZone() throws {
-    let bare = CalendarDescriptor(id: "c", title: "C")
+    let bare = CalendarDescriptor(id: "c", title: "C", service: .google)
     let dto = try event(#"{"id":"a","start":{"date":"2026-09-20"},"end":{"date":"2026-09-21"}}"#)
     let e = try #require(GoogleEventMapper.map(dto, calendar: bare))
     #expect(e.timeZone.identifier == "UTC" || e.timeZone.identifier == "GMT")
@@ -54,7 +54,7 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
 @Test func aTimedEventWithoutItsOwnZoneTakesTheCalendarsZoneThenUTC() throws {
     let noZone = #"{"id":"t","start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTime":"2026-09-21T11:00:00Z"}}"#
     #expect(try #require(try map(noZone)).timeZone.identifier == "Asia/Tokyo")              // the fixture calendar's zone
-    let bare = CalendarDescriptor(id: "c", title: "C")
+    let bare = CalendarDescriptor(id: "c", title: "C", service: .google)
     let dto = try event(noZone)
     let e = try #require(GoogleEventMapper.map(dto, calendar: bare))
     #expect(e.timeZone.identifier == "UTC" || e.timeZone.identifier == "GMT")
@@ -163,7 +163,7 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     """.utf8))
     let d = try #require(GoogleEventMapper.descriptor(from: dto, accountName: "me@x.com"))
     #expect(d.id == "me@x.com" && d.title == "Personal" && d.colorHex == "#9FE1E7")
-    #expect(d.accessRole == .owner && d.isPrimary && d.timeZone?.identifier == "Asia/Tokyo" && d.accountName == "me@x.com")
+    #expect(d.accessRole == .owner && d.isDefault == true && d.timeZone?.identifier == "Asia/Tokyo" && d.accountName == "me@x.com")
     let hidden = try JSONDecoder().decode(GoogleCalendarListEntryDTO.self, from: Data(#"{"id":"h","hidden":true}"#.utf8))
     #expect(GoogleEventMapper.descriptor(from: hidden, accountName: nil) == nil)
     let deleted = try JSONDecoder().decode(GoogleCalendarListEntryDTO.self, from: Data(#"{"id":"d","deleted":true}"#.utf8))
@@ -183,8 +183,7 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
 
 // Provided fields (Issue 2).
 
-private let withDefaults = CalendarDescriptor(
-    id: "cal1", title: "Work", accessRole: .owner, timeZone: tokyo,
+private let withDefaults = CalendarDescriptor(id: "cal1", title: "Work", service: .google, permissions: CalendarPermissions(canViewDetails: true, canEdit: true, canShare: true, canViewPrivate: true), timeZone: tokyo,
     defaultReminders: [Reminder(minutesBefore: 30), Reminder(minutesBefore: 5)])
 private let times = #""start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTime":"2026-09-21T11:00:00Z"}"#
 
@@ -222,4 +221,47 @@ private let times = #""start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTi
 @Test func calendarListEntriesCarryTheirDefaultReminders() throws {
     let dto = try JSONDecoder().decode(GoogleCalendarListEntryDTO.self, from: Data(#"{"id":"c","defaultReminders":[{"method":"popup","minutes":10}]}"#.utf8))
     #expect(GoogleEventMapper.descriptor(from: dto, accountName: nil)?.defaultReminders == [Reminder(minutesBefore: 10)])
+}
+
+// Calendar identity and permissions (Issues 6 and 7).
+
+private func descriptor(_ json: String) throws -> CalendarDescriptor {
+    let dto = try JSONDecoder().decode(GoogleCalendarListEntryDTO.self, from: Data(json.utf8))
+    return try #require(GoogleEventMapper.descriptor(from: dto, accountName: "me@x.com"))
+}
+
+@Test func googleRolesMapToPermissions() throws {
+    let owner = try descriptor(#"{"id":"a","accessRole":"owner"}"#).permissions
+    #expect(owner == CalendarPermissions(canViewDetails: true, canEdit: true, canShare: true, canViewPrivate: true))
+    let writer = try descriptor(#"{"id":"a","accessRole":"writer"}"#).permissions
+    #expect(writer == CalendarPermissions(canViewDetails: true, canEdit: true, canShare: false, canViewPrivate: true))
+    let reader = try descriptor(#"{"id":"a","accessRole":"reader"}"#).permissions
+    #expect(reader == CalendarPermissions(canViewDetails: true, canEdit: false, canShare: false, canViewPrivate: false))
+    let busy = try descriptor(#"{"id":"a","accessRole":"freeBusyReader"}"#).permissions
+    #expect(busy == CalendarPermissions(canViewDetails: false, canEdit: false, canShare: false, canViewPrivate: false))
+    #expect(try descriptor(#"{"id":"a","accessRole":"owner"}"#).accessRole == .owner)
+}
+
+@Test func googleCalendarsCarryServiceProviderDefaultAndAvailabilities() throws {
+    let primary = try descriptor(#"{"id":"me@x.com","primary":true,"accessRole":"owner","timeZone":"UTC"}"#)
+    #expect(primary.service == .google && primary.provider == .google && primary.isDefault == true)
+    #expect(primary.supportedAvailabilities == [.busy, .free])
+    #expect(try descriptor(#"{"id":"b","accessRole":"reader"}"#).isDefault == false)
+    let holidays = try descriptor(#"{"id":"en.usa#holiday@group.v.calendar.google.com","accessRole":"reader"}"#)
+    #expect(holidays.provider == .subscription)
+}
+
+@Test func everyCalendarFieldGoogleDeclaresIsPresent() throws {
+    let capabilities = SourceCapabilities(providedFields: [.isDefault, .calendarTimeZone, .defaultReminders, .provider, .supportedAvailabilities, .permissionDetails])
+    let d = try descriptor(#"{"id":"me@x.com","primary":true,"accessRole":"owner","timeZone":"UTC"}"#)
+    #expect(ProvidedFieldsConformance.violations(calendar: d, capabilities: capabilities).isEmpty)
+    let bare = CalendarDescriptor(id: "c", title: "C", service: .eventKit)
+    #expect(ProvidedFieldsConformance.violations(calendar: bare, capabilities: capabilities).count == 6)
+}
+
+@Test func eventsCarryLastModifiedAndCreatedDates() throws {
+    let e = try #require(try map(#"{"id":"u","updated":"2026-09-20T08:00:00.123Z","created":"2026-09-01T00:00:00Z",\#(times)}"#))
+    #expect(e.created == instant("2026-09-01T00:00:00Z"))
+    #expect(abs(try #require(e.lastModified).timeIntervalSince(instant("2026-09-20T08:00:00Z")) - 0.123) < 0.001)
+    #expect(try #require(try map(#"{"id":"v",\#(times)}"#)).lastModified == nil)
 }

@@ -42,7 +42,7 @@ public final class FakeWritableSource: WritableCalendarSource, @unchecked Sendab
     }
 
     public func calendars() async throws -> [CalendarDescriptor] {
-        calendarIDs.sorted().map { CalendarDescriptor(id: $0, title: $0, accessRole: .owner) }
+        calendarIDs.sorted().map { CalendarDescriptor(id: $0, title: $0, service: CalendarService(rawValue: "fake"), permissions: CalendarPermissions(canViewDetails: true, canEdit: true, canShare: true, canViewPrivate: true)) }
     }
 
     public func events(in interval: DateInterval) async throws -> [CalendarEvent] {

@@ -58,6 +58,15 @@ public struct EventPatch: Sendable, Equatable {
         self.base = nil
     }
 
+    /// The fields the stored copy shows differently from what this patch asked for (availability and visibility only;
+    /// see `EventDraft.adjustments(comparedTo:)`).
+    public func adjustments(comparedTo stored: CalendarEvent) -> Set<EventField> {
+        var changed: Set<EventField> = []
+        if let requested = availability, let value = stored.availability, value != requested { changed.insert(.availability) }
+        if let requested = visibility, let value = stored.visibility, value != requested { changed.insert(.visibility) }
+        return changed
+    }
+
     public var touchedFields: Set<EventField> {
         var fields = Set<EventField>()
         if title != nil { fields.insert(.title) }

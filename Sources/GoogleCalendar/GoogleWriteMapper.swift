@@ -49,6 +49,12 @@ enum GoogleWriteMapper {
         return identifier == "GMT" ? "UTC" : identifier
     }
 
+    /// Google has two values (opaque, transparent); a value it cannot store is mapped to the closest one
+    /// (`Availability.closest`), and `adjustments(comparedTo:)` on the draft or patch reports the change.
+    static func transparency(_ availability: Availability) -> String {
+        (availability.closest(in: GoogleEventMapper.supportedAvailabilities) ?? .busy) == .free ? "transparent" : "opaque"
+    }
+
     /// Google cannot store times outside years 1 to 9999; an out-of-range date would render as a malformed string.
     private static func requireRepresentable(_ timing: EventTiming) throws {
         for date in [timing.start, timing.end] where !representableSeconds.contains(date.timeIntervalSince1970) {
@@ -126,7 +132,7 @@ enum GoogleWriteMapper {
         let time = timeJSON(draft.timing)
         json["start"] = time.start
         json["end"] = time.end
-        json["transparency"] = draft.availability == .free ? "transparent" : "opaque"
+        json["transparency"] = transparency(draft.availability)
         json["visibility"] = visibilityText(draft.visibility)
         if let reminders = draft.reminders { json["reminders"] = try remindersJSON(reminders) }
         if !draft.attendees.isEmpty { json["attendees"] = draft.attendees.map(attendeeJSON) }
@@ -151,7 +157,7 @@ enum GoogleWriteMapper {
             json["start"] = time.start
             json["end"] = time.end
         }
-        if let availability = patch.availability { json["transparency"] = availability == .free ? "transparent" : "opaque" }
+        if let availability = patch.availability { json["transparency"] = transparency(availability) }
         if let visibility = patch.visibility { json["visibility"] = visibilityText(visibility) }
         switch patch.reminders {
         case .keep: break

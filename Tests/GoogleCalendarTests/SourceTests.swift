@@ -69,7 +69,7 @@ actor SleepRecorder {
     let h = try await Harness()
     let cals = try await h.source.calendars()
     #expect(cals.map(\.id) == ["me@x.com", "team@group.calendar.google.com"])
-    #expect(cals[0].accountName == "me@x.com" && cals[0].colorHex == "#112233" && cals[0].isPrimary)
+    #expect(cals[0].accountName == "me@x.com" && cals[0].colorHex == "#112233" && cals[0].isDefault == true)
     let request = try #require(await h.transport.requests.first)
     #expect(request.headers["Authorization"] == "Bearer at1")
     #expect(request.url.absoluteString.contains("showHidden=false"))
