@@ -183,3 +183,16 @@ private func original() -> CalendarEvent {
     let cleared = EventPatch(reminders: .clear).applied(to: original())
     #expect(cleared.reminders == nil)
 }
+
+@Test func aReorderedOrDefaultFlaggedReminderListIsNotAChangeButANewOneIs() {
+    var edit = EventEdit(original())
+    edit.event.reminders = [.before(minutes: 20), .before(minutes: 10)]
+    var base = original(); base.reminders = [.before(minutes: 10), .before(minutes: 20)]
+    let sameSet = EventEdit(base)
+    var reordered = sameSet; reordered.event.reminders = [.before(minutes: 20, isCalendarDefault: false), .before(minutes: 10)]
+    #expect(reordered.patch.reminders == .keep)
+    var changed = sameSet; changed.event.reminders = [.before(minutes: 20)]
+    #expect(changed.patch.reminders == .set([.before(minutes: 20)]))
+    var defaults = sameSet; defaults.event.reminders = [.before(minutes: 10, isCalendarDefault: true)]
+    #expect(defaults.patch.reminders == .clear)
+}

@@ -3,7 +3,7 @@ import Foundation
 
 public final class GoogleCalendarSource: PollingCalendarSource {
     static let eventFields =
-        "nextPageToken,items(id,iCalUID,updated,created,status,summary,description,location,htmlLink,etag,hangoutLink,transparency,visibility,eventType,recurringEventId,start,end,originalStartTime,attendees(email,displayName,responseStatus,optional,resource,organizer,self),organizer(email,displayName,self),conferenceData(entryPoints(entryPointType,uri),conferenceSolution(key(type),name)),reminders(useDefault,overrides(minutes)))"
+        "nextPageToken,items(id,iCalUID,updated,created,status,summary,description,location,htmlLink,etag,hangoutLink,transparency,visibility,eventType,recurringEventId,start,end,originalStartTime,attendees(email,displayName,responseStatus,optional,resource,organizer,self),organizer(email,displayName,self),conferenceData(entryPoints(entryPointType,uri),conferenceSolution(key(type),name)),reminders(useDefault,overrides(method,minutes)))"
 
     let connection: Connection
     let api: GoogleAPIClient

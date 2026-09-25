@@ -97,12 +97,23 @@ enum GoogleWriteMapper {
         }
     }
 
+    /// Google reminders are minutes before the start, shown as a popup or sent as an email to the account owner; any
+    /// other trigger or type is refused before a request is made ("rejected, not mangled").
     static func remindersJSON(_ reminders: [Reminder]) throws -> JSON {
         guard reminders.count <= 5 else { throw WriteError.invalid("Google allows at most 5 reminders") }
-        guard reminders.allSatisfy({ reminderMinutes.contains($0.minutesBefore) }) else {
-            throw WriteError.invalid("reminder minutes must be between 0 and 40320")
+        var overrides: [JSON] = []
+        for reminder in reminders {
+            let method: String
+            switch reminder.type {
+            case .display: method = "popup"
+            case .email(let address) where address == nil: method = "email"
+            default: throw WriteError.unsupported(fields: [.reminders])
+            }
+            guard let minutes = reminder.minutesBefore, reminder.repeatCount == 0 else { throw WriteError.unsupported(fields: [.reminders]) }
+            guard reminderMinutes.contains(minutes) else { throw WriteError.invalid("reminder minutes must be between 0 and 40320") }
+            overrides.append(["method": method, "minutes": minutes])
         }
-        return ["useDefault": false, "overrides": reminders.map { ["method": "popup", "minutes": $0.minutesBefore] as JSON }]
+        return ["useDefault": false, "overrides": overrides]
     }
 
     static func attendeeJSON(_ attendee: AttendeeDraft) -> JSON {

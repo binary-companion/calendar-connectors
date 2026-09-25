@@ -143,7 +143,7 @@ private func instant(_ s: String) -> Date { ISO8601DateFormatter().date(from: s)
     """))
     #expect(e.kind == .focusTime && e.availability == .free && e.visibility == .privateEvent)
     #expect(e.seriesID == "r" && e.originalStart == instant("2026-09-21T10:00:00Z"))
-    #expect(e.reminders == [Reminder(minutesBefore: 10), Reminder(minutesBefore: 60)])
+    #expect(e.reminders == [.before(minutes: 10, isCalendarDefault: false), .before(minutes: 60, type: .email(address: nil), isCalendarDefault: false)])
 }
 
 @Test func toleratesFractionalSecondsAndMissingTitle() throws {
@@ -189,7 +189,7 @@ private let times = #""start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTi
 
 @Test func useDefaultRemindersResolveToTheCalendarsDefaults() throws {
     let dto = try event(#"{"id":"d","reminders":{"useDefault":true},\#(times)}"#)
-    #expect(GoogleEventMapper.map(dto, calendar: withDefaults)?.reminders == [Reminder(minutesBefore: 30), Reminder(minutesBefore: 5)])
+    #expect(GoogleEventMapper.map(dto, calendar: withDefaults)?.reminders == [.before(minutes: 30, isCalendarDefault: true), .before(minutes: 5, isCalendarDefault: true)])
     let none = try event(#"{"id":"n","reminders":{"useDefault":false},\#(times)}"#)
     #expect(GoogleEventMapper.map(none, calendar: withDefaults)?.reminders == [])
 }
@@ -220,7 +220,7 @@ private let times = #""start":{"dateTime":"2026-09-21T10:00:00Z"},"end":{"dateTi
 
 @Test func calendarListEntriesCarryTheirDefaultReminders() throws {
     let dto = try JSONDecoder().decode(GoogleCalendarListEntryDTO.self, from: Data(#"{"id":"c","defaultReminders":[{"method":"popup","minutes":10}]}"#.utf8))
-    #expect(GoogleEventMapper.descriptor(from: dto, accountName: nil)?.defaultReminders == [Reminder(minutesBefore: 10)])
+    #expect(GoogleEventMapper.descriptor(from: dto, accountName: nil)?.defaultReminders == [.before(minutes: 10, isCalendarDefault: true)])
 }
 
 // Calendar identity and permissions (Issues 6 and 7).
@@ -264,4 +264,9 @@ private func descriptor(_ json: String) throws -> CalendarDescriptor {
     #expect(e.created == instant("2026-09-01T00:00:00Z"))
     #expect(abs(try #require(e.lastModified).timeIntervalSince(instant("2026-09-20T08:00:00Z")) - 0.123) < 0.001)
     #expect(try #require(try map(#"{"id":"v",\#(times)}"#)).lastModified == nil)
+}
+
+@Test func aReminderMethodOtherThanPopupOrEmailIsKept() throws {
+    let e = try #require(try map(#"{"id":"m","reminders":{"useDefault":false,"overrides":[{"method":"sms","minutes":5}]},\#(times)}"#))
+    #expect(e.reminders == [.before(minutes: 5, type: .other("sms"), isCalendarDefault: false)])
 }

@@ -9,7 +9,7 @@ enum GoogleEventMapper {
             id: dto.id, title: dto.summaryOverride ?? dto.summary ?? dto.id, service: .google, colorHex: dto.backgroundColor,
             permissions: permissions(forRole: dto.accessRole), isDefault: dto.primary ?? false,
             timeZone: dto.timeZone.flatMap { TimeZone(identifier: $0) }, accountName: accountName, kind: calendarKind,
-            defaultReminders: (dto.defaultReminders ?? []).compactMap { $0.minutes.map(Reminder.init(minutesBefore:)) },
+            defaultReminders: (dto.defaultReminders ?? []).compactMap { reminder(method: $0.method, minutes: $0.minutes, isCalendarDefault: true) },
             provider: calendarKind == .standard ? .google : .subscription, supportedAvailabilities: supportedAvailabilities)
     }
 
@@ -147,8 +147,21 @@ enum GoogleEventMapper {
     /// it uses the defaults. An event without a `reminders` object has none.
     private static func reminders(_ dto: GoogleRemindersDTO?, calendar: CalendarDescriptor) -> [Reminder] {
         guard let dto else { return [] }
-        if dto.useDefault == true { return calendar.defaultReminders ?? [] }
-        return (dto.overrides ?? []).compactMap { $0.minutes.map(Reminder.init(minutesBefore:)) }
+        if dto.useDefault == true { return (calendar.defaultReminders ?? []).map { var r = $0; r.isCalendarDefault = true; return r } }
+        return (dto.overrides ?? []).compactMap { reminder(method: $0.method, minutes: $0.minutes, isCalendarDefault: false) }
+    }
+
+    /// `popup` is an on-screen alert, `email` an email to the account owner (no address); another method is kept as
+    /// `.other`. Google counts minutes before the start (all-day: before midnight in the calendar's zone).
+    private static func reminder(method: String?, minutes: Int?, isCalendarDefault: Bool) -> Reminder? {
+        guard let minutes else { return nil }
+        let type: ReminderType
+        switch method {
+        case "popup", nil: type = .display
+        case "email": type = .email(address: nil)
+        case let other?: type = .other(other)
+        }
+        return .before(minutes: minutes, type: type, isCalendarDefault: isCalendarDefault)
     }
 
     private static func series(_ dto: GoogleEventDTO, calendarZone: TimeZone) -> SeriesInfo {

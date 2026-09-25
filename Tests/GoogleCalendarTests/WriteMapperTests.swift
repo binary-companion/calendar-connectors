@@ -202,3 +202,14 @@ private func same(_ a: Any, _ b: Any) -> Bool {
     let patched = try GoogleWriteMapper.patchBody(EventPatch(availability: .unavailable), currentAttendees: nil).json
     #expect(patched["transparency"] as? String == "opaque")
 }
+
+@Test func remindersBecomePopupOrEmailAndUnsupportedOnesAreRefused() throws {
+    let json = try GoogleWriteMapper.remindersJSON([.before(minutes: 10), .before(minutes: 60, type: .email(address: nil))])
+    let overrides = json["overrides"] as? [[String: Any]] ?? []
+    #expect(overrides.map { $0["method"] as? String } == ["popup", "email"] && overrides.map { $0["minutes"] as? Int } == [10, 60])
+    for reminder in [Reminder(trigger: .relative(offset: -60, to: .end)), Reminder(trigger: .absolute(Date())),
+                     .before(minutes: 5, type: .audio(soundName: nil)), .before(minutes: 5, type: .email(address: "a@x.test")),
+                     Reminder(trigger: .relative(offset: -60, to: .start), repeatCount: 1, repeatInterval: 60)] {
+        #expect(throws: WriteError.unsupported(fields: [.reminders])) { _ = try GoogleWriteMapper.remindersJSON([reminder]) }
+    }
+}

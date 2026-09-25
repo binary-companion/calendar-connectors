@@ -96,7 +96,7 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
 | `attendees` | `[Attendee]` | `name?`, `email?` (trimmed, lowercased), `role` (`required/optional/resource`), `response`, `isSelf`, `isOrganizer` |
 | `organizer` | `Attendee?` | |
 | `conferences` | `[ConferenceInfo]` | Join links, most likely first: `url`, `provider` (`meet/teams/zoom/webex/goToMeeting/whereby/jitsi/slack/other`), `origin` (`structured/location/url/notes/eventURL`), computed `identity`. Filled by every connector through `ConferenceDetector`. `conference` is the first entry (get-only). |
-| `reminders` | `[Reminder]?` | `minutesBefore`; `[]` means none, nil means the source does not say. Google `useDefault` resolves to the calendar's `defaultReminders` |
+| `reminders` | `[Reminder]?` | `[]` means none, nil means the source does not say. Each `Reminder` is modeled on `EKAlarm`: `trigger` (`.relative(offset:to: .start/.end)`, `.absolute(Date)`, `.location(StructuredLocation, .enter/.leave)`), `type` (`.display`, `.audio(soundName:)`, `.email(address:)`, `.procedure(url:)`, `.other(String)`), `repeatCount`, `repeatInterval`, `isCalendarDefault`. `Reminder(minutesBefore:)` and `Reminder.before(minutes:type:isCalendarDefault:)` build the common case; `minutesBefore` is a get-only `Int?` (non-nil for a relative-to-start trigger) and `fireDate(eventStart:eventEnd:)` resolves relative and absolute triggers. Google `useDefault` resolves to the calendar's `defaultReminders` with `isCalendarDefault == true`. The library reports every reminder; the host decides which to honor |
 | `url` | `URL?` | Link to the event in the provider's UI |
 | `version` | `String?` | Opaque provider version (Google etag, EventKit `lastModifiedDate` as a fractional-epoch string); the base of optimistic writes (part 10) |
 | `participation` | `Participation?` | `.notInvited` or `.invited(ResponseStatus)`; nil when the source does not say. `myResponse` is a get-only accessor (nil for both unknown and not invited) |
@@ -426,7 +426,7 @@ an event with no other attendees; otherwise `.unsupported(fields: [.attendees])`
   timing, availability, visibility, reminders and attendees (by normalized email), plus removal of `conference`, and ignores
   provider-owned fields, a changed or added conference, recurrence, the account owner (the `isSelf` attendee), and a name
   cleared to `nil` with the role unchanged (an `AttendeeDraft` cannot express clearing a name). `withoutBase()` drops the
-  base; `applied(to:)` applies a patch to an event (used by the in-memory test source; `.clear` reminders gives `[]`).
+  base; `applied(to:)` applies a patch to an event (used by the in-memory test source; `.clear` reminders gives nil, the calendar's defaults).
 - `EventEdit(original)` with `event` (the working copy), `patch` and `hasChanges` for callers that want tracked edits.
 - `RecurrenceRule`: frequency (daily/weekly/monthly/yearly), interval, weekdays with optional ordinal, month days,
   months, and end (`.never`, `.count(n)`, `.until(date)`), with `init(rrule:in:)`, `validate()` and
@@ -530,7 +530,7 @@ provider metadata; a `metadata` field and capability can be added later without 
   attachments, the Meet re-request on a new series, and the `COUNT` arithmetic (assumes `events.instances?showDeleted=true`
   includes EXDATE'd occurrences) are checked only against the fake transport until the Google smoke test confirms them.
   The same goes for how a split treats exceptions after the split point (see the known limitations in part 10).
-- **Reminder defaults.** A provider's "use default reminders" and "no reminders" both read as an empty list.
+- **Reminder defaults.** Reads tell "the calendar's defaults" (`isCalendarDefault == true`) from "none" (`[]`) from "unknown" (nil). Writers accept reminders relative to the start with an on-screen alert (Google also email to the owner, 0 to 40320 minutes, at most 5; EventKit also absolute and location triggers and a sound); anything else throws `.unsupported(fields: [.reminders])` before any request. `EventDraft(copying:)` keeps unknown as defaults, `[]` as none, a list that is all calendar defaults as defaults, and otherwise copies only plain start-relative alerts. A patch or merge compares reminders as a set (ignoring order and `isCalendarDefault`).
 - **Google OAuth client in release builds.** The client id and secret are injected from git-ignored configuration; CI
   injection for release builds is a separate follow-up.
 - **No CalDAV or Microsoft connector yet.** They are the next providers; their `AuthorizationMethod` cases (`.password`,

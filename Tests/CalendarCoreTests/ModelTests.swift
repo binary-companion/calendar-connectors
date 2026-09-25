@@ -101,3 +101,36 @@ import Testing
     stored.availability = nil   // unknown is never an adjustment
     #expect(draft.adjustments(comparedTo: stored).isEmpty)
 }
+
+// Reminders (Issue 4).
+
+@Test func aReminderFiresRelativeToTheStartOrEndOrAtADate() {
+    let start = Date(timeIntervalSince1970: 10_000), end = Date(timeIntervalSince1970: 13_600)
+    #expect(Reminder(minutesBefore: 10).fireDate(eventStart: start, eventEnd: end) == start.addingTimeInterval(-600))
+    #expect(Reminder(trigger: .relative(offset: -300, to: .end)).fireDate(eventStart: start, eventEnd: end) == end.addingTimeInterval(-300))
+    let fixed = Date(timeIntervalSince1970: 5_000)
+    #expect(Reminder(trigger: .absolute(fixed)).fireDate(eventStart: start, eventEnd: end) == fixed)
+    #expect(Reminder(trigger: .location(StructuredLocation(title: "Home"), .enter)).fireDate(eventStart: start, eventEnd: end) == nil)
+}
+
+@Test func anAllDayReminderFiresExactlyItsOffsetBeforeTheCanonicalMidnightAcrossADaylightSavingChange() {
+    // 2026-03-08 is 23 hours long in New York; the offset is a duration, not a wall-clock time.
+    let zone = TimeZone(identifier: "America/New_York")!
+    let range = AllDay.canonical(first: CalendarDate(year: 2026, month: 3, day: 8), endExclusive: CalendarDate(year: 2026, month: 3, day: 9), in: zone)!
+    let reminder = Reminder.before(minutes: 9 * 60)
+    #expect(reminder.fireDate(eventStart: range.start, eventEnd: range.end) == range.start.addingTimeInterval(-9 * 3600))
+}
+
+@Test func minutesBeforeIsNilUnlessTheTriggerIsRelativeToTheStart() {
+    #expect(Reminder(minutesBefore: 15).minutesBefore == 15)
+    #expect(Reminder(trigger: .relative(offset: -60, to: .end)).minutesBefore == nil)
+    #expect(Reminder(trigger: .absolute(Date())).minutesBefore == nil)
+    #expect(Reminder(trigger: .location(StructuredLocation(), .leave)).minutesBefore == nil)
+}
+
+@Test func reminderListsAreComparedIgnoringOrderAndTheCalendarDefaultFlag() {
+    let a = [Reminder.before(minutes: 10, isCalendarDefault: true), .before(minutes: 60)]
+    let b = [Reminder.before(minutes: 60, isCalendarDefault: false), .before(minutes: 10)]
+    #expect(Reminder.sameSet(a, b))
+    #expect(!Reminder.sameSet(a, [.before(minutes: 10), .before(minutes: 60, type: .email(address: nil))]))   // a changed alert type differs
+}

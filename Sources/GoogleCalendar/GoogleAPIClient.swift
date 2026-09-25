@@ -169,7 +169,7 @@ struct GoogleAPIClient: Sendable {
                     URLQueryItem(name: "showHidden", value: "false"),
                     URLQueryItem(name: "minAccessRole", value: "freeBusyReader"),
                     URLQueryItem(name: "maxResults", value: "250"),
-                    URLQueryItem(name: "fields", value: "nextPageToken,items(id,summary,summaryOverride,backgroundColor,accessRole,primary,timeZone,hidden,deleted,defaultReminders(minutes))"),
+                    URLQueryItem(name: "fields", value: "nextPageToken,items(id,summary,summaryOverride,backgroundColor,accessRole,primary,timeZone,hidden,deleted,defaultReminders(method,minutes))"),
                 ],
                 next: { $0.nextPageToken }, handle: { entries += $0.items ?? [] })
         } catch let error as GoogleAPIError {

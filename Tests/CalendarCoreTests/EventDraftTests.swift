@@ -111,11 +111,29 @@ private func source() -> CalendarEvent {
     #expect(draft.recurrence == nil)
 }
 
-@Test func copyingTurnsEmptyRemindersIntoCalendarDefaults() {
+private let allWritable = SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases))
+
+private func copiedReminders(_ reminders: [Reminder]?) -> [Reminder]? {
     var event = source()
-    event.reminders = []
-    let draft = EventDraft(copying: event, for: SourceCapabilities(canWrite: true, writableFields: Set(EventField.allCases)))
-    #expect(draft.reminders == nil)
+    event.reminders = reminders
+    return EventDraft(copying: event, for: allWritable).reminders
+}
+
+@Test func copyingKeepsUnknownAsDefaultsAndARealNoneAsNone() {
+    #expect(copiedReminders(nil) == nil)
+    #expect(copiedReminders([]) == [])
+}
+
+@Test func copyingAListThatIsAllCalendarDefaultsUsesTheTargetsDefaults() {
+    #expect(copiedReminders([.before(minutes: 10, isCalendarDefault: true), .before(minutes: 60, isCalendarDefault: true)]) == nil)
+}
+
+@Test func copyingKeepsOnlyPlainRemindersRelativeToTheStart() {
+    let location = Reminder(trigger: .location(StructuredLocation(title: "Home"), .enter))
+    let email = Reminder.before(minutes: 30, type: .email(address: nil))
+    let repeating = Reminder(trigger: .relative(offset: -60, to: .start), repeatCount: 2, repeatInterval: 60)
+    #expect(copiedReminders([.before(minutes: 10, isCalendarDefault: false), location, email, repeating]) == [.before(minutes: 10)])
+    #expect(copiedReminders([location, email]) == nil)   // nothing copyable: the target's defaults
 }
 
 @Test func copyingToAReadOnlyTargetKeepsOnlyTheRequiredParts() {

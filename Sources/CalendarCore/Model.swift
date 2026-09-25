@@ -95,9 +95,106 @@ public struct ConferenceInfo: Hashable, Sendable {
     }
 }
 
+/// What a reminder counts from when it is relative to the event.
+public enum ReminderAnchor: Hashable, Sendable { case start, end }
+
+/// When a reminder fires. The cases are mutually exclusive, so a reminder cannot be both absolute and location-based.
+public enum ReminderTrigger: Hashable, Sendable {
+    /// Seconds from the event's start or end; negative means before. EventKit's `relativeOffset`; `.end` covers
+    /// iCalendar `RELATED=END`, which EventKit cannot express.
+    case relative(offset: TimeInterval, to: ReminderAnchor)
+    /// A fixed moment (EventKit `absoluteDate`).
+    case absolute(Date)
+    /// Arriving at or leaving a place (EventKit `structuredLocation` and `proximity`).
+    case location(StructuredLocation, ReminderProximity)
+}
+
+/// What the alert does, with its related value. `.other` keeps a provider value the library does not know.
+public enum ReminderType: Hashable, Sendable {
+    case display
+    case audio(soundName: String?)
+    /// A nil address means the account owner (Google).
+    case email(address: String?)
+    case procedure(url: URL?)
+    case other(String)
+}
+
+public enum ReminderProximity: String, Hashable, Sendable { case enter, leave }
+
+/// A place, as plain values (no CoreLocation), so the library stays portable. Used by location reminders only; an
+/// event's own location stays the provider's raw text.
+public struct StructuredLocation: Hashable, Sendable {
+    public var title: String?
+    public var latitude: Double?
+    public var longitude: Double?
+    /// Metres; nil means the platform default.
+    public var radius: Double?
+    public init(title: String? = nil, latitude: Double? = nil, longitude: Double? = nil, radius: Double? = nil) {
+        self.title = title
+        self.latitude = latitude
+        self.longitude = longitude
+        self.radius = radius
+    }
+}
+
+/// One reminder, closely modeled on EventKit's `EKAlarm`. The library reports every reminder in this one shape; the
+/// consumer decides which to honor and when to show them. It never filters, merges or schedules them.
 public struct Reminder: Hashable, Sendable {
-    public var minutesBefore: Int
-    public init(minutesBefore: Int) { self.minutesBefore = minutesBefore }
+    public var trigger: ReminderTrigger
+    public var type: ReminderType
+    /// How many more times it fires after the first (iCalendar REPEAT); 0 means once.
+    public var repeatCount: Int
+    /// Seconds between repeats (iCalendar DURATION); nil when it does not repeat.
+    public var repeatInterval: TimeInterval?
+    /// True when the reminder came from the calendar's defaults (Google `useDefault`); nil when the source cannot say.
+    /// Not part of a reminder's write identity.
+    public var isCalendarDefault: Bool?
+
+    public init(
+        trigger: ReminderTrigger, type: ReminderType = .display, repeatCount: Int = 0, repeatInterval: TimeInterval? = nil,
+        isCalendarDefault: Bool? = nil
+    ) {
+        self.trigger = trigger
+        self.type = type
+        self.repeatCount = repeatCount
+        self.repeatInterval = repeatInterval
+        self.isCalendarDefault = isCalendarDefault
+    }
+
+    /// Relative to the start, a plain on-screen alert: the common case.
+    public init(minutesBefore: Int) {
+        self.init(trigger: .relative(offset: -(Double(minutesBefore) * 60), to: .start))
+    }
+
+    public static func before(minutes: Int, type: ReminderType = .display, isCalendarDefault: Bool? = nil) -> Reminder {
+        Reminder(trigger: .relative(offset: -(Double(minutes) * 60), to: .start), type: type, isCalendarDefault: isCalendarDefault)
+    }
+
+    /// Whole minutes before the start; nil unless the trigger is relative to the start.
+    public var minutesBefore: Int? {
+        guard case .relative(let offset, .start) = trigger else { return nil }
+        return Int((-offset / 60).rounded())
+    }
+
+    /// When it fires for an event running `eventStart` to `eventEnd`. All-day events already use canonical midnights,
+    /// so offsets land correctly. nil for a location trigger, whose timing is up to the host.
+    public func fireDate(eventStart: Date, eventEnd: Date) -> Date? {
+        switch trigger {
+        case .relative(let offset, let anchor): return (anchor == .start ? eventStart : eventEnd).addingTimeInterval(offset)
+        case .absolute(let date): return date
+        case .location: return nil
+        }
+    }
+
+    /// Everything a write can change, without `isCalendarDefault` (which differs between a provider read and a
+    /// hand-built list and is not something a writer sets).
+    var writeIdentity: String { "\(trigger)|\(type)|\(repeatCount)|\(repeatInterval.map { String($0) } ?? "-")" }
+
+    /// Whether two lists hold the same reminders, ignoring order and `isCalendarDefault` (providers do not promise to
+    /// keep reminder order).
+    public static func sameSet(_ a: [Reminder], _ b: [Reminder]) -> Bool {
+        a.map(\.writeIdentity).sorted() == b.map(\.writeIdentity).sorted()
+    }
 }
 
 /// The connector a calendar is read through (`ConnectorKind.id`): "eventkit", "google", later "microsoft", "caldav".

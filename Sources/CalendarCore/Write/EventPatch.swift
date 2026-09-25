@@ -108,7 +108,9 @@ public struct EventPatch: Sendable, Equatable {
         // A nil value on the edited copy means "unknown", which is never a change.
         if let value = edited.availability, value != original.availability { availability = value }
         if let value = edited.visibility, value != original.visibility { visibility = value }
-        if let value = edited.reminders, value != original.reminders { reminders = .set(value) }
+        if let value = edited.reminders, !Reminder.sameSet(value, original.reminders ?? []) || original.reminders == nil {
+            reminders = !value.isEmpty && value.allSatisfy({ $0.isCalendarDefault == true }) ? .clear : .set(value)
+        }
         attendees = Self.attendeeChanges(from: original.attendees, to: edited.attendees)
         if original.conferences.contains(where: { $0.origin == .structured }) && !edited.conferences.contains(where: { $0.origin == .structured }) { conference = .remove }
         base = original
