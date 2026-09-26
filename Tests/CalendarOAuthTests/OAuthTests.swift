@@ -123,3 +123,12 @@ private func form(_ request: HTTPRequest) -> [String: String] {
         try await client(transport).exchange(code: "c", verifier: "v", redirectURI: URL(string: "http://127.0.0.1:1")!)
     }
 }
+
+@Test func refreshMapsInteractionRequiredToAuthExpired() async throws {
+    let transport = FakeTransport()
+    await transport.route("token", [.json(["error": "interaction_required"], status: 400)])
+    let client = OAuthClient(
+        config: OAuthConfig(authorizationEndpoint: URL(string: "https://a.example/auth")!, tokenEndpoint: URL(string: "https://a.example/token")!, clientID: "c", scopes: []),
+        transport: transport, now: { Date() })
+    await #expect(throws: SourceError.authExpired) { _ = try await client.refresh(refreshToken: "rt") }
+}

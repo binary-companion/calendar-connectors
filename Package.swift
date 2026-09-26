@@ -8,15 +8,18 @@ let package = Package(
         .library(name: "CalendarCore", targets: ["CalendarCore"]),
         .library(name: "CalendarOAuth", targets: ["CalendarOAuth"]),
         .library(name: "GoogleCalendar", targets: ["GoogleCalendar"]),
+        .library(name: "MicrosoftCalendar", targets: ["MicrosoftCalendar"]),
         .library(name: "CalendarTestSupport", targets: ["CalendarTestSupport"]),
     ],
     targets: [
         .target(name: "CalendarCore"),
         .target(name: "CalendarOAuth", dependencies: ["CalendarCore"]),
         .target(name: "GoogleCalendar", dependencies: ["CalendarCore", "CalendarOAuth"]),
+        .target(name: "MicrosoftCalendar", dependencies: ["CalendarCore", "CalendarOAuth"]),
         .target(name: "CalendarTestSupport", dependencies: ["CalendarCore"]),
         .testTarget(name: "CalendarCoreTests", dependencies: ["CalendarCore", "CalendarTestSupport"]),
         .testTarget(name: "CalendarOAuthTests", dependencies: ["CalendarOAuth", "CalendarCore", "CalendarTestSupport"]),
         .testTarget(name: "GoogleCalendarTests", dependencies: ["GoogleCalendar", "CalendarOAuth", "CalendarCore", "CalendarTestSupport"]),
+        .testTarget(name: "MicrosoftCalendarTests", dependencies: ["MicrosoftCalendar", "CalendarOAuth", "CalendarCore", "CalendarTestSupport"]),
     ]
 )

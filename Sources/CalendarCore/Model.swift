@@ -204,6 +204,7 @@ public struct CalendarService: RawRepresentable, Hashable, Sendable {
     public init(rawValue: String) { self.rawValue = rawValue }
     public static let eventKit = CalendarService(rawValue: "eventkit")
     public static let google = CalendarService(rawValue: "google")
+    public static let microsoft = CalendarService(rawValue: "microsoft")
 }
 
 /// Who hosts a calendar, which can differ from the service reading it: a Google calendar read directly has service

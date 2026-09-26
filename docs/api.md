@@ -1,9 +1,10 @@
 # Calendar Connectors: API contract
 
-Status: parts 1 to 10 describe the code on `master` once Phase 3 (write capabilities) has merged; part 11 lists the known gaps.
+Status: parts 1 to 10 describe the code on `master` once Phase 3 (write capabilities) has merged; part 11 lists the known gaps;
+part 12 describes the Microsoft connector (Phase 4).
 The library is pre-1.0 and lives in this repository; it is meant to be extracted into its own repository once a
-second provider (Microsoft, Phase 4) has proved the API is provider-neutral. Until then, anything here can change
-with a matching change to this document.
+second provider (Microsoft, Phase 4) has proved the API is provider-neutral: the connector exists, and the extraction
+waits for its live checks (part 12). Until then, anything here can change with a matching change to this document.
 
 ## 1. What the suite is
 
@@ -15,6 +16,7 @@ providers behind one model, plus the small amount of host-specific glue TimeTug 
 | `CalendarConnectors` / `CalendarCore` | Model, source and connector protocols, stores, HTTP seam, change polling, all-day helpers | Foundation only | Portable; built on Linux in CI |
 | `CalendarConnectors` / `CalendarOAuth` | OAuth 2.0 authorization-code + PKCE client, access-token cache | `CalendarCore` | Portable; no crypto dependency (pure-Swift SHA-256 default) |
 | `CalendarConnectors` / `GoogleCalendar` | Google Calendar connector (REST v3) | `CalendarCore`, `CalendarOAuth` | Portable |
+| `CalendarConnectors` / `MicrosoftCalendar` | Microsoft (Outlook) connector over Microsoft Graph v1.0 | `CalendarCore`, `CalendarOAuth` | Portable |
 | `CalendarConnectors` / `CalendarTestSupport` | Fakes and conformance helpers for connector tests | `CalendarCore` | Test-only product |
 | `CalendarApple` | Apple-only adapters: Keychain credentials, loopback and web-auth-session OAuth interaction, CryptoKit hashing | `CalendarCore`, `CalendarOAuth` | macOS |
 | `EventKitSource` | Apple Calendar via EventKit as a connector | `CalendarCore` | macOS |
@@ -24,7 +26,7 @@ Layering rule: maximise generic, cross-platform code in `CalendarConnectors`. An
 Network.framework, EventKit, AuthenticationServices) lives in a separate adapter that implements a library
 protocol, so another host can supply its own.
 
-Dependency direction: `GoogleCalendar` → `CalendarOAuth` → `CalendarCore`; adapters and the bridge depend on
+Dependency direction: `GoogleCalendar` and `MicrosoftCalendar` → `CalendarOAuth` → `CalendarCore`; adapters and the bridge depend on
 `CalendarCore`; nothing in `CalendarConnectors` depends on an adapter.
 
 ## 2. Conventions every part of the contract relies on
@@ -531,10 +533,104 @@ provider metadata; a `metadata` field and capability can be added later without 
   includes EXDATE'd occurrences) are checked only against the fake transport until the Google smoke test confirms them.
   The same goes for how a split treats exceptions after the split point (see the known limitations in part 10).
 - **Reminder defaults.** Reads tell "the calendar's defaults" (`isCalendarDefault == true`) from "none" (`[]`) from "unknown" (nil). Writers accept reminders relative to the start with an on-screen alert (Google also email to the owner, 0 to 40320 minutes, at most 5; EventKit also absolute and location triggers and a sound); anything else throws `.unsupported(fields: [.reminders])` before any request. `EventDraft(copying:)` keeps unknown as defaults, `[]` as none, a list that is all calendar defaults as defaults, and otherwise copies only plain start-relative alerts. A patch or merge compares reminders as a set (ignoring order and `isCalendarDefault`).
-- **Google OAuth client in release builds.** The client id and secret are injected from git-ignored configuration; CI
-  injection for release builds is a separate follow-up.
-- **No CalDAV or Microsoft connector yet.** They are the next providers; their `AuthorizationMethod` cases (`.password`,
-  `.oauth`) are already in the contract.
+- **OAuth clients in release builds.** The Google client id and secret and the Microsoft client id are injected from
+  git-ignored configuration locally, and from optional repository secrets by `scripts/ci/google-oauth-config.sh` and
+  `scripts/ci/microsoft-oauth-config.sh` in the beta and release workflows (see `AGENTS.md`).
+- **Microsoft behavior beyond the fake transport (unverified).** Everything in part 12 is tested against fakes; the
+  opt-in live smoke test and the manual checklist in the Phase 4 spec are what confirm it against real accounts.
+- **No CalDAV connector yet.** It is the next provider; its `AuthorizationMethod` case (`.password`) is already in the
+  contract.
+
+## 12. `MicrosoftCalendar` (Phase 4)
+
+`docs/superpowers/specs/2026-09-25-calendar-connectors-phase4-microsoft-design.md` is the design and rationale; this part
+is the contract as built. Public surface: `MicrosoftOAuthConfig(clientID:redirectHost:)`,
+`MicrosoftConnectorKind(config:transport:now:sleep:pollInterval:hasher:)`, and the `CalendarSource` returned by
+`makeSource` (id `microsoft-<connectionID>`), which is a `WritableCalendarSource`, a `SeriesSource` and a
+`PollingCalendarSource`. Everything else (the Graph client, DTOs and mappers) is internal. The connector is a small REST client over
+`HTTPTransport` and needs no Microsoft SDK.
+
+- **Kind:** id `microsoft`, display name "Microsoft", all platforms, `.oauth`. A public client: PKCE, no client secret,
+  the `common` authority (`https://login.microsoftonline.com/common/oauth2/v2.0/...`), so personal and work or school
+  accounts both sign in. Scopes: `offline_access`, `User.Read`, `MailboxSettings.Read`, `Calendars.ReadWrite` and
+  `Calendars.ReadWrite.Shared` (shared and delegated calendars). Authorization requests carry `prompt=select_account` so a
+  browser already signed in to one Microsoft account does not silently pick it. A work account outside the registering
+  tenant may need its admin to approve the app while it has no verified publisher; that surfaces as the sign-in error,
+  it is not worked around. `invalid_grant` and `interaction_required` from the token endpoint are `.authExpired`.
+- **Redirect:** the registration lists `http://localhost` (Microsoft ignores the port for a loopback redirect).
+  `MicrosoftOAuthConfig.redirectHost` defaults to `localhost` and replaces the host in the redirect URI the session
+  reports (`127.0.0.1:<port>`); the loopback listener still binds the loopback interface. `nil` keeps the session's own host.
+- **Connection:** after the code exchange, `GET /me?$select=mail,userPrincipalName`; `config["email"]` and `displayName`
+  are `mail`, else `userPrincipalName`, lowercased. `reauthorize` throws `invalidResponse("signed in as a different
+  account")` on another identity. A response without a refresh token is `invalidResponse`. Secrets are stored only after
+  sign-in succeeds; a rotated refresh token is written back by `AccessTokenProvider`.
+- **Capabilities:** `canWrite`, `canEditAttendees`, `canRespondToInvite`, `.token` sync, every `EventField` writable, all
+  three recurrence scopes, `controlsNotifications == false`. Graph has no `sendUpdates`: on create, update and delete it
+  emails attendees as the server sees fit and `NotifyPolicy` is accepted and ignored. `respond` alone honors it:
+  `sendResponse` is false for `.none` and true otherwise. `providedFields` are Google's list without `.defaultReminders`
+  (Graph calendars carry no reminder defaults; `defaultReminders` is nil).
+- **Account time zone.** Times need a zone per calendar (which anchors all-day dates). Every calendar of the account gets the
+  mailbox's zone from `GET /me/mailboxSettings/timeZone`, a Windows or IANA name turned into a `TimeZone` by `WindowsTimeZones`
+  (a two-way table, pure Swift). A refused scope (403) or a name outside the table is UTC, so `CalendarDescriptor.timeZone` is
+  never nil; a network or server failure is rethrown instead, so events are not read in the wrong zone. The zone is read on each
+  `calendars()` call and remembered for `events(in:)`. Event reads send `Prefer: outlook.timezone="<name>"`, so an all-day event
+  falls on the date the user sees; a timed event's `timeZone` is its `originalStartTimeZone` when Graph gives one, else the
+  account zone.
+- **Reads:** `GET /me/calendars` (owned and shared; `hexColor` is the only color source, there is no fallback from Graph's
+  color name), then per calendar `calendarView` for the window, paged with `@odata.nextLink` (links must stay on
+  `graph.microsoft.com`), occurrences expanded, cancelled events dropped. Every request sends
+  `Prefer: IdType="ImmutableId"`; event reads also send `Prefer: outlook.body-content-type="text"` (an HTML body is stripped
+  to text anyway). A calendar that answers 404 or 403 is skipped. 429, 503 and 504 retry up to three times honoring
+  `Retry-After` (else jittered exponential backoff), then `.rateLimited` or `.server`; 401 refreshes once, then
+  `.authExpired`. `EventRef.seriesID` of an occurrence is the series master's id; a series master is its own series
+  (`seriesID` = its id, `originalStart` = its start).
+- **Change detection:** one `calendarView/delta` link per calendar (window now minus 30 days to now plus 365 days, pages of
+  200), stored in the `SyncStateStore` with its baseline date. The first call baselines and reports nothing; a poll walks to
+  the last page and reports `.eventsChanged(calendarIDs:)` when any item (including a removal) arrived. A baseline older than
+  14 days is renewed after the poll (so the window always keeps at least 16 days back and 350 days ahead), and so is one
+  Graph answers with 410 or a resync error; both report a change, because the renewal discards what it lists. A changed set
+  of calendars is `.calendarsChanged`.
+- **Writes** (`WritableCalendarSource`, part 10). A write validates before the first request. Graph has no `If-Match`
+  for events, so optimistic locking is a read just before the write, judged by `PatchMerge` against `EventPatch.base`
+  (a change landing between that read and the write is not caught). Limits, each reported as `WriteError.unsupported`
+  before any request:
+  - one reminder per event: an empty list turns it off, one plain on-screen start-relative reminder turns it on; several,
+    a repeat, an email or an end-relative one are refused, and `.clear` on reminders cannot be expressed (there is no
+    calendar default to fall back to);
+  - a recurrence can be set (rules Graph can express; Graph has one ordinal per pattern, no fifth, one month day, one
+    month for a yearly rule, and only a Monday week start) but not removed (`.clear` throws);
+  - a generated conference is a Teams meeting (`teamsForBusiness`); a personal account may refuse it, which comes back
+    as an error;
+  - `iCalUId` is read-only in Graph: `EventDraft.uid` is used only for the duplicate check (a lookup of
+    `iCalUId eq '<uid>'` on the target calendar; a hit throws `WriteError.alreadyExists(storedCopy)`) and is not stored, so
+    a created event has its own uid.
+  A `.thisInstance` write addresses the occurrence's own id (never looked up by `originalStart`); `.allInSeries` addresses the
+  master, and a timing change there needs the first occurrence (like Google and EventKit). A patch's timing is written as a
+  local `dateTime` plus a Windows zone name (a zone with no Windows name is written in UTC with the same instants); an
+  attendee patch sends the full list, as Graph replaces it; reminders and notes are text. Delete is a plain `DELETE`.
+  `respond` posts `accept`, `tentativelyAccept` or `decline`; `.needsAction` is `.invalid`, `.thisAndFollowing` is
+  `.unsupported(fields: [.attendees])`. Errors: 404 and 410 `.notFound`, 403 `.forbidden`, 400 `.invalid`; 409 and 412 are
+  unexpected (no write sends a precondition or a chosen id) and become `SourceError.invalidResponse`.
+- **`.thisAndFollowing`** is a truncation plus a new series, like Google's. At the series' first occurrence it is the same as
+  `.allInSeries`. Otherwise the master's range is rewritten to end the day before the split (`endDate`), and (for an update)
+  a new series is inserted from the occurrence's original slot, carrying the master's fields plus the patch. A `numbered`
+  range continues with the remaining count: the occurrences before the split are counted through the master's `instances`
+  endpoint, which may not list a deleted occurrence, so the count can be short. The insert carries a `transactionId`:
+  if its reply is lost it is sent once more and the server returns the first result. Anything that can fail without changing
+  anything happens before the truncation; if the insert fails for good the master's rule is restored (even when the
+  caller was cancelled); `WriteError.partial` reports a failed restore, or an insert whose outcome is unknown after the
+  retry. A truncation whose reply is lost on an update is restored too. The split point is `EventRef.originalStart`,
+  which is what an occurrence's `originalStart` provides. `NotifyPolicy` does not apply.
+- **`SeriesSource`:** `series(id:calendarID:)` reads the master and returns its rule and start. An unknown id, a cancelled
+  master or one that is not a `seriesMaster` with a recurrence is `SourceError.notFound`. Graph v1.0 does not list the
+  skipped or extra dates of a series, so `excludedDates` and `extraDates` are nil (as for EventKit); a pattern the mapper does not
+  know is kept in `unparsed`. The mapper reads every pattern Graph produces (`daily`, `weekly`, `absoluteMonthly`,
+  `relativeMonthly`, `absoluteYearly`, `relativeYearly`; `noEnd`, `numbered`, `endDate` as the end of that date in the
+  range's zone).
+- **Testing.** Unit tests run on `FakeTransport` in `MicrosoftCalendarTests` (with `AllDayConformance`,
+  `ProvidedFieldsConformance` and `WritableSourceConformance`). The live smoke test is opt-in and never runs in CI:
+  `TIMETUG_LIVE_MICROSOFT=1 MICROSOFT_OAUTH_CLIENT_ID=<your client id> swift test --package-path Packages/CalendarApple --filter microsoftWriteSmoke`
+  (interactive sign-in; writes events named "TimeTug write smoke" to the primary calendar and deletes them).
 
 ## Calendar identity and permissions
 
@@ -551,7 +647,7 @@ provider metadata; a `metadata` field and capability can be added later without 
 - `RecurrenceRule` (in `CalendarCore/Recurrence/`) is one type for reading and writing; see ADR 0015. `RecurrenceRule(rrule:in:)` throws `RecurrenceParseError.malformed` only for malformed text; `validate()` decides whether a rule can be written and throws `WriteError.unsupported(fields: [.recurrence])` for what no writer can express (sub-daily frequencies, `BYYEARDAY`, `BYWEEKNO`, `BYSETPOS`, `BYHOUR`, `BYMINUTE`, `BYSECOND`, a non-Monday `WKST`, unrecognized parts). `rruleString(allDay:in:)` renders every part in a fixed order.
 - `RecurrenceSet { rules, extraDates?, excludedDates?, unparsed }`, `init(iCalendarLines:timeZone:isAllDay:)` and `iCalendarLines(timeZone:isAllDay:)` read and write `RRULE`, `EXDATE` and `RDATE` (`TZID=`, UTC, floating and `VALUE=DATE` forms); lines it does not model are kept in `unparsed`.
 - `CalendarSeries { seriesID, calendarID, start, timeZone, isAllDay, recurrence }` and `protocol SeriesSource: CalendarSource { func series(id:calendarID:) async throws -> CalendarSeries }`. A source declares `ProvidedField.recurrenceRules` exactly when it conforms. An unknown id or an id that does not recur throws `SourceError.notFound`.
-- Google: the master's `recurrence` lines and `start`. EventKit: `EKRecurrenceRule` mapped; `extraDates` and `excludedDates` are nil (EventKit cannot list them).
+- Google: the master's `recurrence` lines and `start`. EventKit: `EKRecurrenceRule` mapped; `extraDates` and `excludedDates` are nil (EventKit cannot list them). Microsoft: Graph's `patternedRecurrence` mapped (part 12); `extraDates` and `excludedDates` are nil too.
 
 ## Attendee addresses
 

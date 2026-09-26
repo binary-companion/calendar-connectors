@@ -29,7 +29,8 @@ public struct SourceCapabilities: Equatable, Sendable {
     public var supportsPush: Bool
     /// The fields create/update can write; drives validation and `EventDraft(copying:for:)`. Empty when read-only.
     public var writableFields: Set<EventField>
-    /// Honors `NotifyPolicy` (Google: `sendUpdates`); false means the server decides.
+    /// Honors `NotifyPolicy` on create, update and delete (Google: `sendUpdates`); false means the server decides for
+    /// those. A connector may still honor the policy for a response to an invite (Microsoft: `sendResponse`).
     public var controlsNotifications: Bool
     /// Scopes accepted for update/delete on a recurring series. Empty when read-only.
     public var recurrenceScopes: Set<RecurrenceScope>

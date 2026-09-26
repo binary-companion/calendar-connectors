@@ -118,7 +118,8 @@ public struct OAuthClient: Sendable {
         let parsed = try? decoder.decode(TokenResponse.self, from: response.body)
         guard (200..<300).contains(response.status), let accessToken = parsed?.accessToken else {
             let error = parsed?.error ?? "HTTP \(response.status)"
-            if isRefresh, error == "invalid_grant" { throw SourceError.authExpired }
+            // `interaction_required` is Microsoft's "sign in again" (a conditional-access or consent change).
+            if isRefresh, error == "invalid_grant" || error == "interaction_required" { throw SourceError.authExpired }
             throw SourceError.invalidResponse("oauth error: \(error)")
         }
         return OAuthTokens(
