@@ -134,3 +134,7 @@ import Testing
     #expect(Reminder.sameSet(a, b))
     #expect(!Reminder.sameSet(a, [.before(minutes: 10), .before(minutes: 60, type: .email(address: nil))]))   // a changed alert type differs
 }
+
+@Test func calDAVServiceRawValue() {
+    #expect(CalendarService.calDAV.rawValue == "caldav")
+}

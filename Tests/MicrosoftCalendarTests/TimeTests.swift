@@ -1,4 +1,4 @@
-import CalendarCore
+@testable import CalendarCore
 import Foundation
 import Testing
 @testable import MicrosoftCalendar

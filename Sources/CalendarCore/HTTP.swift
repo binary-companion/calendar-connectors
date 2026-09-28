@@ -38,6 +38,16 @@ public struct URLSessionTransport: HTTPTransport {
     private let session: URLSession
     public init(session: URLSession = .shared) { self.session = session }
 
+    /// A transport with its own session. With `followsRedirects: false` a 3xx comes back as the response instead of
+    /// being followed, so the caller can check where it points before sending credentials there (CalDAV).
+    public init(configuration: URLSessionConfiguration = .default, followsRedirects: Bool) {
+        if followsRedirects {
+            self.session = URLSession(configuration: configuration)
+        } else {
+            self.session = URLSession(configuration: configuration, delegate: RedirectRefusingDelegate(), delegateQueue: nil)
+        }
+    }
+
     public func send(_ request: HTTPRequest) async throws -> HTTPResponse {
         var urlRequest = URLRequest(url: request.url)
         urlRequest.httpMethod = request.method
@@ -53,5 +63,15 @@ public struct URLSessionTransport: HTTPTransport {
             if error.code == .cancelled { throw CancellationError() }
             throw SourceError.network(error.localizedDescription)
         }
+    }
+}
+
+/// Declines every redirect, so the task finishes with the 3xx response.
+private final class RedirectRefusingDelegate: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
+    func urlSession(
+        _ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse,
+        newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void
+    ) {
+        completionHandler(nil)
     }
 }

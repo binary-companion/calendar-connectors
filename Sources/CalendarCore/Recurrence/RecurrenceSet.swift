@@ -1,8 +1,9 @@
 import Foundation
 
 /// Everything that makes up a series' repetition: its rules and the extra and skipped dates. Read from a provider's
-/// iCalendar lines (`RRULE`, `EXDATE`, `RDATE`) and written back unchanged; the library does no expansion, providers
-/// expand occurrences on read.
+/// iCalendar lines (`RRULE`, `EXDATE`, `RDATE`) and written back unchanged. Connectors whose server expands occurrences
+/// (Google, Microsoft, EventKit) never expand; a connector that reads raw iCalendar (CalDAV) expands with
+/// `occurrences(anchor:duration:timeZone:isAllDay:overlapping:limit:)`.
 public struct RecurrenceSet: Hashable, Sendable {
     public var rules: [RecurrenceRule]
     /// Extra occurrences (RDATE). nil means the source cannot say (EventKit); `[]` means there are none.

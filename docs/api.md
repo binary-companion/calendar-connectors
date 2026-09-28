@@ -1,7 +1,8 @@
 # Calendar Connectors: API contract
 
 Status: parts 1 to 10 describe the code on `master` once Phase 3 (write capabilities) has merged; part 11 lists the known gaps;
-part 12 describes the Microsoft connector (Phase 4).
+part 12 describes the Microsoft connector (Phase 4); part 13 describes `ICalendar` and the CalDAV
+and iCloud connector (Phase 5).
 The library is pre-1.0 and lives in this repository; it is meant to be extracted into its own repository once a
 second provider (Microsoft, Phase 4) has proved the API is provider-neutral: the connector exists, and the extraction
 waits for its live checks (part 12). Until then, anything here can change with a matching change to this document.
@@ -17,6 +18,8 @@ providers behind one model, plus the small amount of host-specific glue TimeTug 
 | `CalendarConnectors` / `CalendarOAuth` | OAuth 2.0 authorization-code + PKCE client, access-token cache | `CalendarCore` | Portable; no crypto dependency (pure-Swift SHA-256 default) |
 | `CalendarConnectors` / `GoogleCalendar` | Google Calendar connector (REST v3) | `CalendarCore`, `CalendarOAuth` | Portable |
 | `CalendarConnectors` / `MicrosoftCalendar` | Microsoft (Outlook) connector over Microsoft Graph v1.0 | `CalendarCore`, `CalendarOAuth` | Portable |
+| `CalendarConnectors` / `ICalendar` | iCalendar (RFC 5545) parser and writer, time zones, `VEVENT`/`VALARM` mapping, series editing | `CalendarCore` | Portable |
+| `CalendarConnectors` / `CalDAVCalendar` | CalDAV connector (iCloud and other servers) over a small WebDAV client | `CalendarCore`, `ICalendar` | Portable; `FoundationXML` on Linux |
 | `CalendarConnectors` / `CalendarTestSupport` | Fakes and conformance helpers for connector tests | `CalendarCore` | Test-only product |
 | `CalendarApple` | Apple-only adapters: Keychain credentials, loopback and web-auth-session OAuth interaction, CryptoKit hashing | `CalendarCore`, `CalendarOAuth` | macOS |
 | `EventKitSource` | Apple Calendar via EventKit as a connector | `CalendarCore` | macOS |
@@ -26,7 +29,8 @@ Layering rule: maximise generic, cross-platform code in `CalendarConnectors`. An
 Network.framework, EventKit, AuthenticationServices) lives in a separate adapter that implements a library
 protocol, so another host can supply its own.
 
-Dependency direction: `GoogleCalendar` and `MicrosoftCalendar` → `CalendarOAuth` → `CalendarCore`; adapters and the bridge depend on
+Dependency direction: `GoogleCalendar` and `MicrosoftCalendar` → `CalendarOAuth` → `CalendarCore`;
+`CalDAVCalendar` → `ICalendar` → `CalendarCore`; adapters and the bridge depend on
 `CalendarCore`; nothing in `CalendarConnectors` depends on an adapter.
 
 ## 2. Conventions every part of the contract relies on
@@ -105,7 +109,7 @@ public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
 | `uidScope` | `UIDScope?` | `.global` (an iCalendar UID, comparable across sources), `.provider` (a provider id, comparable only within one service and provider), nil = unknown (treated as `.provider`) |
 | `sourceID` | `String?` | The source that produced the event (`Connection.sourceID`; `"eventkit"` for EventKit); lets a host route an event to its account. Does not change `id` |
 
-Reads return recurring events already expanded into instances. No read path returns a recurrence rule.
+Reads return recurring events already expanded into instances. No read path returns a recurrence rule; a source that conforms to `SeriesSource` returns a series' rule on request.
 
 ### 3.2 Sources
 
@@ -157,6 +161,7 @@ calendars are writable. The three write fields default to the read-only value. C
 |---|---|---|---|---|---|---|---|---|
 | Google | true | true | true | true | `.token` | all | true | all three |
 | EventKit | true | false | false | false | `.notification` | title, notes, location, timing, availability, reminders, recurrence | false | all three (subject to the EventKit spike, part 11) |
+| CalDAV (iCloud, other) | true | true when the server schedules (`calendar-auto-schedule`) | true when the server schedules and the account has addresses | true (`participation` only with addresses) | `.token` (`sync-collection`, else ctag) | all but `conference` (attendees only when scheduling) | false | all three |
 
 ### 3.4 Changes
 
@@ -406,7 +411,8 @@ public struct EventRef: Hashable, Sendable {
 
 A ref with a `seriesID` but no `originalStart` is handled per connector. Google: only `.thisAndFollowing` needs it (it throws `.invalid`, "this and following needs the occurrence's original start"); `.thisInstance`, `.allInSeries` and `respond` never read it, except that an `.allInSeries` update with a timing change and no `originalStart` is `.unsupported(fields: [.timing])`. EventKit: `.thisInstance` and `.thisAndFollowing` throw `.invalid` (a recurring occurrence is located by its original start); `.allInSeries` starts from the series' first occurrence and needs it only for a timing change (`.unsupported(fields: [.timing])` without it).
 `NotifyPolicy` with `controlsNotifications == false` is accepted only when nobody else would be told (EventKit: only for
-an event with no other attendees; otherwise `.unsupported(fields: [.attendees])`).
+an event with no other attendees; otherwise `.unsupported(fields: [.attendees])`). CalDAV: only when the write tells nobody
+else (no attendees other than the account on create, update and delete); `respond` always tells the organizer, so it needs `.all`.
 
 **Models.**
 - `EventTiming { start, end, timeZone, isAllDay }`: time is one unit, in the canonical all-day form; `validate()` throws
@@ -538,8 +544,10 @@ provider metadata; a `metadata` field and capability can be added later without 
   `scripts/ci/microsoft-oauth-config.sh` in the beta and release workflows (see `AGENTS.md`).
 - **Microsoft behavior beyond the fake transport (unverified).** Everything in part 12 is tested against fakes; the
   opt-in live smoke test and the manual checklist in the Phase 4 spec are what confirm it against real accounts.
-- **No CalDAV connector yet.** It is the next provider; its `AuthorizationMethod` case (`.password`) is already in the
-  contract.
+- **CalDAV behavior beyond the fake server (unverified until the live run).** Everything in part 13 is tested against
+  an in-memory CalDAV server; the opt-in iCloud smoke test and the manual checklist in the Phase 5 spec confirm it
+  against iCloud. Other servers (Fastmail, Nextcloud) are untested live. `SCHEDULE-AGENT=CLIENT` is not used, so a
+  write that would email someone needs `NotifyPolicy.all`.
 
 ## 12. `MicrosoftCalendar` (Phase 4)
 
@@ -632,6 +640,68 @@ is the contract as built. Public surface: `MicrosoftOAuthConfig(clientID:redirec
   `TIMETUG_LIVE_MICROSOFT=1 MICROSOFT_OAUTH_CLIENT_ID=<your client id> swift test --package-path Packages/CalendarApple --filter microsoftWriteSmoke`
   (interactive sign-in; writes events named "TimeTug write smoke" to the primary calendar and deletes them).
 
+## 13. `ICalendar` and `CalDAVCalendar` (Phase 5)
+
+`docs/superpowers/specs/2026-09-27-calendar-connectors-phase5-caldav-design.md` is the design (its "As built" section
+lists the differences and the known limitations); ADR 0016 records why iCalendar and expansion live in the library.
+Public surface: `ICloudConnectorKind(transport:now:sleep:pollInterval:)`,
+`CalDAVConnectorKind(transport:now:sleep:pollInterval:)`, the `CalDAVCalendarSource` returned by `makeSource` (a
+`WritableCalendarSource`, a `SeriesSource` and a `PollingCalendarSource`), and the `ICalendar` product. The WebDAV
+client, XML and discovery are internal.
+
+- **Kinds:** `icloud` ("iCloud", server `https://caldav.icloud.com`, credentials allowed to `icloud.com` and its
+  subdomains, provider `.iCloud`) and `caldav` ("Other CalDAV", server entered, credentials allowed to that host and its
+  subdomains, provider `.calDAV`). Both use service `.calDAV`, all platforms, and `.password(fields:)`: `username` and
+  `password` (secret), plus `serverURL` for `caldav`. Both adopt `CredentialPromptHelp` (help text; iCloud links to
+  account.apple.com for app-specific passwords). A server address without a scheme gets `https://`; plain `http` is
+  refused except to `localhost` and `127.0.0.1`.
+- **Sign-in:** the kind prompts once, then discovers: `PROPFIND` on `/.well-known/caldav` (then the entered URL on 404,
+  405 or 501), `current-user-principal`, then `calendar-home-set` and `calendar-user-address-set`, then `OPTIONS` for the
+  `DAV:` header. Nothing is stored until discovery succeeds. `Connection.config` holds `serverURL`, `username`,
+  `principalURL`, `homeURL`, `userAddresses` (newline-separated) and `autoSchedule`; the credential store holds
+  `username` and `password`. `displayName` is the user name for iCloud and when it contains "@", else `user@host`.
+  `reauthorize` throws `invalidResponse("signed in as a different account")` when the principal path or the host base
+  differs. A 401 is `.authExpired`. Retrying a rejected password is the host's job (TimeTug's sheet reopens with the
+  error).
+- **Transport and security:** Basic auth, UTF-8, only over HTTPS (or the loopback exception) and only to the allowed
+  hosts. The transport does not follow redirects (`URLSessionTransport(followsRedirects: false)`); `WebDAVClient`
+  follows up to 5 itself (303 becomes `GET`), checks every hop and every `href` against the host rule, and refuses
+  anything else with `invalidResponse`. 429 and 503 are `.rateLimited`, other 5xx `.server`. The password is never
+  in an error or a log.
+- **Calendars:** collections under the home with the `calendar` resource type that accept `VEVENT` (scheduling inbox
+  and outbox and notification collections are skipped). The id is the path below the home without the trailing slash
+  (stable across partition hosts). Colour from `calendar-color`, zone from `calendar-timezone` (else the source's
+  default zone), permissions from `current-user-privilege-set` (a server that reports none is treated as the owner's
+  own calendar; a subscribed calendar is read-only and has kind `.subscribed`). `isDefault` comes from
+  `schedule-default-calendar-URL` (on the principal or its scheduling inbox) when the server has one, else nil.
+- **Events:** `calendar-query` for the window, then client-side expansion (ADR 0016). A resource with overrides and no
+  master (an invitation to one occurrence) shows its overrides. `eventID` is the resource name, plus `#` and the
+  original start for an occurrence; `version` is the ETag; `uidScope` is `.global`. A `STATUS:CANCELLED` component is
+  read with `status == .cancelled`; the connector does not drop it (`CalendarBridge` does).
+- **Change detection:** `PROPFIND` depth 1 on the home for `getctag` and `sync-token`; a changed calendar set is
+  `.calendarsChanged`; a changed token runs `sync-collection` and reports `.eventsChanged(calendarIDs:)`. An invalid
+  token re-baselines and reports the calendar changed; a server without `sync-token` falls back to the ctag. The first
+  call is the baseline.
+- **Writes:** every write is a whole-resource `PUT` with `If-Match` (create uses `If-None-Match: *` and a new
+  `<uuid>.ics`), driven by `PatchMerge`; a stale write retries through `PatchMerge` and conflicts only on the fields both
+  sides changed. `.thisInstance` adds or edits an override; deleting an occurrence adds an `EXDATE` (with `If-Match`,
+  retried three times, then `conflict([.recurrence])`); `.allInSeries` delete is a plain `DELETE`. `.thisAndFollowing`
+  after the first occurrence truncates the master (`UNTIL`, or `COUNT` minus the instances before the split) and
+  creates a new resource with a new UID that carries the later overrides and `EXDATE`s (shifted when the start moves);
+  if the new resource cannot be stored the original is restored, and a failed or stale restore is `WriteError.partial`.
+  A draft's `uid` is used for the duplicate check (a `calendar-query` by UID; a hit is `alreadyExists`). `conference`
+  is not writable. `controlsNotifications == false`: the server schedules on its own, so a write that would tell
+  someone else with a policy other than `.all` throws `unsupported(fields: [.attendees])` before any write request (someone
+  else is an attendee or organizer that is not the account). `respond` sets the account's `PARTSTAT` on its own
+  attendee entry, always needs `.all` (the organizer is told) and needs `canRespondToInvite`.
+- **`SeriesSource`:** `series(id:calendarID:)` GETs the resource and returns the master's rules, `RDATE`s and
+  `EXDATE`s; an unknown id or a non-recurring resource is `.notFound`.
+- **Testing.** `CalDAVCalendarTests` run against `FakeCalDAVServer` (an in-memory `HTTPTransport`) with
+  `WritableSourceConformance`, `AllDayConformance` and `ProvidedFieldsConformance`. The live smoke test is opt-in and
+  never runs in CI: `TIMETUG_LIVE_ICLOUD=1 swift test --package-path Packages/CalendarConnectors --filter iCloudLiveSmoke`
+  (credentials from `~/.config/timetug/icloud-live`; writes only to a calendar named "TimeTug Live Test" and deletes only
+  the events it made, whose titles start with "TimeTug write smoke").
+
 ## Calendar identity and permissions
 
 - **Service vs provider.** `service` is the connector a calendar is read through; `provider` is who hosts it. A Google calendar read directly has service and provider Google; read through Apple Calendar its service is EventKit and its provider is whatever EventKit reports. EventKit's provider comes from the account **type** only (`.local`, `.exchange` gives Microsoft, `.mobileMe` gives iCloud, `.calDAV` gives CalDAV, subscribed and birthday feeds give subscription); the account title is user-editable and never read. The same calendar may therefore read as CalDAV through EventKit and as Google through a direct connection.
@@ -647,7 +717,7 @@ is the contract as built. Public surface: `MicrosoftOAuthConfig(clientID:redirec
 - `RecurrenceRule` (in `CalendarCore/Recurrence/`) is one type for reading and writing; see ADR 0015. `RecurrenceRule(rrule:in:)` throws `RecurrenceParseError.malformed` only for malformed text; `validate()` decides whether a rule can be written and throws `WriteError.unsupported(fields: [.recurrence])` for what no writer can express (sub-daily frequencies, `BYYEARDAY`, `BYWEEKNO`, `BYSETPOS`, `BYHOUR`, `BYMINUTE`, `BYSECOND`, a non-Monday `WKST`, unrecognized parts). `rruleString(allDay:in:)` renders every part in a fixed order.
 - `RecurrenceSet { rules, extraDates?, excludedDates?, unparsed }`, `init(iCalendarLines:timeZone:isAllDay:)` and `iCalendarLines(timeZone:isAllDay:)` read and write `RRULE`, `EXDATE` and `RDATE` (`TZID=`, UTC, floating and `VALUE=DATE` forms); lines it does not model are kept in `unparsed`.
 - `CalendarSeries { seriesID, calendarID, start, timeZone, isAllDay, recurrence }` and `protocol SeriesSource: CalendarSource { func series(id:calendarID:) async throws -> CalendarSeries }`. A source declares `ProvidedField.recurrenceRules` exactly when it conforms. An unknown id or an id that does not recur throws `SourceError.notFound`.
-- Google: the master's `recurrence` lines and `start`. EventKit: `EKRecurrenceRule` mapped; `extraDates` and `excludedDates` are nil (EventKit cannot list them). Microsoft: Graph's `patternedRecurrence` mapped (part 12); `extraDates` and `excludedDates` are nil too.
+- Google: the master's `recurrence` lines and `start`. EventKit: `EKRecurrenceRule` mapped; `extraDates` and `excludedDates` are nil (EventKit cannot list them). Microsoft: Graph's `patternedRecurrence` mapped (part 12); `extraDates` and `excludedDates` are nil too. CalDAV: the master's `RRULE`, `RDATE` and `EXDATE` lines (part 13). `CalDAVCalendar` also expands recurrence client-side with `RecurrenceSet.occurrences` (ADR 0016); the other connectors read occurrences the provider expanded.
 
 ## Attendee addresses
 

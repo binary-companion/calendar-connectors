@@ -38,6 +38,24 @@ public enum AuthorizationMethod: Sendable {
     case system
 }
 
+/// A short explanation a host shows next to a credential prompt (for example that iCloud needs an app-specific
+/// password), with an optional link.
+public struct CredentialHelp: Sendable, Hashable {
+    public var text: String
+    public var linkTitle: String?
+    public var url: URL?
+    public init(text: String, linkTitle: String? = nil, url: URL? = nil) {
+        self.text = text
+        self.linkTitle = linkTitle
+        self.url = url
+    }
+}
+
+/// Adopted by a `.password` connector kind that has help to show with its fields. Optional: hosts check with `as?`.
+public protocol CredentialPromptHelp {
+    var credentialHelp: CredentialHelp? { get }
+}
+
 public struct Platform: OptionSet, Sendable {
     public let rawValue: Int
     public init(rawValue: Int) { self.rawValue = rawValue }

@@ -1,9 +1,9 @@
 import Foundation
 
-/// Microsoft names time zones with Windows names ("Pacific Standard Time"); Graph returns and accepts them. The
-/// library uses IANA identifiers. This is the pure-Swift table between the two (CLDR `windowsZones`, the primary
-/// zone of each Windows name), so no ICU or platform data is needed.
-enum WindowsTimeZones {
+/// Windows time zone names (Outlook, Exchange, some iCalendar TZIDs) to IANA identifiers and back. This is the
+/// pure-Swift table between the two (CLDR `windowsZones`, the primary zone of each Windows name), so no ICU or
+/// platform data is needed.
+public enum WindowsTimeZones {
     /// Windows name to its primary IANA identifier.
     static let table: [String: String] = [
         "Afghanistan Standard Time": "Asia/Kabul",
@@ -165,12 +165,12 @@ enum WindowsTimeZones {
 
     /// The zone for a Windows name or an IANA identifier; nil for anything else (a "Customized Time Zone", an
     /// empty string, a name this table lacks).
-    static func timeZone(for name: String) -> TimeZone? {
+    public static func timeZone(for name: String) -> TimeZone? {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
         if let iana = table[trimmed], let zone = TimeZone(identifier: iana) { return zone }
         return TimeZone(identifier: trimmed)
     }
 
     /// The Windows name Graph accepts for `zone`; nil when the table has none (the caller writes UTC instead).
-    static func windowsName(for zone: TimeZone) -> String? { reverse[zone.identifier] }
+    public static func windowsName(for zone: TimeZone) -> String? { reverse[zone.identifier] }
 }
