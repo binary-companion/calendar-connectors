@@ -560,8 +560,9 @@ is the contract as built. Public surface: `MicrosoftOAuthConfig(clientID:redirec
 
 - **Kind:** id `microsoft`, display name "Microsoft", all platforms, `.oauth`. A public client: PKCE, no client secret,
   the `common` authority (`https://login.microsoftonline.com/common/oauth2/v2.0/...`), so personal and work or school
-  accounts both sign in. Scopes: `offline_access`, `User.Read`, `MailboxSettings.Read`, `Calendars.ReadWrite` and
-  `Calendars.ReadWrite.Shared` (shared and delegated calendars). Authorization requests carry `prompt=select_account` so a
+  accounts both sign in. Scopes: `offline_access`, `User.Read`, `MailboxSettings.Read`, `Calendars.Read` and
+  `Calendars.Read.Shared` (shared and delegated calendars). They are read-only for now (ADR 0017), so the source's write
+  methods fail with a 403 until the scopes are widened to `Calendars.ReadWrite` and `Calendars.ReadWrite.Shared`. Authorization requests carry `prompt=select_account` so a
   browser already signed in to one Microsoft account does not silently pick it. A work account outside the registering
   tenant may need its admin to approve the app while it has no verified publisher; that surfaces as the sign-in error,
   it is not worked around. `invalid_grant` and `interaction_required` from the token endpoint are `.authExpired`.

@@ -20,8 +20,10 @@ public struct MicrosoftOAuthConfig: Sendable {
 public struct MicrosoftConnectorKind: ConnectorKind {
     public static let kindID = "microsoft"
     /// `offline_access` returns the refresh token; `MailboxSettings.Read` is the account's time zone; `.Shared` reads
-    /// and writes the shared and delegated calendars the account can open.
-    public static let scopes = ["offline_access", "User.Read", "MailboxSettings.Read", "Calendars.ReadWrite", "Calendars.ReadWrite.Shared"]
+    /// the shared and delegated calendars the account can open. Read-only on purpose (ADR 0017): the host app only reads
+    /// events, so the source's write calls get a 403 until the scopes are widened to `Calendars.ReadWrite` and
+    /// `Calendars.ReadWrite.Shared` and the user signs in again.
+    public static let scopes = ["offline_access", "User.Read", "MailboxSettings.Read", "Calendars.Read", "Calendars.Read.Shared"]
 
     public var id: String { Self.kindID }
     public var displayName: String { "Microsoft" }

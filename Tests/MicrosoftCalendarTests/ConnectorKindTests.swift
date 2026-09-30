@@ -72,7 +72,7 @@ private func query(_ url: URL) -> [String: String] {
     #expect(q["client_id"] == "cid" && q["response_type"] == "code" && q["code_challenge_method"] == "S256")
     #expect(q["redirect_uri"] == "http://localhost:53211")   // the configured host, the session's port
     #expect(q["prompt"] == "select_account")
-    #expect(q["scope"] == "offline_access User.Read MailboxSettings.Read Calendars.ReadWrite Calendars.ReadWrite.Shared")
+    #expect(q["scope"] == "offline_access User.Read MailboxSettings.Read Calendars.Read Calendars.Read.Shared")
     #expect(await interaction.recorder.closeCount == 1)
 
     let exchange = try #require(await transport.requests(matching: "oauth2/v2.0/token").first)
