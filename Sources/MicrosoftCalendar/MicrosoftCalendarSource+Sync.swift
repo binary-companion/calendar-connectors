@@ -32,36 +32,22 @@ extension MicrosoftCalendarSource {
 
     /// One incremental check. The first call for a calendar takes its baseline and reports nothing.
     public func checkForChanges() async throws -> CalendarChange? {
-        let calendars = try await loadCalendars(refreshZone: false)
-        let ids = calendars.map(\.id).sorted()
-        let setKey = ids.joined(separator: "\n")
+        let calendarIDs = try await loadCalendars(refreshZone: false).map(\.id)
         let connectionID = connection.connectionID
-
-        let previousKey = await syncState.token(for: connectionID, scope: Self.calendarSetScope)
-        let setChanged = previousKey != nil && previousKey != setKey
-        if let previousKey, setChanged {
-            for removed in Set(previousKey.split(separator: "\n").map(String.init)).subtracting(ids) {
-                await syncState.setToken(nil, for: connectionID, scope: removed)
-            }
-        }
-
-        var changed = Set<String>()
-        for id in ids {
+        return try await detectCalendarChanges(
+            calendarIDs: calendarIDs, setScope: Self.calendarSetScope, connectionID: connectionID, syncState: syncState
+        ) { id in
             do {
                 if let stored = await syncState.token(for: connectionID, scope: id), let delta = DeltaState(stored) {
-                    if try await poll(calendarID: id, delta: delta) { changed.insert(id) }
-                } else {
-                    try await baseline(calendarID: id)
+                    return try await poll(calendarID: id, delta: delta)
                 }
+                try await baseline(calendarID: id)
+                return false
             } catch let error as GraphAPIError {
-                if error == .notFound || error == .forbidden { continue }   // removed or no longer readable
+                if error == .notFound || error == .forbidden { return false }   // removed or no longer readable
                 throw error.sourceError
             }
         }
-        await syncState.setToken(setKey, for: connectionID, scope: Self.calendarSetScope)
-
-        if setChanged { return .calendarsChanged }
-        return changed.isEmpty ? nil : .eventsChanged(calendarIDs: changed)
     }
 
     /// Lists the window only to obtain the delta link.

@@ -51,22 +51,13 @@ public struct GoogleConnectorKind: ConnectorKind {
     }
 
     public func authorize(using interaction: any AuthorizationInteraction, credentials: any CredentialStore) async throws -> Connection {
-        let (email, refreshToken) = try await signIn(using: interaction)
-        let connection = Connection(
-            kindID: id, connectionID: UUID().uuidString, displayName: email, config: ["email": email])
-        try await credentials.setSecrets([AccessTokenProvider.refreshTokenKey: refreshToken], for: connection.connectionID)
-        return connection
+        try await OAuthConnections.authorize(kindID: id, credentials: credentials) { try await signIn(using: interaction) }
     }
 
     public func reauthorize(
         _ connection: Connection, using interaction: any AuthorizationInteraction, credentials: any CredentialStore
     ) async throws -> Connection {
-        let (email, refreshToken) = try await signIn(using: interaction)
-        guard email == connection.config["email"] else {
-            throw SourceError.invalidResponse("signed in as a different account")
-        }
-        try await credentials.setSecrets([AccessTokenProvider.refreshTokenKey: refreshToken], for: connection.connectionID)
-        return connection
+        try await OAuthConnections.reauthorize(connection, credentials: credentials) { try await signIn(using: interaction) }
     }
 
     public func makeSource(

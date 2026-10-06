@@ -140,11 +140,6 @@ struct GoogleAPIClient: Sendable {
         return body.contains("rateLimitExceeded") || body.contains("userRateLimitExceeded")
     }
 
-    func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
-        do { return try JSONDecoder().decode(type, from: data) }
-        catch { throw SourceError.invalidResponse("could not decode \(T.self)") }
-    }
-
     /// Walks every page, calling `handle` for each, until `next` returns nil. No page cap; honors cancellation.
     func pages<Page: Decodable>(
         _ type: Page.Type, path: String, query: [URLQueryItem],
@@ -154,7 +149,7 @@ struct GoogleAPIClient: Sendable {
         repeat {
             var pageQuery = query
             if let pageToken { pageQuery.append(URLQueryItem(name: "pageToken", value: pageToken)) }
-            let page = try decode(Page.self, from: try await get(path: path, query: pageQuery))
+            let page = try decodeResponse(Page.self, from: try await get(path: path, query: pageQuery))
             try handle(page)
             pageToken = next(page)
         } while pageToken != nil

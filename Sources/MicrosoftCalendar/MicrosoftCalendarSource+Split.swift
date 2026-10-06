@@ -83,7 +83,7 @@ extension MicrosoftCalendarSource {
         }
         let master = try await fetchRaw(ref.calendarID, masterID)
         let zone = try await accountZone(refresh: false)
-        let masterDTO = try api.decode(GraphEventDTO.self, from: master.data)
+        let masterDTO = try decodeResponse(GraphEventDTO.self, from: master.data)
         guard let first = GraphEventMapper.resolve(masterDTO, fallbackZone: zone.zone) else {
             throw SourceError.invalidResponse("microsoft: unreadable series")
         }

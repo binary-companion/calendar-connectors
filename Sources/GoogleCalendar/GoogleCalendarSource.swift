@@ -89,36 +89,22 @@ public final class GoogleCalendarSource: PollingCalendarSource {
     }
 
     public func checkForChanges() async throws -> CalendarChange? {
-        let calendars = try await self.calendars()
-        let ids = calendars.map(\.id).sorted()
-        let setKey = ids.joined(separator: "\n")
+        let calendarIDs = try await self.calendars().map(\.id)
         let connectionID = connection.connectionID
-
-        let previousKey = await syncState.token(for: connectionID, scope: Self.calendarSetScope)
-        let setChanged = previousKey != nil && previousKey != setKey
-        if let previousKey, setChanged {
-            for removed in Set(previousKey.split(separator: "\n").map(String.init)).subtracting(ids) {
-                await syncState.setToken(nil, for: connectionID, scope: removed)
-            }
-        }
-
-        var changed = Set<String>()
-        for id in ids {
+        return try await detectCalendarChanges(
+            calendarIDs: calendarIDs, setScope: Self.calendarSetScope, connectionID: connectionID, syncState: syncState
+        ) { id in
             do {
                 if let token = await syncState.token(for: connectionID, scope: id) {
-                    if try await poll(calendarID: id, token: token) { changed.insert(id) }
-                } else {
-                    try await bootstrap(calendarID: id)
+                    return try await poll(calendarID: id, token: token)
                 }
+                try await bootstrap(calendarID: id)
+                return false
             } catch let error as GoogleAPIError {
-                if error == .notFound || error == .forbidden { continue } // removed or no longer readable
+                if error == .notFound || error == .forbidden { return false } // removed or no longer readable
                 throw error.sourceError
             }
         }
-        await syncState.setToken(setKey, for: connectionID, scope: Self.calendarSetScope)
-
-        if setChanged { return .calendarsChanged }
-        return changed.isEmpty ? nil : .eventsChanged(calendarIDs: changed)
     }
 
     /// Lists the whole calendar (no time window; Google forbids combining a sync token with one) only to obtain a token.

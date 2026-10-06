@@ -10,7 +10,7 @@ extension GoogleCalendarSource: SeriesSource {
             let data = try await api.get(
                 path: GoogleAPIClient.eventPath(calendarID, id),
                 query: [URLQueryItem(name: "fields", value: "id,status,recurrence,start,end")])
-            let dto = try api.decode(GoogleEventDTO.self, from: data)
+            let dto = try decodeResponse(GoogleEventDTO.self, from: data)
             guard dto.status != "cancelled", let lines = dto.recurrence, !lines.isEmpty else { throw SourceError.notFound }
             let calendarZone = try await zone(ofCalendar: calendarID)
             guard let start = GoogleEventMapper.resolve(dto.start, calendarZone: calendarZone) else {

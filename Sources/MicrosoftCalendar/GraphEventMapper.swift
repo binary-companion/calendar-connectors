@@ -41,7 +41,7 @@ enum GraphEventMapper {
             url: dto.webLink.flatMap(URL.init(string:)), version: dto.changeKey,
             lastModified: dto.lastModifiedDateTime.flatMap(GraphTime.parseInstant),
             created: dto.createdDateTime.flatMap(GraphTime.parseInstant),
-            participation: participation(attendees: attendees, organizer: organizer), sourceID: sourceID)
+            participation: Participation.resolving(attendees: attendees, organizer: organizer), sourceID: sourceID)
     }
 
     struct Resolved {
@@ -119,13 +119,6 @@ enum GraphEventMapper {
             isSelf: email != nil && email == accountEmail, isOrganizer: email != nil && email == organizerEmail)
     }
 
-    /// A `self` attendee gives their response; an organizer who is you with no attendee entry (an event with no
-    /// guests) counts as accepted; anything else is an event you are not on.
-    static func participation(attendees: [Attendee], organizer: Attendee?) -> Participation {
-        if let me = attendees.first(where: \.isSelf) { return .invited(me.response) }
-        if organizer?.isSelf == true { return .invited(.accepted) }
-        return .notInvited
-    }
 
     /// Graph's structured Teams link, then links found in the location and notes.
     private static func conferences(_ dto: GraphEventDTO, notes: String?) -> [ConferenceInfo] {

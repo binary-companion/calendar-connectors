@@ -61,7 +61,7 @@ public final class MicrosoftCalendarSource: PollingCalendarSource {
         let zone: AccountZone
         do {
             let data = try await api.get(url: api.url(path: "/me/mailboxSettings/timeZone"))
-            if let name = try api.decode(GraphValueDTO.self, from: data).value, let resolved = WindowsTimeZones.timeZone(for: name) {
+            if let name = try decodeResponse(GraphValueDTO.self, from: data).value, let resolved = WindowsTimeZones.timeZone(for: name) {
                 zone = AccountZone(name: name, zone: resolved)
             } else {
                 zone = .utc

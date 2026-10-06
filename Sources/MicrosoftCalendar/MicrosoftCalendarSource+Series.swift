@@ -9,7 +9,7 @@ extension MicrosoftCalendarSource: SeriesSource {
         let zone = try await accountZone(refresh: false)
         do {
             let data = try await api.get(url: api.url(path: GraphAPIClient.eventPath(calendarID, id)), prefer: zone.readPreferences)
-            let dto = try api.decode(GraphEventDTO.self, from: data)
+            let dto = try decodeResponse(GraphEventDTO.self, from: data)
             guard dto.type == "seriesMaster", dto.isCancelled != true, let recurrence = dto.recurrence,
                   let resolved = GraphEventMapper.resolve(dto, fallbackZone: zone.zone) else { throw SourceError.notFound }
             let rule = GraphRecurrenceMapper.rule(from: recurrence, in: resolved.zone)

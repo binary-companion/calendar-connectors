@@ -55,7 +55,7 @@ enum GoogleEventMapper {
             series: series(dto, calendarZone: calendarZone),
             attendees: attendees, organizer: organizer, conferences: conferences(dto),
             reminders: reminders(dto.reminders, calendar: calendar), url: dto.htmlLink.flatMap(URL.init(string:)),
-            version: dto.etag, lastModified: dto.updated.flatMap(parseInstant), created: dto.created.flatMap(parseInstant), participation: participation(attendees: attendees, organizer: organizer), sourceID: sourceID)
+            version: dto.etag, lastModified: dto.updated.flatMap(parseInstant), created: dto.created.flatMap(parseInstant), participation: Participation.resolving(attendees: attendees, organizer: organizer), sourceID: sourceID)
     }
 
     struct Resolved {
@@ -169,11 +169,4 @@ enum GoogleEventMapper {
         return .occurrence(seriesID: id, originalStart: dto.originalStartTime.flatMap { resolve($0, calendarZone: calendarZone)?.date })
     }
 
-    /// A `self` attendee gives their response; an organizer who is you with no attendee entry (an event with no
-    /// guests) counts as accepted; anything else is an event you are not on.
-    static func participation(attendees: [Attendee], organizer: Attendee?) -> Participation {
-        if let me = attendees.first(where: \.isSelf) { return .invited(me.response) }
-        if organizer?.isSelf == true { return .invited(.accepted) }
-        return .notInvited
-    }
 }

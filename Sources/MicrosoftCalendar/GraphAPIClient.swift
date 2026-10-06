@@ -118,11 +118,6 @@ struct GraphAPIClient: Sendable {
         return (inner?.code, inner?.message ?? "HTTP \(response.status)")
     }
 
-    func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
-        do { return try JSONDecoder().decode(type, from: data) }
-        catch { throw SourceError.invalidResponse("could not decode \(T.self)") }
-    }
-
     /// Walks every page from `first`, calling `handle` for each, following `@odata.nextLink`. A next link must stay on
     /// Graph's own host: the bearer token is only ever sent there. No page cap; honors cancellation.
     func pages<Page: GraphPage>(
@@ -131,7 +126,7 @@ struct GraphAPIClient: Sendable {
         var next: URL? = first
         while let url = next {
             guard url.scheme == "https", url.host == Self.host else { throw SourceError.invalidResponse("unexpected link host") }
-            let page = try decode(Page.self, from: try await get(url: url, prefer: prefer))
+            let page = try decodeResponse(Page.self, from: try await get(url: url, prefer: prefer))
             try handle(page)
             next = page.nextLink.flatMap(URL.init(string:))
         }

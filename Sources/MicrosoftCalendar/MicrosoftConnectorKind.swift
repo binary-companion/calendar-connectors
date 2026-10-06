@@ -60,22 +60,13 @@ public struct MicrosoftConnectorKind: ConnectorKind {
     }
 
     public func authorize(using interaction: any AuthorizationInteraction, credentials: any CredentialStore) async throws -> Connection {
-        let (email, refreshToken) = try await signIn(using: interaction)
-        let connection = Connection(
-            kindID: id, connectionID: UUID().uuidString, displayName: email, config: ["email": email])
-        try await credentials.setSecrets([AccessTokenProvider.refreshTokenKey: refreshToken], for: connection.connectionID)
-        return connection
+        try await OAuthConnections.authorize(kindID: id, credentials: credentials) { try await signIn(using: interaction) }
     }
 
     public func reauthorize(
         _ connection: Connection, using interaction: any AuthorizationInteraction, credentials: any CredentialStore
     ) async throws -> Connection {
-        let (email, refreshToken) = try await signIn(using: interaction)
-        guard email == connection.config["email"] else {
-            throw SourceError.invalidResponse("signed in as a different account")
-        }
-        try await credentials.setSecrets([AccessTokenProvider.refreshTokenKey: refreshToken], for: connection.connectionID)
-        return connection
+        try await OAuthConnections.reauthorize(connection, credentials: credentials) { try await signIn(using: interaction) }
     }
 
     public func makeSource(
@@ -141,7 +132,7 @@ public struct MicrosoftConnectorKind: ConnectorKind {
         } catch let error as GraphAPIError {
             throw error.sourceError
         }
-        let me = try api.decode(MeDTO.self, from: data)
+        let me = try decodeResponse(MeDTO.self, from: data)
         guard let address = [me.mail, me.userPrincipalName].compactMap({ $0 }).first(where: { !$0.isEmpty }) else {
             throw SourceError.invalidResponse("the account has no email address")
         }

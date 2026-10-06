@@ -58,7 +58,7 @@ extension GoogleCalendarSource: WritableCalendarSource {
                 }
                 return event
             }
-            let (targetID, useVersion) = target(ref, scope: scope)
+            let (targetID, useVersion) = ref.writeTarget(scope: scope)
             if scope == .allInSeries, patch.timing != nil, targetID != ref.eventID {
                 try await requireFirstOccurrence(ref, seriesID: targetID, calendar: calendar)
             }
@@ -107,7 +107,7 @@ extension GoogleCalendarSource: WritableCalendarSource {
                 _ = try await splitSeries(ref, calendar: calendar, patch: nil, notify: notify)
                 return
             }
-            let (targetID, _) = target(ref, scope: scope)
+            let (targetID, _) = ref.writeTarget(scope: scope)
             _ = try await api.send(method: "DELETE", path: GoogleAPIClient.eventPath(ref.calendarID, targetID), query: query(notify), mode: .write)
         }
     }
@@ -121,7 +121,7 @@ extension GoogleCalendarSource: WritableCalendarSource {
             // Refuse a response Google cannot store before any request (the attendee list here is only a placeholder).
             _ = try GoogleWriteMapper.respondAttendees(current: [["self": true]], response: response)
             let calendar = try await writableCalendar(ref.calendarID)
-            let (targetID, _) = target(ref, scope: scope)
+            let (targetID, _) = ref.writeTarget(scope: scope)
             // Only our own response changes, so when the event moves between the fetch and the write, start over on the new etag.
             for _ in 0..<3 {
                 try Task.checkCancellation()
@@ -189,7 +189,7 @@ extension GoogleCalendarSource: WritableCalendarSource {
     }
 
     private func mapped(_ data: Data, calendar: CalendarDescriptor) throws -> CalendarEvent {
-        try mapped(dto: try api.decode(GoogleEventDTO.self, from: data), calendar: calendar)
+        try mapped(dto: try decodeResponse(GoogleEventDTO.self, from: data), calendar: calendar)
     }
 
     private func mapped(dto: GoogleEventDTO, calendar: CalendarDescriptor) throws -> CalendarEvent {
@@ -225,18 +225,10 @@ extension GoogleCalendarSource: WritableCalendarSource {
         return RawEvent(data: data, json: json)
     }
 
-    /// The id a write addresses: the instance, or the series master for `.allInSeries` (whose etag differs from the
-    /// instance's, so the caller's version cannot lock it; a master ref's own version can).
-    private func target(_ ref: EventRef, scope: RecurrenceScope) -> (id: String, useVersion: Bool) {
-        guard let series = ref.seriesID, !series.isEmpty else { return (ref.eventID, true) }
-        // A series master ref carries the master's own version, so it keeps the lock; an instance's etag cannot lock it.
-        return scope == .allInSeries ? (series, series == ref.eventID) : (ref.eventID, true)
-    }
-
     /// The start of a raw event resource in the calendar's zone (a floating or all-day start reads in that zone). The one
     /// place series code reads a master's start.
     private func start(of raw: RawEvent, calendar: CalendarDescriptor) throws -> GoogleEventMapper.Resolved {
-        let dto = try api.decode(GoogleEventDTO.self, from: raw.data)
+        let dto = try decodeResponse(GoogleEventDTO.self, from: raw.data)
         guard let start = GoogleEventMapper.resolve(dto.start, calendarZone: calendar.timeZone ?? TimeZone(identifier: "UTC")!) else {
             throw SourceError.invalidResponse("google: unreadable event")
         }
