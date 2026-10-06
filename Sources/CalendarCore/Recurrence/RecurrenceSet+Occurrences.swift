@@ -17,6 +17,11 @@ public struct RecurrenceExpansion: Sendable, Equatable {
 }
 
 extension RecurrenceSet {
+    /// True when an `RRULE` line could not be read (it sits in `unparsed`).
+    public var hasUnreadableRule: Bool {
+        unparsed.contains { $0.trimmingCharacters(in: .whitespaces).uppercased().hasPrefix("RRULE") }
+    }
+
     /// Every occurrence whose span (`start ..< start + duration`) overlaps `window`: the rules' instances from `anchor`
     /// plus `extraDates`, minus `excludedDates` (all-day series compare calendar days in `timeZone`). At most `limit`
     /// starts. Expansion skips whole periods before the window, so an old series stays cheap.
@@ -24,7 +29,7 @@ extension RecurrenceSet {
         anchor: Date, duration: TimeInterval, timeZone: TimeZone, isAllDay: Bool, overlapping window: DateInterval,
         limit: Int = 5000
     ) -> RecurrenceExpansion {
-        let unreadable = unparsed.contains { $0.trimmingCharacters(in: .whitespaces).uppercased().hasPrefix("RRULE") }
+        let unreadable = hasUnreadableRule
         let span = max(duration, 0)
         func overlaps(_ start: Date) -> Bool {
             span == 0 ? (start >= window.start && start < window.end) : (start < window.end && start.addingTimeInterval(span) > window.start)

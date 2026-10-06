@@ -76,6 +76,20 @@ public enum CalendarChange: Equatable, Sendable {
     case sourceFailed(SourceError)
 }
 
+/// Something about a source worth a quiet hint in a front end (a warning icon), as opposed to a failure.
+public struct SourceNotice: Sendable, Equatable {
+    public enum Kind: Sendable, Equatable {
+        /// Repeating events whose rule could not be read; `count` is the number of such events (series).
+        case unreadableRecurrence
+    }
+    public var kind: Kind
+    public var count: Int
+    public init(kind: Kind, count: Int) {
+        self.kind = kind
+        self.count = count
+    }
+}
+
 public protocol CalendarSource: Sendable {
     var id: String { get }
     var displayName: String { get }
@@ -84,6 +98,12 @@ public protocol CalendarSource: Sendable {
     /// Events of every visible calendar of the account that overlap `interval`.
     func events(in interval: DateInterval) async throws -> [CalendarEvent]
     func changes() -> AsyncStream<CalendarChange>
+    /// What the source noticed in the data it last loaded. Optional: the default is none.
+    func notices() async -> [SourceNotice]
+}
+
+extension CalendarSource {
+    public func notices() async -> [SourceNotice] { [] }
 }
 
 public protocol PollingCalendarSource: CalendarSource {

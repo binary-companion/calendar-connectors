@@ -2,7 +2,7 @@
 
 Status: parts 1 to 10 describe the code on `master` once Phase 3 (write capabilities) has merged; part 11 lists the known gaps;
 part 12 describes the Microsoft connector (Phase 4); part 13 describes `ICalendar` and the CalDAV
-and iCloud connector (Phase 5).
+and iCloud connector (Phase 5); part 14 describes the iCal subscription connector (Phase 6).
 The library is pre-1.0 and lives in this repository; it is meant to be extracted into its own repository once a
 second provider (Microsoft, Phase 4) has proved the API is provider-neutral: the connector exists, and the extraction
 waits for its live checks (part 12). Until then, anything here can change with a matching change to this document.
@@ -20,6 +20,7 @@ providers behind one model, plus the small amount of host-specific glue TimeTug 
 | `CalendarConnectors` / `MicrosoftCalendar` | Microsoft (Outlook) connector over Microsoft Graph v1.0 | `CalendarCore`, `CalendarOAuth` | Portable |
 | `CalendarConnectors` / `ICalendar` | iCalendar (RFC 5545) parser and writer, time zones, `VEVENT`/`VALARM` mapping, series editing | `CalendarCore` | Portable |
 | `CalendarConnectors` / `CalDAVCalendar` | CalDAV connector (iCloud and other servers) over a small WebDAV client | `CalendarCore`, `ICalendar` | Portable; `FoundationXML` on Linux |
+| `CalendarConnectors` / `ICalSubscription` | iCal subscription link connector: one private feed, read-only | `CalendarCore`, `ICalendar` | Portable |
 | `CalendarConnectors` / `CalendarTestSupport` | Fakes and conformance helpers for connector tests | `CalendarCore` | Test-only product |
 | `CalendarApple` | Apple-only adapters: Keychain credentials, loopback and web-auth-session OAuth interaction, CryptoKit hashing | `CalendarCore`, `CalendarOAuth` | macOS |
 | `EventKitSource` | Apple Calendar via EventKit as a connector | `CalendarCore` | macOS |
@@ -30,7 +31,7 @@ Network.framework, EventKit, AuthenticationServices) lives in a separate adapter
 protocol, so another host can supply its own.
 
 Dependency direction: `GoogleCalendar` and `MicrosoftCalendar` → `CalendarOAuth` → `CalendarCore`;
-`CalDAVCalendar` → `ICalendar` → `CalendarCore`; adapters and the bridge depend on
+`CalDAVCalendar` → `ICalendar` → `CalendarCore`; `ICalSubscription` → `ICalendar` → `CalendarCore`; adapters and the bridge depend on
 `CalendarCore`; nothing in `CalendarConnectors` depends on an adapter.
 
 ## 2. Conventions every part of the contract relies on
@@ -261,6 +262,16 @@ transport failures. `URLSessionTransport` is the default (`FoundationNetworking`
 `canonical(first:endExclusive:in:)`, `dates(start:end:in:)`, `endExclusive(afterLast:)`) are the only sanctioned way
 to convert between provider all-day dates and the canonical instants.
 
+### 3.9 Source notices
+
+`CalendarSource.notices() async -> [SourceNotice]` is an optional requirement (the default returns none) for quiet hints about the data a source last loaded, such as a warning icon, as opposed to a failure. `SourceNotice` has a `Kind` (`unreadableRecurrence`: repeating events whose rule could not be read) and a `count`. `ICalSubscriptionSource` reports the number of unreadable-rule groups in the held feed: it reads the current feed, so it survives a 304 re-parse, ignores the log dedupe and clears once the feed is fixed. `ConnectedSource` forwards it, `CalendarStore.refresh` collects it after a successful fetch (cleared on failure or when the source is removed) and `CalendarSnapshot.notices` (source id to notices, none for a source without any) carries it to the app.
+
+### 3.10 Diagnostics
+
+`DiagnosticLog` (`record(_ event: DiagnosticEvent)`, synchronous, non-throwing, must not block) is how a connector says what it is doing, without the library knowing where the words go. A `DiagnosticEvent` has a `DiagnosticLevel` (`debug` < `info` < `notice` < `warning` < `error`), a stable `category` (the kind id, for example `icalsub`), a stable camelCase `name`, `DiagnosticField`s and a `date`. A field is an int, double, bool or string with an `isPrivate` flag; strings are private by default (`.string("uid", uid)`), numbers and flags are public (`.int("events", 12)`). The privacy rule: connectors put counts, flags, fixed reason tokens and status codes in fields (host names are reserved for a public string field, none is logged yet), and never a credential, link, title, description, location or attendee, private or not; `isPrivate` only decides what a report shows by default.
+
+The library ships `NullDiagnosticLog` (`.none`, the default everywhere), `RingBufferDiagnosticLog` (last 500 events, thread-safe, `snapshot()`, `clear()`, `render(includePrivate:)` for a plain-text report with private values shown as `<private>`) and `FanOutDiagnosticLog` (several logs). `CalendarTestSupport.CollectingDiagnosticLog` is the test fake. Adapters to an OS logger or a file live outside the library (the library never imports `os`). Only `ICalSubscription` is instrumented so far.
+
 ## 4. `CalendarOAuth`
 
 - `OAuthConfig`: authorization and token endpoints, client id, optional client secret (a desktop client's secret is
@@ -326,7 +337,7 @@ and the `CalendarSource` returned by `makeSource` (id `google-<connectionID>`).
 ## 8. `CalendarBridge` (TimeTug only)
 
 Core defines its own `CalendarSource` (`calendars() -> [CalendarInfo]`, `events(in:) -> [TimeTugCalendarEvent]`,
-`changes() -> AsyncStream<Void>`) and never sees library types.
+`changes() -> AsyncStream<Void>`, and an optional `notices()`) and sees only one library type, `SourceNotice`.
 
 - `ConnectedSource` wraps any library source. It maps calendars to `CalendarInfo`, events to `TimeTugCalendarEvent`
   (dropping cancelled ones), forwards every library change (including `.sourceFailed`) as a `Void` yield, and translates
@@ -702,6 +713,20 @@ client, XML and discovery are internal.
   never runs in CI: `TIMETUG_LIVE_ICLOUD=1 swift test --package-path Packages/CalendarConnectors --filter iCloudLiveSmoke`
   (credentials from `~/.config/timetug/icloud-live`; writes only to a calendar named "TimeTug Live Test" and deletes only
   the events it made, whose titles start with "TimeTug write smoke").
+
+## 14. `ICalSubscription` (Phase 6)
+
+One connector kind, `icalsub` ("iCal link"), reads a private calendar subscription link: a `webcal://` or `https://` address that serves a `VCALENDAR` (Meetup's Add to calendar links, a Google secret address, an Outlook published calendar). Design: `docs/superpowers/specs/2026-10-06-ical-subscription-link-design.md`; the credential decision is ADR 0018.
+
+- **Sign-in.** One secret field, `link`. `FeedLocation.url(from:)` maps `webcal`/`webcals` to `https`, allows plain `http` only for the loopback host, and refuses a link with a user name or password, a `file://` URL and a path. The feed is fetched and parsed before anything is stored; a feed with no events is valid.
+- **What is stored.** The link, in the `CredentialStore` under `link`. `Connection.config` is `["host": <host>]` and the display name is `"<calendar name> (<host>)"`, or the host alone. The link never appears in a message, `description` or log.
+- **Source.** `ICalSubscriptionSource` is a read-only `PollingCalendarSource` with one calendar, id `feed` (service `icalsub`, provider `.subscription`, kind `.subscribed`). The parsed feed is reused while younger than the poll interval (15 minutes). A feed is one `VCALENDAR`, so events are grouped by `UID` into one `EventResource` each and read with `EventReader`; an event without a `UID` gets a stable made-up one from its start and title.
+- **Fetching.** `FeedFetcher` follows redirects itself (at most 5, only to `https`), refuses a body larger than 10 MB once it has arrived (it is not aborted while streaming), and sends `If-None-Match` / `If-Modified-Since` only when a previous body is held and the server supplied validators (never on a redirect hop), and only when a conditional request was sent does a 304 count as unchanged. A redirect to an address with a user name or password is refused, and a transport failure whose message or error would carry the link is reported as a generic `SourceError.network`. 401, 403, 404 and 410 are `SourceError.authExpired` (the link was revoked or regenerated); 429 and 5xx are `SourceError.server(status:)`; a 200 that is not a calendar, any other status, a redirect with no usable `Location` or to a non-`https` address, and too many redirects are `SourceError.invalidResponse`, and the last good feed is kept.
+- **Retention.** `ICalSubscriptionKind(retention: RetentionWindow?)` (default `nil`: the library keeps everything). With a `RetentionWindow(daysBack:daysAhead:)`, a UID group (one event, or a series with its overrides) with no occurrence overlapping `[now - daysBack, now + daysAhead]` (by the injected clock, at each fetch) is dropped right after parsing; a group with at least one overlapping occurrence is kept whole, and so is a group whose `RRULE` cannot be read (`RecurrenceSet.hasUnreadableRule`: its occurrences are unknown, so it cannot be shown to be outside the window; it is reported as `rruleUnreadable`). The test is `EventReader.events(in:overlapping:context:)`, so rules, `RDATE`, `EXDATE` and overrides (moved in or out) count, all-day and zero-length events follow the reader's overlap rule, and expansion stays inside the window (an old unbounded series is cheap). TimeTug passes 3 days back (so multi-day and boundary-straddling events and time zone or daylight-saving edges are not lost) and 7 days ahead. Sign-in never rejects a feed because everything is outside the window.
+- **Change detection.** Each poll refetches the feed and compares what was retained (the header and the retained events, serialized), not the raw body, with what the last check saw, so an edit to an event outside the window is not a change; a 304 re-reads the held body, so an event that has come into the window as time passed is reported; a difference is `.eventsChanged(calendarIDs: ["feed"])`, independent of what `events(in:)` loaded since. The first check with nothing loaded is the baseline; a feed loaded earlier by `events(in:)` counts as the baseline. Each fetch takes a generation number when it starts: a fetch that finishes after a newer one neither replaces the stored feed nor reports a change, so overlapping calls report a change once. Nothing is persisted (`SyncStateStore` is not used by this kind), so after an app relaunch the first check re-baselines.
+- **Capabilities.** `canWrite = false`, `syncKind = .token`. Provided fields: `series`, `uidScope`, `provider`, `calendarTimeZone`. `participation`, `visibility`, `availability` and `reminders` are not declared: a feed may or may not carry them.
+- **Diagnostics.** `ICalSubscriptionKind(diagnostics:)` (default none) reports to a `DiagnosticLog` (section 3.10), category `icalsub`. Events: `fetchCompleted` (info: `status`, `conditional`, `notModified`, `hops`, `bytes`, and `ms` only when the source was given a clock), `fetchFailed` (warning: `reason` is one of `authExpired`, `server`, `network`, `invalidResponse`, `tooLarge`, `tooManyRedirects`, `redirectRefused`; `status` when there was one), `feedParsed` (info: `eventsInFeed`, `groupsKept`, `groupsDropped`, `retentionActive`, `unreadableRules`), `feedNotCalendar` (warning), `rruleUnreadable` (notice: private `uid`, or `syntheticUID: true` instead when the feed gave the event no UID of its own; logged once per unreadable rule, again if the rule is edited or breaks again, so a poll does not repeat it; the sign-in check logs it every time), `syntheticUID` (info: `count`), `changeReported` / `changeSuppressed` (info; a new body arrived but no change was reported: `reason` `unchangedRetained` when the retained events did not change, `staleFetch` when a newer check had already reported), `signInAccepted` / `signInRejected` (`reason` token only: `feedLoaded`, `invalidLink`, `authExpired`, `server`, `network`, `invalidResponse`). Never the link, its path or query, or any event text; the only strings are fixed tokens and private UIDs. A leak test enforces this.
+- **Not supported.** A downloaded `.ics` file (a one-time copy that would go stale), writes and RSVP, more than one feed per account.
 
 ## Calendar identity and permissions
 

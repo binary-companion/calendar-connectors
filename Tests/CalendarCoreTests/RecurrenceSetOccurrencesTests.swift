@@ -82,3 +82,9 @@ private func local(_ y: Int, _ mo: Int, _ d: Int, _ h: Int = 9, _ mi: Int = 0) -
     // Instances before 09-22: 09-01, 09-08 (excluded but counted, as RFC 5545 COUNT does), 09-15.
     #expect(set.ruleInstanceCount(anchor: local(2026, 9, 1), timeZone: ny, isAllDay: false, before: local(2026, 9, 22)) == 3)
 }
+
+@Test func aSetWithAnUnparsedRuleReportsItAsUnreadable() {
+    #expect(RecurrenceSet(rules: [], unparsed: ["RRULE:INTERVAL=2"]).hasUnreadableRule)
+    #expect(!RecurrenceSet(rules: [], unparsed: ["EXRULE:FREQ=DAILY"]).hasUnreadableRule)
+    #expect(!RecurrenceSet(rules: []).hasUnreadableRule)
+}
