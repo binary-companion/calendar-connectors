@@ -81,10 +81,23 @@ public struct Platform: OptionSet, Sendable {
 
 /// A keyed map of secrets per connection (Google stores `["refresh_token": ...]`).
 /// The host supplies the real store (TimeTug: Keychain). The library ships only an in-memory one.
+public struct CredentialSnapshot: Sendable {
+    public let secrets: [String: String]
+    public let revision: UUID
+
+    public init(secrets: [String: String], revision: UUID) {
+        self.secrets = secrets
+        self.revision = revision
+    }
+}
+
 public protocol CredentialStore: Sendable {
     func secrets(for connectionID: ConnectionID) async throws -> [String: String]?
     func setSecrets(_ secrets: [String: String], for connectionID: ConnectionID) async throws
     func removeSecrets(for connectionID: ConnectionID) async throws
+    func credentialSnapshot(for connectionID: ConnectionID) async throws -> CredentialSnapshot?
+    /// Only the same credential lifecycle may rotate its refresh token. The store must check and write atomically.
+    func updateRefreshToken(_ token: String, for connectionID: ConnectionID, expectedRevision: UUID) async throws -> Bool
 }
 
 public protocol SyncStateStore: Sendable {
@@ -94,14 +107,22 @@ public protocol SyncStateStore: Sendable {
 }
 
 public actor InMemoryCredentialStore: CredentialStore {
-    private var storage: [ConnectionID: [String: String]] = [:]
+    private var storage: [ConnectionID: CredentialSnapshot] = [:]
     public init() {}
     public var isEmpty: Bool { storage.isEmpty }
-    public func secrets(for connectionID: ConnectionID) async throws -> [String: String]? { storage[connectionID] }
+    public func secrets(for connectionID: ConnectionID) async throws -> [String: String]? { storage[connectionID]?.secrets }
     public func setSecrets(_ secrets: [String: String], for connectionID: ConnectionID) async throws {
-        storage[connectionID] = secrets
+        storage[connectionID] = CredentialSnapshot(secrets: secrets, revision: UUID())
     }
     public func removeSecrets(for connectionID: ConnectionID) async throws { storage[connectionID] = nil }
+    public func credentialSnapshot(for connectionID: ConnectionID) async throws -> CredentialSnapshot? { storage[connectionID] }
+    public func updateRefreshToken(_ token: String, for connectionID: ConnectionID, expectedRevision: UUID) async throws -> Bool {
+        guard let existing = storage[connectionID], existing.revision == expectedRevision else { return false }
+        var secrets = existing.secrets
+        secrets["refresh_token"] = token
+        storage[connectionID] = CredentialSnapshot(secrets: secrets, revision: existing.revision)
+        return true
+    }
 }
 
 public actor InMemorySyncStateStore: SyncStateStore {

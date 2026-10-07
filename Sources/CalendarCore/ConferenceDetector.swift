@@ -3,6 +3,8 @@ import Foundation
 /// Finds video-conference join links in event text, and is the one place that knows which hosts are conference
 /// providers. Uses a known-provider allowlist so a "Join" button never opens something like a shared document.
 public enum ConferenceDetector {
+    private static let linkRegex = try? NSRegularExpression(
+        pattern: #"(?:https?|zoommtg)://[^\s<>"'\)\]]+"#, options: [.caseInsensitive])
     struct Provider {
         let host: String
         var pathPrefix: String? = nil
@@ -29,6 +31,7 @@ public enum ConferenceDetector {
 
     /// The provider a link belongs to; nil when its host is not on the allowlist.
     public static func provider(of url: URL) -> ConferenceProvider? {
+        guard JoinURLPolicy.isAllowed(url) else { return nil }
         guard let scheme = url.scheme?.lowercased() else { return nil }
         if scheme == "zoommtg" {
             guard let host = url.host?.lowercased() else { return nil }
@@ -53,7 +56,10 @@ public enum ConferenceDetector {
     ) -> [ConferenceInfo] {
         var result: [ConferenceInfo] = []
         var seen = Set<String>()
-        func add(_ info: ConferenceInfo) { if seen.insert(info.identity).inserted { result.append(info) } }
+        func add(_ info: ConferenceInfo) {
+            guard JoinURLPolicy.isAllowed(info.url) else { return }
+            if seen.insert(info.identity).inserted { result.append(info) }
+        }
         structured.forEach(add)
         let texts: [(String?, ConferenceOrigin)] = [(location, .location), (url?.absoluteString, .url), (notes, .notes)]
         for (text, origin) in texts {
@@ -64,7 +70,8 @@ public enum ConferenceDetector {
                 }
             }
         }
-        if result.isEmpty, let url, let scheme = url.scheme?.lowercased(), scheme == "http" || scheme == "https",
+        if result.isEmpty, let url, JoinURLPolicy.isAllowed(url), let scheme = url.scheme?.lowercased(),
+           scheme == "http" || scheme == "https",
            let host = url.host?.lowercased(), !nonConferenceEventLinkHosts.contains(host)
         {
             result.append(ConferenceInfo(url: url, provider: .other, origin: .eventURL))
@@ -79,9 +86,7 @@ public enum ConferenceDetector {
 
     static func candidates(in text: String) -> [String] {
         let decoded = text.replacingOccurrences(of: "&amp;", with: "&")
-        guard let regex = try? NSRegularExpression(pattern: #"(?:https?|zoommtg)://[^\s<>"'\)\]]+"#, options: [.caseInsensitive]) else {
-            return []
-        }
+        guard let regex = linkRegex else { return [] }
         let range = NSRange(decoded.startIndex..., in: decoded)
         return regex.matches(in: decoded, range: range).compactMap { match in
             Range(match.range, in: decoded).map {

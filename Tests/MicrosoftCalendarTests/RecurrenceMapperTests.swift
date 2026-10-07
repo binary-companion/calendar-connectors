@@ -139,3 +139,18 @@ private func dto(_ pattern: [String: Any], _ range: [String: Any] = ["type": "no
     let nextRange = try #require(next["range"] as? [String: Any])
     #expect(nextRange["startDate"] as? String == "2026-09-05" && nextRange["numberOfOccurrences"] as? Int == 6 && nextRange["type"] as? String == "numbered")
 }
+
+@Test func numberedPositionUsesScheduledSlotsAcrossPatterns() throws {
+    func remaining(_ pattern: [String: Any], start: String, split: String, count: Int = 8) throws -> Int {
+        try GraphRecurrenceMapper.remainingCount(in: [
+            "pattern": pattern,
+            "range": ["type": "numbered", "startDate": start, "numberOfOccurrences": count],
+        ], from: try #require(GraphTime.date(split)))
+    }
+    #expect(try remaining(["type": "weekly", "interval": 2, "daysOfWeek": ["monday", "friday"], "firstDayOfWeek": "monday"], start: "2026-09-25", split: "2026-10-19") == 5)
+    #expect(try remaining(["type": "relativeMonthly", "interval": 1, "daysOfWeek": ["tuesday"], "index": "last"], start: "2026-09-29", split: "2026-11-24") == 6)
+    #expect(try remaining(["type": "daily", "interval": 1], start: "2026-03-07", split: "2026-03-10", count: 5) == 2)
+    #expect(try remaining(["type": "absoluteMonthly", "interval": 1, "dayOfMonth": 31], start: "2026-01-31", split: "2026-03-31") == 7)
+    #expect(try remaining(["type": "absoluteYearly", "interval": 1, "month": 2, "dayOfMonth": 29], start: "2024-02-29", split: "2028-02-29") == 7)
+    #expect(try remaining(["type": "relativeYearly", "interval": 1, "month": 11, "daysOfWeek": ["monday"], "index": "last"], start: "2026-11-30", split: "2027-11-29") == 7)
+}

@@ -83,7 +83,8 @@ struct SourceHarness {
 
     init(
         calendars: [String: Any] = calendarsJSON, mailboxZone: String = "Pacific Standard Time",
-        sync: InMemorySyncStateStore = InMemorySyncStateStore()
+        sync: InMemorySyncStateStore = InMemorySyncStateStore(),
+        wrap: (@Sendable (FakeTransport) -> any HTTPTransport)? = nil
     ) async throws {
         self.sync = sync
         let connection = Connection(kindID: "microsoft", connectionID: "c1", displayName: "me@x.com", config: ["email": "me@x.com"])
@@ -94,7 +95,7 @@ struct SourceHarness {
             connectionID: "c1", credentials: store,
             refresh: { _ in OAuthTokens(accessToken: "at\(counter.next())", expiresAt: now.date.addingTimeInterval(3600)) }, now: now.provider)
         let sleeps = self.sleeps
-        let api = GraphAPIClient(transport: transport, tokens: provider, sleep: { await sleeps.record($0) })
+        let api = GraphAPIClient(transport: wrap?(transport) ?? transport, tokens: provider, sleep: { await sleeps.record($0) })
         source = MicrosoftCalendarSource(
             connection: connection, api: api, syncState: sync, monitor: ChangeMonitor(sleep: { _ in }), now: now.provider)
         await transport.route("me/mailboxSettings/timeZone", [.json(["value": mailboxZone])])

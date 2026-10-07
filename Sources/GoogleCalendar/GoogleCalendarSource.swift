@@ -42,11 +42,23 @@ public final class GoogleCalendarSource: PollingCalendarSource {
         let calendars: [CalendarDescriptor]
         if let stored = await calendarList.list { calendars = stored } else { calendars = try await self.calendars() }
         return try await withThrowingTaskGroup(of: [CalendarEvent].self) { group in
-            for calendar in calendars {
-                group.addTask { try await self.events(for: calendar, in: interval) }
+            var nextIndex = 0
+            func enqueueNext() {
+                guard nextIndex < calendars.count else { return }
+                let calendar = calendars[nextIndex]
+                nextIndex += 1
+                group.addTask {
+                    try Task.checkCancellation()
+                    return try await self.events(for: calendar, in: interval)
+                }
             }
+            for _ in 0..<min(4, calendars.count) { enqueueNext() }
             var all: [CalendarEvent] = []
-            for try await part in group { all += part }
+            for try await part in group {
+                all += part
+                try Task.checkCancellation()
+                enqueueNext()
+            }
             return all.sorted { ($0.start, $0.id) < ($1.start, $1.id) }
         }
     }

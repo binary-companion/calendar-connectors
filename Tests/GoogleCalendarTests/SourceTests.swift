@@ -53,6 +53,71 @@ struct Harness {
     }
 }
 
+private actor GoogleReadProbe: HTTPTransport {
+    let base: FakeTransport
+    let delay: Duration
+    var active = 0
+    var peak = 0
+    var started = 0
+    init(_ base: FakeTransport, delay: Duration = .milliseconds(30)) { self.base = base; self.delay = delay }
+    func send(_ request: HTTPRequest) async throws -> HTTPResponse {
+        guard request.url.path.contains("/events") else { return try await base.send(request) }
+        active += 1
+        started += 1
+        peak = max(peak, active)
+        defer { active -= 1 }
+        try await Task.sleep(for: delay)
+        return try await base.send(request)
+    }
+}
+
+@Test func cancellingGoogleFetchDoesNotStartQueuedCalendarReads() async throws {
+    let ids = (0..<20).map { "cal\($0)" }
+    let box = GoogleProbeBox()
+    let h = try await Harness(calendarList: listJSON(ids), wrap: { base in
+        let probe = GoogleReadProbe(base, delay: .seconds(2))
+        box.probe = probe
+        return probe
+    })
+    let probe = try #require(box.probe)
+    let fetch = Task { try await h.source.events(in: DateInterval(start: .now, duration: 3600)) }
+    for _ in 0..<100 {
+        if await probe.started == 4 { break }
+        try await Task.sleep(for: .milliseconds(10))
+    }
+    #expect(await probe.started == 4)
+    fetch.cancel()
+    await #expect(throws: CancellationError.self) { _ = try await fetch.value }
+    #expect(await probe.started == 4)
+}
+
+@Test func twentyGoogleCalendarsNeverHaveMoreThanFourActiveEventReads() async throws {
+    let ids = (0..<20).map { "cal\($0)" }
+    let probeBox = GoogleProbeBox()
+    let h = try await Harness(calendarList: listJSON(ids), wrap: { base in
+        let probe = GoogleReadProbe(base)
+        probeBox.probe = probe
+        return probe
+    })
+    for (index, id) in ids.enumerated() {
+        await h.transport.route("calendars/\(id)/events", [.json(["items": [eventJSON("e\(index)", start: "2026-09-21T10:00:00Z")]])])
+    }
+    let events = try await h.source.events(in: DateInterval(start: .now, duration: 3600))
+    let probe = try #require(probeBox.probe)
+    #expect(await probe.peak <= 4)
+    #expect(events.map(\.eventID) == ids.indices.map { "e\($0)" }.sorted())
+    #expect(await h.transport.requests.filter { $0.url.path.contains("/events") }.count == 20)
+}
+
+private final class GoogleProbeBox: @unchecked Sendable {
+    private let lock = NSLock()
+    private var value: GoogleReadProbe?
+    var probe: GoogleReadProbe? {
+        get { lock.withLock { value } }
+        set { lock.withLock { value = newValue } }
+    }
+}
+
 /// Hands out 1, 2, 3... so each token refresh yields a distinct access token ("at1", "at2", ...).
 final class RefreshCounter: @unchecked Sendable {
     private let lock = NSLock()

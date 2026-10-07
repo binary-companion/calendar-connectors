@@ -2,21 +2,6 @@ import CalendarCore
 import Foundation
 
 extension MicrosoftCalendarSource {
-    /// Occurrences of the series that start before `split`, counted from the master's own start. A deleted occurrence
-    /// still counts toward a `numbered` range, but Graph's `instances` may not list it, so this can undercount.
-    private func priorInstances(calendarID: String, masterID: String, from start: Date, before split: Date) async throws -> Int {
-        let url = api.url(
-            path: GraphAPIClient.eventPath(calendarID, masterID) + "/instances",
-            query: [
-                URLQueryItem(name: "startDateTime", value: GraphTime.instantText(start.addingTimeInterval(-86_400))),
-                URLQueryItem(name: "endDateTime", value: GraphTime.instantText(split)),
-                URLQueryItem(name: "$select", value: "id"), URLQueryItem(name: "$top", value: "100"),
-            ])
-        var count = 0
-        try await api.pages(GraphListPage<GraphIDDTO>.self, from: url) { count += $0.items.count }
-        return count
-    }
-
     private func patchRecurrence(_ calendarID: String, _ eventID: String, _ recurrence: [String: Any]) async throws {
         try await patchRecurrence(calendarID, eventID, body: try GraphWriteMapper.data(["recurrence": recurrence]))
     }
@@ -106,6 +91,8 @@ extension MicrosoftCalendarSource {
                 ref, master: master, first: first, original: original, split: split, splitDate: splitDate, rangeZone: rangeZone,
                 patch: patch, calendar: calendar)
         }
+        // Serialize before truncating the master: a local encoding failure must leave the series intact.
+        let insertData = try newSeries.map { try GraphWriteMapper.data($0) }
         do {
             try await patchRecurrence(ref.calendarID, masterID, truncated)
         } catch {
@@ -115,9 +102,7 @@ extension MicrosoftCalendarSource {
             if newSeries != nil, Self.mightHaveApplied(error) { try await restoreTruncation(ref.calendarID, masterID, original, after: error) }
             throw error
         }
-        guard let newSeries else { return nil }
-
-        let insertData = try GraphWriteMapper.data(newSeries)
+        guard let insertData else { return nil }
         let zonePreferences = zone.readPreferences
         let insertURL = api.url(path: GraphAPIClient.calendarPath(ref.calendarID, "/events"))
         let created: Data
@@ -155,11 +140,8 @@ extension MicrosoftCalendarSource {
             if !overlapping.isEmpty { throw WriteError.conflict(fields: overlapping) }
         }
         var remaining: Int?
-        if let total = GraphRecurrenceMapper.occurrenceCount(in: original) {
-            let masterID = ref.seriesID ?? ref.eventID
-            let prior = try await priorInstances(calendarID: ref.calendarID, masterID: masterID, from: first.start, before: split)
-            guard total - prior >= 1 else { throw WriteError.invalid("the series has no occurrences left to split off") }
-            remaining = total - prior
+        if (original["range"] as? [String: Any])?["type"] as? String == "numbered" {
+            remaining = try GraphRecurrenceMapper.remainingCount(in: original, from: splitDate)
         }
         var body = GraphWriteMapper.newSeriesBase(from: master.json)
         let slot = EventTiming(start: split, end: split.addingTimeInterval(first.end.timeIntervalSince(first.start)), timeZone: first.zone, isAllDay: first.isAllDay)

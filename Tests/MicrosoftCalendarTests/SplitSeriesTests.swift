@@ -79,6 +79,32 @@ private func range(_ body: [String: Any]) -> [String: Any] { (body["recurrence"]
     #expect(range(patches[0])["type"] as? String == "endDate")
 }
 
+@Test func aDeletedSlotAndMovedExceptionDoNotExtendANumberedContinuation() async throws {
+    let h = try await SourceHarness()
+    let fourth = Date(timeIntervalSince1970: 1_792_170_000) // 2026-10-16 10:00 Los Angeles
+    let fourthRef = EventRef(calendarID: "cal1", eventID: "occ3", version: "ck1", seriesID: "master1", originalStart: fourth)
+    await routes(h, master: master(range: ["type": "numbered", "numberOfOccurrences": 5]))
+    // Graph omits deleted slot 2 and reports moved slot 3 after this split.
+    await h.transport.route("master1/instances", [.json(["value": [["id": "i1"]]])])
+    _ = try await h.source.update(fourthRef, EventPatch(title: "Renamed"), scope: .thisAndFollowing, notify: .none)
+    let created = await inserts(h)
+    try #require(created.count == 1)
+    #expect(range(created[0])["numberOfOccurrences"] as? Int == 2)
+    #expect(await h.transport.requests(matching: "master1/instances").isEmpty)
+}
+
+@Test func unsupportedNumberedPatternFailsBeforeAnyWrite() async throws {
+    let h = try await SourceHarness()
+    var unsupported = master(range: ["type": "numbered", "numberOfOccurrences": 5])
+    unsupported["recurrence"] = ["pattern": ["type": "lunar"], "range": ["type": "numbered", "startDate": "2026-09-25", "numberOfOccurrences": 5]]
+    await routes(h, master: unsupported)
+    await expectWriteError(.unsupported(fields: [.recurrence])) {
+        _ = try await h.source.update(ref, EventPatch(title: "Renamed"), scope: .thisAndFollowing, notify: .none)
+    }
+    #expect(await patchesToMaster(h).isEmpty)
+    #expect(await inserts(h).isEmpty)
+}
+
 @Test func splittingAtTheFirstOccurrenceIsTheSameAsWritingTheWholeSeries() async throws {
     let h = try await SourceHarness()
     await routes(h)

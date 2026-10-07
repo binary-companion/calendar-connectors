@@ -87,6 +87,19 @@ private func makeProvider(
     #expect(try await provider.accessToken() == "at2")
 }
 
+@Test func providerAcceptsReauthorizedCredentialsAfterInvalidation() async throws {
+    let now = TestNow()
+    let store = InMemoryCredentialStore()
+    try await store.setSecrets([AccessTokenProvider.refreshTokenKey: "old"], for: "c1")
+    let refresher = Refresher(now: now)
+    let provider = makeProvider(now: now, refresher: refresher, store: store)
+    #expect(try await provider.accessToken() == "at1")
+    try await store.setSecrets([AccessTokenProvider.refreshTokenKey: "new"], for: "c1")
+    await provider.invalidate()
+    #expect(try await provider.accessToken() == "at2")
+    #expect(await refresher.seen == ["old", "new"])
+}
+
 @Test func initialTokensAreUsedWithoutTouchingTheStore() async throws {
     let now = TestNow()
     let refresher = Refresher(now: now)
@@ -112,7 +125,7 @@ private func makeProvider(
     _ = try? await first.value
 }
 
-@Test func rotationDoesNotOverwriteEntriesWrittenDuringRefresh() async throws {
+@Test func rotationDoesNotOverwriteNewCredentialLifecycleOrUnrelatedEntries() async throws {
     let now = TestNow()
     let store = InMemoryCredentialStore()
     try await store.setSecrets([AccessTokenProvider.refreshTokenKey: "rt0", "other": "keep"], for: "c1")
@@ -123,9 +136,38 @@ private func makeProvider(
             return OAuthTokens(accessToken: "at", expiresAt: now.date.addingTimeInterval(3600), refreshToken: "rt1")
         },
         now: now.provider)
-    _ = try await provider.accessToken()
+    await #expect(throws: SourceError.authExpired) { try await provider.accessToken() }
     let secrets = try #require(try await store.secrets(for: "c1"))
-    #expect(secrets[AccessTokenProvider.refreshTokenKey] == "rt1")
+    #expect(secrets[AccessTokenProvider.refreshTokenKey] == "rt0")
     #expect(secrets["other"] == "keep")
     #expect(secrets["other2"] == "x")
+}
+
+@Test func removalDuringRefreshDoesNotRecreateSecrets() async throws {
+    let now = TestNow()
+    let store = InMemoryCredentialStore()
+    try await store.setSecrets([AccessTokenProvider.refreshTokenKey: "original"], for: "c1")
+    let provider = AccessTokenProvider(
+        connectionID: "c1", credentials: store,
+        refresh: { _ in
+            try await store.removeSecrets(for: "c1")
+            return OAuthTokens(accessToken: "old-access", expiresAt: now.date.addingTimeInterval(3600), refreshToken: "rotated")
+        }, now: now.provider)
+    await #expect(throws: SourceError.authExpired) { try await provider.accessToken() }
+    #expect(try await store.secrets(for: "c1") == nil)
+    await #expect(throws: SourceError.authExpired) { try await provider.accessToken() }
+}
+
+@Test func reauthorizationDuringRefreshPreservesNewSecrets() async throws {
+    let now = TestNow()
+    let store = InMemoryCredentialStore()
+    try await store.setSecrets([AccessTokenProvider.refreshTokenKey: "original"], for: "c1")
+    let provider = AccessTokenProvider(
+        connectionID: "c1", credentials: store,
+        refresh: { _ in
+            try await store.setSecrets([AccessTokenProvider.refreshTokenKey: "new-sign-in"], for: "c1")
+            return OAuthTokens(accessToken: "old-access", expiresAt: now.date.addingTimeInterval(3600), refreshToken: "old-rotation")
+        }, now: now.provider)
+    await #expect(throws: SourceError.authExpired) { try await provider.accessToken() }
+    #expect(try await store.secrets(for: "c1")?[AccessTokenProvider.refreshTokenKey] == "new-sign-in")
 }

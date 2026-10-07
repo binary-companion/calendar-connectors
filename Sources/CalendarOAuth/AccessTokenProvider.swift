@@ -13,6 +13,7 @@ public actor AccessTokenProvider {
     private let refresh: RefreshFunction
     private let now: @Sendable () -> Date
     private var cached: OAuthTokens?
+    private var boundRevision: UUID?
     private var inflight: Task<OAuthTokens, Error>?
 
     public init(
@@ -27,12 +28,24 @@ public actor AccessTokenProvider {
     }
 
     public func accessToken() async throws -> String {
-        if let cached, cached.expiresAt.timeIntervalSince(now()) > Self.safetyMargin { return cached.accessToken }
+        if let cached, cached.expiresAt.timeIntervalSince(now()) > Self.safetyMargin {
+            if let boundRevision {
+                guard try await credentials.credentialSnapshot(for: connectionID)?.revision == boundRevision else {
+                    self.cached = nil
+                    self.boundRevision = nil
+                    throw SourceError.authExpired
+                }
+            }
+            return cached.accessToken
+        }
         return try await refreshShared().accessToken
     }
 
     /// Drops the cached token (call after a 401) so the next `accessToken()` refreshes.
-    public func invalidate() { cached = nil }
+    public func invalidate() {
+        cached = nil
+        boundRevision = nil
+    }
 
     private func refreshShared() async throws -> OAuthTokens {
         if let inflight { return try await inflight.value }
@@ -55,16 +68,17 @@ public actor AccessTokenProvider {
     private func finishRefresh() { inflight = nil }
 
     private func performRefresh() async throws -> OAuthTokens {
-        let secrets = try await credentials.secrets(for: connectionID) ?? [:]
-        guard let refreshToken = secrets[Self.refreshTokenKey] else { throw SourceError.authExpired }
+        guard let snapshot = try await credentials.credentialSnapshot(for: connectionID),
+              let refreshToken = snapshot.secrets[Self.refreshTokenKey] else { throw SourceError.authExpired }
         let tokens = try await refresh(refreshToken)
-        cached = tokens
-        if let rotated = tokens.refreshToken, rotated != refreshToken {
-            // Re-read after the refresh so entries written meanwhile are not overwritten.
-            var latest = try await credentials.secrets(for: connectionID) ?? [:]
-            latest[Self.refreshTokenKey] = rotated
-            try await credentials.setSecrets(latest, for: connectionID)
+        // Check and persist as one store operation: a removed or reauthorized account must not be restored
+        // by an old in-flight refresh, even when its server returned a rotated token.
+        guard try await credentials.updateRefreshToken(tokens.refreshToken ?? refreshToken,
+                                                       for: connectionID, expectedRevision: snapshot.revision) else {
+            throw SourceError.authExpired
         }
+        boundRevision = snapshot.revision
+        cached = tokens
         return tokens
     }
 }

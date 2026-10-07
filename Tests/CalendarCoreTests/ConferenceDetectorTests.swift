@@ -165,3 +165,20 @@ private func list(structured: [ConferenceInfo] = [], location: String? = nil, ur
     let b = ConferenceInfo(url: URL(string: "https://acme.webex.com/acme/j.php?MTID=m222")!, provider: .webex)
     #expect(a.identity != b.identity)
 }
+
+@Test func joinURLPolicyAcceptsOnlySafeMeetingSchemes() {
+    let allowed = ["https://meet.google.com/abc", "HTTP://example.com/meeting", "zoommtg://acme.zoom.us/join"]
+    let rejected = ["file:///tmp/payload", "javascript:alert(1)", "data:text/html,hello",
+                    "custom://example.com/run", "https://user:pass@example.com/meeting",
+                    "zoommtg://zoom.us.evil.example/j/1",
+                    "https:///missing-host"]
+    for raw in allowed { #expect(JoinURLPolicy.isAllowed(URL(string: raw)!)) }
+    for raw in rejected { #expect(!JoinURLPolicy.isAllowed(URL(string: raw)!)) }
+    #expect(ConferenceDetector.provider(of: URL(string: "https://zoom.us.evil.example/j/1")!) == nil)
+}
+
+@Test func invalidStructuredConferenceFallsBackToSafeLink() {
+    let unsafe = ConferenceInfo(url: URL(string: "file:///tmp/payload")!, provider: .zoom)
+    let found = list(structured: [unsafe], notes: "https://meet.google.com/abc")
+    #expect(found.map(\.url.absoluteString) == ["https://meet.google.com/abc"])
+}
