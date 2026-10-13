@@ -13,6 +13,17 @@ jobs:
       - run: echo "${{ secrets.GITHUB_TOKEN }}${{ secrets.DOCKERHUB_TOKEN }}"
 '''
 
+RELEASE = '''name: Release
+on:
+  push:
+    branches: [main]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo release
+'''
+
 ACTION = '''name: setup
 runs:
   using: composite
@@ -36,6 +47,7 @@ def make(root: Path, **overrides):
         'Sources/GoogleCalendar/GoogleCalendarSource.swift': 'canWrite: true\n',
         'Sources/GoogleCalendar/GoogleCalendarSource+Write.swift': 'extension GoogleCalendarSource: WritableCalendarSource {}\n',
         '.github/workflows/ci.yml': CI,
+        '.github/workflows/release.yml': RELEASE,
     }
     files.update(overrides)
     for name, text in files.items():
@@ -79,6 +91,56 @@ class Contracts(unittest.TestCase):
         self.check(True, **{
             '.github/workflows/ci.yml': CI.replace('    runs-on: ubuntu-latest', '    environment: publish\n    runs-on: ubuntu-latest')
                                             .replace('DOCKERHUB_TOKEN', 'SIGNING_KEY')})
+
+    # --- GitHub context names are case-insensitive ---
+
+    def test_uppercase_secrets_context_outside_an_environment_fails(self):
+        self.check(False, 'SIGNING_KEY', **{
+            '.github/workflows/ci.yml': CI.replace('secrets.DOCKERHUB_TOKEN', 'SECRETS.SIGNING_KEY')})
+
+    def test_mixed_case_secrets_context_inside_an_environment_passes(self):
+        self.check(True, **{
+            '.github/workflows/ci.yml': CI.replace('    runs-on: ubuntu-latest', '    environment: publish\n    runs-on: ubuntu-latest')
+                                            .replace('secrets.DOCKERHUB_TOKEN', 'Secrets.SIGNING_KEY')})
+
+    def test_uppercase_bracket_syntax_secret_fails(self):
+        self.check(False, 'SIGNING_KEY', **{
+            '.github/workflows/ci.yml': CI.replace('secrets.DOCKERHUB_TOKEN', "SECRETS['SIGNING_KEY']")})
+
+    def test_uppercase_whole_secrets_context_fails(self):
+        self.check(False, 'whole secrets context', **{
+            '.github/workflows/ci.yml': CI.replace('secrets.DOCKERHUB_TOKEN', 'toJSON(Secrets)')})
+
+    def test_uppercase_whole_secrets_context_at_workflow_level_fails(self):
+        self.check(False, 'workflow-level use of the whole secrets context', **{
+            '.github/workflows/ci.yml': CI.replace('jobs:', 'env:\n  ALL: ${{ toJSON(SECRETS) }}\njobs:')})
+
+    def test_uppercase_whole_secrets_context_in_an_if_fails(self):
+        self.check(False, 'whole secrets context', **{
+            '.github/workflows/ci.yml': CI.replace('    runs-on: ubuntu-latest',
+                                                   "    if: contains(toJSON(SECRETS), 'x')\n    runs-on: ubuntu-latest")})
+
+    def test_lowercase_spelling_of_an_allowed_secret_passes(self):
+        self.check(True, **{
+            '.github/workflows/ci.yml': CI.replace('secrets.DOCKERHUB_TOKEN', 'secrets.dockerhub_token')})
+
+    def test_uppercase_secret_in_a_composite_action_fails(self):
+        self.check(False, 'composite action uses secret SIGNING_KEY', **{
+            '.github/actions/setup/action.yml': ACTION.replace('echo hi', 'echo ${{ SECRETS.SIGNING_KEY }}')})
+
+    # --- the documented workflows must exist ---
+
+    def test_missing_workflows_directory_fails(self):
+        self.check(False, 'missing documented path: .github/workflows', **{
+            '.github/workflows/ci.yml': None, '.github/workflows/release.yml': None})
+
+    def test_missing_release_workflow_fails(self):
+        self.check(False, 'missing documented path: .github/workflows/release.yml', **{
+            '.github/workflows/release.yml': None})
+
+    def test_missing_ci_workflow_fails(self):
+        self.check(False, 'missing documented path: .github/workflows/ci.yml', **{
+            '.github/workflows/ci.yml': None})
 
     # --- every remaining rule fails when its violation is introduced ---
 
