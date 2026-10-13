@@ -36,11 +36,20 @@ public protocol HTTPTransport: Sendable {
 
 public struct URLSessionTransport: HTTPTransport {
     private let session: URLSession
-    public init(session: URLSession = .shared) { self.session = session }
+    public init(session: URLSession = URLSession(configuration: URLSessionTransport.apiConfiguration)) { self.session = session }
+
+    /// Calendar API calls are never reusable from a cache: sync tokens make every poll a new URL, so a URL cache only
+    /// piles up responses (and keeps authenticated bodies on disk). Cookies stay in memory only.
+    public static var apiConfiguration: URLSessionConfiguration {
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.urlCache = nil
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        return configuration
+    }
 
     /// A transport with its own session. With `followsRedirects: false` a 3xx comes back as the response instead of
     /// being followed, so the caller can check where it points before sending credentials there (CalDAV).
-    public init(configuration: URLSessionConfiguration = .default, followsRedirects: Bool) {
+    public init(configuration: URLSessionConfiguration = URLSessionTransport.apiConfiguration, followsRedirects: Bool) {
         if followsRedirects {
             self.session = URLSession(configuration: configuration)
         } else {
