@@ -10,7 +10,7 @@ fail() { echo "FAIL: $*" >&2; exit 1; }
 mkdir -p "$T/Sources/CalendarCore" "$T/Sources/GoogleCalendar" "$T/Tests/CalendarCoreTests"
 printf '// swift-tools-version: 6.0\nlet package = Package(name: "x", targets: [])\n' > "$T/Package.swift"
 printf '#if canImport(FoundationNetworking)\nimport FoundationNetworking\n#endif\nimport Foundation\n' > "$T/Sources/CalendarCore/A.swift"
-printf '@preconcurrency import CalendarCore\nimport struct Foundation.Date\n' > "$T/Sources/GoogleCalendar/A.swift"
+printf '@preconcurrency import CalendarCore\nimport struct Foundation.Date\npublic import Foundation\n@_exported public import CalendarCore\n' > "$T/Sources/GoogleCalendar/A.swift"
 printf 'import Testing\n@testable import CalendarCore\n' > "$T/Tests/CalendarCoreTests/T.swift"
 out="$("$S" "$T")" || fail "clean fixture rejected: $out"
 
@@ -27,6 +27,19 @@ expect Sources/CalendarCore/X.swift 'import Security\n' "may not import Security
 expect Sources/GoogleCalendar/X.swift 'import TimeTugCore\n' "may not import TimeTugCore"
 expect Sources/GoogleCalendar/X.swift 'import XMLCoder\n' "may not import XMLCoder"
 expect Tests/CalendarCoreTests/X.swift 'import CryptoKit\n' "may not import CryptoKit"
+expect Sources/GoogleCalendar/X.swift 'public import AppKit\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift 'internal import AppKit\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift 'package import AppKit\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift 'fileprivate import AppKit\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift 'private import AppKit\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift '@_exported public import AppKit\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift '@preconcurrency public import AppKit\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift '@testable import AppKit\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift '@available(macOS 14, *) import AppKit\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift 'import struct AppKit.NSColor\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift 'public import class AppKit.NSView\n' "may not import AppKit"
+expect Sources/GoogleCalendar/X.swift '\n\n  import AppKit\n' "Sources/GoogleCalendar/X.swift:3: the library may not import AppKit"
+expect Tests/CalendarCoreTests/X.swift '@testable import AppKit\n' "may not import AppKit"
 expect Package.swift 'let package = Package(dependencies: [.package(url: "https://github.com/x/y", from: "1.0.0")])\n' \
   "has package dependencies"
 echo PASS

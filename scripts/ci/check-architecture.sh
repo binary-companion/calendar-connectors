@@ -10,11 +10,14 @@ has() { case " $1 " in *" $2 "*) return 0 ;; esac; return 1; }
 
 MODULES="$(ls Sources 2>/dev/null | tr '\n' ' ')"
 ALLOWED="Foundation FoundationNetworking FoundationXML Testing $MODULES"
+# Any mix of @attributes and access-level modifiers may precede "import": "@testable import X",
+# "public import X", "@_exported public import X", "import struct X.Y".
+PREFIX='((@[A-Za-z_]+(\([^)]*\))?|public|package|internal|fileprivate|private)[[:space:]]+)*'
 while read -r loc mod; do
   [ -n "${mod:-}" ] || continue
   has "$ALLOWED" "$mod" || report "$loc" "the library may not import $mod (allowed: $ALLOWED)"
-done < <(grep -rnE --include='*.swift' '^[[:space:]]*(@[A-Za-z_]+(\([^)]*\))?[[:space:]]+)*import[[:space:]]' Sources Tests 2>/dev/null |
-  sed -E 's/^([^:]+:[0-9]+):[[:space:]]*(@[A-Za-z_]+(\([^)]*\))?[[:space:]]+)*import[[:space:]]+((typealias|struct|class|enum|protocol|let|var|func)[[:space:]]+)?([A-Za-z_][A-Za-z0-9_]*).*/\1 \6/' || true)
+done < <(grep -rnE --include='*.swift' "^[[:space:]]*${PREFIX}import[[:space:]]" Sources Tests 2>/dev/null |
+  sed -E "s/^([^:]+:[0-9]+):[[:space:]]*${PREFIX}import[[:space:]]+((typealias|struct|class|enum|protocol|let|var|func)[[:space:]]+)?([A-Za-z_][A-Za-z0-9_]*).*/\\1 \\7/" || true)
 
 if line="$(grep -n '\.package(' Package.swift | head -1)" && [ -n "$line" ]; then
   report "Package.swift:${line%%:*}" "the library has package dependencies (it must have none)"
