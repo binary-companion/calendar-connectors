@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Tests the "Compute the version" step of .github/workflows/release.yml.
+# Tests the "Compute the version" step of .github/workflows/release.yml and pins the shape of the
+# workflow's notify job (the dispatch to the dependents).
 #
 # The step's run: script is extracted from the workflow and executed in throwaway git repositories
 # with a stub `gh` on PATH, so the real script is what is tested, not a copy of it.
@@ -36,6 +37,57 @@ open(envfile, 'w').write('\n'.join(sorted(steps[0].get('env', {}))) + '\n')
 PY
 [ "$(cat "$T/step-env")" = "$(printf 'GH_TOKEN\nOVERRIDE\nREPO\nSHA')" ] ||
   fail "the step's env changed ($(tr '\n' ' ' < "$T/step-env")); update this harness"
+
+# --- the notify job: pinned shape, then its dispatch step executed against a stub gh ---
+"$PYTHON" - "$WORKFLOW" "$T/notify.sh" <<'PY'
+import re, sys, yaml
+workflow, script = sys.argv[1:]
+jobs = yaml.safe_load(open(workflow))['jobs']
+def check(condition, message):
+    if not condition:
+        sys.exit(f'FAIL: {workflow}: notify: {message}')
+check('notify' in jobs, "job notify must exist")
+job = jobs['notify']
+check(job.get('needs') in ('publish', ['publish']), "job notify must need exactly publish")
+check(job.get('if') == "needs.publish.outputs.version != ''", "job notify must run only when publish released a version")
+check(job.get('environment') == 'bump', "job notify must use the bump environment")
+check(job.get('permissions') == {'contents': 'read'}, "job notify must have only contents: read")
+steps = job['steps']
+check(len(steps) == 2, "job notify must have exactly two steps (token, dispatch)")
+token, dispatch = steps
+check(token.get('id') == 'app', "the first step must be the token step with id: app")
+check(token.get('uses') == 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510',
+      "the token step must use actions/create-github-app-token pinned to the reviewed SHA")
+check(token.get('with') == {'app-id': '${{ vars.BUMP_APP_ID }}',
+                            'private-key': '${{ secrets.BUMP_APP_PRIVATE_KEY }}',
+                            'owner': '${{ github.repository_owner }}',
+                            'repositories': 'timetug'},
+      "the token step must be scoped to repositories: timetug and read app-id/private-key from the bump environment")
+check(dispatch.get('env') == {'GH_TOKEN': '${{ steps.app.outputs.token }}',
+                              'VERSION': '${{ needs.publish.outputs.version }}'},
+      "the dispatch step env must be exactly GH_TOKEN (app token) and VERSION (publish output)")
+run = dispatch.get('run', '')
+check('${{' not in run, "the dispatch script must not contain ${{ }} (the version only reaches it through env)")
+check(re.search(r'for dependent in timetug;', run) is not None, "the dispatch must loop over exactly: timetug")
+check('gh api "repos/binary-companion/$dependent/dispatches"' in run, "the dispatch must call repos/binary-companion/$dependent/dispatches")
+fields = re.findall(r'-f\s+"?([^\s"]+)"?', run)
+check(sorted(fields) == sorted(['event_type=library-released',
+                                'client_payload[library]=calendar-connectors',
+                                'client_payload[version]=$VERSION']),
+      f"the dispatch fields must be exactly event_type, client_payload[library], client_payload[version] (got {fields})")
+open(script, 'w').write(run)
+PY
+mkdir -p "$T/notify-bin"
+cat > "$T/notify-bin/gh" <<'STUB'
+#!/usr/bin/env bash
+printf '%s\n' "$*" >> "$NOTIFY_CALLS"
+STUB
+chmod +x "$T/notify-bin/gh"
+NOTIFY_CALLS="$T/notify-calls"; export NOTIFY_CALLS; : > "$NOTIFY_CALLS"
+PATH="$T/notify-bin:$PATH" VERSION=1.2.3 GH_TOKEN=unused "$STEP_SHELL" "$T/notify.sh" ||
+  fail "the notify dispatch step failed against the stub gh"
+[ "$(cat "$NOTIFY_CALLS")" = 'api repos/binary-companion/timetug/dispatches -f event_type=library-released -f client_payload[library]=calendar-connectors -f client_payload[version]=1.2.3' ] ||
+  fail "the notify dispatch made the wrong call: $(cat "$NOTIFY_CALLS")"
 
 # --- a stub gh: logs every call, answers /commits/<sha>/pulls from $STUB/labels/<sha> ---
 mkdir -p "$T/bin"
