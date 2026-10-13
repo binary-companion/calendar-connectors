@@ -710,7 +710,7 @@ client, XML and discovery are internal.
   `EXDATE`s; an unknown id or a non-recurring resource is `.notFound`.
 - **Testing.** `CalDAVCalendarTests` run against `FakeCalDAVServer` (an in-memory `HTTPTransport`) with
   `WritableSourceConformance`, `AllDayConformance` and `ProvidedFieldsConformance`. The live smoke test is opt-in and
-  never runs in CI: `TIMETUG_LIVE_ICLOUD=1 swift test --package-path Packages/CalendarConnectors --filter iCloudLiveSmoke`
+  never runs in CI: `TIMETUG_LIVE_ICLOUD=1 swift test --filter iCloudLiveSmoke`
   (credentials from `~/.config/timetug/icloud-live`; writes only to a calendar named "TimeTug Live Test" and deletes only
   the events it made, whose titles start with "TimeTug write smoke").
 

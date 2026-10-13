@@ -3,7 +3,7 @@ import Foundation
 import Testing
 @testable import ICalSubscription
 
-/// Opt-in, never in CI: `TIMETUG_LIVE_ICALSUB=1 swift test --package-path Packages/CalendarConnectors --filter liveFeedLoads`.
+/// Opt-in, never in CI: `TIMETUG_LIVE_ICALSUB=1 swift test --filter liveFeedLoads`.
 /// Reads one feed link from the git-ignored `~/.config/timetug/icalsub-live`. Prints counts only, never the link or any event text.
 @Test(.enabled(if: ProcessInfo.processInfo.environment["TIMETUG_LIVE_ICALSUB"] == "1"))
 func liveFeedLoads() async throws {

@@ -59,7 +59,7 @@ private func cleanUp(_ source: CalDAVCalendarSource, calendarID: String, window:
     }.value
 }
 
-/// Opt-in: `TIMETUG_LIVE_ICLOUD=1 swift test --package-path Packages/CalendarConnectors --filter iCloudLiveSmoke`.
+/// Opt-in: `TIMETUG_LIVE_ICLOUD=1 swift test --filter iCloudLiveSmoke`.
 /// Needs `~/.config/timetug/icloud-live` (the Apple ID, then an app-specific password) and a calendar named
 /// "TimeTug Live Test" in that account; it writes only there. Prints `LIVE ...` lines, never the credentials, addresses or
 /// calendar titles. Paste them into the Phase 5 spec's "Live findings":

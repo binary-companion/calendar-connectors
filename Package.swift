@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "CalendarConnectors",
+    name: "calendar-connectors",
     platforms: [.macOS(.v14)],
     products: [
         .library(name: "CalendarCore", targets: ["CalendarCore"]),
