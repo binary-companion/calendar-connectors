@@ -1,0 +1,71 @@
+# Continuous integration for the library. Runs on pull requests and on every push to main.
+#   macos         swift test on the whole package.
+#   linux         swift test in the swift:6.0 container: proves the library stays portable.
+#   architecture  portability rules, repository contracts and the tests of the release script.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  macos:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Select newest Xcode
+        run: scripts/ci/select-xcode.sh
+      - name: Test
+        run: swift test
+
+  linux:
+    runs-on: ubuntu-latest
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Log in to Docker Hub
+        if: env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_TOKEN != ''
+        run: |
+          for attempt in 1 2 3; do
+            echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin && exit 0
+            sleep $((attempt * 15))
+          done
+          echo "::warning::Docker Hub login failed; pulling anonymously."
+      - name: Pull the Swift image
+        run: |
+          for attempt in 1 2 3; do
+            docker pull swift:6.0 && exit 0
+            sleep $((attempt * 15))
+          done
+          exit 1
+      - name: Test
+        run: |
+          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD:/work" -w /work swift:6.0 swift test
+
+  architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install pinned test prerequisites
+        run: |
+          python3 -m venv build/venv
+          build/venv/bin/python -m pip install -r scripts/ci/requirements-test.txt
+      - name: Architecture rules
+        run: scripts/ci/check-architecture.sh
+      - name: Repository contracts
+        run: build/venv/bin/python scripts/ci/check-repository-contracts.py
+      - name: Tests of the checks and of the release script
+        run: |
+          scripts/ci/tests/test-check-architecture.sh
+          scripts/release/tests/test-next-version.sh
+          build/venv/bin/python -m unittest discover -s scripts/ci/tests -p 'test_*.py'

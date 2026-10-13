@@ -1,0 +1,64 @@
+# Releases the library. Every push to main publishes the next X.Y.Z tag and a GitHub release.
+# The bump comes from the merged pull request's semver:* label (patch by default). Nothing is
+# released while the repository has no X.Y.Z tag; the first version is dispatched by hand.
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "X.Y.Z to publish. Needed for the first release and for recovery."
+        required: false
+        type: string
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: publish
+    permissions:
+      contents: write
+      pull-requests: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - name: Compute the version
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          OVERRIDE: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          latest="$(git tag --list '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)"
+          labels=""
+          if [ -z "$OVERRIDE" ]; then
+            labels="$(gh api "repos/$REPO/commits/$SHA/pulls" --jq '[.[].labels[].name] | join(",")')"
+          fi
+          status=0
+          version="$(scripts/release/next-version.sh --latest "$latest" --labels "$labels" --override "$OVERRIDE")" || status=$?
+          case "$status" in
+            0) echo "version=$version" >> "$GITHUB_OUTPUT"
+               echo "Releasing $version (latest: ${latest:-none}; labels: ${labels:-none})" ;;
+            3) echo "::notice::No X.Y.Z tag exists yet; nothing is released until the first version is dispatched by hand."
+               echo "version=" >> "$GITHUB_OUTPUT" ;;
+            *) exit "$status" ;;
+          esac
+      - name: Create the tag and the release
+        if: steps.version.outputs.version != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          SHA: ${{ github.sha }}
+        run: gh release create "$VERSION" --target "$SHA" --title "$VERSION" --generate-notes

@@ -1,0 +1,78 @@
+# Publishes the semantic code index that agents' index skill seeds new checkouts from (AGENTS.md, "Finding code").
+#
+# On every push to the default branch: start a throwaway Qdrant, run scripts/dev/qindex.py `index` (which seeds from the
+# previous `qindex` artifact, so only files changed since then are embedded), then `export` and upload the
+# result as the `qindex` artifact. Local checkouts download the newest unexpired one from the default branch with `gh`.
+# Pull requests that change this workflow or the script run the same steps to prove they work; the lookup
+# ignores their artifacts because it only takes artifacts from default-branch runs.
+#
+# The artifact holds source text and embedding vectors of files that git tracks (the repository is public),
+# minus files that look like they contain secrets. No secrets are used here.
+name: Code index
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - .github/workflows/index.yml
+      - scripts/dev/qindex.py
+  workflow_dispatch:
+
+# Default-branch runs queue rather than cancel, so each one builds on the artifact of the one before.
+concurrency:
+  group: code-index-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+  actions: read # find and download the previous artifact
+
+jobs:
+  index:
+    runs-on: ubuntu-24.04 # its python3 is 3.12, which the pinned libraries below support
+    # A full build (no usable previous artifact) takes ~25 minutes on an M-series Mac and longer here;
+    # runs seeded from the previous artifact take a few minutes.
+    timeout-minutes: 180
+    services:
+      qdrant:
+        image: qdrant/qdrant:v1.19.1
+        ports:
+          - 6333:6333
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # Outside the checkout: the indexer also reads untracked files. (The runner context is not available
+      # in job-level env, hence GITHUB_ENV.)
+      - name: Set paths
+        run: |
+          echo "FASTEMBED_CACHE_PATH=$RUNNER_TEMP/fastembed" >> "$GITHUB_ENV"
+          echo "VENV=$RUNNER_TEMP/venv" >> "$GITHUB_ENV"
+      - name: Cache the embedding model
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ${{ runner.temp }}/fastembed
+          key: fastembed-0.8.1-jina-embeddings-v2-base-code
+      # Keep these versions equal to the ones the local index skill runs with.
+      - name: Install the indexer's libraries
+        run: |
+          python3 -m venv "$VENV"
+          "$VENV/bin/pip" install --quiet qdrant-client==1.19.1 fastembed==0.8.1 \
+            tree-sitter-language-pack==1.20.0 tree-sitter==0.26.0
+      - name: Wait for Qdrant
+        run: |
+          for _ in $(seq 30); do curl -sf http://localhost:6333/readyz >/dev/null && exit 0; sleep 2; done
+          echo "Qdrant did not start" >&2; exit 1
+      - name: Index (seeded from the previous artifact)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: '"$VENV/bin/python" scripts/dev/qindex.py index'
+      - name: Export
+        run: '"$VENV/bin/python" scripts/dev/qindex.py export "$RUNNER_TEMP/qindex.jsonl.gz"'
+      - name: Upload the index
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: qindex
+          path: ${{ runner.temp }}/qindex.jsonl.gz
+          retention-days: 90
+          compression-level: 0 # already gzip
+          if-no-files-found: error

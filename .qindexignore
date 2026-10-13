@@ -1,0 +1,7 @@
+# Paths the semantic code index (the index skill, scripts/dev/qindex.py) leaves out, one pattern per line:
+# fnmatch on the repo-relative path; a trailing "/" skips a whole folder.
+# List logs of past work (plans, changelogs of generated output), vendored or generated code, and large
+# fixtures: anything that repeats the code or would outrank it in searches. `git ls-files` and .gitignore
+# already exclude untracked and ignored files; binaries, lockfiles, minified files and build output are
+# skipped by the script itself.
+docs/superpowers/plans/
