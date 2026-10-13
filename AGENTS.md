@@ -21,13 +21,14 @@ Dependency direction: `calendar-connectors` <- `timetug-shared` <- the apps; `ti
 
 ## Verify
 
-`swift test` (macOS), the Linux container job in CI, `scripts/ci/check-architecture.sh`, `scripts/release/tests/test-next-version.sh`.
+`swift test` (macOS), the Linux container job in CI, `scripts/ci/check-architecture.sh`, `scripts/ci/check-repository-contracts.py`, the shell tests `scripts/ci/tests/test-check-architecture.sh`, `scripts/release/tests/test-next-version.sh` and `scripts/release/tests/test-release-version-step.sh` (set `PYTHON` to an interpreter that has PyYAML; CI installs `scripts/ci/requirements-test.txt` into `build/venv`), and the Python unit tests: `python3 -m unittest discover -s scripts/ci/tests -p 'test_*.py'`.
 
 ## Release flow
 
-Do not tag by hand. Merging a pull request to `main` runs `release.yml`: the `semver:*` label picks the bump, the workflow tags and publishes, and `timetug` receives a "Bump calendar-connectors to X.Y.Z" pull request. Breaking changes to `docs/api.md` need `semver:major`. The agent never merges or publishes; the owner does.
+Do not tag by hand. Merging a pull request to `main` runs `release.yml`: the highest `semver:*` label among the pull requests merged since the latest tag picks the bump (patch by default), the workflow tags and publishes. Planned and not built yet: a notify job that opens a "Bump calendar-connectors to X.Y.Z" pull request in `timetug`; until it exists the owner moves the pin in `timetug` by hand. Breaking changes to `docs/api.md` need `semver:major`. The agent never merges or publishes; the owner does.
 
 ## Finding code
+
 - If your agent has a semantic code-index skill (in Claude Code and Codex, the `index` skill), use it in this repo without asking first; this is standing permission. At the start of a task check its status. If this checkout is not indexed, or files changed a lot since the last index, run the (incremental) index. A new checkout or worktree is seeded from the index that the `Code index` workflow publishes from `main` (artifact `qindex`, fetched with `gh`), so the first run only embeds what differs from `main` and takes seconds. Without a compatible published index a full build takes many minutes: start it in the background and keep working with grep until it finishes. Then search the index before broad grepping or reading many files, and read the hit ranges rather than trusting snippets. Use grep for exact identifiers and strings. `.qindexignore` lists paths the index leaves out.
 - Without such a skill, start from `Sources/` (one directory per product) and grep.
 - Exact references ("who uses or calls this?", definitions, implementations) come from Serena (symbol tools over the sourcekit-lsp language server) when your agent has it; use it before grep. Swift; run `swift build --build-tests` first so sourcekit-lsp has an index.

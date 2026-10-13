@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Library invariants that the compiler does not enforce. Usage: check-repository-contracts.py [root]"""
-import json
 import re
 import sys
 from pathlib import Path
@@ -60,10 +59,11 @@ require('extension GoogleCalendarSource: WritableCalendarSource' in
 # Workflows: untrusted code never meets secrets (program design, section 8).
 ALLOWED_ANYWHERE = {'GITHUB_TOKEN', 'DOCKERHUB_USERNAME', 'DOCKERHUB_TOKEN'}
 EXPRESSION = re.compile(r'\$\{\{(.*?)\}\}', re.S)
-SECRET_NAME = re.compile(r"(?<![\w.])secrets\s*(?:\.\s*([A-Za-z0-9_]+)|\[\s*['\"]([^'\"]+)['\"]\s*\])")
+# Context and secret names are case-insensitive in GitHub expressions: SECRETS.X and Secrets.x are the same.
+SECRET_NAME = re.compile(r"(?<![\w.])secrets\s*(?:\.\s*([A-Za-z0-9_]+)|\[\s*['\"]([^'\"]+)['\"]\s*\])", re.I)
 # The secrets context used whole (toJSON(secrets), secrets[expr], format('{0}', secrets)): every secret at once.
 WHOLE_CONTEXT = re.compile(
-    r"(?<![\w.'\"])secrets\b(?!\s*\.\s*\w|\s*\[\s*['\"][^'\"]+['\"]\s*\])")
+    r"(?<![\w.'\"])secrets\b(?!\s*\.\s*\w|\s*\[\s*['\"][^'\"]+['\"]\s*\])", re.I)
 
 def strings(node, key=None):
     """Every string in a parsed YAML document, paired with the mapping key it sits under."""
@@ -82,7 +82,7 @@ def secret_use(node):
     names, whole = set(), False
     for key, text in strings(node):
         for match in SECRET_NAME.finditer(text):
-            names.add(match.group(1) or match.group(2))
+            names.add((match.group(1) or match.group(2)).upper())
         expressions = EXPRESSION.findall(text) + ([text] if key == 'if' else [])
         whole = whole or any(WHOLE_CONTEXT.search(expression) for expression in expressions)
     return names, whole
@@ -100,6 +100,13 @@ def load(path):
         require(False, f'{path.relative_to(root)}: not valid YAML: {problem}')
         return {}
     return data if isinstance(data, dict) else {}
+
+# The documented workflows must exist: a deleted release or CI workflow must not pass unnoticed.
+require((root / '.github' / 'workflows').is_dir(), 'missing documented path: .github/workflows')
+if (root / '.github' / 'workflows').is_dir():
+    for documented in ('ci.yml', 'release.yml'):
+        require((root / '.github' / 'workflows' / documented).is_file(),
+                f'missing documented path: .github/workflows/{documented}')
 
 for workflow in sorted((root / '.github' / 'workflows').glob('*.y*ml')):
     data = load(workflow)

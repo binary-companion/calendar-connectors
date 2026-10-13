@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# The library imports nothing from TimeTug and nothing Apple-only, and has no package dependencies,
-# so it builds on Linux and Windows. Usage: scripts/ci/check-architecture.sh [repo-root]
+# The library imports nothing from TimeTug and nothing Apple-only, has no package dependencies and no
+# platform conditions in its manifest, so it builds on Linux and Windows.
+# Usage: scripts/ci/check-architecture.sh [repo-root]
 # Prints one "path:line: message" per violation and exits 1 if there are any.
 set -euo pipefail
 cd "${1:-$(dirname "$0")/../..}"
@@ -22,5 +23,12 @@ done < <(grep -rnE --include='*.swift' "^[[:space:]]*${PREFIX}import[[:space:]]"
 if line="$(grep -n '\.package(' Package.swift | head -1)" && [ -n "$line" ]; then
   report "Package.swift:${line%%:*}" "the library has package dependencies (it must have none)"
 fi
+
+# Platform conditions would make a product or target Apple-only again; the library is portable.
+# (platforms: [.macOS(.v14)] is a minimum deployment version, not a condition, and stays legal.)
+while IFS=: read -r number _; do
+  [ -n "$number" ] || continue
+  report "Package.swift:$number" "platform conditions (.when) are not allowed"
+done < <(grep -nE '\.when[[:space:]]*\(' Package.swift 2>/dev/null || true)
 
 [ "$bad" = 0 ] || { echo "$bad architecture violation(s)" >&2; exit 1; }

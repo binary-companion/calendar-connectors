@@ -545,6 +545,7 @@ provider metadata; a `metadata` field and capability can be added later without 
   must confirm the shared identifier, the predicate lookup of a moved occurrence, `.futureEvents` on the first
   occurrence, `refresh()` on a deleted event and `lastModifiedDate` granularity. Run
   `TIMETUG_LIVE_EVENTKIT=1 swift test --package-path Packages/EventKitSource --filter eventKit` (see the spec's Risks).
+  This command runs inside a `timetug` checkout: `Packages/EventKitSource` is a package of that repository, not of this one.
 - **Google write behavior beyond the fake transport (unverified).** `supportsAttachments=true` on a split with
   attachments, the Meet re-request on a new series, and the `COUNT` arithmetic (assumes `events.instances?showDeleted=true`
   includes EXDATE'd occurrences) are checked only against the fake transport until the Google smoke test confirms them.
@@ -651,6 +652,7 @@ is the contract as built. Public surface: `MicrosoftOAuthConfig(clientID:redirec
   `ProvidedFieldsConformance` and `WritableSourceConformance`). The live smoke test is opt-in and never runs in CI:
   `TIMETUG_LIVE_MICROSOFT=1 MICROSOFT_OAUTH_CLIENT_ID=<your client id> swift test --package-path Packages/CalendarApple --filter microsoftWriteSmoke`
   (interactive sign-in; writes events named "TimeTug write smoke" to the primary calendar and deletes them).
+  This command runs inside a `timetug` checkout: `Packages/CalendarApple` is a package of that repository, not of this one.
 
 ## 13. `ICalendar` and `CalDAVCalendar` (Phase 5)
 

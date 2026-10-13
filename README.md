@@ -16,7 +16,7 @@ The host supplies what is platform specific by implementing the library's seams:
 
 ## Releases
 
-Every merge to `main` publishes a version tag (`X.Y.Z`) and a GitHub release. The pull request's `semver:major`, `semver:minor` or `semver:patch` label chooses the bump; patch is the default. Published tags are immutable.
+Every merge to `main` publishes a version tag (`X.Y.Z`) and a GitHub release. The `semver:major`, `semver:minor` or `semver:patch` labels of the pull requests merged since the latest tag choose the bump (the highest wins); patch is the default. Published tags are immutable. Dependents are not notified automatically yet: they move their pin to a new version by hand.
 
 ## License
 

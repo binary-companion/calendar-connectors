@@ -19,11 +19,22 @@ expect 0 2.0.0 --latest 1.4.9 --labels "semver:patch,semver:minor,semver:major"
 expect 0 1.5.0 --latest 1.4.9 --labels "semver:patch,semver:minor"
 expect 0 1.0.1 --latest 1.0.0 --labels "semver:Major,semver-minor,semver:"
 expect 0 1.4.10 --latest 1.4.9 --labels ""
+# Precedence: major beats minor whatever the order (GitHub lists labels alphabetically, so major comes first).
+expect 0 2.0.0 --latest 1.4.9 --labels "semver:major,semver:minor"
+expect 0 2.0.0 --latest 1.4.9 --labels "semver:minor,semver:major"
+# A mistyped label is ignored and a valid one beside it still wins.
+expect 0 1.5.0 --latest 1.4.9 --labels "semver:Major,semver:minor"
+# Labels are never used as glob patterns, in the script's own directory or anywhere else.
+expect 0 1.4.10 --latest 1.4.9 --labels "*"
+expect 0 1.4.10 --latest 1.4.9 --labels "semver:*"
 expect 0 3.0.0 --latest 1.0.0 --labels "semver:major" --override 3.0.0
 expect 0 1.0.0 --latest "" --labels "" --override 1.0.0
 expect 3 "" --latest "" --labels "semver:major"
 expect 2 "" --latest 01.2.3 --labels ""
 expect 2 "" --latest 1.2 --labels ""
+expect 2 "" --latest v1.2.3 --labels ""
+expect 2 "" --latest 1.2.3-rc1 --labels ""
+expect 3 "" --override "" --latest ""
 expect 2 "" --latest 1.0.0 --labels "" --override v1.0.1
 expect 2 "" --latest 1.0.0 --labels "" --bogus x
 echo PASS
