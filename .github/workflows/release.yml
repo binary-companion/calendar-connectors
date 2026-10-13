@@ -82,3 +82,33 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
           SHA: ${{ github.sha }}
         run: gh release create "$VERSION" --target "$SHA" --title "$VERSION" --generate-notes
+
+  # Tells each dependent that a version exists, so its own workflow can open a bump pull request.
+  # Skipped when nothing was released. The token comes from the timetug-bot GitHub App, installed on
+  # timetug only; the bump environment holds its credentials and is limited to main.
+  notify:
+    needs: publish
+    if: needs.publish.outputs.version != ''
+    runs-on: ubuntu-latest
+    environment: bump
+    permissions:
+      contents: read
+    steps:
+      - id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          app-id: ${{ vars.BUMP_APP_ID }}
+          private-key: ${{ secrets.BUMP_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: timetug
+      - name: Tell the dependents
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          VERSION: ${{ needs.publish.outputs.version }}
+        run: |
+          for dependent in timetug; do
+            gh api "repos/binary-companion/$dependent/dispatches" \
+              -f event_type=library-released \
+              -f "client_payload[library]=calendar-connectors" \
+              -f "client_payload[version]=$VERSION"
+          done
