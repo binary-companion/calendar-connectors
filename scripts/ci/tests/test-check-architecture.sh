@@ -42,4 +42,12 @@ expect Sources/GoogleCalendar/X.swift '\n\n  import AppKit\n' "Sources/GoogleCal
 expect Tests/CalendarCoreTests/X.swift '@testable import AppKit\n' "may not import AppKit"
 expect Package.swift 'let package = Package(dependencies: [.package(url: "https://github.com/x/y", from: "1.0.0")])\n' \
   "has package dependencies"
+# Platform conditions would make a target Apple-only: Package.swift may not use .when(...).
+expect Package.swift 'let package = Package(targets: [.target(name: "x", dependencies: [.product(name: "y", package: "z", condition: .when(platforms: [.macOS]))])])\n' \
+  "Package.swift:1: platform conditions (.when) are not allowed"
+expect Package.swift '// swift-tools-version: 6.0\n\nlet package = Package(\n  targets: [.target(name: "x", swiftSettings: [.define("A", .when(platforms: [.linux]))])]\n)\n' \
+  "Package.swift:4: platform conditions (.when) are not allowed"
+# ... while the manifest's platforms list stays legal.
+printf '// swift-tools-version: 6.0\nlet package = Package(name: "x", platforms: [.macOS(.v14)], targets: [])\n' > "$T/Package.swift"
+out="$("$S" "$T")" || fail "platforms: [.macOS(.v14)] rejected: $out"
 echo PASS
