@@ -1,6 +1,8 @@
 # Releases the library. Every push to main publishes the next X.Y.Z tag and a GitHub release.
-# The bump comes from the merged pull request's semver:* label (patch by default). Nothing is
-# released while the repository has no X.Y.Z tag; the first version is dispatched by hand.
+# The bump comes from the semver:* labels of the merged pull requests since the latest tag (patch
+# by default; the highest wins, so a replaced pending run cannot lose a major). Nothing is released
+# while the repository has no X.Y.Z tag (the first version is dispatched by hand), nor when the
+# pushed commit already carries one (a re-run).
 name: Release
 
 on:
@@ -21,6 +23,7 @@ permissions: {}
 
 jobs:
   publish:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: publish
     permissions:
@@ -32,6 +35,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: Compute the version
         id: version
         env:
@@ -42,9 +46,25 @@ jobs:
         run: |
           set -euo pipefail
           latest="$(git tag --list '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)"
-          labels=""
           if [ -z "$OVERRIDE" ]; then
-            labels="$(gh api "repos/$REPO/commits/$SHA/pulls" --jq '[.[].labels[].name] | join(",")')"
+            tagged="$(git tag --points-at "$SHA" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)"
+            if [ -n "$tagged" ]; then
+              echo "::notice::$SHA already carries $tagged; nothing to release."
+              echo "version=" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+          # The labels of every commit since the latest tag, not only of the pushed one: a pending
+          # run that a newer push replaced must not lose its semver:major. A failed API call fails
+          # the step, so a missing label never turns into a patch release.
+          labels=""
+          if [ -z "$OVERRIDE" ] && [ -n "$latest" ]; then
+            commits="$(git rev-list "$latest..$SHA")"
+            while IFS= read -r commit; do
+              [ -n "$commit" ] || continue
+              found="$(gh api "repos/$REPO/commits/$commit/pulls" --jq '[.[].labels[].name] | join(",")' </dev/null)"
+              if [ -n "$found" ]; then labels="${labels:+$labels,}$found"; fi
+            done <<< "$commits"
           fi
           status=0
           version="$(scripts/release/next-version.sh --latest "$latest" --labels "$labels" --override "$OVERRIDE")" || status=$?

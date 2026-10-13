@@ -1,7 +1,7 @@
 # Continuous integration for the library. Runs on pull requests and on every push to main.
 #   macos         swift test on the whole package.
 #   linux         swift test in the swift:6.0 container: proves the library stays portable.
-#   architecture  portability rules, repository contracts and the tests of the release script.
+#   architecture  portability rules, repository contracts and the tests of the release script and workflow.
 name: CI
 
 on:
@@ -68,4 +68,5 @@ jobs:
         run: |
           scripts/ci/tests/test-check-architecture.sh
           scripts/release/tests/test-next-version.sh
+          PYTHON="$PWD/build/venv/bin/python" scripts/release/tests/test-release-version-step.sh
           build/venv/bin/python -m unittest discover -s scripts/ci/tests -p 'test_*.py'
