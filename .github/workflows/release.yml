@@ -99,10 +99,14 @@ jobs:
       - id: app
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
         with:
+          # app-id is deprecated upstream in favour of client-id, which needs the app's Client ID;
+          # switch once that value is available. It still works.
           app-id: ${{ vars.BUMP_APP_ID }}
           private-key: ${{ secrets.BUMP_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: timetug
+          # Only what repository_dispatch needs: the app is installed with more, the token is not.
+          permission-contents: write
       - name: Tell the dependents
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}

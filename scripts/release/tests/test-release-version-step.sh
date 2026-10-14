@@ -5,13 +5,14 @@
 # The step's run: script is extracted from the workflow and executed in throwaway git repositories
 # with a stub `gh` on PATH, so the real script is what is tested, not a copy of it.
 # PYTHON selects the interpreter that has PyYAML (CI points it at build/venv/bin/python).
+# WORKFLOW selects the workflow file (default .github/workflows/release.yml).
 # STEP_SHELL selects the shell that runs the step (default bash).
 set -euo pipefail
 cd "$(dirname "$0")/../../.."
 ROOT="$PWD"
 PYTHON="${PYTHON:-python3}"
 STEP_SHELL="${STEP_SHELL:-bash}"
-WORKFLOW=.github/workflows/release.yml
+WORKFLOW="${WORKFLOW:-.github/workflows/release.yml}" # overridable so a mutated copy can be checked
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 fail() { echo "FAIL: $*" >&2; exit 1; }
 
@@ -51,18 +52,23 @@ job = jobs['notify']
 check(job.get('needs') in ('publish', ['publish']), "job notify must need exactly publish")
 check(job.get('if') == "needs.publish.outputs.version != ''", "job notify must run only when publish released a version")
 check(job.get('environment') == 'bump', "job notify must use the bump environment")
+check(job.get('runs-on') == 'ubuntu-latest', "job notify must run on ubuntu-latest")
+check('continue-on-error' not in job, "job notify must not set continue-on-error (a failed dispatch must fail the run)")
 check(job.get('permissions') == {'contents': 'read'}, "job notify must have only contents: read")
 steps = job['steps']
 check(len(steps) == 2, "job notify must have exactly two steps (token, dispatch)")
 token, dispatch = steps
+for step in steps:
+    check('continue-on-error' not in step, f"step {step.get('id') or step.get('name')!r} must not set continue-on-error")
 check(token.get('id') == 'app', "the first step must be the token step with id: app")
 check(token.get('uses') == 'actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510',
       "the token step must use actions/create-github-app-token pinned to the reviewed SHA")
 check(token.get('with') == {'app-id': '${{ vars.BUMP_APP_ID }}',
                             'private-key': '${{ secrets.BUMP_APP_PRIVATE_KEY }}',
                             'owner': '${{ github.repository_owner }}',
-                            'repositories': 'timetug'},
-      "the token step must be scoped to repositories: timetug and read app-id/private-key from the bump environment")
+                            'repositories': 'timetug',
+                            'permission-contents': 'write'},
+      "the token step must be scoped to repositories: timetug with only permission-contents: write (repository_dispatch) and read app-id/private-key from the bump environment")
 check(dispatch.get('env') == {'GH_TOKEN': '${{ steps.app.outputs.token }}',
                               'VERSION': '${{ needs.publish.outputs.version }}'},
       "the dispatch step env must be exactly GH_TOKEN (app token) and VERSION (publish output)")
