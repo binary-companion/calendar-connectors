@@ -10,9 +10,14 @@ set -f
 latest="" labels="" override=""
 while [ $# -gt 0 ]; do
   case "$1" in
-    --latest) latest="${2-}"; shift 2 ;;
-    --labels) labels="${2-}"; shift 2 ;;
-    --override) override="${2-}"; shift 2 ;;
+    --latest|--labels|--override)
+      [ $# -ge 2 ] || { echo "$1 needs a value" >&2; exit 2; }
+      case "$1" in
+        --latest) latest="$2" ;;
+        --labels) labels="$2" ;;
+        --override) override="$2" ;;
+      esac
+      shift 2 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
 done
@@ -29,7 +34,12 @@ fi
 [[ "$latest" =~ $semver ]] || { echo "latest tag is not X.Y.Z: $latest" >&2; exit 2; }
 major="${BASH_REMATCH[1]}" minor="${BASH_REMATCH[2]}" patch="${BASH_REMATCH[3]}"
 bump=patch
-for label in ${labels//,/ }; do
+# Labels are separated by commas only: whitespace around a label is trimmed, whitespace inside one
+# is kept, so "needs semver:major review" is a single label and is not a bump.
+IFS=',' read -r -a parts <<< "$labels" || true
+for label in ${parts[@]+"${parts[@]}"}; do
+  label="${label#"${label%%[![:space:]]*}"}"
+  label="${label%"${label##*[![:space:]]}"}"
   case "$label" in
     semver:major) bump=major ;;
     semver:minor) [ "$bump" = major ] || bump=minor ;;
