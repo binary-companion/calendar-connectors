@@ -184,10 +184,38 @@ class Contracts(unittest.TestCase):
             'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
                 '// never request "Calendars.ReadWrite" or "Calendars.ReadWrite.Shared"\n' + GOOD_SCOPES})
 
-    def test_forbidden_scope_only_in_a_trailing_comment_passes(self):
-        self.check(True, **{
+    def test_forbidden_scope_in_a_trailing_comment_fails_closed(self):
+        # Only full-line "//" comments and /* */ blocks are removed before the absence check, so a
+        # forbidden scope after code on the same line is reported rather than trusted as a comment.
+        self.check(False, ': Calendars.ReadWrite', **{
             'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
                 GOOD_SCOPES.rstrip('\n') + ' // not "Calendars.ReadWrite"\n'})
+
+    def test_forbidden_scope_after_a_nested_string_in_an_interpolation_fails(self):
+        self.check(False, ': Calendars.ReadWrite', **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                GOOD_SCOPES + 'let w = "\\(f("//")) " + "Calendars.ReadWrite"\n'})
+
+    def test_forbidden_scope_after_a_trailing_comment_with_a_block_opener_fails(self):
+        # "/*" inside a "//" comment opens nothing, so it must not hide what follows.
+        self.check(False, ': Calendars.ReadWrite', **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                GOOD_SCOPES + 'let a = 1 // see /*\nlet w = "Calendars.ReadWrite"\n'})
+
+    def test_forbidden_scope_after_a_block_opener_inside_a_string_fails(self):
+        self.check(False, ': Calendars.ReadWrite', **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                GOOD_SCOPES + 'let s = "/*"\nlet w = "Calendars.ReadWrite"\n// */\n'})
+
+    def test_forbidden_scope_after_a_raw_string_with_a_comment_marker_fails(self):
+        self.check(False, ': Calendars.ReadWrite', **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                GOOD_SCOPES + 'let s = #"a "// b"#; let w = "Calendars.ReadWrite"\n'})
+
+    def test_forbidden_scope_in_a_full_line_comment_after_indentation_passes(self):
+        self.check(True, **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                GOOD_SCOPES + '    \t// "Calendars.ReadWrite" stays out\n'})
 
     def test_forbidden_scope_only_in_a_block_comment_passes(self):
         self.check(True, **{
@@ -340,6 +368,54 @@ class Contracts(unittest.TestCase):
     def test_secret_in_an_expression_of_a_step_name_still_fails(self):
         self.check(False, 'SIGNING_KEY', **{
             '.github/workflows/ci.yml': CI + '      - name: Deploy ${{ secrets.SIGNING_KEY }}\n        run: echo ok\n'})
+
+    # --- a "}}" inside a quoted string does not end the expression (fail closed) ---
+
+    PROBES = {
+        'format_literal_then_secret': "format('}}{0}', secrets.BOT)",
+        'quoted_close_then_secret': "'}}' && secrets.BOT",
+        'quoted_close_then_whole_context': "'}}' && toJSON(secrets)",
+        'escaped_quote_then_close_then_secret': "'it''s }}' && secrets.BOT",
+        'bracket_form_after_quoted_close': "'}}' && secrets['BOT']",
+        'unterminated_expression_then_secret': "secrets.BOT",
+    }
+
+    def probe_workflow(self, expression, environment=False, terminated=True):
+        text = CI.replace('${{ secrets.DOCKERHUB_TOKEN }}', '${{ ' + expression + (' }}' if terminated else ''))
+        if environment:
+            text = text.replace('    runs-on: ubuntu-latest', '    environment: publish\n    runs-on: ubuntu-latest')
+        return {'.github/workflows/ci.yml': text}
+
+    def test_secret_after_a_quoted_close_braces_fails_outside_an_environment(self):
+        for name, expression in self.PROBES.items():
+            if name.startswith('unterminated'):
+                continue
+            with self.subTest(probe=name):
+                needle = 'whole secrets context' if 'toJSON' in expression else 'BOT'
+                self.check(False, needle, **self.probe_workflow(expression))
+
+    def test_secret_after_a_quoted_close_braces_passes_inside_an_environment(self):
+        for name, expression in self.PROBES.items():
+            if name.startswith('unterminated') or 'toJSON' in expression:
+                continue
+            with self.subTest(probe=name):
+                self.check(True, **self.probe_workflow(expression, environment=True))
+
+    def test_whole_context_after_a_quoted_close_braces_fails_even_inside_an_environment(self):
+        self.check(False, 'whole secrets context', **self.probe_workflow("'}}' && toJSON(secrets)", environment=True))
+
+    def test_unterminated_expression_is_read_to_the_end_of_the_string(self):
+        self.check(False, 'BOT', **self.probe_workflow('secrets.BOT', terminated=False))
+        self.check(False, 'BOT', **self.probe_workflow("'}}' && secrets.BOT", terminated=False))
+
+    def test_legal_quoted_close_braces_without_a_secret_passes(self):
+        self.check(True, **self.probe_workflow("format('}}{0}', github.sha)"))
+
+    def test_allowed_secret_after_a_quoted_close_braces_passes(self):
+        self.check(True, **self.probe_workflow("format('}}{0}', secrets.GITHUB_TOKEN)"))
+
+    def test_two_expressions_after_a_quoted_close_braces_are_both_read(self):
+        self.check(False, 'BOT', **self.probe_workflow("'}}' }} ${{ secrets.BOT"))
 
     def test_empty_environment_fails(self):
         self.check(False, 'SIGNING_KEY', **{
