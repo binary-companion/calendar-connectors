@@ -47,6 +47,20 @@ expect Package.swift 'let package = Package(targets: [.target(name: "x", depende
   "Package.swift:1: platform conditions (.when) are not allowed"
 expect Package.swift '// swift-tools-version: 6.0\n\nlet package = Package(\n  targets: [.target(name: "x", swiftSettings: [.define("A", .when(platforms: [.linux]))])]\n)\n' \
   "Package.swift:4: platform conditions (.when) are not allowed"
+# A .when whose "(" is on the next line, or after other tokens, is still a platform condition.
+expect Package.swift '// swift-tools-version: 6.0\nlet package = Package(\n  targets: [.target(name: "x", swiftSettings: [.define("A", .when\n    (platforms: [.linux]))])]\n)\n' \
+  "Package.swift:3: platform conditions (.when) are not allowed"
+expect Package.swift 'let c = Condition\n  .when\n  (platforms: [.linux])\n' \
+  "Package.swift:2: platform conditions (.when) are not allowed"
+# ... also after a string that contains "//".
+expect Package.swift 'let u = ["https://example.com/x", Condition.when(platforms: [.linux])]\n' \
+  "Package.swift:1: platform conditions (.when) are not allowed"
+# A .when that only appears in a comment is not a condition.
+printf '// swift-tools-version: 6.0\n// never use .when(platforms:) here\nlet package = Package(name: "x", targets: []) // no .when(\n/* .when(platforms: [.linux]) */\n/*\n .when\n*/\n' > "$T/Package.swift"
+out="$("$S" "$T")" || fail ".when inside comments rejected: $out"
+# ... and a name that merely starts with "when" is not the token.
+printf '// swift-tools-version: 6.0\nlet package = Package(name: "x", targets: []) ; let y = z.whenever(a)\n' > "$T/Package.swift"
+out="$("$S" "$T")" || fail ".whenever rejected: $out"
 # ... while the manifest's platforms list stays legal.
 printf '// swift-tools-version: 6.0\nlet package = Package(name: "x", platforms: [.macOS(.v14)], targets: [])\n' > "$T/Package.swift"
 out="$("$S" "$T")" || fail "platforms: [.macOS(.v14)] rejected: $out"

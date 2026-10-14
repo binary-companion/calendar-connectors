@@ -37,4 +37,21 @@ expect 2 "" --latest 1.2.3-rc1 --labels ""
 expect 3 "" --override "" --latest ""
 expect 2 "" --latest 1.0.0 --labels "" --override v1.0.1
 expect 2 "" --latest 1.0.0 --labels "" --bogus x
+# Labels are split on commas only; whitespace around a label is trimmed, whitespace inside one is not.
+expect 0 1.0.1 --latest 1.0.0 --labels "needs semver:major review"
+expect 0 1.0.1 --latest 1.0.0 --labels "needs semver:minor review,docs"
+expect 0 1.0.1 --latest 1.0.0 --labels "semver:major extra"
+expect 0 1.1.0 --latest 1.0.0 --labels " semver:minor "
+expect 0 2.0.0 --latest 1.0.0 --labels "bug, semver:major ,docs"
+expect 0 1.1.0 --latest 1.0.0 --labels "  semver:minor  ,  semver:patch"
+# A flag given without a value is a usage error (exit 2) with a message, not a silent exit 1.
+expect_usage_error() {
+  local want_msg="$1" err code=0; shift
+  err="$("$S" "$@" 2>&1 >/dev/null)" || code=$?
+  [ "$code" = 2 ] || fail "$*: exit $code, wanted 2"
+  case "$err" in *"$want_msg"*) ;; *) fail "$*: stderr '$err' does not mention '$want_msg'" ;; esac
+}
+expect_usage_error "--labels" --latest 1.0.0 --labels
+expect_usage_error "--latest" --latest
+expect_usage_error "--override" --latest 1.0.0 --labels "" --override
 echo PASS

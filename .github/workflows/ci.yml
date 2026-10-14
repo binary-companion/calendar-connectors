@@ -38,7 +38,7 @@ jobs:
         run: |
           for attempt in 1 2 3; do
             echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin && exit 0
-            sleep $((attempt * 15))
+            if [ "$attempt" -lt 3 ]; then sleep $((attempt * 15)); fi
           done
           echo "::warning::Docker Hub login failed; pulling anonymously."
       - name: Pull the Swift image

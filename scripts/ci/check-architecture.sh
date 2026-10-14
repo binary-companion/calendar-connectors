@@ -25,10 +25,29 @@ if line="$(grep -n '\.package(' Package.swift | head -1)" && [ -n "$line" ]; the
 fi
 
 # Platform conditions would make a product or target Apple-only again; the library is portable.
+# Any ".when" token outside a comment is flagged, wherever its "(" is (the "(" may be on the next line).
+# Comments ("//" to the end of the line, "/* ... */" across lines) and string literals are scanned
+# so that a "//" inside a string does not hide the rest of its line.
 # (platforms: [.macOS(.v14)] is a minimum deployment version, not a condition, and stays legal.)
 while IFS=: read -r number _; do
   [ -n "$number" ] || continue
   report "Package.swift:$number" "platform conditions (.when) are not allowed"
-done < <(grep -nE '\.when[[:space:]]*\(' Package.swift 2>/dev/null || true)
+done < <(awk '
+  BEGIN { block = 0 }
+  {
+    code = ""; str = 0; n = length($0); i = 1
+    while (i <= n) {
+      c = substr($0, i, 1); d = substr($0, i, 2)
+      if (block)            { if (d == "*/") { block = 0; i += 2 } else i++; continue }
+      if (str)              { if (c == "\\") { code = code c substr($0, i + 1, 1); i += 2; continue }
+                              if (c == "\"") str = 0
+                              code = code c; i++; continue }
+      if (d == "//")       { break }
+      if (d == "/*")       { block = 1; i += 2; continue }
+      if (c == "\"")       { str = 1 }
+      code = code c; i++
+    }
+    if (code ~ /\.when([^A-Za-z0-9_]|$)/) print NR ":" code
+  }' Package.swift 2>/dev/null || true)
 
 [ "$bad" = 0 ] || { echo "$bad architecture violation(s)" >&2; exit 1; }

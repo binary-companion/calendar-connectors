@@ -45,7 +45,9 @@ jobs:
           OVERRIDE: ${{ inputs.version }}
         run: |
           set -euo pipefail
-          latest="$(git tag --list '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)"
+          # The latest version is the highest strict X.Y.Z tag REACHABLE from the pushed commit, so a
+          # hand-made tag on a side branch cannot over- or under-bump this release.
+          latest="$(git tag --list '[0-9]*.[0-9]*.[0-9]*' --merged "$SHA" --sort=-v:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)"
           if [ -z "$OVERRIDE" ]; then
             tagged="$(git tag --points-at "$SHA" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)"
             if [ -n "$tagged" ]; then
@@ -97,10 +99,14 @@ jobs:
       - id: app
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
         with:
+          # app-id is deprecated upstream in favour of client-id, which needs the app's Client ID;
+          # switch once that value is available. It still works.
           app-id: ${{ vars.BUMP_APP_ID }}
           private-key: ${{ secrets.BUMP_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: timetug
+          # Only what repository_dispatch needs: the app is installed with more, the token is not.
+          permission-contents: write
       - name: Tell the dependents
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
