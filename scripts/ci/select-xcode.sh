@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Select the newest Xcode installed under /Applications and print toolchain versions.
 #
-# Used by CI so the build gets the newest SDK the runner image offers (the app uses macOS 26
-# APIs behind #available checks, so Xcode 26 or newer is required).
+# Used by CI so the library is built and tested with the newest toolchain and SDK the runner image
+# offers (the package itself only requires macOS 14 or newer and Swift 6.0).
 #
 # Environment: none required. Uses sudo, so it is meant for CI runners.
 set -euo pipefail
