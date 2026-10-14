@@ -45,7 +45,9 @@ jobs:
           OVERRIDE: ${{ inputs.version }}
         run: |
           set -euo pipefail
-          latest="$(git tag --list '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)"
+          # The latest version is the highest strict X.Y.Z tag REACHABLE from the pushed commit, so a
+          # hand-made tag on a side branch cannot over- or under-bump this release.
+          latest="$(git tag --list '[0-9]*.[0-9]*.[0-9]*' --merged "$SHA" --sort=-v:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)"
           if [ -z "$OVERRIDE" ]; then
             tagged="$(git tag --points-at "$SHA" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -1 || true)"
             if [ -n "$tagged" ]; then

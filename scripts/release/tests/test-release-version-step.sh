@@ -203,8 +203,31 @@ check "malformed override, no tag" 2 none 0
 new_repo; tag 1.0.0; commit one; commit two; : > "$STUB/fail"; run_step ""
 check "API failure" nonzero none 1
 
-# 7. A SHA the tag is not an ancestor of is still handled (every unreachable commit is asked about).
+# 7. Only tags reachable from the pushed SHA count: a tag on unrelated history is no base, so nothing
+# is released and the API is not called.
 new_repo; tag 1.0.0; git -C "$R" checkout -q --orphan other; commit island; run_step ""
-check "unrelated history" 0 "version=1.0.1" 1
+check "unrelated history" 0 "version=" 0
+
+# 8. A higher tag that is NOT an ancestor of the pushed SHA (a hand-made tag on a side branch) is
+# ignored: the version comes from the highest REACHABLE tag, and only its commits are asked about.
+new_repo; tag 1.0.0
+git -C "$R" checkout -q -b side; commit sidework; tag 2.0.0; git -C "$R" checkout -q main
+commit one; run_step ""
+check "side-branch tag ignored" 0 "version=1.0.1" 1
+grep -q "commits/$(git -C "$R" rev-parse HEAD)/pulls" "$STUB/calls" || fail "side-branch tag: the API was not asked about HEAD"
+grep -q "commits/$(git -C "$R" rev-parse side)/" "$STUB/calls" && fail "side-branch tag: the side commit was asked about"
+# ...and the labels still raise the bump from the reachable tag.
+new_repo; tag 1.4.0
+git -C "$R" checkout -q -b side; commit sidework; tag 3.0.0; git -C "$R" checkout -q main
+commit one; label HEAD "semver:minor"; run_step ""
+check "side-branch tag, minor label" 0 "version=1.5.0" 1
+# A side-branch tag that is LOWER than the reachable one changes nothing either.
+new_repo; commit a; tag 1.2.0
+git -C "$R" checkout -q -b side HEAD~1; commit sidework; tag 1.1.0; git -C "$R" checkout -q main
+commit one; run_step ""
+check "lower side-branch tag" 0 "version=1.2.1" 1
+# A reachable tag that is not strict X.Y.Z (a pre-release) is not the base.
+new_repo; tag 1.0.0; commit one; tag 1.1.0-rc1; commit two; run_step ""
+check "reachable pre-release tag" 0 "version=1.0.1" 2
 
 echo PASS
