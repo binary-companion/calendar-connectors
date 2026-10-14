@@ -162,6 +162,44 @@ class Contracts(unittest.TestCase):
         self.check(False, ': Calendars.ReadWrite.Shared', **{
             'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift': GOOD_SCOPES + '"Calendars.ReadWrite.Shared"\n'})
 
+    # --- the scope checks read code, not comments ---
+
+    def test_read_scope_present_only_in_a_line_comment_fails(self):
+        self.check(False, 'intended Microsoft scope absent: Calendars.Read.Shared', **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                '// "Calendars.Read.Shared"\n' + GOOD_SCOPES.replace('"Calendars.Read.Shared", ', '')})
+
+    def test_read_scope_present_only_in_a_trailing_comment_fails(self):
+        self.check(False, 'intended Microsoft scope absent: MailboxSettings.Read', **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                'let scopes = ["Calendars.Read", "Calendars.Read.Shared"] // "MailboxSettings.Read"\n'})
+
+    def test_read_scope_present_only_in_a_block_comment_fails(self):
+        self.check(False, 'intended Microsoft scope absent: Calendars.Read', **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                '/* scopes:\n   "Calendars.Read"\n*/\nlet scopes = ["Calendars.Read.Shared", "MailboxSettings.Read"]\n'})
+
+    def test_forbidden_scope_only_in_a_line_comment_passes(self):
+        self.check(True, **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                '// never request "Calendars.ReadWrite" or "Calendars.ReadWrite.Shared"\n' + GOOD_SCOPES})
+
+    def test_forbidden_scope_only_in_a_trailing_comment_passes(self):
+        self.check(True, **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                GOOD_SCOPES.rstrip('\n') + ' // not "Calendars.ReadWrite"\n'})
+
+    def test_forbidden_scope_only_in_a_block_comment_passes(self):
+        self.check(True, **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                '/* "Calendars.ReadWrite"\n   "Calendars.ReadWrite.Shared" */\n' + GOOD_SCOPES})
+
+    def test_forbidden_scope_after_a_comment_marker_inside_a_string_still_fails(self):
+        # The "//" sits in a string literal, so it starts no comment and the scope after it is code.
+        self.check(False, ': Calendars.ReadWrite', **{
+            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
+                GOOD_SCOPES + 'let authority = "https://login.example/x", write = "Calendars.ReadWrite"\n'})
+
     def test_microsoft_without_can_write_fails(self):
         self.check(False, 'Microsoft write capabilities changed', **{
             'Sources/MicrosoftCalendar/MicrosoftCalendarSource.swift': 'canEditAttendees: true\n'})
@@ -280,6 +318,28 @@ class Contracts(unittest.TestCase):
     def test_the_word_secrets_in_a_shell_script_is_not_a_violation(self):
         self.check(True, **{
             '.github/workflows/ci.yml': CI + '      - run: echo "no secrets are used here"\n'})
+
+    def test_the_word_secrets_in_a_step_name_is_not_a_violation(self):
+        # "secrets. Mask" must not read as secrets.Mask.
+        self.check(True, **{
+            '.github/workflows/ci.yml': CI + '      - name: Never echo secrets. Mask them\n        run: echo ok\n'})
+
+    def test_secrets_dot_name_in_prose_outside_an_expression_is_not_a_violation(self):
+        self.check(True, **{
+            '.github/workflows/ci.yml': CI + '      - name: Check\n        run: echo "the secrets.SIGNING_KEY value is never printed"\n'})
+
+    def test_secret_in_an_if_without_expression_braces_outside_an_environment_fails(self):
+        self.check(False, 'SIGNING_KEY', **{
+            '.github/workflows/ci.yml': CI.replace('    runs-on: ubuntu-latest',
+                                                   "    if: SECRETS.SIGNING_KEY != ''\n    runs-on: ubuntu-latest")})
+
+    def test_secret_in_a_step_if_outside_an_environment_fails(self):
+        self.check(False, 'SIGNING_KEY', **{
+            '.github/workflows/ci.yml': CI + "      - if: secrets['SIGNING_KEY'] != ''\n        run: echo ok\n"})
+
+    def test_secret_in_an_expression_of_a_step_name_still_fails(self):
+        self.check(False, 'SIGNING_KEY', **{
+            '.github/workflows/ci.yml': CI + '      - name: Deploy ${{ secrets.SIGNING_KEY }}\n        run: echo ok\n'})
 
     def test_empty_environment_fails(self):
         self.check(False, 'SIGNING_KEY', **{

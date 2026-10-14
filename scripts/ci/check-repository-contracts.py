@@ -42,7 +42,41 @@ for file in sorted((root / 'Sources').rglob('*.swift')):
                 f'Apple/UI import in portable source ({relative.parts[0]}): '
                 f'Sources/{relative}:{text.count(chr(10), 0, match.start()) + 1}: import {match.group(1)}')
 
-scopes = read('Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift')
+def strip_swift_comments(text):
+    """The Swift text without its comments ("//" to the end of the line, nested "/* */"). String
+    literals are kept whole, so a "//" inside a URL string starts no comment. Newlines survive."""
+    out, i, n, depth = [], 0, len(text), 0
+    while i < n:
+        two = text[i:i + 2]
+        if depth:
+            if two == '/*':
+                depth += 1; i += 2
+            elif two == '*/':
+                depth -= 1; i += 2
+            else:
+                if text[i] == '\n':
+                    out.append('\n')
+                i += 1
+        elif two == '//':
+            while i < n and text[i] != '\n':
+                i += 1
+        elif two == '/*':
+            depth = 1; i += 2
+        elif text.startswith('"""', i):
+            end = text.find('"""', i + 3)
+            end = n if end < 0 else end + 3
+            out.append(text[i:end]); i = end
+        elif text[i] == '"':
+            j = i + 1
+            while j < n and text[j] not in '"\n':
+                j += 2 if text[j] == '\\' else 1
+            out.append(text[i:j + 1]); i = j + 1
+        else:
+            out.append(text[i]); i += 1
+    return ''.join(out)
+
+# A scope that appears only in a comment is neither requested nor forbidden: look at code only.
+scopes = strip_swift_comments(read('Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift'))
 for scope in ('Calendars.Read', 'Calendars.Read.Shared', 'MailboxSettings.Read'):
     require(f'"{scope}"' in scopes, f'intended Microsoft scope absent: {scope}')
 for scope in ('Calendars.ReadWrite', 'Calendars.ReadWrite.Shared'):
@@ -81,9 +115,13 @@ def secret_use(node):
     """(names of secrets referenced, whether the whole secrets context is used) anywhere in node."""
     names, whole = set(), False
     for key, text in strings(node):
-        for match in SECRET_NAME.finditer(text):
-            names.add((match.group(1) or match.group(2)).upper())
+        # Only expression code can read the secrets context: the bodies of ${{ ... }} and an `if:`
+        # value (an expression with or without the braces). Prose such as "Never echo secrets. Mask
+        # them" in a name or a script is not a reference.
         expressions = EXPRESSION.findall(text) + ([text] if key == 'if' else [])
+        for expression in expressions:
+            for match in SECRET_NAME.finditer(expression):
+                names.add((match.group(1) or match.group(2)).upper())
         whole = whole or any(WHOLE_CONTEXT.search(expression) for expression in expressions)
     return names, whole
 
