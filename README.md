@@ -16,7 +16,7 @@ The host supplies what is platform specific by implementing the library's seams:
 
 ## Releases
 
-Every merge to `main` publishes a version tag (`X.Y.Z`) and a GitHub release. The `semver:major`, `semver:minor` or `semver:patch` labels of the pull requests merged since the latest tag choose the bump (the highest wins); patch is the default. Published tags are immutable. After each release the `notify` job dispatches `library-released` to [TimeTug](https://github.com/binary-companion/timetug), whose `Bump dependencies` workflow opens a "Bump calendar-connectors to X.Y.Z" pull request (opened by `timetug-bot`, never merged by it). The loop is proven only after the first bump pull request has run.
+Every merge to `main` publishes a version tag (`X.Y.Z`) and a GitHub release. The `semver:major`, `semver:minor` or `semver:patch` labels of the pull requests merged since the latest tag choose the bump (the highest wins); patch is the default. Published tags are immutable. After each release the `notify` job dispatches `library-released` to [TimeTug](https://github.com/binary-companion/timetug) and to `timetug-shared`, whose `Bump dependencies` workflows open a "Bump calendar-connectors to X.Y.Z" pull request (opened by `timetug-bot`, never merged by it). The loop is proven only after the first bump pull request has run.
 
 ## License
 

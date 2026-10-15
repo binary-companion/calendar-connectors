@@ -87,7 +87,8 @@ jobs:
 
   # Tells each dependent that a version exists, so its own workflow can open a bump pull request.
   # Skipped when nothing was released. The token comes from the timetug-bot GitHub App, installed on
-  # timetug only; the bump environment holds its credentials and is limited to main.
+  # timetug and timetug-shared; the bump environment holds its credentials (the app's key) and is
+  # limited to main. Every dependent is tried even when one dispatch fails; the step then fails.
   notify:
     needs: publish
     if: needs.publish.outputs.version != ''
@@ -104,7 +105,7 @@ jobs:
           app-id: ${{ vars.BUMP_APP_ID }}
           private-key: ${{ secrets.BUMP_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: timetug
+          repositories: timetug,timetug-shared
           # Only what repository_dispatch needs: the app is installed with more, the token is not.
           permission-contents: write
       - name: Tell the dependents
@@ -112,9 +113,17 @@ jobs:
           GH_TOKEN: ${{ steps.app.outputs.token }}
           VERSION: ${{ needs.publish.outputs.version }}
         run: |
-          for dependent in timetug; do
-            gh api "repos/binary-companion/$dependent/dispatches" \
+          failed=""
+          for dependent in timetug timetug-shared; do
+            if ! gh api "repos/binary-companion/$dependent/dispatches" \
               -f event_type=library-released \
               -f "client_payload[library]=calendar-connectors" \
-              -f "client_payload[version]=$VERSION"
+              -f "client_payload[version]=$VERSION"; then
+              echo "::error::The dispatch to $dependent failed."
+              failed="${failed:+$failed }$dependent"
+            fi
           done
+          if [ -n "$failed" ]; then
+            echo "::error::Not notified: $failed."
+            exit 1
+          fi

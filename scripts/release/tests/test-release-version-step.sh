@@ -66,15 +66,16 @@ check(token.get('uses') == 'actions/create-github-app-token@64ab729a6294000f5aa4
 check(token.get('with') == {'app-id': '${{ vars.BUMP_APP_ID }}',
                             'private-key': '${{ secrets.BUMP_APP_PRIVATE_KEY }}',
                             'owner': '${{ github.repository_owner }}',
-                            'repositories': 'timetug',
+                            'repositories': 'timetug,timetug-shared',
                             'permission-contents': 'write'},
-      "the token step must be scoped to repositories: timetug with only permission-contents: write (repository_dispatch) and read app-id/private-key from the bump environment")
+      "the token step must be scoped to repositories: timetug,timetug-shared with only permission-contents: write (repository_dispatch) and read app-id/private-key from the bump environment")
 check(dispatch.get('env') == {'GH_TOKEN': '${{ steps.app.outputs.token }}',
                               'VERSION': '${{ needs.publish.outputs.version }}'},
       "the dispatch step env must be exactly GH_TOKEN (app token) and VERSION (publish output)")
 run = dispatch.get('run', '')
 check('${{' not in run, "the dispatch script must not contain ${{ }} (the version only reaches it through env)")
-check(re.search(r'for dependent in timetug;', run) is not None, "the dispatch must loop over exactly: timetug")
+check(re.search(r'for dependent in timetug timetug-shared;', run) is not None,
+      "the dispatch must loop over exactly: timetug timetug-shared")
 check('gh api "repos/binary-companion/$dependent/dispatches"' in run, "the dispatch must call repos/binary-companion/$dependent/dispatches")
 fields = re.findall(r'-f\s+"?([^\s"]+)"?', run)
 check(sorted(fields) == sorted(['event_type=library-released',
@@ -84,16 +85,48 @@ check(sorted(fields) == sorted(['event_type=library-released',
 open(script, 'w').write(run)
 PY
 mkdir -p "$T/notify-bin"
+# The stub records every call and fails (HTTP 502) for each dependent named in $NOTIFY_FAIL_FOR.
 cat > "$T/notify-bin/gh" <<'STUB'
 #!/usr/bin/env bash
 printf '%s\n' "$*" >> "$NOTIFY_CALLS"
+for failing in ${NOTIFY_FAIL_FOR:-}; do
+  case " $* " in
+    *" repos/binary-companion/$failing/dispatches "*) echo "gh: HTTP 502" >&2; exit 1 ;;
+  esac
+done
 STUB
 chmod +x "$T/notify-bin/gh"
-NOTIFY_CALLS="$T/notify-calls"; export NOTIFY_CALLS; : > "$NOTIFY_CALLS"
-PATH="$T/notify-bin:$PATH" VERSION=1.2.3 GH_TOKEN=unused "$STEP_SHELL" "$T/notify.sh" ||
-  fail "the notify dispatch step failed against the stub gh"
-[ "$(cat "$NOTIFY_CALLS")" = 'api repos/binary-companion/timetug/dispatches -f event_type=library-released -f client_payload[library]=calendar-connectors -f client_payload[version]=1.2.3' ] ||
-  fail "the notify dispatch made the wrong call: $(cat "$NOTIFY_CALLS")"
+NOTIFY_CALLS="$T/notify-calls"; export NOTIFY_CALLS
+# run_notify <fail-for>: sets NOTIFY_STATUS and fills $NOTIFY_CALLS. The step runs under `bash -e`, as
+# the runner runs a run: script with no shell: set.
+run_notify() {
+  : > "$NOTIFY_CALLS"; NOTIFY_STATUS=0
+  NOTIFY_FAIL_FOR="${1-}" PATH="$T/notify-bin:$PATH" VERSION=1.2.3 GH_TOKEN=unused \
+    "$STEP_SHELL" -e "$T/notify.sh" >/dev/null 2>&1 || NOTIFY_STATUS=$?
+}
+dispatch_call() { # dispatch_call <dependent>
+  printf 'api repos/binary-companion/%s/dispatches -f event_type=library-released -f client_payload[library]=calendar-connectors -f client_payload[version]=1.2.3' "$1"
+}
+
+# N1. Both dependents succeed: exactly one dispatch each, in order, with the same payload.
+run_notify ""
+[ "$NOTIFY_STATUS" = 0 ] || fail "the notify dispatch step failed against the stub gh"
+[ "$(cat "$NOTIFY_CALLS")" = "$(dispatch_call timetug; echo; dispatch_call timetug-shared)" ] ||
+  fail "the notify dispatch made the wrong calls: $(cat "$NOTIFY_CALLS")"
+
+# N2. A failing dispatch to one dependent must not stop the other, and must still fail the job.
+for failing in timetug timetug-shared; do
+  run_notify "$failing"
+  [ "$NOTIFY_STATUS" != 0 ] || fail "notify: a failed dispatch to $failing did not fail the step"
+  [ "$(cat "$NOTIFY_CALLS")" = "$(dispatch_call timetug; echo; dispatch_call timetug-shared)" ] ||
+    fail "notify: with $failing failing, both dependents must still be tried: $(cat "$NOTIFY_CALLS")"
+done
+
+# N3. Both fail: both are tried and the step fails.
+run_notify "timetug timetug-shared"
+[ "$NOTIFY_STATUS" != 0 ] || fail "notify: failed dispatches to both dependents did not fail the step"
+[ "$(cat "$NOTIFY_CALLS")" = "$(dispatch_call timetug; echo; dispatch_call timetug-shared)" ] ||
+  fail "notify: with both failing, both dependents must still be tried: $(cat "$NOTIFY_CALLS")"
 
 # --- a stub gh: logs every call, answers /commits/<sha>/pulls from $STUB/labels/<sha> ---
 mkdir -p "$T/bin"
