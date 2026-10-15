@@ -14,7 +14,7 @@ providers behind one model, plus the small amount of host-specific glue TimeTug 
 
 | Package / target | Role | Depends on | Platform notes |
 |---|---|---|---|
-| `CalendarConnectors` / `CalendarCore` | Model, source and connector protocols, stores, HTTP seam, change polling, all-day helpers | Foundation only | Portable; built on Linux in CI |
+| `CalendarConnectors` / `CalendarCore` | Model, source and connector protocols, stores, HTTP seam, change polling, all-day helpers | Foundation only | Portable; built on Linux and Windows in CI |
 | `CalendarConnectors` / `CalendarOAuth` | OAuth 2.0 authorization-code + PKCE client, access-token cache | `CalendarCore` | Portable; no crypto dependency (pure-Swift SHA-256 default) |
 | `CalendarConnectors` / `GoogleCalendar` | Google Calendar connector (REST v3) | `CalendarCore`, `CalendarOAuth` | Portable |
 | `CalendarConnectors` / `MicrosoftCalendar` | Microsoft (Outlook) connector over Microsoft Graph v1.0 | `CalendarCore`, `CalendarOAuth` | Portable |

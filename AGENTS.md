@@ -2,7 +2,7 @@
 
 ## What this is
 
-The portable calendar connector library used by TimeTug (Mac now, Windows next). It imports nothing from TimeTug and nothing Apple-only, has no package dependencies, and builds on Linux. Platform adapters (Keychain, Network.framework loopback, EventKit, Windows Credential Locker) live in the apps, never here.
+The portable calendar connector library used by TimeTug (Mac now, Windows next). It imports nothing from TimeTug and nothing Apple-only, has no package dependencies, and builds and passes its tests on Linux and Windows (x64 and ARM64). Platform adapters (Keychain, Network.framework loopback, EventKit, Windows Credential Locker) live in the apps, never here.
 
 ## Repositories
 
@@ -21,7 +21,7 @@ Dependency direction: `calendar-connectors` <- `timetug-shared` <- the apps; `ti
 
 ## Verify
 
-`swift test` (macOS), the Linux container job in CI, `scripts/ci/check-architecture.sh`, `scripts/ci/check-repository-contracts.py`, the shell tests `scripts/ci/tests/test-check-architecture.sh`, `scripts/release/tests/test-next-version.sh` and `scripts/release/tests/test-release-version-step.sh` (set `PYTHON` to an interpreter that has PyYAML; CI installs `scripts/ci/requirements-test.txt` into `build/venv`), and the Python unit tests: `python3 -m unittest discover -s scripts/ci/tests -p 'test_*.py'`.
+`swift test` (macOS), the Linux container job and the `windows-x64` and `windows-arm64` jobs in CI (Windows installs Swift with `scripts/ci/install-swift-windows.ps1`; its test step fails when `scripts/ci/count-swift-tests.py` finds too few tests, so raise its floor with the suite), `scripts/ci/check-architecture.sh`, `scripts/ci/check-repository-contracts.py`, the shell tests `scripts/ci/tests/test-check-architecture.sh`, `scripts/release/tests/test-next-version.sh` and `scripts/release/tests/test-release-version-step.sh` (set `PYTHON` to an interpreter that has PyYAML; CI installs `scripts/ci/requirements-test.txt` into `build/venv`), and the Python unit tests: `python3 -m unittest discover -s scripts/ci/tests -p 'test_*.py'`.
 
 ## Release flow
 

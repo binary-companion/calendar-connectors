@@ -1,6 +1,6 @@
 # calendar-connectors
 
-A portable Swift library that reads and writes calendars through Google, Microsoft Graph, CalDAV (including iCloud) and iCalendar links, with one event model and no third-party dependencies. It builds on macOS and Linux and has been built on Windows ARM64.
+A portable Swift library that reads and writes calendars through Google, Microsoft Graph, CalDAV (including iCloud) and iCalendar links, with one event model and no third-party dependencies. It builds and passes its tests on macOS, Linux, Windows x64 and Windows ARM64 (all four run in CI).
 
 ## Products
 
