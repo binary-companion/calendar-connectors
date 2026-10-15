@@ -44,6 +44,30 @@ expect 0 1.0.1 --latest 1.0.0 --labels "semver:major extra"
 expect 0 1.1.0 --latest 1.0.0 --labels " semver:minor "
 expect 0 2.0.0 --latest 1.0.0 --labels "bug, semver:major ,docs"
 expect 0 1.1.0 --latest 1.0.0 --labels "  semver:minor  ,  semver:patch"
+# An override is never below the latest tag (a typo would make an immutable wrong tag and release, which the tag
+# ruleset forbids deleting). Equal stays allowed (recovering a tag whose release is missing), higher and a first
+# release (no latest) stay allowed. Components are compared as numbers, not strings.
+expect 2 "" --latest 1.0.6 --labels "" --override 1.0.5
+expect 2 "" --latest 1.0.6 --labels "" --override 0.9.0
+expect 2 "" --latest 1.2.3 --labels "" --override 1.1.9
+expect 2 "" --latest 2.0.0 --labels "" --override 1.9.9
+expect 2 "" --latest 1.10.0 --labels "" --override 1.9.0
+expect 2 "" --latest 1.0.10 --labels "semver:major" --override 1.0.9
+expect 2 "" --latest 10.0.0 --labels "" --override 9.9.9
+expect 2 "" --latest 1.2.3 --labels "" --override 0.0.0
+expect 0 1.2.10 --latest 1.2.3 --labels "" --override 1.2.10
+expect 0 10.0.0 --latest 9.0.0 --labels "" --override 10.0.0
+expect 0 1.10.0 --latest 1.9.0 --labels "" --override 1.10.0
+expect 0 1.0.6 --latest 1.0.6 --labels "" --override 1.0.6
+expect 0 1.0.7 --latest 1.0.6 --labels "" --override 1.0.7
+expect 0 1.1.0 --latest 1.0.6 --labels "" --override 1.1.0
+expect 0 2.0.0 --latest 1.0.6 --labels "" --override 2.0.0
+expect 0 0.9.0 --latest "" --labels "" --override 0.9.0
+expect 0 99999999999999999999999.0.0 --latest 99999999999999999999998.0.0 --labels "" --override 99999999999999999999999.0.0
+expect 2 "" --latest 99999999999999999999999.0.0 --labels "" --override 99999999999999999999998.0.0
+# The comparison needs a well-formed latest tag, as the bump does.
+expect 2 "" --latest v1.0.0 --labels "" --override 1.0.1
+expect 2 "" --latest 1.0 --labels "" --override 1.0.1
 # A flag given without a value is a usage error (exit 2) with a message, not a silent exit 1.
 expect_usage_error() {
   local want_msg="$1" err code=0; shift
@@ -54,4 +78,5 @@ expect_usage_error() {
 expect_usage_error "--labels" --latest 1.0.0 --labels
 expect_usage_error "--latest" --latest
 expect_usage_error "--override" --latest 1.0.0 --labels "" --override
+expect_usage_error "override 0.9.0 is lower than the latest tag 1.0.6" --latest 1.0.6 --labels "" --override 0.9.0
 echo PASS

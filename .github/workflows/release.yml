@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "X.Y.Z to publish. Needed for the first release and for recovery."
+        description: "X.Y.Z to publish. Needed for the first release and for recovery. A version lower than the latest tag is refused; the latest tag itself recovers its missing release."
         required: false
         type: string
 
