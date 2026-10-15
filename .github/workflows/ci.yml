@@ -75,8 +75,8 @@ jobs:
           # bring-up probe). So the exit code is read on the very next statement, and the step can
           # only succeed when swift test exited 0 AND the log shows enough executed tests.
           # Floor: the 865 Swift Testing tests of the 7 test targets run on macOS (measured with
-          # `swift test` on macOS: Core 121, OAuth 59, Google 103, Microsoft 200, ICalendar 33,
-          # CalDAV 251, ICalSubscription 98); 780 is about 90 % of that, so a silently skipped target
+          # `swift test` on macOS, and the same 865 and 7 on both Windows runners: Core 251,
+          # OAuth 33, Google 200, Microsoft 121, ICalendar 59, CalDAV 98, ICalSubscription 103); 780 is about 90 % of that, so a silently skipped target
           # or a zero turns the job red while normal growth needs no edit. --minimum-runs 7 is one
           # summary per test target: it also catches a vanished target whose tests alone would not
           # move the total below the floor. --minimum-per-run 1 makes every summary report at least
