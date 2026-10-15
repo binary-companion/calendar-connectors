@@ -1,0 +1,8 @@
+# Swift toolchain installed on the Windows CI runners by install-swift-windows.ps1.
+# First line: the version. Then one line per architecture: the SHA-256 of the
+# installer https://download.swift.org/swift-<version>-release/<windows10|windows10-arm64>/
+# swift-<version>-RELEASE/swift-<version>-RELEASE-<windows10|windows10-arm64>.exe
+# Changing the version means replacing both hashes (see the script's header).
+6.4.0
+x64 76169a85bcba82854a0cd8f9655ffb74b3758d60c35a245457510095f2823c03
+arm64 f48e393634995cb589f547e40d64673bc641ca76b099697ba8227a8904be4a49

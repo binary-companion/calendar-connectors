@@ -1,6 +1,8 @@
 # Continuous integration for the library. Runs on pull requests and on every push to main.
 #   macos         swift test on the whole package.
 #   linux         swift test in the swift:6.0 container: proves the library stays portable.
+#   windows-x64   swift test on windows-latest, with Swift installed by scripts/ci/install-swift-windows.ps1.
+#   windows-arm64 the same on windows-11-arm.
 #   architecture  portability rules, repository contracts and the tests of the release script and workflow.
 name: CI
 
@@ -13,12 +15,13 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   macos:
     runs-on: macos-26
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Select newest Xcode
@@ -28,6 +31,8 @@ jobs:
 
   linux:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -52,8 +57,76 @@ jobs:
         run: |
           docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD:/work" -w /work swift:6.0 swift test
 
+  windows-x64:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install Swift
+        shell: pwsh
+        run: ./scripts/ci/install-swift-windows.ps1
+      - name: Test
+        shell: pwsh
+        run: |
+          # PowerShell does not stop at a failing native command, and a later native command
+          # overwrites $LASTEXITCODE (a failing swift test followed by git made a step pass in the
+          # bring-up probe). So the exit code is read on the very next statement, and the step can
+          # only succeed when swift test exited 0 AND the log shows enough executed tests.
+          # Floor: the 865 Swift Testing tests of the 7 test targets run on macOS (measured with
+          # `swift test` on macOS, and the same 865 and 7 on both Windows runners: Core 251,
+          # OAuth 33, Google 200, Microsoft 121, ICalendar 59, CalDAV 98, ICalSubscription 103);
+          # 780 is about 90 % of that, so a silently skipped target or a zero turns the job red while normal growth needs no edit. --minimum-runs 7 is one
+          # summary per test target: it also catches a vanished target whose tests alone would not
+          # move the total below the floor. --minimum-per-run 1 makes every summary report at least
+          # one test: a target that still builds but holds no tests prints `Test run with 0 tests
+          # ... passed`, which the total and the run count alone would accept.
+          # Raise the floor and the run count when targets or tests are added.
+          $PSNativeCommandUseErrorActionPreference = $true
+          swift test 2>&1 | Tee-Object -FilePath test.log
+          $swiftExit = $LASTEXITCODE
+          # With the native-command preference above PowerShell normally throws first; this explicit
+          # check is the guard that does not depend on that preference.
+          if ($swiftExit -ne 0) {
+            Write-Host "::error::swift test exited with code $swiftExit"
+            exit $swiftExit
+          }
+          python --version
+          python scripts/ci/count-swift-tests.py test.log --minimum 780 --minimum-runs 7 --minimum-per-run 1
+          exit $LASTEXITCODE
+
+  windows-arm64:
+    runs-on: windows-11-arm
+    permissions:
+      contents: read
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install Swift
+        shell: pwsh
+        run: ./scripts/ci/install-swift-windows.ps1
+      - name: Test
+        shell: pwsh
+        run: |
+          # Same step as windows-x64; see the comments there for the exit code handling and the floor.
+          $PSNativeCommandUseErrorActionPreference = $true
+          swift test 2>&1 | Tee-Object -FilePath test.log
+          $swiftExit = $LASTEXITCODE
+          # With the native-command preference above PowerShell normally throws first; this explicit
+          # check is the guard that does not depend on that preference.
+          if ($swiftExit -ne 0) {
+            Write-Host "::error::swift test exited with code $swiftExit"
+            exit $swiftExit
+          }
+          python --version
+          python scripts/ci/count-swift-tests.py test.log --minimum 780 --minimum-runs 7 --minimum-per-run 1
+          exit $LASTEXITCODE
+
   architecture:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install pinned test prerequisites
