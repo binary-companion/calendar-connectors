@@ -25,7 +25,7 @@ Dependency direction: `calendar-connectors` <- `timetug-shared` <- the apps; `ti
 
 ## Release flow
 
-Do not tag by hand. Merging a pull request to `main` runs `release.yml`: the highest `semver:*` label among the pull requests merged since the latest tag picks the bump (patch by default), the workflow tags and publishes. After a version is published, the `notify` job of `release.yml` dispatches `library-released` to `timetug`, whose `Bump dependencies` workflow opens a "Bump calendar-connectors to X.Y.Z" pull request (opened by `timetug-bot`, never merged by it). The loop is proven only once the first bump pull request has run; until then the owner checks that it opened, and moves the pin by hand if it did not. Breaking changes to `docs/api.md` need `semver:major`. The agent never merges or publishes; the owner does.
+Do not tag by hand. Merging a pull request to `main` runs `release.yml`: the highest `semver:*` label among the pull requests merged since the latest tag picks the bump (patch by default), the workflow tags and publishes. After a version is published, the `notify` job of `release.yml` dispatches `library-released` to `timetug` and to `timetug-shared` (one dispatch each; a failure to reach one does not stop the other, and fails the run), whose `Bump dependencies` workflows open a "Bump calendar-connectors to X.Y.Z" pull request (opened by `timetug-bot`, never merged by it). The loop is proven only once the first bump pull request has run; until then the owner checks that it opened, and moves the pin by hand if it did not. Breaking changes to `docs/api.md` need `semver:major`. The agent never merges or publishes; the owner does.
 
 ## Finding code
 
