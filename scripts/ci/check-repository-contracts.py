@@ -222,6 +222,16 @@ if (root / '.github' / 'workflows').is_dir():
         require((root / '.github' / 'workflows' / documented).is_file(),
                 f'missing documented path: .github/workflows/{documented}')
 
+# The backward-compatibility job (AGENTS.md, "Backward compatibility") is documented by id and can become a required
+# check; a renamed or deleted one would silently stop enforcing the rule. Its persisted-format fixtures are documented
+# too: without them nothing proves that connections and sync state saved by an earlier release still load.
+ci_workflow = root / '.github' / 'workflows' / 'ci.yml'
+if ci_workflow.is_file():
+    ci_jobs = load(ci_workflow).get('jobs')
+    require(isinstance(ci_jobs, dict) and 'compat' in ci_jobs, '.github/workflows/ci.yml: missing documented job compat')
+require(any((root / 'Tests' / 'PersistedFormats').glob('*/connections.json')),
+        'missing documented path: Tests/PersistedFormats/<version>/connections.json')
+
 for workflow in sorted((root / '.github' / 'workflows').glob('*.y*ml')):
     data = load(workflow)
     name = workflow.name

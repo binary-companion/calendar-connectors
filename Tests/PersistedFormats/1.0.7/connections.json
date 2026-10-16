@@ -1,0 +1,52 @@
+[
+  {
+    "config" : {
+      "email" : "alice@example.com"
+    },
+    "connectionID" : "0B9C1A7E-6A55-4F0B-9E43-5C1F7D2A9B10",
+    "displayName" : "alice@example.com",
+    "kindID" : "google"
+  },
+  {
+    "config" : {
+      "email" : "Carol@Contoso.com"
+    },
+    "connectionID" : "5D2E8F4A-1B3C-4D6E-8F90-A1B2C3D4E5F6",
+    "displayName" : "Carol@Contoso.com",
+    "kindID" : "microsoft"
+  },
+  {
+    "config" : {
+      "autoSchedule" : "true",
+      "homeURL" : "https:\/\/p01-caldav.icloud.com\/123456789\/calendars\/",
+      "principalURL" : "https:\/\/p01-caldav.icloud.com\/123456789\/principal\/",
+      "serverURL" : "https:\/\/caldav.icloud.com",
+      "userAddresses" : "mailto:alice@icloud.com\nmailto:alice@me.com",
+      "username" : "alice@icloud.com"
+    },
+    "connectionID" : "9A8B7C6D-5E4F-4A3B-2C1D-0E9F8A7B6C5D",
+    "displayName" : "alice@icloud.com",
+    "kindID" : "icloud"
+  },
+  {
+    "config" : {
+      "autoSchedule" : "false",
+      "homeURL" : "https:\/\/caldav.fastmail.com\/dav\/calendars\/user\/bob@fastmail.com\/",
+      "principalURL" : "https:\/\/caldav.fastmail.com\/dav\/principals\/user\/bob@fastmail.com\/",
+      "serverURL" : "https:\/\/caldav.fastmail.com\/",
+      "userAddresses" : "mailto:bob@fastmail.com",
+      "username" : "bob"
+    },
+    "connectionID" : "1F2E3D4C-5B6A-4798-8A9B-0C1D2E3F4A5B",
+    "displayName" : "bob@caldav.fastmail.com",
+    "kindID" : "caldav"
+  },
+  {
+    "config" : {
+      "host" : "calendar.example.org"
+    },
+    "connectionID" : "C0FFEE00-1234-4567-89AB-CDEF01234567",
+    "displayName" : "Team offsites",
+    "kindID" : "icalsub"
+  }
+]

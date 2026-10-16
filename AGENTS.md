@@ -19,9 +19,22 @@ Dependency direction: `calendar-connectors` <- `timetug-shared` <- the apps; `ti
 - A new product needs a line in `Package.swift`, tests, and an entry in `docs/api.md`.
 - Microsoft sign-in requests read-only scopes (`scripts/ci/check-repository-contracts.py` pins them); widening them is a deliberate, reviewed change.
 
+## Backward compatibility
+
+Owner rule (2026-10-16): within a major version, a release of this library must drop into an existing front end with no change to that front end; front ends are not released when the library is, and their releases stay owner-initiated. Additions are allowed. Removing, renaming or retyping anything, changing a value or a meaning, or modifying a persisted-format fixture needs the pull request label `semver:major` (which also makes the release a major version).
+
+On every pull request the `compat` job of `ci.yml` compares with the baseline, the highest `X.Y.Z` tag reachable from the base branch (`scripts/ci/compat/compat.py`, an adapted copy of the one in `timetug-shared`; the repositories do not depend on each other, so change both on purpose; its tests are `scripts/ci/tests/test_compat.py`):
+
+1. Swift public API: `swift package diagnose-api-breaking-changes <baseline>` for every library product in `Package.swift` (all are portable, so the job runs in the `swift:6.0` Linux container). A new product must be added to the job's list; `test_compat.py` fails until it is.
+2. Persisted data: `Tests/PersistedFormats/<version>/` holds files that release's own code wrote, the way hosts keep them on users' disks: `connections.json` (`FileConnectionStore`, a connection of every kind with the `config` keys its kind writes) and `sync-state.json` (`FileSyncStateStore`, with the Google and Microsoft calendar-set keys and tokens, Microsoft's stored delta positions, and the CalDAV list signature and markers). They are strictly add-only: an existing file never changes, even by whitespace, and is never deleted; a new version directory is fine. The `PersistedFormatTests` of the test targets load them with the current code and check the meaning (each connection still opens through its kind, tokens and delta positions still parse, the same CalDAV calendars still give the stored signature). When a release changes what it writes, add `Tests/PersistedFormats/<that version>/` generated with that release's code (a scratch executable target in a throwaway checkout of the tag, built with `-Xswiftc -enable-testing` for the internal formats) and load it in the tests too.
+
+Not covered: changed behaviour behind an unchanged API, and the provider responses the library parses (they live inline in the Swift tests, which run against the current code only). Running a release's own test suite against newer code is not done: those tests use `@testable` internals, so every internal refactor would break them.
+
+With the `semver:major` label each check is skipped with a notice; the checks are also skipped on pushes and before the first release. Adding or removing a label re-runs CI.
+
 ## Verify
 
-`swift test` (macOS), the Linux container job and the `windows-x64` and `windows-arm64` jobs in CI (Windows installs Swift with `scripts/ci/install-swift-windows.ps1`; its test step fails when `scripts/ci/count-swift-tests.py` finds too few tests, so raise its floor with the suite), `scripts/ci/check-architecture.sh`, `scripts/ci/check-repository-contracts.py`, the shell tests `scripts/ci/tests/test-check-architecture.sh`, `scripts/release/tests/test-next-version.sh` and `scripts/release/tests/test-release-version-step.sh` (set `PYTHON` to an interpreter that has PyYAML; CI installs `scripts/ci/requirements-test.txt` into `build/venv`), and the Python unit tests: `python3 -m unittest discover -s scripts/ci/tests -p 'test_*.py'`.
+`swift test` (macOS), the Linux container job and the `windows-x64` and `windows-arm64` jobs in CI (Windows installs Swift with `scripts/ci/install-swift-windows.ps1`; its test step fails when `scripts/ci/count-swift-tests.py` finds too few tests, so raise its floor with the suite), `scripts/ci/check-architecture.sh`, `scripts/ci/check-repository-contracts.py`, the shell tests `scripts/ci/tests/test-check-architecture.sh`, `scripts/release/tests/test-next-version.sh` and `scripts/release/tests/test-release-version-step.sh` (set `PYTHON` to an interpreter that has PyYAML; CI installs `scripts/ci/requirements-test.txt` into `build/venv`), and the Python unit tests: `python3 -m unittest discover -s scripts/ci/tests -p 'test_*.py'` (they include `test_compat.py`). The `compat` job runs on pull requests only (see Backward compatibility).
 
 ## Release flow
 
