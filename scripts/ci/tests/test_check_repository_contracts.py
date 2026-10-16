@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "${{ secrets.GITHUB_TOKEN }}${{ secrets.DOCKERHUB_TOKEN }}"
+  compat:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo compat
 '''
 
 RELEASE = '''name: Release
@@ -48,6 +52,7 @@ def make(root: Path, **overrides):
         'Sources/GoogleCalendar/GoogleCalendarSource+Write.swift': 'extension GoogleCalendarSource: WritableCalendarSource {}\n',
         '.github/workflows/ci.yml': CI,
         '.github/workflows/release.yml': RELEASE,
+        'Tests/PersistedFormats/1.0.7/connections.json': '[]\n',
     }
     files.update(overrides)
     for name, text in files.items():
@@ -74,6 +79,13 @@ class Contracts(unittest.TestCase):
 
     def test_apple_import_in_portable_source_fails(self):
         self.check(False, 'Apple/UI import', **{'Sources/CalendarCore/B.swift': 'import AppKit\n'})
+
+    def test_a_missing_compat_job_fails(self):
+        self.check(False, 'missing documented job compat', **{
+            '.github/workflows/ci.yml': CI.replace('  compat:\n', '  renamed-compat:\n')})
+
+    def test_missing_persisted_formats_fail(self):
+        self.check(False, 'Tests/PersistedFormats', **{'Tests/PersistedFormats/1.0.7/connections.json': None})
 
     def test_microsoft_write_scope_fails(self):
         self.check(False, 'Calendars.ReadWrite', **{

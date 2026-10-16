@@ -4,12 +4,16 @@
 #   windows-x64   swift test on windows-latest, with Swift installed by scripts/ci/install-swift-windows.ps1.
 #   windows-arm64 the same on windows-11-arm.
 #   architecture  portability rules, repository contracts and the tests of the release script and workflow.
+#   compat        backward compatibility with the latest release (AGENTS.md, "Backward compatibility"): the public
+#                 API of every library product and the persisted-format fixtures. Skipped for semver:major.
 name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
+    # labeled and unlabeled: adding or removing semver:major turns the compat checks off or on again.
+    types: [opened, synchronize, reopened, labeled, unlabeled]
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -143,3 +147,59 @@ jobs:
           scripts/release/tests/test-next-version.sh
           PYTHON="$PWD/build/venv/bin/python" scripts/release/tests/test-release-version-step.sh
           build/venv/bin/python -m unittest discover -s scripts/ci/tests -p 'test_*.py'
+
+  compat:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 30
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # The baseline is a release tag; diagnose-api-breaking-changes checks it out from this clone.
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Decide whether the checks apply
+        id: gate
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: python3 scripts/ci/compat/compat.py gate --base-ref "origin/${BASE_REF:-main}"
+      # Each check below runs even when an earlier one failed, so one run reports every broken category.
+      # The persisted formats model files on users' disks (the connection list and the sync state): an existing file
+      # never changes, even additively, and is never deleted; new files (a new version directory) are fine. The tests
+      # that load them run in every swift test job.
+      - name: Persisted-format fixtures of the baseline are unchanged
+        if: ${{ !cancelled() && steps.gate.outputs.run == 'true' }}
+        env:
+          BASELINE: ${{ steps.gate.outputs.baseline }}
+        run: python3 scripts/ci/compat/compat.py frozen "$BASELINE" --strict Tests/PersistedFormats
+      - name: Log in to Docker Hub
+        if: steps.gate.outputs.run == 'true' && env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_TOKEN != ''
+        run: |
+          for attempt in 1 2 3; do
+            echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin && exit 0
+            if [ "$attempt" -lt 3 ]; then sleep $((attempt * 15)); fi
+          done
+          echo "::warning::Docker Hub login failed; pulling anonymously."
+      - name: Pull the Swift image
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          for attempt in 1 2 3; do
+            docker pull swift:6.0 && exit 0
+            sleep $((attempt * 15))
+          done
+          exit 1
+      # Every product is portable, so the Linux toolchain covers them all.
+      - name: Swift public API of every library product
+        if: ${{ !cancelled() && steps.gate.outputs.run == 'true' }}
+        env:
+          BASELINE: ${{ steps.gate.outputs.baseline }}
+        run: |
+          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e BASELINE -v "$PWD:/work" -w /work swift:6.0 bash -c '
+            set -euo pipefail
+            git config --global --add safe.directory /work
+            swift package diagnose-api-breaking-changes "$BASELINE" \
+              --products CalendarCore CalendarOAuth GoogleCalendar MicrosoftCalendar ICalendar CalDAVCalendar ICalSubscription CalendarTestSupport'
