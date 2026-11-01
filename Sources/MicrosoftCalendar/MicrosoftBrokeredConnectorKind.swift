@@ -62,10 +62,12 @@ public struct MicrosoftBrokeredConnectorKind: ConnectorKind, AccountIdentityFami
             ExternalAccount(id: $0, email: storedEmail, connectionID: connection.connectionID)
         }
         let (email, accountID) = try await signIn(ExternalSignInRequest(account: account, email: storedEmail, scopes: Self.scopes))
-        guard email == storedEmail?.lowercased() else {
+        // The display name is the email by construction, so a record that lost its `email` key is still guarded.
+        guard email == (storedEmail ?? connection.displayName).lowercased() else {
             throw SourceError.invalidResponse("signed in as a different account")
         }
         var result = connection
+        result.config["email"] = email
         result.config[Self.authModeKey] = Self.authModeExternal
         result.config[Self.externalAccountIDKey] = accountID
         return result

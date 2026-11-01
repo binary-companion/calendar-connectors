@@ -165,6 +165,24 @@ private func unused() -> InMemoryCredentialStore { InMemoryCredentialStore() }
     #expect(request.account == nil && request.email == "me@example.com")
 }
 
+@Test func reauthorizeWithoutAStoredEmailComparesWithTheDisplayName() async throws {
+    // The display name is the email by construction; a record that lost its `email` key is still guarded.
+    let noEmail = Connection(kindID: "microsoft-brokered", connectionID: "c1", displayName: "me@example.com",
+                             config: ["authMode": "external", "externalAccountID": "acct-1"])
+    let transport = FakeTransport()
+    await meRoute(transport)
+    let result = try await kind(FakeExternalTokenSource(signIns: [signedIn("acct-2")]), transport)
+        .reauthorize(noEmail, using: NoInteraction(), credentials: unused())
+    #expect(result.config["externalAccountID"] == "acct-2" && result.config["email"] == "me@example.com")
+
+    let other = FakeTransport()
+    await meRoute(other, ["mail": "other@example.com"])
+    await #expect(throws: SourceError.invalidResponse("signed in as a different account")) {
+        _ = try await kind(FakeExternalTokenSource(signIns: [signedIn("acct-2")]), other)
+            .reauthorize(noEmail, using: NoInteraction(), credentials: unused())
+    }
+}
+
 @Test func makeSourceWithoutExternalAccountIDThrowsIncompleteSettings() throws {
     for config in [["email": "me@example.com"], ["email": "me@example.com", "externalAccountID": ""]] {
         let connection = Connection(kindID: "microsoft-brokered", connectionID: "c1", displayName: "me@example.com", config: config)
