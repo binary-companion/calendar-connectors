@@ -66,3 +66,28 @@ private let connections107 = [
     #expect(await reread.token(for: google, scope: "alice@example.com") == "CPDAlvWDx70CEPDAlvWDx70CGAU=")
     #expect(await reread.token(for: apple, scope: "calendar:home") == nil)
 }
+
+// Release 1.2.0 added the brokered Microsoft kind (CalendarCore only sees a connection with `config` strings; the
+// meaning is checked in MicrosoftCalendarTests).
+private let connections120 = [
+    Connection(
+        kindID: "microsoft-brokered", connectionID: "7E3A9C21-4B58-4D0F-A6E2-91C8B5D40F37", displayName: "dave@contoso.com",
+        config: [
+            "authMode": "external", "email": "dave@contoso.com",
+            "externalAccountID": "00000000-0000-0000-9a1c-3e5f7b9d1c2e.9188040d-6c67-4c5b-b112-36a304b66dad",
+        ])
+]
+
+@Test func theConnectionListOf120Loads() async throws {
+    let store = FileConnectionStore(url: try persisted("1.2.0", "connections.json"))
+    #expect(await store.load() == .loaded(connections120))
+    #expect(connections120[0].sourceID == "microsoft-brokered-7E3A9C21-4B58-4D0F-A6E2-91C8B5D40F37")
+}
+
+@Test func theSyncStateOf120Loads() async throws {
+    let store = FileSyncStateStore(url: try persisted("1.2.0", "sync-state.json"))
+    let id = "7E3A9C21-4B58-4D0F-A6E2-91C8B5D40F37"
+    #expect(await store.token(for: id, scope: "_calendars") == "AAMkAGI2TCCC=\nAAMkAGI2TDDD=")
+    #expect(await store.token(for: id, scope: "AAMkAGI2TCCC=")?.hasPrefix("1800000000|https://graph.microsoft.com/") == true)
+    #expect(await store.token(for: id, scope: "AAMkAGI2TDDD=")?.hasSuffix("$skiptoken=Z4b9") == true)
+}
