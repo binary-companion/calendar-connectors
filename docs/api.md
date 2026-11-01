@@ -565,7 +565,7 @@ provider metadata; a `metadata` field and capability can be added later without 
 
 `docs/superpowers/specs/2026-09-25-calendar-connectors-phase4-microsoft-design.md` is the design and rationale; this part
 is the contract as built. Public surface: `MicrosoftOAuthConfig(clientID:redirectHost:)`,
-`MicrosoftConnectorKind(config:transport:now:sleep:pollInterval:hasher:)`, and the `CalendarSource` returned by
+`MicrosoftConnectorKind(config:transport:now:sleep:pollInterval:hasher:)` (since 1.2.0 also `MicrosoftBrokeredConnectorKind`, part 15), and the `CalendarSource` returned by
 `makeSource` (id `microsoft-<connectionID>`), which is a `WritableCalendarSource`, a `SeriesSource` and a
 `PollingCalendarSource`. Everything else (the Graph client, DTOs and mappers) is internal. The connector is a small REST client over
 `HTTPTransport` and needs no Microsoft SDK.
@@ -729,6 +729,76 @@ One connector kind, `icalsub` ("iCal link"), reads a private calendar subscripti
 - **Capabilities.** `canWrite = false`, `syncKind = .token`. Provided fields: `series`, `uidScope`, `provider`, `calendarTimeZone`. `participation`, `visibility`, `availability` and `reminders` are not declared: a feed may or may not carry them.
 - **Diagnostics.** `ICalSubscriptionKind(diagnostics:)` (default none) reports to a `DiagnosticLog` (section 3.10), category `icalsub`. Events: `fetchCompleted` (info: `status`, `conditional`, `notModified`, `hops`, `bytes`, and `ms` only when the source was given a clock), `fetchFailed` (warning: `reason` is one of `authExpired`, `server`, `network`, `invalidResponse`, `tooLarge`, `tooManyRedirects`, `redirectRefused`; `status` when there was one), `feedParsed` (info: `eventsInFeed`, `groupsKept`, `groupsDropped`, `retentionActive`, `unreadableRules`), `feedNotCalendar` (warning), `rruleUnreadable` (notice: private `uid`, or `syntheticUID: true` instead when the feed gave the event no UID of its own; logged once per unreadable rule, again if the rule is edited or breaks again, so a poll does not repeat it; the sign-in check logs it every time), `syntheticUID` (info: `count`), `changeReported` / `changeSuppressed` (info; a new body arrived but no change was reported: `reason` `unchangedRetained` when the retained events did not change, `staleFetch` when a newer check had already reported), `signInAccepted` / `signInRejected` (`reason` token only: `feedLoaded`, `invalidLink`, `authExpired`, `server`, `network`, `invalidResponse`). Never the link, its path or query, or any event text; the only strings are fixed tokens and private UIDs. A leak test enforces this.
 - **Not supported.** A downloaded `.ics` file (a one-time copy that would go stale), writes and RSVP, more than one feed per account.
+
+## 15. External token sources (release 1.2.0)
+
+For hosts whose operating system keeps the account: Windows' Web Account Manager (WAM) today, a mobile account broker
+later. The library never sees a password or a refresh token for such an account; the host's account service owns the
+sign-in, MFA, policy and refresh token, and the library asks it for short-lived access tokens. Design:
+`docs/superpowers/specs/2026-10-30-phase-6-wam-sign-in-design.md` in `timetug`. Everything here is an addition to 1.1.0:
+no existing symbol, message or persisted file changed.
+
+`CalendarCore` (all `public` and `Sendable`; structs, so later options are additive):
+
+```swift
+public struct ExternalAccount: Hashable {            // the host's account; `id` is authoritative
+    var id: String; var email: String?; var connectionID: ConnectionID?
+    init(id: String, email: String? = nil, connectionID: ConnectionID? = nil)
+}
+public struct ExternalAccessToken: Equatable { var accessToken: String; var expiresAt: Date }
+public struct ExternalSignInRequest {                 // account nil: a first sign-in; email: a picker hint
+    var account: ExternalAccount?; var email: String?; var scopes: [String]
+}
+public struct ExternalSignInResult { var account: ExternalAccount; var token: ExternalAccessToken }
+
+public protocol ExternalTokenSource: Sendable {
+    func accessToken(for: ExternalAccount, scopes: [String], forceRefresh: Bool) async throws -> ExternalAccessToken
+    func signIn(_: ExternalSignInRequest) async throws -> ExternalSignInResult
+}
+public protocol AccountIdentityFamily { var identityFamily: String { get } }   // optional; hosts check with `as?`
+```
+
+- **`ExternalTokenSource` contract.** `accessToken` is silent: it never shows user interface, and throws
+  `SourceError.authExpired` when the person must act (consent withdrawn, password changed, policy), `SourceError.network`
+  when offline. `forceRefresh` asks the host to skip its own cache (the library sends it once after a 401). `signIn` is the
+  host's own interactive sign-in; it throws `CancellationError` when the person dismisses the dialog (the library adds
+  nothing and shows no error) and may take as long as the person takes. Any other error is mapped to
+  `SourceError.invalidResponse` without the underlying description, because it could carry account data.
+- **`AccountIdentityFamily`** says that kinds with the same family and the same account name are one person's account.
+  `MicrosoftConnectorKind` and `MicrosoftBrokeredConnectorKind` both answer `"microsoft"`. A kind without it is its own
+  family (its kind id). The library does not enforce anything; a host's "already added" check uses it.
+
+`CalendarOAuth`:
+
+- `AccessTokenSupplying` (`accessToken()`, `invalidate()`), adopted by the existing `AccessTokenProvider` (a
+  conformance only) and by the new actor `ExternalAccessTokenProvider(account:scopes:source:now:)`. It serves a cached
+  token until 60 s before `expiresAt`; concurrent callers share one in-flight request; `invalidate()` drops the cache and
+  makes the next request pass `forceRefresh: true` (once). It never loops: a token the host returns already expired is
+  returned as it is, not cached, and the next call asks again.
+
+`MicrosoftCalendar`:
+
+- `MicrosoftBrokeredConnectorKind(tokenSource:transport:now:sleep:pollInterval:)`: id `microsoft-brokered`, display name
+  "Microsoft", all platforms, `.oauth` (no new `AuthorizationMethod` case). The host decides whether to offer it by
+  registering it. `scopes` is `MicrosoftConnectorKind.scopes` without `offline_access`, still read-only (ADR 0017).
+- `authorize`: `signIn` with no account, then `GET /me?$select=mail,userPrincipalName` with the returned token. The
+  email is Graph's (`mail`, else `userPrincipalName`, lowercased), never the host's claim. The connection is
+  `{kindID: "microsoft-brokered", displayName: <email>, config: {email, authMode: "external", externalAccountID}}`;
+  `externalAccountID` is the host's opaque account id. No secret is stored, and nothing is persisted if a step fails.
+- `reauthorize`: `signIn` with the stored account (`externalAccountID`, `email`, `connectionID`) and the stored email
+  as the hint; without a stored id the person picks, so a connection that `makeSource` rejected can be repaired. Another
+  email throws `invalidResponse("signed in as a different account")`; the result keeps its `connectionID` and takes
+  the new `externalAccountID`.
+- `makeSource`: the Graph source of part 12 with an `ExternalAccessTokenProvider`. A connection without
+  `externalAccountID` throws `invalidResponse("the account settings are incomplete; sign in again")`. Errors follow
+  part 12: a 401 invalidates once and retries with `forceRefresh`, a second 401 is `authExpired`; the host's
+  `authExpired` and `network` pass through.
+- Persisted: `Tests/PersistedFormats/1.2.0/` holds a brokered connection (`connections.json`) and its sync state
+  (`sync-state.json`, the same keys as a browser Microsoft connection), loaded by the `PersistedFormatTests`. A library older than 1.2.0 reading such a connection finds no kind and reports an unknown
+  account type.
+
+`CalendarTestSupport`: `FakeExternalTokenSource` scripts `accessToken` and `signIn` answers (each consumed in order, the
+last repeated) and records the calls, for this library's tests and for hosts'.
 
 ## Calendar identity and permissions
 

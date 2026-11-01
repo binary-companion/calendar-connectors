@@ -1,0 +1,12 @@
+[
+  {
+    "config" : {
+      "authMode" : "external",
+      "email" : "dave@contoso.com",
+      "externalAccountID" : "00000000-0000-0000-9a1c-3e5f7b9d1c2e.9188040d-6c67-4c5b-b112-36a304b66dad"
+    },
+    "connectionID" : "7E3A9C21-4B58-4D0F-A6E2-91C8B5D40F37",
+    "displayName" : "dave@contoso.com",
+    "kindID" : "microsoft-brokered"
+  }
+]
