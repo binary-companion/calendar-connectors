@@ -28,7 +28,7 @@ struct GraphAPIClient: Sendable {
     private static let resyncCodes: Set<String> = ["syncStateNotFound", "ResyncRequired", "ErrorInvalidSyncStateData", "syncStateInvalid"]
 
     let transport: any HTTPTransport
-    let tokens: AccessTokenProvider
+    let tokens: any AccessTokenSupplying
     let sleep: Sleeper
 
     /// ASCII-only allow-list: `CharacterSet.alphanumerics` also admits non-ASCII letters, which are not valid in
