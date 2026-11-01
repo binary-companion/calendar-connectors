@@ -17,7 +17,7 @@ public struct MicrosoftOAuthConfig: Sendable {
     }
 }
 
-public struct MicrosoftConnectorKind: ConnectorKind {
+public struct MicrosoftConnectorKind: ConnectorKind, AccountIdentityFamily {
     public static let kindID = "microsoft"
     /// `offline_access` returns the refresh token; `MailboxSettings.Read` is the account's time zone; `.Shared` reads
     /// the shared and delegated calendars the account can open. Read-only on purpose (ADR 0017): the host app only reads
@@ -29,6 +29,8 @@ public struct MicrosoftConnectorKind: ConnectorKind {
     public var displayName: String { "Microsoft" }
     public var supportedPlatforms: Platform { [.macOS, .iOS, .linux, .windows] }
     public var authorization: AuthorizationMethod { .oauth }
+    /// Shared with `MicrosoftBrokeredConnectorKind`: the same mailbox through either kind is one account.
+    public var identityFamily: String { "microsoft" }
 
     private let config: MicrosoftOAuthConfig
     private let oauth: OAuthClient
@@ -116,26 +118,6 @@ public struct MicrosoftConnectorKind: ConnectorKind {
             connectionID: "signin", credentials: InMemoryCredentialStore(),
             refresh: { _ in throw SourceError.authExpired }, now: now, initial: tokens)
         let api = GraphAPIClient(transport: transport, tokens: provider, sleep: sleep)
-        return (try await accountEmail(api), refreshToken)
-    }
-
-    private struct MeDTO: Decodable {
-        var mail: String?
-        var userPrincipalName: String?
-    }
-
-    /// `mail`, else `userPrincipalName`, lowercased: the address the account is known by.
-    private func accountEmail(_ api: GraphAPIClient) async throws -> String {
-        let data: Data
-        do {
-            data = try await api.get(url: api.url(path: "/me", query: [URLQueryItem(name: "$select", value: "mail,userPrincipalName")]))
-        } catch let error as GraphAPIError {
-            throw error.sourceError
-        }
-        let me = try decodeResponse(MeDTO.self, from: data)
-        guard let address = [me.mail, me.userPrincipalName].compactMap({ $0 }).first(where: { !$0.isEmpty }) else {
-            throw SourceError.invalidResponse("the account has no email address")
-        }
-        return address.lowercased()
+        return (try await api.accountEmail(), refreshToken)
     }
 }

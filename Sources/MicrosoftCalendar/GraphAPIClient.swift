@@ -132,3 +132,26 @@ struct GraphAPIClient: Sendable {
         }
     }
 }
+
+extension GraphAPIClient {
+    private struct MeDTO: Decodable {
+        var mail: String?
+        var userPrincipalName: String?
+    }
+
+    /// `mail`, else `userPrincipalName`, lowercased: the address the account is known by. Both Microsoft kinds ask
+    /// Graph for it after a sign-in, so a host is never trusted for the identity.
+    func accountEmail() async throws -> String {
+        let data: Data
+        do {
+            data = try await get(url: url(path: "/me", query: [URLQueryItem(name: "$select", value: "mail,userPrincipalName")]))
+        } catch let error as GraphAPIError {
+            throw error.sourceError
+        }
+        let me = try decodeResponse(MeDTO.self, from: data)
+        guard let address = [me.mail, me.userPrincipalName].compactMap({ $0 }).first(where: { !$0.isEmpty }) else {
+            throw SourceError.invalidResponse("the account has no email address")
+        }
+        return address.lowercased()
+    }
+}
