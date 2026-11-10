@@ -1,0 +1,9047 @@
+{
+  "area" : "zones/all-day",
+  "baseline" : "1.2.0",
+  "cases" : [
+    {
+      "expected" : {
+        "instant" : 1325152800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 12,
+          "year" : 2011
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-startOfDay-0001"
+    },
+    {
+      "expected" : {
+        "instant" : 1325239200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 2011
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-startOfDay-0002"
+    },
+    {
+      "expected" : {
+        "instant" : 1325239200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2011
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-startOfDay-0003"
+    },
+    {
+      "expected" : {
+        "instant" : 1325242800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 2011
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "all-day-startOfDay-0004"
+    },
+    {
+      "expected" : {
+        "instant" : 788781600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 1994
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-startOfDay-0005"
+    },
+    {
+      "expected" : {
+        "instant" : 788868000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 1995
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-startOfDay-0006"
+    },
+    {
+      "expected" : {
+        "instant" : 1709182800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-startOfDay-0007"
+    },
+    {
+      "expected" : {
+        "instant" : 1798693200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-startOfDay-0008"
+    },
+    {
+      "expected" : {
+        "instant" : 1798779600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-startOfDay-0009"
+    },
+    {
+      "expected" : {
+        "instant" : 4107474000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 2,
+          "year" : 2100
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-startOfDay-0010"
+    },
+    {
+      "expected" : {
+        "instant" : 1709132400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-startOfDay-0011"
+    },
+    {
+      "expected" : {
+        "instant" : 1798642800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-startOfDay-0012"
+    },
+    {
+      "expected" : {
+        "instant" : 1798729200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-startOfDay-0013"
+    },
+    {
+      "expected" : {
+        "instant" : 4107423600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 2,
+          "year" : 2100
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-startOfDay-0014"
+    },
+    {
+      "expected" : {
+        "instant" : 1709164800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "UTC"
+      },
+      "name" : "all-day-startOfDay-0015"
+    },
+    {
+      "expected" : {
+        "instant" : 1798675200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "UTC"
+      },
+      "name" : "all-day-startOfDay-0016"
+    },
+    {
+      "expected" : {
+        "instant" : 1798761600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "UTC"
+      },
+      "name" : "all-day-startOfDay-0017"
+    },
+    {
+      "expected" : {
+        "instant" : 4107456000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 2,
+          "year" : 2100
+        },
+        "fn" : "startOfDay",
+        "zone" : "UTC"
+      },
+      "name" : "all-day-startOfDay-0018"
+    },
+    {
+      "expected" : {
+        "instant" : 1709118000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-startOfDay-0019"
+    },
+    {
+      "expected" : {
+        "instant" : 1798628400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-startOfDay-0020"
+    },
+    {
+      "expected" : {
+        "instant" : 1798714800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-startOfDay-0021"
+    },
+    {
+      "expected" : {
+        "instant" : 4107409200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 2,
+          "year" : 2100
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-startOfDay-0022"
+    },
+    {
+      "expected" : {
+        "instant" : 1793502000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 11,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-startOfDay-0023"
+    },
+    {
+      "expected" : {
+        "instant" : 1712408400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 4,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-startOfDay-0024"
+    },
+    {
+      "expected" : {
+        "instant" : 1729983600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 10,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-startOfDay-0025"
+    },
+    {
+      "expected" : {
+        "instant" : 1759588200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 5,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Adelaide"
+      },
+      "name" : "all-day-startOfDay-0026"
+    },
+    {
+      "expected" : {
+        "instant" : 1825570800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 11,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "all-day-startOfDay-0027"
+    },
+    {
+      "expected" : {
+        "instant" : 1774742400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 3,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-startOfDay-0028"
+    },
+    {
+      "expected" : {
+        "instant" : 1711663200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 3,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-startOfDay-0029"
+    },
+    {
+      "expected" : {
+        "instant" : 1824937200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-startOfDay-0030"
+    },
+    {
+      "expected" : {
+        "instant" : 1774738800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 3,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "all-day-startOfDay-0031"
+    },
+    {
+      "expected" : {
+        "instant" : 1793500200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 11,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-startOfDay-0032"
+    },
+    {
+      "expected" : {
+        "instant" : 1761426000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-startOfDay-0033"
+    },
+    {
+      "expected" : {
+        "instant" : 1790424000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-startOfDay-0034"
+    },
+    {
+      "expected" : {
+        "instant" : 1761433200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-startOfDay-0035"
+    },
+    {
+      "expected" : {
+        "instant" : 1743848100000
+      },
+      "input" : {
+        "date" : {
+          "day" : 6,
+          "month" : 4,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Chatham"
+      },
+      "name" : "all-day-startOfDay-0036"
+    },
+    {
+      "expected" : {
+        "instant" : 1712408400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 4,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-startOfDay-0037"
+    },
+    {
+      "expected" : {
+        "instant" : 1743292800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-startOfDay-0038"
+    },
+    {
+      "expected" : {
+        "instant" : 1761433200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-startOfDay-0039"
+    },
+    {
+      "expected" : {
+        "instant" : 1761429600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Paris"
+      },
+      "name" : "all-day-startOfDay-0040"
+    },
+    {
+      "expected" : {
+        "instant" : 1729976400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 10,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-startOfDay-0041"
+    },
+    {
+      "expected" : {
+        "instant" : 1822485600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-startOfDay-0042"
+    },
+    {
+      "expected" : {
+        "instant" : 1762056000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Havana"
+      },
+      "name" : "all-day-startOfDay-0043"
+    },
+    {
+      "expected" : {
+        "instant" : 1793221200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 10,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Africa/Cairo"
+      },
+      "name" : "all-day-startOfDay-0044"
+    },
+    {
+      "expected" : {
+        "instant" : 1761426000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-startOfDay-0045"
+    },
+    {
+      "expected" : {
+        "instant" : 1772960400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 8,
+          "month" : 3,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-startOfDay-0046"
+    },
+    {
+      "expected" : {
+        "instant" : 1789858800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Africa/Casablanca"
+      },
+      "name" : "all-day-startOfDay-0047"
+    },
+    {
+      "expected" : {
+        "instant" : 1806721200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 4,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-startOfDay-0048"
+    },
+    {
+      "expected" : {
+        "instant" : 1775307600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 5,
+          "month" : 4,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-startOfDay-0049"
+    },
+    {
+      "expected" : {
+        "instant" : 1762063200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-startOfDay-0050"
+    },
+    {
+      "expected" : {
+        "instant" : 1728135000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 6,
+          "month" : 10,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-startOfDay-0051"
+    },
+    {
+      "expected" : {
+        "instant" : 1806192000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 3,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-startOfDay-0052"
+    },
+    {
+      "expected" : {
+        "instant" : 1788667200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 6,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-startOfDay-0053"
+    },
+    {
+      "expected" : {
+        "instant" : 1792879200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "all-day-startOfDay-0054"
+    },
+    {
+      "expected" : {
+        "instant" : 1761771600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 30,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Africa/Cairo"
+      },
+      "name" : "all-day-startOfDay-0055"
+    },
+    {
+      "expected" : {
+        "instant" : 1730602800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-startOfDay-0056"
+    },
+    {
+      "expected" : {
+        "instant" : 1741500000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Chicago"
+      },
+      "name" : "all-day-startOfDay-0057"
+    },
+    {
+      "expected" : {
+        "instant" : 1730617200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "all-day-startOfDay-0058"
+    },
+    {
+      "expected" : {
+        "instant" : 1745532000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 4,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Africa/Cairo"
+      },
+      "name" : "all-day-startOfDay-0059"
+    },
+    {
+      "expected" : {
+        "instant" : 1761339600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Beirut"
+      },
+      "name" : "all-day-startOfDay-0060"
+    },
+    {
+      "expected" : {
+        "instant" : 1730620800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-startOfDay-0061"
+    },
+    {
+      "expected" : {
+        "instant" : 1743850800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 6,
+          "month" : 4,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-startOfDay-0062"
+    },
+    {
+      "expected" : {
+        "instant" : 1743285600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Beirut"
+      },
+      "name" : "all-day-startOfDay-0063"
+    },
+    {
+      "expected" : {
+        "instant" : 1741496400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Havana"
+      },
+      "name" : "all-day-startOfDay-0064"
+    },
+    {
+      "expected" : {
+        "instant" : 1711843200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 3,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-startOfDay-0065"
+    },
+    {
+      "expected" : {
+        "instant" : 1759582800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 5,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Norfolk"
+      },
+      "name" : "all-day-startOfDay-0066"
+    },
+    {
+      "expected" : {
+        "instant" : 1743296400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Atlantic/Azores"
+      },
+      "name" : "all-day-startOfDay-0067"
+    },
+    {
+      "expected" : {
+        "instant" : 1825560000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 11,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-startOfDay-0068"
+    },
+    {
+      "expected" : {
+        "instant" : 1824930000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-startOfDay-0069"
+    },
+    {
+      "expected" : {
+        "instant" : 1762050600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-startOfDay-0070"
+    },
+    {
+      "expected" : {
+        "instant" : 1710043200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 10,
+          "month" : 3,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-startOfDay-0071"
+    },
+    {
+      "expected" : {
+        "instant" : 1714082400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 4,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Africa/Cairo"
+      },
+      "name" : "all-day-startOfDay-0072"
+    },
+    {
+      "expected" : {
+        "instant" : 1824933600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-startOfDay-0073"
+    },
+    {
+      "expected" : {
+        "instant" : 1761429600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-startOfDay-0074"
+    },
+    {
+      "expected" : {
+        "instant" : 1805007600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 14,
+          "month" : 3,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-startOfDay-0075"
+    },
+    {
+      "expected" : {
+        "instant" : 1791032400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 4,
+          "month" : 10,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Norfolk"
+      },
+      "name" : "all-day-startOfDay-0076"
+    },
+    {
+      "expected" : {
+        "instant" : 1824933600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Paris"
+      },
+      "name" : "all-day-startOfDay-0077"
+    },
+    {
+      "expected" : {
+        "instant" : 1806184800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 3,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Beirut"
+      },
+      "name" : "all-day-startOfDay-0078"
+    },
+    {
+      "expected" : {
+        "instant" : 1774562400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 3,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-startOfDay-0079"
+    },
+    {
+      "expected" : {
+        "instant" : 1792882800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Dublin"
+      },
+      "name" : "all-day-startOfDay-0080"
+    },
+    {
+      "expected" : {
+        "instant" : 1792879200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Paris"
+      },
+      "name" : "all-day-startOfDay-0081"
+    },
+    {
+      "expected" : {
+        "instant" : 1711843200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 3,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-startOfDay-0082"
+    },
+    {
+      "expected" : {
+        "instant" : 1762059600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Chicago"
+      },
+      "name" : "all-day-startOfDay-0083"
+    },
+    {
+      "expected" : {
+        "instant" : 1741491000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-startOfDay-0084"
+    },
+    {
+      "expected" : {
+        "instant" : 1727522100000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 9,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Chatham"
+      },
+      "name" : "all-day-startOfDay-0085"
+    },
+    {
+      "expected" : {
+        "instant" : 1792882800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-startOfDay-0086"
+    },
+    {
+      "expected" : {
+        "instant" : 1727524800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 9,
+          "year" : 2024
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-startOfDay-0087"
+    },
+    {
+      "expected" : {
+        "instant" : 1762052400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-startOfDay-0088"
+    },
+    {
+      "expected" : {
+        "instant" : 1806747300000
+      },
+      "input" : {
+        "date" : {
+          "day" : 4,
+          "month" : 4,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Chatham"
+      },
+      "name" : "all-day-startOfDay-0089"
+    },
+    {
+      "expected" : {
+        "instant" : 1771110000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 15,
+          "month" : 2,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Africa/Casablanca"
+      },
+      "name" : "all-day-startOfDay-0090"
+    },
+    {
+      "expected" : {
+        "instant" : 1806750000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 4,
+          "month" : 4,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-startOfDay-0091"
+    },
+    {
+      "expected" : {
+        "instant" : 1825567200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 11,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-startOfDay-0092"
+    },
+    {
+      "expected" : {
+        "instant" : 2024157600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 22,
+          "month" : 2,
+          "year" : 2034
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Dhaka"
+      },
+      "name" : "all-day-startOfDay-0093"
+    },
+    {
+      "expected" : {
+        "instant" : 1494700200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 14,
+          "month" : 5,
+          "year" : 2017
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Kolkata"
+      },
+      "name" : "all-day-startOfDay-0094"
+    },
+    {
+      "expected" : {
+        "instant" : 1306472400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 5,
+          "year" : 2011
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Mexico_City"
+      },
+      "name" : "all-day-startOfDay-0095"
+    },
+    {
+      "expected" : {
+        "instant" : 1330874100000
+      },
+      "input" : {
+        "date" : {
+          "day" : 5,
+          "month" : 3,
+          "year" : 2012
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "all-day-startOfDay-0096"
+    },
+    {
+      "expected" : {
+        "instant" : 2014862400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 6,
+          "month" : 11,
+          "year" : 2033
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Havana"
+      },
+      "name" : "all-day-startOfDay-0097"
+    },
+    {
+      "expected" : {
+        "instant" : 1071307800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 12,
+          "year" : 2003
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Marquesas"
+      },
+      "name" : "all-day-startOfDay-0098"
+    },
+    {
+      "expected" : {
+        "instant" : 1756195200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 8,
+          "year" : 2025
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-startOfDay-0099"
+    },
+    {
+      "expected" : {
+        "instant" : 1794394800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 12,
+          "month" : 11,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-startOfDay-0100"
+    },
+    {
+      "expected" : {
+        "instant" : 1316206800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 17,
+          "month" : 9,
+          "year" : 2011
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Beirut"
+      },
+      "name" : "all-day-startOfDay-0101"
+    },
+    {
+      "expected" : {
+        "instant" : 1474298100000
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 9,
+          "year" : 2016
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "all-day-startOfDay-0102"
+    },
+    {
+      "expected" : {
+        "instant" : 1354896000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 8,
+          "month" : 12,
+          "year" : 2012
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Perth"
+      },
+      "name" : "all-day-startOfDay-0103"
+    },
+    {
+      "expected" : {
+        "instant" : 1293573600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 12,
+          "year" : 2010
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-startOfDay-0104"
+    },
+    {
+      "expected" : {
+        "instant" : 1841439600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 9,
+          "month" : 5,
+          "year" : 2028
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Dublin"
+      },
+      "name" : "all-day-startOfDay-0105"
+    },
+    {
+      "expected" : {
+        "instant" : 969321600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 19,
+          "month" : 9,
+          "year" : 2000
+        },
+        "fn" : "startOfDay",
+        "zone" : "GMT"
+      },
+      "name" : "all-day-startOfDay-0106"
+    },
+    {
+      "expected" : {
+        "instant" : 1484542800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 16,
+          "month" : 1,
+          "year" : 2017
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-startOfDay-0107"
+    },
+    {
+      "expected" : {
+        "instant" : 2054188800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 4,
+          "month" : 2,
+          "year" : 2035
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "all-day-startOfDay-0108"
+    },
+    {
+      "expected" : {
+        "instant" : 1438518600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 8,
+          "year" : 2015
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Norfolk"
+      },
+      "name" : "all-day-startOfDay-0109"
+    },
+    {
+      "expected" : {
+        "instant" : 1558684800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 24,
+          "month" : 5,
+          "year" : 2019
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-startOfDay-0110"
+    },
+    {
+      "expected" : {
+        "instant" : 1072022400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 22,
+          "month" : 12,
+          "year" : 2003
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Perth"
+      },
+      "name" : "all-day-startOfDay-0111"
+    },
+    {
+      "expected" : {
+        "instant" : 1973286000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 7,
+          "year" : 2032
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-startOfDay-0112"
+    },
+    {
+      "expected" : {
+        "instant" : 1681167600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 11,
+          "month" : 4,
+          "year" : 2023
+        },
+        "fn" : "startOfDay",
+        "zone" : "Africa/Lagos"
+      },
+      "name" : "all-day-startOfDay-0113"
+    },
+    {
+      "expected" : {
+        "instant" : 1042340400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 12,
+          "month" : 1,
+          "year" : 2003
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-startOfDay-0114"
+    },
+    {
+      "expected" : {
+        "instant" : 1041586200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 1,
+          "year" : 2003
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Marquesas"
+      },
+      "name" : "all-day-startOfDay-0115"
+    },
+    {
+      "expected" : {
+        "instant" : 2047183200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 15,
+          "month" : 11,
+          "year" : 2034
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Chicago"
+      },
+      "name" : "all-day-startOfDay-0116"
+    },
+    {
+      "expected" : {
+        "instant" : 1412204400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 2,
+          "month" : 10,
+          "year" : 2014
+        },
+        "fn" : "startOfDay",
+        "zone" : "Africa/Lagos"
+      },
+      "name" : "all-day-startOfDay-0117"
+    },
+    {
+      "expected" : {
+        "instant" : 1702332000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 12,
+          "month" : 12,
+          "year" : 2023
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Beirut"
+      },
+      "name" : "all-day-startOfDay-0118"
+    },
+    {
+      "expected" : {
+        "instant" : 2045358000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2034
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-startOfDay-0119"
+    },
+    {
+      "expected" : {
+        "instant" : 1330347600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 2,
+          "year" : 2012
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-startOfDay-0120"
+    },
+    {
+      "expected" : {
+        "instant" : 1593838800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 4,
+          "month" : 7,
+          "year" : 2020
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Bogota"
+      },
+      "name" : "all-day-startOfDay-0121"
+    },
+    {
+      "expected" : {
+        "instant" : 957366000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 4,
+          "month" : 5,
+          "year" : 2000
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-startOfDay-0122"
+    },
+    {
+      "expected" : {
+        "instant" : 1476565200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 16,
+          "month" : 10,
+          "year" : 2016
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-startOfDay-0123"
+    },
+    {
+      "expected" : {
+        "instant" : 1532995200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 7,
+          "year" : 2018
+        },
+        "fn" : "startOfDay",
+        "zone" : "UTC"
+      },
+      "name" : "all-day-startOfDay-0124"
+    },
+    {
+      "expected" : {
+        "instant" : 1371934800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 23,
+          "month" : 6,
+          "year" : 2013
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Istanbul"
+      },
+      "name" : "all-day-startOfDay-0125"
+    },
+    {
+      "expected" : {
+        "instant" : 1826866800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 22,
+          "month" : 11,
+          "year" : 2027
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Phoenix"
+      },
+      "name" : "all-day-startOfDay-0126"
+    },
+    {
+      "expected" : {
+        "instant" : 1447372800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 11,
+          "year" : 2015
+        },
+        "fn" : "startOfDay",
+        "zone" : "Atlantic/Reykjavik"
+      },
+      "name" : "all-day-startOfDay-0127"
+    },
+    {
+      "expected" : {
+        "instant" : 1029510000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 17,
+          "month" : 8,
+          "year" : 2002
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Seoul"
+      },
+      "name" : "all-day-startOfDay-0128"
+    },
+    {
+      "expected" : {
+        "instant" : 951793200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2000
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-startOfDay-0129"
+    },
+    {
+      "expected" : {
+        "instant" : 1921006800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 16,
+          "month" : 11,
+          "year" : 2030
+        },
+        "fn" : "startOfDay",
+        "zone" : "Africa/Nairobi"
+      },
+      "name" : "all-day-startOfDay-0130"
+    },
+    {
+      "expected" : {
+        "instant" : 1501773300000
+      },
+      "input" : {
+        "date" : {
+          "day" : 4,
+          "month" : 8,
+          "year" : 2017
+        },
+        "fn" : "startOfDay",
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "all-day-startOfDay-0131"
+    },
+    {
+      "expected" : {
+        "instant" : 1656403200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 6,
+          "year" : 2022
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-startOfDay-0132"
+    },
+    {
+      "expected" : {
+        "instant" : 2015452800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 11,
+          "year" : 2033
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/Dublin"
+      },
+      "name" : "all-day-startOfDay-0133"
+    },
+    {
+      "expected" : {
+        "instant" : 1042383600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 1,
+          "year" : 2003
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-startOfDay-0134"
+    },
+    {
+      "expected" : {
+        "instant" : 1884276000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 17,
+          "month" : 9,
+          "year" : 2029
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Dhaka"
+      },
+      "name" : "all-day-startOfDay-0135"
+    },
+    {
+      "expected" : {
+        "instant" : 1190300400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 21,
+          "month" : 9,
+          "year" : 2007
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-startOfDay-0136"
+    },
+    {
+      "expected" : {
+        "instant" : 1087621200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 19,
+          "month" : 6,
+          "year" : 2004
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Bogota"
+      },
+      "name" : "all-day-startOfDay-0137"
+    },
+    {
+      "expected" : {
+        "instant" : 1079222400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 14,
+          "month" : 3,
+          "year" : 2004
+        },
+        "fn" : "startOfDay",
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-startOfDay-0138"
+    },
+    {
+      "expected" : {
+        "instant" : 1879180200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 7,
+          "year" : 2029
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Kolkata"
+      },
+      "name" : "all-day-startOfDay-0139"
+    },
+    {
+      "expected" : {
+        "instant" : 1788274800000
+      },
+      "input" : {
+        "date" : {
+          "day" : 2,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Pyongyang"
+      },
+      "name" : "all-day-startOfDay-0140"
+    },
+    {
+      "expected" : {
+        "instant" : 1417791600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 6,
+          "month" : 12,
+          "year" : 2014
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-startOfDay-0141"
+    },
+    {
+      "expected" : {
+        "instant" : 1261587600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 24,
+          "month" : 12,
+          "year" : 2009
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Dhaka"
+      },
+      "name" : "all-day-startOfDay-0142"
+    },
+    {
+      "expected" : {
+        "instant" : 1248174000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 21,
+          "month" : 7,
+          "year" : 2009
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "all-day-startOfDay-0143"
+    },
+    {
+      "expected" : {
+        "instant" : 1384140600000
+      },
+      "input" : {
+        "date" : {
+          "day" : 11,
+          "month" : 11,
+          "year" : 2013
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-startOfDay-0144"
+    },
+    {
+      "expected" : {
+        "instant" : 1273545000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 11,
+          "month" : 5,
+          "year" : 2010
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-startOfDay-0145"
+    },
+    {
+      "expected" : {
+        "instant" : 988538400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 4,
+          "year" : 2001
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Honolulu"
+      },
+      "name" : "all-day-startOfDay-0146"
+    },
+    {
+      "expected" : {
+        "instant" : 1169197200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 19,
+          "month" : 1,
+          "year" : 2007
+        },
+        "fn" : "startOfDay",
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-startOfDay-0147"
+    },
+    {
+      "expected" : {
+        "instant" : 1895587200000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 1,
+          "year" : 2030
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Shanghai"
+      },
+      "name" : "all-day-startOfDay-0148"
+    },
+    {
+      "expected" : {
+        "instant" : 2016612000000
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 11,
+          "year" : 2033
+        },
+        "fn" : "startOfDay",
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-startOfDay-0149"
+    },
+    {
+      "expected" : {
+        "instant" : 2062094400000
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 5,
+          "year" : 2035
+        },
+        "fn" : "startOfDay",
+        "zone" : "Asia/Dubai"
+      },
+      "name" : "all-day-startOfDay-0150"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 12,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1325239199000,
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-dateOf-0151"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1325239200000,
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-dateOf-0152"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 12,
+          "year" : 1994
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 788781599000,
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-dateOf-0153"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 1994
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 788868000000,
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-dateOf-0154"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 1969
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 0,
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-dateOf-0155"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1325239199000,
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-dateOf-0156"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1325239200000,
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-dateOf-0157"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 12,
+          "year" : 1994
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 788781599000,
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-dateOf-0158"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 1995
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 788868000000,
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-dateOf-0159"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 1969
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 0,
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-dateOf-0160"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1325239199000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-dateOf-0161"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1325239200000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-dateOf-0162"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 1994
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 788781599000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-dateOf-0163"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 1994
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 788868000000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-dateOf-0164"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 1970
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 0,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-dateOf-0165"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1325239199000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dateOf-0166"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1325239200000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dateOf-0167"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 1994
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 788781599000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dateOf-0168"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 1994
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 788868000000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dateOf-0169"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 1970
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 0,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dateOf-0170"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1793616543000,
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-dateOf-0171"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 8,
+          "month" : 11,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1825646350000,
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-dateOf-0172"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 11,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1793522442000,
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-dateOf-0173"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 5,
+          "month" : 4,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1775351528000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dateOf-0174"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 26,
+          "month" : 9,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1821896994000,
+        "zone" : "Pacific/Chatham"
+      },
+      "name" : "all-day-dateOf-0175"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 28,
+          "month" : 10,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1730105074000,
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-dateOf-0176"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1792878180000,
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-dateOf-0177"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1741555868000,
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-dateOf-0178"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 4,
+          "month" : 4,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1775331444000,
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-dateOf-0179"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 28,
+          "month" : 3,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1806229394000,
+        "zone" : "Europe/Paris"
+      },
+      "name" : "all-day-dateOf-0180"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 10,
+          "month" : 3,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1710054706000,
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-dateOf-0181"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1822527707000,
+        "zone" : "Pacific/Norfolk"
+      },
+      "name" : "all-day-dateOf-0182"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 3,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1711857088000,
+        "zone" : "Atlantic/Azores"
+      },
+      "name" : "all-day-dateOf-0183"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 22,
+          "month" : 3,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1711160270000,
+        "zone" : "America/Asuncion"
+      },
+      "name" : "all-day-dateOf-0184"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1822542510000,
+        "zone" : "Australia/Adelaide"
+      },
+      "name" : "all-day-dateOf-0185"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 7,
+          "month" : 11,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1825635063000,
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-dateOf-0186"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1824962198000,
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-dateOf-0187"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 10,
+          "month" : 3,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1710120231000,
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-dateOf-0188"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 8,
+          "month" : 3,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1741487773000,
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-dateOf-0189"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1761464264000,
+        "zone" : "Europe/Dublin"
+      },
+      "name" : "all-day-dateOf-0190"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1825005599000,
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-dateOf-0191"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1730608797000,
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-dateOf-0192"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1792955180000,
+        "zone" : "Atlantic/Azores"
+      },
+      "name" : "all-day-dateOf-0193"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 4,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1711932535000,
+        "zone" : "Europe/Dublin"
+      },
+      "name" : "all-day-dateOf-0194"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 27,
+          "month" : 10,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1729992319000,
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-dateOf-0195"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 9,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1759089816000,
+        "zone" : "Pacific/Chatham"
+      },
+      "name" : "all-day-dateOf-0196"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 15,
+          "month" : 3,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1805089991000,
+        "zone" : "America/Chicago"
+      },
+      "name" : "all-day-dateOf-0197"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 3,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1774762208000,
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-dateOf-0198"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 14,
+          "month" : 3,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1805090477000,
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-dateOf-0199"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1743360831000,
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-dateOf-0200"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1729953236000,
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "all-day-dateOf-0201"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1741573613000,
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "all-day-dateOf-0202"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1711811383000,
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-dateOf-0203"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 5,
+          "month" : 10,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1759656708000,
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-dateOf-0204"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 6,
+          "month" : 10,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1728161454000,
+        "zone" : "Australia/Adelaide"
+      },
+      "name" : "all-day-dateOf-0205"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 8,
+          "month" : 4,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1712502111000,
+        "zone" : "Pacific/Norfolk"
+      },
+      "name" : "all-day-dateOf-0206"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 4,
+          "month" : 10,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1822633267000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dateOf-0207"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 6,
+          "month" : 4,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1743874988000,
+        "zone" : "Pacific/Norfolk"
+      },
+      "name" : "all-day-dateOf-0208"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1773039060000,
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-dateOf-0209"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1773045253000,
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "all-day-dateOf-0210"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 24,
+          "month" : 6,
+          "year" : 2023
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1687596066000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-dateOf-0211"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 22,
+          "month" : 12,
+          "year" : 2021
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1640201624000,
+        "zone" : "America/Asuncion"
+      },
+      "name" : "all-day-dateOf-0212"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 17,
+          "month" : 2,
+          "year" : 2003
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1045467181000,
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-dateOf-0213"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 17,
+          "month" : 7,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1721230224000,
+        "zone" : "Pacific/Marquesas"
+      },
+      "name" : "all-day-dateOf-0214"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 20,
+          "month" : 9,
+          "year" : 2015
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1442691492000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dateOf-0215"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 11,
+          "month" : 3,
+          "year" : 2013
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1363042094000,
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-dateOf-0216"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 24,
+          "month" : 7,
+          "year" : 2014
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1406180679000,
+        "zone" : "Australia/Darwin"
+      },
+      "name" : "all-day-dateOf-0217"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 19,
+          "month" : 6,
+          "year" : 2029
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1876587925000,
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-dateOf-0218"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 23,
+          "month" : 6,
+          "year" : 2029
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1876896927000,
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-dateOf-0219"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 4,
+          "month" : 11,
+          "year" : 2010
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1288828916000,
+        "zone" : "Asia/Dhaka"
+      },
+      "name" : "all-day-dateOf-0220"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 7,
+          "month" : 7,
+          "year" : 2012
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1341584786000,
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-dateOf-0221"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 8,
+          "year" : 2002
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1030645045000,
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-dateOf-0222"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2010
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1269868063000,
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-dateOf-0223"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 9,
+          "month" : 5,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1746792090000,
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-dateOf-0224"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 6,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1306979828000,
+        "zone" : "Europe/Istanbul"
+      },
+      "name" : "all-day-dateOf-0225"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 21,
+          "month" : 9,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1916190861000,
+        "zone" : "Pacific/Chatham"
+      },
+      "name" : "all-day-dateOf-0226"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 3,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1301548803000,
+        "zone" : "Asia/Dhaka"
+      },
+      "name" : "all-day-dateOf-0227"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 10,
+          "month" : 12,
+          "year" : 2012
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1355133908000,
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-dateOf-0228"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2019
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1572747178000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-dateOf-0229"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 14,
+          "month" : 12,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1923470960000,
+        "zone" : "America/Bogota"
+      },
+      "name" : "all-day-dateOf-0230"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 17,
+          "month" : 4,
+          "year" : 2020
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1587074443000,
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-dateOf-0231"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 12,
+          "month" : 10,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1507767666000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-dateOf-0232"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 20,
+          "month" : 7,
+          "year" : 2020
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1595199959000,
+        "zone" : "Europe/Paris"
+      },
+      "name" : "all-day-dateOf-0233"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 18,
+          "month" : 2,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1297973967000,
+        "zone" : "Asia/Bangkok"
+      },
+      "name" : "all-day-dateOf-0234"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 12,
+          "year" : 2031
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1956306435000,
+        "zone" : "Australia/Perth"
+      },
+      "name" : "all-day-dateOf-0235"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 16,
+          "month" : 11,
+          "year" : 2010
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1289923518000,
+        "zone" : "Asia/Kolkata"
+      },
+      "name" : "all-day-dateOf-0236"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 14,
+          "month" : 11,
+          "year" : 2004
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1100394587000,
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-dateOf-0237"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 13,
+          "month" : 4,
+          "year" : 2001
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 987163894000,
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "all-day-dateOf-0238"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 10,
+          "year" : 2016
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1475386918000,
+        "zone" : "Africa/Johannesburg"
+      },
+      "name" : "all-day-dateOf-0239"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 10,
+          "month" : 4,
+          "year" : 2012
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1334065643000,
+        "zone" : "Africa/Johannesburg"
+      },
+      "name" : "all-day-dateOf-0240"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 12,
+          "month" : 3,
+          "year" : 2013
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1363081430000,
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "all-day-dateOf-0241"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 5,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1495718962000,
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "all-day-dateOf-0242"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 27,
+          "month" : 7,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1816669860000,
+        "zone" : "Africa/Casablanca"
+      },
+      "name" : "all-day-dateOf-0243"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 1,
+          "year" : 2035
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 2053321454000,
+        "zone" : "America/Havana"
+      },
+      "name" : "all-day-dateOf-0244"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 14,
+          "month" : 1,
+          "year" : 2002
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1010998417000,
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-dateOf-0245"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 19,
+          "month" : 8,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1913350148000,
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-dateOf-0246"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 9,
+          "year" : 2018
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1535973806000,
+        "zone" : "Pacific/Honolulu"
+      },
+      "name" : "all-day-dateOf-0247"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 15,
+          "month" : 6,
+          "year" : 2001
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 992604854000,
+        "zone" : "Europe/Moscow"
+      },
+      "name" : "all-day-dateOf-0248"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 6,
+          "month" : 9,
+          "year" : 2004
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1094502795000,
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-dateOf-0249"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 27,
+          "month" : 12,
+          "year" : 2016
+        }
+      },
+      "input" : {
+        "fn" : "dateOf",
+        "instant" : 1482914747000,
+        "zone" : "Pacific/Midway"
+      },
+      "name" : "all-day-dateOf-0250"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1710216000000,
+          "start" : 1709960400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 12,
+          "month" : 3,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-canonical-0251"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1730782800000,
+          "start" : 1730520000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 5,
+          "month" : 11,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-canonical-0252"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1735686000000,
+          "start" : 1735599600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "all-day-canonical-0253"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1325325600000,
+          "start" : 1325152800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2012
+        },
+        "first" : {
+          "day" : 29,
+          "month" : 12,
+          "year" : 2011
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-canonical-0254"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1793592000000,
+          "start" : 1793502000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 1,
+          "month" : 11,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-canonical-0255"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1712671200000,
+          "start" : 1712408400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 10,
+          "month" : 4,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 7,
+          "month" : 4,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-canonical-0256"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1730419200000,
+          "start" : 1729983600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 11,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 27,
+          "month" : 10,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-canonical-0257"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1759930200000,
+          "start" : 1759588200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 9,
+          "month" : 10,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 5,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Adelaide"
+      },
+      "name" : "all-day-canonical-0258"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1825660800000,
+          "start" : 1825570800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 8,
+          "month" : 11,
+          "year" : 2027
+        },
+        "first" : {
+          "day" : 7,
+          "month" : 11,
+          "year" : 2027
+        },
+        "fn" : "canonical",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "all-day-canonical-0259"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1775167200000,
+          "start" : 1774742400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 3,
+          "month" : 4,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 29,
+          "month" : 3,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-canonical-0260"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1711746000000,
+          "start" : 1711663200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 29,
+          "month" : 3,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-canonical-0261"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1825200000000,
+          "start" : 1824937200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2027
+        },
+        "first" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2027
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-canonical-0262"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1774994400000,
+          "start" : 1774738800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 4,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 29,
+          "month" : 3,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "all-day-canonical-0263"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1793676600000,
+          "start" : 1793500200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 1,
+          "month" : 11,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-canonical-0264"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1761602400000,
+          "start" : 1761426000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 28,
+          "month" : 10,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-canonical-0265"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1790766000000,
+          "start" : 1790424000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 10,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 27,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-canonical-0266"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1761868800000,
+          "start" : 1761433200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-canonical-0267"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1744197300000,
+          "start" : 1743848100000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 10,
+          "month" : 4,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 6,
+          "month" : 4,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Chatham"
+      },
+      "name" : "all-day-canonical-0268"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1712669400000,
+          "start" : 1712408400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 10,
+          "month" : 4,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 7,
+          "month" : 4,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-canonical-0269"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1743631200000,
+          "start" : 1743292800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 3,
+          "month" : 4,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-canonical-0270"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1761868800000,
+          "start" : 1761433200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-canonical-0271"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1761778800000,
+          "start" : 1761429600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 30,
+          "month" : 10,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Paris"
+      },
+      "name" : "all-day-canonical-0272"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1730239200000,
+          "start" : 1729976400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 30,
+          "month" : 10,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 27,
+          "month" : 10,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-canonical-0273"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1822914000000,
+          "start" : 1822485600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 8,
+          "month" : 10,
+          "year" : 2027
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 2027
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-canonical-0274"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1762405200000,
+          "start" : 1762056000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 11,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "America/Havana"
+      },
+      "name" : "all-day-canonical-0275"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1793397600000,
+          "start" : 1793221200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 31,
+          "month" : 10,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 29,
+          "month" : 10,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "Africa/Cairo"
+      },
+      "name" : "all-day-canonical-0276"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1761688800000,
+          "start" : 1761426000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 29,
+          "month" : 10,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-canonical-0277"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1773216000000,
+          "start" : 1772960400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 3,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 8,
+          "month" : 3,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "America/Anchorage"
+      },
+      "name" : "all-day-canonical-0278"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1790035200000,
+          "start" : 1789858800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 22,
+          "month" : 9,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 20,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "Africa/Casablanca"
+      },
+      "name" : "all-day-canonical-0279"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1807156800000,
+          "start" : 1806721200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 8,
+          "month" : 4,
+          "year" : 2027
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 4,
+          "year" : 2027
+        },
+        "fn" : "canonical",
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-canonical-0280"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1775397600000,
+          "start" : 1775307600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 4,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 5,
+          "month" : 4,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-canonical-0281"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1762412400000,
+          "start" : 1762063200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 11,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-canonical-0282"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1728306000000,
+          "start" : 1728135000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 8,
+          "month" : 10,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 6,
+          "month" : 10,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-canonical-0283"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1806357600000,
+          "start" : 1806192000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2027
+        },
+        "first" : {
+          "day" : 28,
+          "month" : 3,
+          "year" : 2027
+        },
+        "fn" : "canonical",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-canonical-0284"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1788750000000,
+          "start" : 1788667200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 9,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 6,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-canonical-0285"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1793314800000,
+          "start" : 1792879200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 30,
+          "month" : 10,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "all-day-canonical-0286"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1762120800000,
+          "start" : 1761771600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 30,
+          "month" : 10,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "Africa/Cairo"
+      },
+      "name" : "all-day-canonical-0287"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1730865600000,
+          "start" : 1730602800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 11,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-canonical-0288"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1741669200000,
+          "start" : 1741500000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 3,
+          "year" : 2025
+        },
+        "first" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2025
+        },
+        "fn" : "canonical",
+        "zone" : "America/Chicago"
+      },
+      "name" : "all-day-canonical-0289"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1625223600000,
+          "start" : 1624446000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 3,
+          "month" : 7,
+          "year" : 2021
+        },
+        "first" : {
+          "day" : 24,
+          "month" : 6,
+          "year" : 2021
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "all-day-canonical-0290"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1694685600000,
+          "start" : 1694253600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 14,
+          "month" : 9,
+          "year" : 2023
+        },
+        "first" : {
+          "day" : 9,
+          "month" : 9,
+          "year" : 2023
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Honolulu"
+      },
+      "name" : "all-day-canonical-0291"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1627678800000,
+          "start" : 1627419600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 31,
+          "month" : 7,
+          "year" : 2021
+        },
+        "first" : {
+          "day" : 28,
+          "month" : 7,
+          "year" : 2021
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Beirut"
+      },
+      "name" : "all-day-canonical-0292"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1362394800000,
+          "start" : 1361703600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 5,
+          "month" : 3,
+          "year" : 2013
+        },
+        "first" : {
+          "day" : 25,
+          "month" : 2,
+          "year" : 2013
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "all-day-canonical-0293"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1648760400000,
+          "start" : 1648242000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 4,
+          "year" : 2022
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 3,
+          "year" : 2022
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-canonical-0294"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1694066400000,
+          "start" : 1693375200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 9,
+          "year" : 2023
+        },
+        "first" : {
+          "day" : 30,
+          "month" : 8,
+          "year" : 2023
+        },
+        "fn" : "canonical",
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-canonical-0295"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1268305200000,
+          "start" : 1267614000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 3,
+          "year" : 2010
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 3,
+          "year" : 2010
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Midway"
+      },
+      "name" : "all-day-canonical-0296"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1490245200000,
+          "start" : 1489467600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 23,
+          "month" : 3,
+          "year" : 2017
+        },
+        "first" : {
+          "day" : 14,
+          "month" : 3,
+          "year" : 2017
+        },
+        "fn" : "canonical",
+        "zone" : "America/Bogota"
+      },
+      "name" : "all-day-canonical-0297"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1548688500000,
+          "start" : 1548342900000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 29,
+          "month" : 1,
+          "year" : 2019
+        },
+        "first" : {
+          "day" : 25,
+          "month" : 1,
+          "year" : 2019
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "all-day-canonical-0298"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1340575200000,
+          "start" : 1340143200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 25,
+          "month" : 6,
+          "year" : 2012
+        },
+        "first" : {
+          "day" : 20,
+          "month" : 6,
+          "year" : 2012
+        },
+        "fn" : "canonical",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-canonical-0299"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1379773800000,
+          "start" : 1379169000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 22,
+          "month" : 9,
+          "year" : 2013
+        },
+        "first" : {
+          "day" : 15,
+          "month" : 9,
+          "year" : 2013
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Darwin"
+      },
+      "name" : "all-day-canonical-0300"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 2073438000000,
+          "start" : 2073265200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 15,
+          "month" : 9,
+          "year" : 2035
+        },
+        "first" : {
+          "day" : 13,
+          "month" : 9,
+          "year" : 2035
+        },
+        "fn" : "canonical",
+        "zone" : "America/Sao_Paulo"
+      },
+      "name" : "all-day-canonical-0301"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1542478500000,
+          "start" : 1542392100000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 18,
+          "month" : 11,
+          "year" : 2018
+        },
+        "first" : {
+          "day" : 17,
+          "month" : 11,
+          "year" : 2018
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-canonical-0302"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1819058400000,
+          "start" : 1818367200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 24,
+          "month" : 8,
+          "year" : 2027
+        },
+        "first" : {
+          "day" : 16,
+          "month" : 8,
+          "year" : 2027
+        },
+        "fn" : "canonical",
+        "zone" : "Africa/Johannesburg"
+      },
+      "name" : "all-day-canonical-0303"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1263411000000,
+          "start" : 1262719800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 14,
+          "month" : 1,
+          "year" : 2010
+        },
+        "first" : {
+          "day" : 6,
+          "month" : 1,
+          "year" : 2010
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Kabul"
+      },
+      "name" : "all-day-canonical-0304"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1910296800000,
+          "start" : 1910037600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 15,
+          "month" : 7,
+          "year" : 2030
+        },
+        "first" : {
+          "day" : 12,
+          "month" : 7,
+          "year" : 2030
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Paris"
+      },
+      "name" : "all-day-canonical-0305"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1370754000000,
+          "start" : 1370149200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 9,
+          "month" : 6,
+          "year" : 2013
+        },
+        "first" : {
+          "day" : 2,
+          "month" : 6,
+          "year" : 2013
+        },
+        "fn" : "canonical",
+        "zone" : "America/Bogota"
+      },
+      "name" : "all-day-canonical-0306"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1396843200000,
+          "start" : 1396756800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 4,
+          "year" : 2014
+        },
+        "first" : {
+          "day" : 6,
+          "month" : 4,
+          "year" : 2014
+        },
+        "fn" : "canonical",
+        "zone" : "America/Havana"
+      },
+      "name" : "all-day-canonical-0307"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1961276400000,
+          "start" : 1960844400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 25,
+          "month" : 2,
+          "year" : 2032
+        },
+        "first" : {
+          "day" : 20,
+          "month" : 2,
+          "year" : 2032
+        },
+        "fn" : "canonical",
+        "zone" : "Africa/Lagos"
+      },
+      "name" : "all-day-canonical-0308"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1638421200000,
+          "start" : 1638248400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 2,
+          "month" : 12,
+          "year" : 2021
+        },
+        "first" : {
+          "day" : 30,
+          "month" : 11,
+          "year" : 2021
+        },
+        "fn" : "canonical",
+        "zone" : "America/Bogota"
+      },
+      "name" : "all-day-canonical-0309"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1404000000000,
+          "start" : 1403395200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 29,
+          "month" : 6,
+          "year" : 2014
+        },
+        "first" : {
+          "day" : 22,
+          "month" : 6,
+          "year" : 2014
+        },
+        "fn" : "canonical",
+        "zone" : "Atlantic/Reykjavik"
+      },
+      "name" : "all-day-canonical-0310"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 2079122400000,
+          "start" : 2078431200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 20,
+          "month" : 11,
+          "year" : 2035
+        },
+        "first" : {
+          "day" : 12,
+          "month" : 11,
+          "year" : 2035
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-canonical-0311"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1560481200000,
+          "start" : 1560394800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 14,
+          "month" : 6,
+          "year" : 2019
+        },
+        "first" : {
+          "day" : 13,
+          "month" : 6,
+          "year" : 2019
+        },
+        "fn" : "canonical",
+        "zone" : "America/Sao_Paulo"
+      },
+      "name" : "all-day-canonical-0312"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1841997600000,
+          "start" : 1841911200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 15,
+          "month" : 5,
+          "year" : 2028
+        },
+        "first" : {
+          "day" : 14,
+          "month" : 5,
+          "year" : 2028
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Honolulu"
+      },
+      "name" : "all-day-canonical-0313"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1961305200000,
+          "start" : 1960700400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 25,
+          "month" : 2,
+          "year" : 2032
+        },
+        "first" : {
+          "day" : 18,
+          "month" : 2,
+          "year" : 2032
+        },
+        "fn" : "canonical",
+        "zone" : "America/Phoenix"
+      },
+      "name" : "all-day-canonical-0314"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1630767600000,
+          "start" : 1630076400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 5,
+          "month" : 9,
+          "year" : 2021
+        },
+        "first" : {
+          "day" : 28,
+          "month" : 8,
+          "year" : 2021
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Seoul"
+      },
+      "name" : "all-day-canonical-0315"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1924041600000,
+          "start" : 1923868800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 21,
+          "month" : 12,
+          "year" : 2030
+        },
+        "first" : {
+          "day" : 19,
+          "month" : 12,
+          "year" : 2030
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-canonical-0316"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1842127200000,
+          "start" : 1841954400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 17,
+          "month" : 5,
+          "year" : 2028
+        },
+        "first" : {
+          "day" : 15,
+          "month" : 5,
+          "year" : 2028
+        },
+        "fn" : "canonical",
+        "zone" : "Africa/Johannesburg"
+      },
+      "name" : "all-day-canonical-0317"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1665025200000,
+          "start" : 1664766000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 10,
+          "year" : 2022
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 2022
+        },
+        "fn" : "canonical",
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-canonical-0318"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1710115200000,
+          "start" : 1709596800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 3,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 5,
+          "month" : 3,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "Atlantic/Reykjavik"
+      },
+      "name" : "all-day-canonical-0319"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1457996400000,
+          "start" : 1457650800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 15,
+          "month" : 3,
+          "year" : 2016
+        },
+        "first" : {
+          "day" : 11,
+          "month" : 3,
+          "year" : 2016
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "all-day-canonical-0320"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1166745600000,
+          "start" : 1165881600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 22,
+          "month" : 12,
+          "year" : 2006
+        },
+        "first" : {
+          "day" : 12,
+          "month" : 12,
+          "year" : 2006
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/London"
+      },
+      "name" : "all-day-canonical-0321"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1236682800000,
+          "start" : 1236164400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 10,
+          "month" : 3,
+          "year" : 2009
+        },
+        "first" : {
+          "day" : 4,
+          "month" : 3,
+          "year" : 2009
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "all-day-canonical-0322"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1129924800000,
+          "start" : 1129320000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 22,
+          "month" : 10,
+          "year" : 2005
+        },
+        "first" : {
+          "day" : 15,
+          "month" : 10,
+          "year" : 2005
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Dubai"
+      },
+      "name" : "all-day-canonical-0323"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1849294800000,
+          "start" : 1848690000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 8,
+          "month" : 8,
+          "year" : 2028
+        },
+        "first" : {
+          "day" : 1,
+          "month" : 8,
+          "year" : 2028
+        },
+        "fn" : "canonical",
+        "zone" : "Europe/Moscow"
+      },
+      "name" : "all-day-canonical-0324"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1213885800000,
+          "start" : 1213799400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 20,
+          "month" : 6,
+          "year" : 2008
+        },
+        "first" : {
+          "day" : 19,
+          "month" : 6,
+          "year" : 2008
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Darwin"
+      },
+      "name" : "all-day-canonical-0325"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1729447200000,
+          "start" : 1728842400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 21,
+          "month" : 10,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 14,
+          "month" : 10,
+          "year" : 2024
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Dhaka"
+      },
+      "name" : "all-day-canonical-0326"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1916438400000,
+          "start" : 1916352000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 24,
+          "month" : 9,
+          "year" : 2030
+        },
+        "first" : {
+          "day" : 23,
+          "month" : 9,
+          "year" : 2030
+        },
+        "fn" : "canonical",
+        "zone" : "UTC"
+      },
+      "name" : "all-day-canonical-0327"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1921294800000,
+          "start" : 1920517200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 19,
+          "month" : 11,
+          "year" : 2030
+        },
+        "first" : {
+          "day" : 10,
+          "month" : 11,
+          "year" : 2030
+        },
+        "fn" : "canonical",
+        "zone" : "America/Havana"
+      },
+      "name" : "all-day-canonical-0328"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 2046445200000,
+          "start" : 2046099600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 11,
+          "year" : 2034
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2034
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Bangkok"
+      },
+      "name" : "all-day-canonical-0329"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1176652800000,
+          "start" : 1176566400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 16,
+          "month" : 4,
+          "year" : 2007
+        },
+        "first" : {
+          "day" : 15,
+          "month" : 4,
+          "year" : 2007
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Perth"
+      },
+      "name" : "all-day-canonical-0330"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 2003155200000,
+          "start" : 2003068800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 24,
+          "month" : 6,
+          "year" : 2033
+        },
+        "first" : {
+          "day" : 23,
+          "month" : 6,
+          "year" : 2033
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Perth"
+      },
+      "name" : "all-day-canonical-0331"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1273525200000,
+          "start" : 1273093200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 5,
+          "year" : 2010
+        },
+        "first" : {
+          "day" : 6,
+          "month" : 5,
+          "year" : 2010
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Beirut"
+      },
+      "name" : "all-day-canonical-0332"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1425272400000,
+          "start" : 1425186000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 2,
+          "month" : 3,
+          "year" : 2015
+        },
+        "first" : {
+          "day" : 1,
+          "month" : 3,
+          "year" : 2015
+        },
+        "fn" : "canonical",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-canonical-0333"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1327546800000,
+          "start" : 1326942000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 26,
+          "month" : 1,
+          "year" : 2012
+        },
+        "first" : {
+          "day" : 19,
+          "month" : 1,
+          "year" : 2012
+        },
+        "fn" : "canonical",
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-canonical-0334"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1662418800000,
+          "start" : 1661900400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 9,
+          "year" : 2022
+        },
+        "first" : {
+          "day" : 31,
+          "month" : 8,
+          "year" : 2022
+        },
+        "fn" : "canonical",
+        "zone" : "Africa/Casablanca"
+      },
+      "name" : "all-day-canonical-0335"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1614308400000,
+          "start" : 1614222000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 26,
+          "month" : 2,
+          "year" : 2021
+        },
+        "first" : {
+          "day" : 25,
+          "month" : 2,
+          "year" : 2021
+        },
+        "fn" : "canonical",
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-canonical-0336"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1322139600000,
+          "start" : 1321448400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 25,
+          "month" : 11,
+          "year" : 2011
+        },
+        "first" : {
+          "day" : 17,
+          "month" : 11,
+          "year" : 2011
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-canonical-0337"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1610730000000,
+          "start" : 1609952400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 16,
+          "month" : 1,
+          "year" : 2021
+        },
+        "first" : {
+          "day" : 7,
+          "month" : 1,
+          "year" : 2021
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Bangkok"
+      },
+      "name" : "all-day-canonical-0338"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1849622400000,
+          "start" : 1849017600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 12,
+          "month" : 8,
+          "year" : 2028
+        },
+        "first" : {
+          "day" : 5,
+          "month" : 8,
+          "year" : 2028
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Perth"
+      },
+      "name" : "all-day-canonical-0339"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1802757600000,
+          "start" : 1802152800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 16,
+          "month" : 2,
+          "year" : 2027
+        },
+        "first" : {
+          "day" : 9,
+          "month" : 2,
+          "year" : 2027
+        },
+        "fn" : "canonical",
+        "zone" : "America/Chicago"
+      },
+      "name" : "all-day-canonical-0340"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1922714100000,
+          "start" : 1922022900000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 12,
+          "year" : 2030
+        },
+        "first" : {
+          "day" : 28,
+          "month" : 11,
+          "year" : 2030
+        },
+        "fn" : "canonical",
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "all-day-canonical-0341"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1679544000000,
+          "start" : 1679284800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 23,
+          "month" : 3,
+          "year" : 2023
+        },
+        "first" : {
+          "day" : 20,
+          "month" : 3,
+          "year" : 2023
+        },
+        "fn" : "canonical",
+        "zone" : "America/New_York"
+      },
+      "name" : "all-day-canonical-0342"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 963720000000,
+          "start" : 963374400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 16,
+          "month" : 7,
+          "year" : 2000
+        },
+        "first" : {
+          "day" : 12,
+          "month" : 7,
+          "year" : 2000
+        },
+        "fn" : "canonical",
+        "zone" : "America/Santiago"
+      },
+      "name" : "all-day-canonical-0343"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1421920800000,
+          "start" : 1421748000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 22,
+          "month" : 1,
+          "year" : 2015
+        },
+        "first" : {
+          "day" : 20,
+          "month" : 1,
+          "year" : 2015
+        },
+        "fn" : "canonical",
+        "zone" : "Pacific/Honolulu"
+      },
+      "name" : "all-day-canonical-0344"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1994716800000,
+          "start" : 1994198400000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 18,
+          "month" : 3,
+          "year" : 2033
+        },
+        "first" : {
+          "day" : 12,
+          "month" : 3,
+          "year" : 2033
+        },
+        "fn" : "canonical",
+        "zone" : "UTC"
+      },
+      "name" : "all-day-canonical-0345"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1554051600000,
+          "start" : 1553878800000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 4,
+          "year" : 2019
+        },
+        "first" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2019
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Bangkok"
+      },
+      "name" : "all-day-canonical-0346"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1921273200000,
+          "start" : 1920927600000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 19,
+          "month" : 11,
+          "year" : 2030
+        },
+        "first" : {
+          "day" : 15,
+          "month" : 11,
+          "year" : 2030
+        },
+        "fn" : "canonical",
+        "zone" : "Africa/Lagos"
+      },
+      "name" : "all-day-canonical-0347"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1336332600000,
+          "start" : 1336246200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 5,
+          "year" : 2012
+        },
+        "first" : {
+          "day" : 6,
+          "month" : 5,
+          "year" : 2012
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Tehran"
+      },
+      "name" : "all-day-canonical-0348"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1649257200000,
+          "start" : 1648825200000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 4,
+          "year" : 2022
+        },
+        "first" : {
+          "day" : 2,
+          "month" : 4,
+          "year" : 2022
+        },
+        "fn" : "canonical",
+        "zone" : "Asia/Pyongyang"
+      },
+      "name" : "all-day-canonical-0349"
+    },
+    {
+      "expected" : {
+        "range" : {
+          "end" : 1788735600000,
+          "start" : 1788390000000
+        }
+      },
+      "input" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 9,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "canonical",
+        "zone" : "Africa/Casablanca"
+      },
+      "name" : "all-day-canonical-0350"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 11,
+          "year" : 2015
+        },
+        "first" : {
+          "day" : 1,
+          "month" : 11,
+          "year" : 2015
+        }
+      },
+      "input" : {
+        "end" : 1446760800000,
+        "fn" : "dates",
+        "start" : 1446328800000,
+        "zone" : "Europe/Athens"
+      },
+      "name" : "all-day-dates-0351"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 23,
+          "month" : 11,
+          "year" : 2000
+        },
+        "first" : {
+          "day" : 19,
+          "month" : 11,
+          "year" : 2000
+        }
+      },
+      "input" : {
+        "end" : 974965173000,
+        "fn" : "dates",
+        "start" : 974617173000,
+        "zone" : "Asia/Kabul"
+      },
+      "name" : "all-day-dates-0352"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 17,
+          "month" : 9,
+          "year" : 2016
+        },
+        "first" : {
+          "day" : 12,
+          "month" : 9,
+          "year" : 2016
+        }
+      },
+      "input" : {
+        "end" : 1474081200000,
+        "fn" : "dates",
+        "start" : 1473649200000,
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-dates-0353"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 24,
+          "month" : 5,
+          "year" : 2004
+        },
+        "first" : {
+          "day" : 19,
+          "month" : 5,
+          "year" : 2004
+        }
+      },
+      "input" : {
+        "end" : 1085386140000,
+        "fn" : "dates",
+        "start" : 1084930915000,
+        "zone" : "Asia/Bangkok"
+      },
+      "name" : "all-day-dates-0354"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 1,
+          "year" : 2016
+        },
+        "first" : {
+          "day" : 5,
+          "month" : 1,
+          "year" : 2016
+        }
+      },
+      "input" : {
+        "end" : 1452470400000,
+        "fn" : "dates",
+        "start" : 1451952000000,
+        "zone" : "Europe/Dublin"
+      },
+      "name" : "all-day-dates-0355"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 12,
+          "year" : 2012
+        },
+        "first" : {
+          "day" : 7,
+          "month" : 12,
+          "year" : 2012
+        }
+      },
+      "input" : {
+        "end" : 1355144400000,
+        "fn" : "dates",
+        "start" : 1354798800000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dates-0356"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 8,
+          "year" : 2020
+        },
+        "first" : {
+          "day" : 27,
+          "month" : 7,
+          "year" : 2020
+        }
+      },
+      "input" : {
+        "end" : 1596205800000,
+        "fn" : "dates",
+        "start" : 1595773800000,
+        "zone" : "Australia/Adelaide"
+      },
+      "name" : "all-day-dates-0357"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 1,
+          "year" : 2033
+        },
+        "first" : {
+          "day" : 5,
+          "month" : 1,
+          "year" : 2033
+        }
+      },
+      "input" : {
+        "end" : 1989060336000,
+        "fn" : "dates",
+        "start" : 1988535648000,
+        "zone" : "America/Asuncion"
+      },
+      "name" : "all-day-dates-0358"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 2,
+          "month" : 12,
+          "year" : 2020
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 11,
+          "year" : 2020
+        }
+      },
+      "input" : {
+        "end" : 1606867200000,
+        "fn" : "dates",
+        "start" : 1606348800000,
+        "zone" : "GMT"
+      },
+      "name" : "all-day-dates-0359"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 5,
+          "month" : 4,
+          "year" : 2005
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 4,
+          "year" : 2005
+        }
+      },
+      "input" : {
+        "end" : 1112666314000,
+        "fn" : "dates",
+        "start" : 1112467064000,
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "all-day-dates-0360"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 18,
+          "month" : 8,
+          "year" : 2020
+        },
+        "first" : {
+          "day" : 13,
+          "month" : 8,
+          "year" : 2020
+        }
+      },
+      "input" : {
+        "end" : 1597719600000,
+        "fn" : "dates",
+        "start" : 1597287600000,
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-dates-0361"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 29,
+          "month" : 5,
+          "year" : 2034
+        },
+        "first" : {
+          "day" : 23,
+          "month" : 5,
+          "year" : 2034
+        }
+      },
+      "input" : {
+        "end" : 2032536211000,
+        "fn" : "dates",
+        "start" : 2032005102000,
+        "zone" : "Asia/Dhaka"
+      },
+      "name" : "all-day-dates-0362"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 2,
+          "month" : 1,
+          "year" : 2018
+        },
+        "first" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "end" : 1514863800000,
+        "fn" : "dates",
+        "start" : 1514604600000,
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-dates-0363"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 13,
+          "month" : 11,
+          "year" : 2012
+        },
+        "first" : {
+          "day" : 12,
+          "month" : 11,
+          "year" : 2012
+        }
+      },
+      "input" : {
+        "end" : 1352750400000,
+        "fn" : "dates",
+        "start" : 1352664000000,
+        "zone" : "Asia/Dubai"
+      },
+      "name" : "all-day-dates-0364"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 30,
+          "month" : 11,
+          "year" : 2006
+        },
+        "first" : {
+          "day" : 29,
+          "month" : 11,
+          "year" : 2006
+        }
+      },
+      "input" : {
+        "end" : 1164852000000,
+        "fn" : "dates",
+        "start" : 1164765600000,
+        "zone" : "America/Sao_Paulo"
+      },
+      "name" : "all-day-dates-0365"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 28,
+          "month" : 6,
+          "year" : 2007
+        },
+        "first" : {
+          "day" : 23,
+          "month" : 6,
+          "year" : 2007
+        }
+      },
+      "input" : {
+        "end" : 1182974400000,
+        "fn" : "dates",
+        "start" : 1182542400000,
+        "zone" : "Asia/Dubai"
+      },
+      "name" : "all-day-dates-0366"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 2,
+          "month" : 2,
+          "year" : 2017
+        },
+        "first" : {
+          "day" : 27,
+          "month" : 1,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "end" : 1485943200000,
+        "fn" : "dates",
+        "start" : 1485424800000,
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-dates-0367"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 30,
+          "month" : 6,
+          "year" : 2031
+        },
+        "first" : {
+          "day" : 27,
+          "month" : 6,
+          "year" : 2031
+        }
+      },
+      "input" : {
+        "end" : 1940506200000,
+        "fn" : "dates",
+        "start" : 1940247000000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dates-0368"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 14,
+          "month" : 1,
+          "year" : 2012
+        },
+        "first" : {
+          "day" : 9,
+          "month" : 1,
+          "year" : 2012
+        }
+      },
+      "input" : {
+        "end" : 1326567003000,
+        "fn" : "dates",
+        "start" : 1326130400000,
+        "zone" : "Atlantic/Azores"
+      },
+      "name" : "all-day-dates-0369"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 23,
+          "month" : 2,
+          "year" : 2017
+        },
+        "first" : {
+          "day" : 21,
+          "month" : 2,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "end" : 1487757600000,
+        "fn" : "dates",
+        "start" : 1487584800000,
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "all-day-dates-0370"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 2017
+        },
+        "first" : {
+          "day" : 29,
+          "month" : 9,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "end" : 1506960000000,
+        "fn" : "dates",
+        "start" : 1506614400000,
+        "zone" : "Australia/Perth"
+      },
+      "name" : "all-day-dates-0371"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 6,
+          "year" : 2002
+        },
+        "first" : {
+          "day" : 6,
+          "month" : 6,
+          "year" : 2002
+        }
+      },
+      "input" : {
+        "end" : 1023375600000,
+        "fn" : "dates",
+        "start" : 1023289200000,
+        "zone" : "Asia/Pyongyang"
+      },
+      "name" : "all-day-dates-0372"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 5,
+          "month" : 5,
+          "year" : 2022
+        },
+        "first" : {
+          "day" : 29,
+          "month" : 4,
+          "year" : 2022
+        }
+      },
+      "input" : {
+        "end" : 1651705200000,
+        "fn" : "dates",
+        "start" : 1651186800000,
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-dates-0373"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 31,
+          "month" : 5,
+          "year" : 2020
+        },
+        "first" : {
+          "day" : 29,
+          "month" : 5,
+          "year" : 2020
+        }
+      },
+      "input" : {
+        "end" : 1590862500000,
+        "fn" : "dates",
+        "start" : 1590689700000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "all-day-dates-0374"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 6,
+          "year" : 2029
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 6,
+          "year" : 2029
+        }
+      },
+      "input" : {
+        "end" : 1875480552000,
+        "fn" : "dates",
+        "start" : 1875135902000,
+        "zone" : "Australia/Perth"
+      },
+      "name" : "all-day-dates-0375"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 24,
+          "month" : 12,
+          "year" : 2010
+        },
+        "first" : {
+          "day" : 18,
+          "month" : 12,
+          "year" : 2010
+        }
+      },
+      "input" : {
+        "end" : 1293148800000,
+        "fn" : "dates",
+        "start" : 1292630400000,
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "all-day-dates-0376"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 8,
+          "month" : 11,
+          "year" : 2033
+        },
+        "first" : {
+          "day" : 5,
+          "month" : 11,
+          "year" : 2033
+        }
+      },
+      "input" : {
+        "end" : 2014974000000,
+        "fn" : "dates",
+        "start" : 2014714800000,
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "all-day-dates-0377"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 27,
+          "month" : 12,
+          "year" : 2001
+        },
+        "first" : {
+          "day" : 23,
+          "month" : 12,
+          "year" : 2001
+        }
+      },
+      "input" : {
+        "end" : 1009411200000,
+        "fn" : "dates",
+        "start" : 1009065600000,
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "all-day-dates-0378"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 7,
+          "year" : 2001
+        },
+        "first" : {
+          "day" : 5,
+          "month" : 7,
+          "year" : 2001
+        }
+      },
+      "input" : {
+        "end" : 994809600000,
+        "fn" : "dates",
+        "start" : 994291200000,
+        "zone" : "Africa/Casablanca"
+      },
+      "name" : "all-day-dates-0379"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 12,
+          "year" : 2030
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 12,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "end" : 1922707800000,
+        "fn" : "dates",
+        "start" : 1922448600000,
+        "zone" : "Australia/Adelaide"
+      },
+      "name" : "all-day-dates-0380"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 29,
+          "month" : 5,
+          "year" : 2021
+        },
+        "first" : {
+          "day" : 25,
+          "month" : 5,
+          "year" : 2021
+        }
+      },
+      "input" : {
+        "end" : 1622268000000,
+        "fn" : "dates",
+        "start" : 1621922400000,
+        "zone" : "America/Denver"
+      },
+      "name" : "all-day-dates-0381"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 16,
+          "month" : 3,
+          "year" : 2031
+        },
+        "first" : {
+          "day" : 12,
+          "month" : 3,
+          "year" : 2031
+        }
+      },
+      "input" : {
+        "end" : 1931372230000,
+        "fn" : "dates",
+        "start" : 1931062199000,
+        "zone" : "Australia/Darwin"
+      },
+      "name" : "all-day-dates-0382"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 8,
+          "month" : 5,
+          "year" : 2031
+        },
+        "first" : {
+          "day" : 7,
+          "month" : 5,
+          "year" : 2031
+        }
+      },
+      "input" : {
+        "end" : 1935973800000,
+        "fn" : "dates",
+        "start" : 1935887400000,
+        "zone" : "America/St_Johns"
+      },
+      "name" : "all-day-dates-0383"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 17,
+          "month" : 4,
+          "year" : 2001
+        },
+        "first" : {
+          "day" : 14,
+          "month" : 4,
+          "year" : 2001
+        }
+      },
+      "input" : {
+        "end" : 987445800000,
+        "fn" : "dates",
+        "start" : 987186600000,
+        "zone" : "Asia/Kolkata"
+      },
+      "name" : "all-day-dates-0384"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 2,
+          "month" : 1,
+          "year" : 2005
+        },
+        "first" : {
+          "day" : 28,
+          "month" : 12,
+          "year" : 2004
+        }
+      },
+      "input" : {
+        "end" : 1104613200000,
+        "fn" : "dates",
+        "start" : 1104181200000,
+        "zone" : "Europe/Moscow"
+      },
+      "name" : "all-day-dates-0385"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 25,
+          "month" : 2,
+          "year" : 2023
+        },
+        "first" : {
+          "day" : 23,
+          "month" : 2,
+          "year" : 2023
+        }
+      },
+      "input" : {
+        "end" : 1677254400000,
+        "fn" : "dates",
+        "start" : 1677081600000,
+        "zone" : "Asia/Shanghai"
+      },
+      "name" : "all-day-dates-0386"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2012
+        },
+        "first" : {
+          "day" : 30,
+          "month" : 10,
+          "year" : 2012
+        }
+      },
+      "input" : {
+        "end" : 1351854000000,
+        "fn" : "dates",
+        "start" : 1351508400000,
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "all-day-dates-0387"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 10,
+          "month" : 4,
+          "year" : 2003
+        },
+        "first" : {
+          "day" : 6,
+          "month" : 4,
+          "year" : 2003
+        }
+      },
+      "input" : {
+        "end" : 1049952902000,
+        "fn" : "dates",
+        "start" : 1049642507000,
+        "zone" : "Asia/Tehran"
+      },
+      "name" : "all-day-dates-0388"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 29,
+          "month" : 4,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 27,
+          "month" : 4,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "end" : 1777388400000,
+        "fn" : "dates",
+        "start" : 1777215600000,
+        "zone" : "Asia/Seoul"
+      },
+      "name" : "all-day-dates-0389"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 24,
+          "month" : 3,
+          "year" : 2026
+        },
+        "first" : {
+          "day" : 18,
+          "month" : 3,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "end" : 1774310400000,
+        "fn" : "dates",
+        "start" : 1773792000000,
+        "zone" : "Europe/Dublin"
+      },
+      "name" : "all-day-dates-0390"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 10,
+          "year" : 2020
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 2020
+        }
+      },
+      "input" : {
+        "end" : 1601938800000,
+        "fn" : "dates",
+        "start" : 1601679600000,
+        "zone" : "Europe/Dublin"
+      },
+      "name" : "all-day-dates-0391"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 17,
+          "month" : 5,
+          "year" : 2019
+        },
+        "first" : {
+          "day" : 14,
+          "month" : 5,
+          "year" : 2019
+        }
+      },
+      "input" : {
+        "end" : 1558080580000,
+        "fn" : "dates",
+        "start" : 1557768261000,
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "all-day-dates-0392"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 2,
+          "year" : 2028
+        },
+        "first" : {
+          "day" : 28,
+          "month" : 1,
+          "year" : 2028
+        }
+      },
+      "input" : {
+        "end" : 1833020400000,
+        "fn" : "dates",
+        "start" : 1832691476000,
+        "zone" : "America/Bogota"
+      },
+      "name" : "all-day-dates-0393"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 21,
+          "month" : 3,
+          "year" : 2007
+        },
+        "first" : {
+          "day" : 15,
+          "month" : 3,
+          "year" : 2007
+        }
+      },
+      "input" : {
+        "end" : 1174428000000,
+        "fn" : "dates",
+        "start" : 1173909600000,
+        "zone" : "Africa/Cairo"
+      },
+      "name" : "all-day-dates-0394"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 8,
+          "month" : 12,
+          "year" : 2009
+        },
+        "first" : {
+          "day" : 2,
+          "month" : 12,
+          "year" : 2009
+        }
+      },
+      "input" : {
+        "end" : 1260226800000,
+        "fn" : "dates",
+        "start" : 1259708400000,
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "all-day-dates-0395"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 6,
+          "month" : 11,
+          "year" : 2031
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 11,
+          "year" : 2031
+        }
+      },
+      "input" : {
+        "end" : 1951657200000,
+        "fn" : "dates",
+        "start" : 1951398000000,
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-dates-0396"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 10,
+          "year" : 2003
+        },
+        "first" : {
+          "day" : 28,
+          "month" : 9,
+          "year" : 2003
+        }
+      },
+      "input" : {
+        "end" : 1065006000000,
+        "fn" : "dates",
+        "start" : 1064746800000,
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "all-day-dates-0397"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 17,
+          "month" : 1,
+          "year" : 2011
+        },
+        "first" : {
+          "day" : 15,
+          "month" : 1,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "end" : 1295172900000,
+        "fn" : "dates",
+        "start" : 1295000100000,
+        "zone" : "Pacific/Chatham"
+      },
+      "name" : "all-day-dates-0398"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 26,
+          "month" : 2,
+          "year" : 2031
+        },
+        "first" : {
+          "day" : 20,
+          "month" : 2,
+          "year" : 2031
+        }
+      },
+      "input" : {
+        "end" : 1929819600000,
+        "fn" : "dates",
+        "start" : 1929301200000,
+        "zone" : "Africa/Nairobi"
+      },
+      "name" : "all-day-dates-0399"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 14,
+          "month" : 9,
+          "year" : 2001
+        },
+        "first" : {
+          "day" : 10,
+          "month" : 9,
+          "year" : 2001
+        }
+      },
+      "input" : {
+        "end" : 1000464024000,
+        "fn" : "dates",
+        "start" : 1000098718000,
+        "zone" : "Asia/Dhaka"
+      },
+      "name" : "all-day-dates-0400"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 29,
+          "month" : 5,
+          "year" : 2016
+        },
+        "first" : {
+          "day" : 27,
+          "month" : 5,
+          "year" : 2016
+        }
+      },
+      "input" : {
+        "end" : 1464451200000,
+        "fn" : "dates",
+        "start" : 1464278400000,
+        "zone" : "Asia/Shanghai"
+      },
+      "name" : "all-day-dates-0401"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 30,
+          "month" : 7,
+          "year" : 2007
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 7,
+          "year" : 2007
+        }
+      },
+      "input" : {
+        "end" : 1185764400000,
+        "fn" : "dates",
+        "start" : 1185418800000,
+        "zone" : "America/Halifax"
+      },
+      "name" : "all-day-dates-0402"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 21,
+          "month" : 10,
+          "year" : 2030
+        },
+        "first" : {
+          "day" : 20,
+          "month" : 10,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "end" : 1918738800000,
+        "fn" : "dates",
+        "start" : 1918652400000,
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "all-day-dates-0403"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 14,
+          "month" : 2,
+          "year" : 2015
+        },
+        "first" : {
+          "day" : 11,
+          "month" : 2,
+          "year" : 2015
+        }
+      },
+      "input" : {
+        "end" : 1423821600000,
+        "fn" : "dates",
+        "start" : 1423562400000,
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "all-day-dates-0404"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 29,
+          "month" : 5,
+          "year" : 2002
+        },
+        "first" : {
+          "day" : 24,
+          "month" : 5,
+          "year" : 2002
+        }
+      },
+      "input" : {
+        "end" : 1022594400000,
+        "fn" : "dates",
+        "start" : 1022162400000,
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "all-day-dates-0405"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 26,
+          "month" : 11,
+          "year" : 2003
+        },
+        "first" : {
+          "day" : 22,
+          "month" : 11,
+          "year" : 2003
+        }
+      },
+      "input" : {
+        "end" : 1069826400000,
+        "fn" : "dates",
+        "start" : 1069480800000,
+        "zone" : "America/Mexico_City"
+      },
+      "name" : "all-day-dates-0406"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 21,
+          "month" : 4,
+          "year" : 2029
+        },
+        "first" : {
+          "day" : 15,
+          "month" : 4,
+          "year" : 2029
+        }
+      },
+      "input" : {
+        "end" : 1871416800000,
+        "fn" : "dates",
+        "start" : 1870898400000,
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "all-day-dates-0407"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 23,
+          "month" : 1,
+          "year" : 2007
+        },
+        "first" : {
+          "day" : 20,
+          "month" : 1,
+          "year" : 2007
+        }
+      },
+      "input" : {
+        "end" : 1169584836000,
+        "fn" : "dates",
+        "start" : 1169271874000,
+        "zone" : "Africa/Nairobi"
+      },
+      "name" : "all-day-dates-0408"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 11,
+          "month" : 7,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 8,
+          "month" : 7,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "end" : 1720627200000,
+        "fn" : "dates",
+        "start" : 1720368000000,
+        "zone" : "Asia/Shanghai"
+      },
+      "name" : "all-day-dates-0409"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 22,
+          "month" : 10,
+          "year" : 2024
+        },
+        "first" : {
+          "day" : 17,
+          "month" : 10,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "end" : 1729575585000,
+        "fn" : "dates",
+        "start" : 1729176678000,
+        "zone" : "Atlantic/Reykjavik"
+      },
+      "name" : "all-day-dates-0410"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 13,
+          "month" : 6,
+          "year" : 2003
+        },
+        "first" : {
+          "day" : 10,
+          "month" : 6,
+          "year" : 2003
+        }
+      },
+      "input" : {
+        "end" : 1055462400000,
+        "fn" : "dates",
+        "start" : 1055203200000,
+        "zone" : "UTC"
+      },
+      "name" : "all-day-dates-0411"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 14,
+          "month" : 7,
+          "year" : 2003
+        },
+        "first" : {
+          "day" : 12,
+          "month" : 7,
+          "year" : 2003
+        }
+      },
+      "input" : {
+        "end" : 1058109300000,
+        "fn" : "dates",
+        "start" : 1057936500000,
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "all-day-dates-0412"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 2,
+          "month" : 5,
+          "year" : 2016
+        },
+        "first" : {
+          "day" : 27,
+          "month" : 4,
+          "year" : 2016
+        }
+      },
+      "input" : {
+        "end" : 1462165200000,
+        "fn" : "dates",
+        "start" : 1461733200000,
+        "zone" : "America/Chicago"
+      },
+      "name" : "all-day-dates-0413"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 23,
+          "month" : 7,
+          "year" : 2033
+        },
+        "first" : {
+          "day" : 19,
+          "month" : 7,
+          "year" : 2033
+        }
+      },
+      "input" : {
+        "end" : 2005702343000,
+        "fn" : "dates",
+        "start" : 2005405888000,
+        "zone" : "Asia/Tehran"
+      },
+      "name" : "all-day-dates-0414"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 31,
+          "month" : 3,
+          "year" : 2009
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 3,
+          "year" : 2009
+        }
+      },
+      "input" : {
+        "end" : 1238475600000,
+        "fn" : "dates",
+        "start" : 1238043600000,
+        "zone" : "America/Bogota"
+      },
+      "name" : "all-day-dates-0415"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 10,
+          "year" : 2008
+        },
+        "first" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 2008
+        }
+      },
+      "input" : {
+        "end" : 1223312400000,
+        "fn" : "dates",
+        "start" : 1222966800000,
+        "zone" : "Asia/Bangkok"
+      },
+      "name" : "all-day-dates-0416"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 23,
+          "month" : 12,
+          "year" : 2030
+        },
+        "first" : {
+          "day" : 19,
+          "month" : 12,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "end" : 1924203909000,
+        "fn" : "dates",
+        "start" : 1923912773000,
+        "zone" : "Asia/Shanghai"
+      },
+      "name" : "all-day-dates-0417"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 1,
+          "month" : 5,
+          "year" : 2013
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 4,
+          "year" : 2013
+        }
+      },
+      "input" : {
+        "end" : 1367399210000,
+        "fn" : "dates",
+        "start" : 1366962780000,
+        "zone" : "UTC"
+      },
+      "name" : "all-day-dates-0418"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 30,
+          "month" : 3,
+          "year" : 2000
+        },
+        "first" : {
+          "day" : 26,
+          "month" : 3,
+          "year" : 2000
+        }
+      },
+      "input" : {
+        "end" : 954367200000,
+        "fn" : "dates",
+        "start" : 954021600000,
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "all-day-dates-0419"
+    },
+    {
+      "expected" : {
+        "endExclusive" : {
+          "day" : 7,
+          "month" : 8,
+          "year" : 2002
+        },
+        "first" : {
+          "day" : 4,
+          "month" : 8,
+          "year" : 2002
+        }
+      },
+      "input" : {
+        "end" : 1028696400000,
+        "fn" : "dates",
+        "start" : 1028437200000,
+        "zone" : "America/Mexico_City"
+      },
+      "name" : "all-day-dates-0420"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 2,
+          "year" : 2024
+        },
+        "days" : 1,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0421"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 3,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2024
+        },
+        "days" : 1,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0422"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 3,
+          "year" : 2023
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 2,
+          "year" : 2023
+        },
+        "days" : 1,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0423"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2024
+        },
+        "days" : 1,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0424"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2023
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2024
+        },
+        "days" : -1,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0425"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 3,
+          "year" : 2024
+        },
+        "days" : -1,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0426"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 1,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 1,
+          "year" : 2024
+        },
+        "days" : 0,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0427"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2024
+        },
+        "days" : 366,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0428"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2024
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2024
+        },
+        "days" : 365,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0429"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2000
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 1999
+        },
+        "days" : 1,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0430"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 3,
+          "year" : 2100
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 2,
+          "year" : 2100
+        },
+        "days" : 1,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0431"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2000
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 2,
+          "year" : 2000
+        },
+        "days" : 1,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0432"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2424
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2024
+        },
+        "days" : 146097,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0433"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 1624
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 2024
+        },
+        "days" : -146097,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0434"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 27,
+          "month" : 3,
+          "year" : 2014
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 4,
+          "year" : 2014
+        },
+        "days" : -5,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0435"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 9,
+          "month" : 8,
+          "year" : 2022
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 8,
+          "year" : 2022
+        },
+        "days" : -17,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0436"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 16,
+          "month" : 10,
+          "year" : 2028
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 10,
+          "month" : 11,
+          "year" : 2019
+        },
+        "days" : 3263,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0437"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 3,
+          "year" : 2001
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 30,
+          "month" : 1,
+          "year" : 2007
+        },
+        "days" : -2133,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0438"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 10,
+          "month" : 2,
+          "year" : 2000
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 4,
+          "month" : 3,
+          "year" : 2000
+        },
+        "days" : -23,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0439"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 5,
+          "month" : 8,
+          "year" : 2034
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 10,
+          "month" : 8,
+          "year" : 2034
+        },
+        "days" : -5,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0440"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 29,
+          "month" : 8,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 12,
+          "month" : 8,
+          "year" : 2030
+        },
+        "days" : 17,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0441"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2032
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 21,
+          "month" : 10,
+          "year" : 2032
+        },
+        "days" : 5,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0442"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 10,
+          "month" : 1,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 22,
+          "month" : 12,
+          "year" : 2026
+        },
+        "days" : 19,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0443"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 5,
+          "month" : 4,
+          "year" : 2021
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 5,
+          "year" : 2021
+        },
+        "days" : -38,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0444"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 15,
+          "month" : 3,
+          "year" : 2001
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 11,
+          "month" : 3,
+          "year" : 2001
+        },
+        "days" : 4,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0445"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 20,
+          "month" : 7,
+          "year" : 2019
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 18,
+          "month" : 6,
+          "year" : 2019
+        },
+        "days" : 32,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0446"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 20,
+          "month" : 9,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 8,
+          "year" : 2017
+        },
+        "days" : 23,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0447"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 7,
+          "month" : 2,
+          "year" : 2002
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 9,
+          "month" : 1,
+          "year" : 2002
+        },
+        "days" : 29,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0448"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 7,
+          "year" : 2006
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 11,
+          "month" : 8,
+          "year" : 2006
+        },
+        "days" : -11,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0449"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 11,
+          "month" : 12,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 8,
+          "month" : 12,
+          "year" : 2030
+        },
+        "days" : 3,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0450"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 1,
+          "year" : 2008
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 12,
+          "year" : 2007
+        },
+        "days" : 36,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0451"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 16,
+          "month" : 2,
+          "year" : 2007
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 22,
+          "month" : 11,
+          "year" : 2015
+        },
+        "days" : -3201,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0452"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 4,
+          "month" : 4,
+          "year" : 2034
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 3,
+          "year" : 2034
+        },
+        "days" : 8,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0453"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 21,
+          "month" : 2,
+          "year" : 2037
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 4,
+          "year" : 2035
+        },
+        "days" : 686,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0454"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 12,
+          "year" : 2023
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 4,
+          "year" : 2025
+        },
+        "days" : -460,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0455"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 28,
+          "month" : 10,
+          "year" : 2031
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 10,
+          "year" : 2031
+        },
+        "days" : 8,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0456"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 14,
+          "month" : 8,
+          "year" : 2035
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 8,
+          "year" : 2035
+        },
+        "days" : -15,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0457"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 9,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 6,
+          "month" : 3,
+          "year" : 2017
+        },
+        "days" : 180,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0458"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 26,
+          "month" : 5,
+          "year" : 2015
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 6,
+          "month" : 5,
+          "year" : 2015
+        },
+        "days" : 20,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0459"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 13,
+          "month" : 5,
+          "year" : 2008
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 23,
+          "month" : 5,
+          "year" : 2008
+        },
+        "days" : -10,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0460"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 17,
+          "month" : 9,
+          "year" : 2034
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 10,
+          "year" : 2034
+        },
+        "days" : -20,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0461"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 7,
+          "year" : 2004
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 7,
+          "year" : 2004
+        },
+        "days" : 29,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0462"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 23,
+          "month" : 12,
+          "year" : 2002
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 12,
+          "month" : 12,
+          "year" : 2002
+        },
+        "days" : 11,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0463"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 14,
+          "month" : 3,
+          "year" : 2010
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 3,
+          "year" : 2010
+        },
+        "days" : 7,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0464"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 24,
+          "month" : 8,
+          "year" : 2011
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 11,
+          "year" : 2003
+        },
+        "days" : 2826,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0465"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 12,
+          "year" : 2004
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 21,
+          "month" : 1,
+          "year" : 2003
+        },
+        "days" : 681,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0466"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 11,
+          "month" : 5,
+          "year" : 2008
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 24,
+          "month" : 6,
+          "year" : 2018
+        },
+        "days" : -3696,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0467"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 14,
+          "month" : 8,
+          "year" : 2010
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 28,
+          "month" : 7,
+          "year" : 2010
+        },
+        "days" : 17,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0468"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 9,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 8,
+          "month" : 10,
+          "year" : 2025
+        },
+        "days" : -35,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0469"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 11,
+          "year" : 2018
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 18,
+          "month" : 6,
+          "year" : 2023
+        },
+        "days" : -1661,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0470"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 6,
+          "year" : 2023
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 17,
+          "month" : 7,
+          "year" : 2032
+        },
+        "days" : -3310,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0471"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 6,
+          "month" : 10,
+          "year" : 2021
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 15,
+          "month" : 9,
+          "year" : 2021
+        },
+        "days" : 21,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0472"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 17,
+          "month" : 6,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 2,
+          "month" : 6,
+          "year" : 2026
+        },
+        "days" : 15,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0473"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 18,
+          "month" : 10,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 8,
+          "month" : 11,
+          "year" : 2026
+        },
+        "days" : -21,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0474"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 11,
+          "year" : 2019
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 23,
+          "month" : 5,
+          "year" : 2012
+        },
+        "days" : 2719,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0475"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 8,
+          "month" : 7,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 6,
+          "year" : 2030
+        },
+        "days" : 18,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0476"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 26,
+          "month" : 7,
+          "year" : 2003
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 6,
+          "year" : 2003
+        },
+        "days" : 36,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0477"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 22,
+          "month" : 10,
+          "year" : 2034
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 10,
+          "year" : 2034
+        },
+        "days" : 2,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0478"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 6,
+          "month" : 5,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 6,
+          "year" : 2025
+        },
+        "days" : -28,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0479"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 12,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 23,
+          "month" : 3,
+          "year" : 2024
+        },
+        "days" : 1350,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0480"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 18,
+          "month" : 10,
+          "year" : 2027
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 8,
+          "month" : 9,
+          "year" : 2027
+        },
+        "days" : 40,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0481"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 23,
+          "month" : 4,
+          "year" : 2032
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 5,
+          "year" : 2032
+        },
+        "days" : -14,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0482"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 24,
+          "month" : 1,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 22,
+          "month" : 1,
+          "year" : 2017
+        },
+        "days" : 2,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0483"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 1,
+          "month" : 8,
+          "year" : 2004
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 14,
+          "month" : 7,
+          "year" : 2004
+        },
+        "days" : 18,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0484"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 9,
+          "month" : 5,
+          "year" : 2025
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 5,
+          "month" : 6,
+          "year" : 2015
+        },
+        "days" : 3626,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0485"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 1,
+          "year" : 2017
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 1,
+          "year" : 2017
+        },
+        "days" : 3,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0486"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 12,
+          "month" : 6,
+          "year" : 2014
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 6,
+          "year" : 2014
+        },
+        "days" : -8,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0487"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 23,
+          "month" : 4,
+          "year" : 2022
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 23,
+          "month" : 3,
+          "year" : 2022
+        },
+        "days" : 31,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0488"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 31,
+          "month" : 7,
+          "year" : 2004
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 7,
+          "year" : 2004
+        },
+        "days" : 11,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0489"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 7,
+          "month" : 9,
+          "year" : 2008
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 21,
+          "month" : 9,
+          "year" : 2008
+        },
+        "days" : -14,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0490"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 16,
+          "month" : 1,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 12,
+          "month" : 2,
+          "year" : 2030
+        },
+        "days" : -27,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0491"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 7,
+          "month" : 4,
+          "year" : 2031
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 3,
+          "year" : 2031
+        },
+        "days" : 11,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0492"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 13,
+          "month" : 9,
+          "year" : 2032
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 10,
+          "year" : 2032
+        },
+        "days" : -30,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0493"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 20,
+          "month" : 12,
+          "year" : 2039
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 11,
+          "year" : 2033
+        },
+        "days" : 2212,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0494"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 15,
+          "month" : 3,
+          "year" : 2035
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 8,
+          "month" : 2,
+          "year" : 2035
+        },
+        "days" : 35,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0495"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 1,
+          "year" : 2022
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 27,
+          "month" : 2,
+          "year" : 2022
+        },
+        "days" : -28,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0496"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 1,
+          "year" : 2015
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 14,
+          "month" : 12,
+          "year" : 2014
+        },
+        "days" : 20,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0497"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 5,
+          "month" : 11,
+          "year" : 2031
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 17,
+          "month" : 10,
+          "year" : 2031
+        },
+        "days" : 19,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0498"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 3,
+          "year" : 2020
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 3,
+          "year" : 2020
+        },
+        "days" : -29,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0499"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 7,
+          "month" : 5,
+          "year" : 2006
+        }
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 5,
+          "year" : 2006
+        },
+        "days" : -24,
+        "fn" : "adding"
+      },
+      "name" : "all-day-adding-0500"
+    }
+  ],
+  "schema" : 1
+}

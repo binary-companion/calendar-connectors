@@ -1,0 +1,3489 @@
+{
+  "area" : "microsoft/graph-time",
+  "baseline" : "1.2.0",
+  "cases" : [
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T10:00:00.0000000",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0001"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0002"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-13-25T10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0003"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-02-30T10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0004"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "nonsense",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0005"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0006"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0007"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T10:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0008"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25 10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0009"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25X10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0010"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026/09/25T10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0011"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T25:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0012"
+    },
+    {
+      "expected" : {
+        "instant" : 1790359200000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T10:60:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0013"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355660000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T10:00:60",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0014"
+    },
+    {
+      "expected" : {
+        "instant" : 1709236800000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2024-02-29T12:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0015"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2023-02-29T12:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0016"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-04-31T12:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0017"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-00-10T10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0018"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-01-00T10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0019"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T10:00:00Z",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0020"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T10:00:00+02:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0021"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "20Z6-09-25T10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0022"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T1٠:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0023"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "٢026-09-25T10:00:00",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0024"
+    },
+    {
+      "expected" : {
+        "instant" : 1772955000000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-03-08T02:30:00",
+        "zone" : "America/New_York"
+      },
+      "name" : "graph-time-parse-0025"
+    },
+    {
+      "expected" : {
+        "instant" : 1772953200000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-03-08T02:00:00",
+        "zone" : "America/New_York"
+      },
+      "name" : "graph-time-parse-0026"
+    },
+    {
+      "expected" : {
+        "instant" : 1793511000000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-11-01T01:30:00",
+        "zone" : "America/New_York"
+      },
+      "name" : "graph-time-parse-0027"
+    },
+    {
+      "expected" : {
+        "instant" : 1774747800000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-03-29T02:30:00",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "graph-time-parse-0028"
+    },
+    {
+      "expected" : {
+        "instant" : 1792888200000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-10-25T02:30:00",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "graph-time-parse-0029"
+    },
+    {
+      "expected" : {
+        "instant" : 1791045000000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-10-04T02:30:00",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "graph-time-parse-0030"
+    },
+    {
+      "expected" : {
+        "instant" : 1775316600000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-04-05T02:30:00",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "graph-time-parse-0031"
+    },
+    {
+      "expected" : {
+        "instant" : 1791042300000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-10-04T02:15:00",
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "graph-time-parse-0032"
+    },
+    {
+      "expected" : {
+        "instant" : 1772947800000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-03-08T00:30:00",
+        "zone" : "America/Havana"
+      },
+      "name" : "graph-time-parse-0033"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2011-12-30T12:00:00",
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "graph-time-parse-0034"
+    },
+    {
+      "expected" : {
+        "instant" : 1790310600000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T10:00:00",
+        "zone" : "Asia/Kolkata"
+      },
+      "name" : "graph-time-parse-0035"
+    },
+    {
+      "expected" : {
+        "instant" : 1790330400000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2026-09-25T10:00:00.5",
+        "zone" : "UTC"
+      },
+      "name" : "graph-time-parse-0036"
+    },
+    {
+      "expected" : {
+        "instant" : 2169292348000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2038-09-28T15:12:28.1890051",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "graph-time-parse-0037"
+    },
+    {
+      "expected" : {
+        "instant" : 1182386362000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2007-06-20T20:39:22",
+        "zone" : "America/Havana"
+      },
+      "name" : "graph-time-parse-0038"
+    },
+    {
+      "expected" : {
+        "instant" : 1026697152000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2002-07-15T13:39:12.0000000",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "graph-time-parse-0039"
+    },
+    {
+      "expected" : {
+        "instant" : 2155671477000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2038-04-23T21:37:57",
+        "zone" : "UTC"
+      },
+      "name" : "graph-time-parse-0040"
+    },
+    {
+      "expected" : {
+        "instant" : 639077378000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "1990-04-02T10:29:38.0000000",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-parse-0041"
+    },
+    {
+      "expected" : {
+        "instant" : 1424956883000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2015-02-27T02:21:23.0000000",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "graph-time-parse-0042"
+    },
+    {
+      "expected" : {
+        "instant" : 759639598000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "1994-01-27T11:59:58.2439832",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "graph-time-parse-0043"
+    },
+    {
+      "expected" : {
+        "instant" : 966121123000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2000-08-13T07:58:43.8698784",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "graph-time-parse-0044"
+    },
+    {
+      "expected" : {
+        "instant" : 1270535741000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2010-04-06T08:35:41",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "graph-time-parse-0045"
+    },
+    {
+      "expected" : {
+        "instant" : 1641667851000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2022-01-09T05:50:51.0000000",
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "graph-time-parse-0046"
+    },
+    {
+      "expected" : {
+        "instant" : 1878681280000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2029-07-14T01:54:40.0000000",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "graph-time-parse-0047"
+    },
+    {
+      "expected" : {
+        "instant" : 1565975081000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2019-08-16T19:04:41.4981438",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "graph-time-parse-0048"
+    },
+    {
+      "expected" : {
+        "instant" : 789699556000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "1995-01-09T18:59:16.0000000",
+        "zone" : "America/Chicago"
+      },
+      "name" : "graph-time-parse-0049"
+    },
+    {
+      "expected" : {
+        "instant" : 2152695102000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2038-03-20T06:51:42.0000000",
+        "zone" : "America/New_York"
+      },
+      "name" : "graph-time-parse-0050"
+    },
+    {
+      "expected" : {
+        "instant" : 1740325881000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2025-02-23T15:51:21.0000000",
+        "zone" : "Europe/London"
+      },
+      "name" : "graph-time-parse-0051"
+    },
+    {
+      "expected" : {
+        "instant" : 2210105963000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2040-01-14T09:19:23.0000000",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "graph-time-parse-0052"
+    },
+    {
+      "expected" : {
+        "instant" : 1043351730000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2003-01-23T13:55:30.8479790",
+        "zone" : "America/Chicago"
+      },
+      "name" : "graph-time-parse-0053"
+    },
+    {
+      "expected" : {
+        "instant" : 2213825934000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2040-02-25T17:38:54.0000000",
+        "zone" : "America/Chicago"
+      },
+      "name" : "graph-time-parse-0054"
+    },
+    {
+      "expected" : {
+        "instant" : 1931273653000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2031-03-15 05:54:13.0000000",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "graph-time-parse-0055"
+    },
+    {
+      "expected" : {
+        "instant" : 1978473824000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2032-09-11T01:03:44.1519990",
+        "zone" : "Europe/London"
+      },
+      "name" : "graph-time-parse-0056"
+    },
+    {
+      "expected" : {
+        "instant" : 631299273000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "1990-01-02T16:54:33.0000000",
+        "zone" : "UTC"
+      },
+      "name" : "graph-time-parse-0057"
+    },
+    {
+      "expected" : {
+        "instant" : 1607230944000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "2020-12-06 18:02:24.0000000",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "graph-time-parse-0058"
+    },
+    {
+      "expected" : {
+        "instant" : 817773594000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "1995-12-01T10:19:54.0000000",
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "graph-time-parse-0059"
+    },
+    {
+      "expected" : {
+        "instant" : 747962501000
+      },
+      "input" : {
+        "fn" : "parse",
+        "text" : "1993-09-14T00:21:41",
+        "zone" : "Europe/London"
+      },
+      "name" : "graph-time-parse-0060"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 9,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-09-25T00:00:00.0000000"
+      },
+      "name" : "graph-time-date-0061"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 9,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-09-25"
+      },
+      "name" : "graph-time-date-0062"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 9,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-09-25T10:00:00"
+      },
+      "name" : "graph-time-date-0063"
+    },
+    {
+      "expected" : {
+        "date" : null
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-9-5"
+      },
+      "name" : "graph-time-date-0064"
+    },
+    {
+      "expected" : {
+        "date" : null
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-09-5T00"
+      },
+      "name" : "graph-time-date-0065"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 45,
+          "month" : 13,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-13-45"
+      },
+      "name" : "graph-time-date-0066"
+    },
+    {
+      "expected" : {
+        "date" : null
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "20260925"
+      },
+      "name" : "graph-time-date-0067"
+    },
+    {
+      "expected" : {
+        "date" : null
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : ""
+      },
+      "name" : "graph-time-date-0068"
+    },
+    {
+      "expected" : {
+        "date" : null
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-09"
+      },
+      "name" : "graph-time-date-0069"
+    },
+    {
+      "expected" : {
+        "date" : null
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "abc"
+      },
+      "name" : "graph-time-date-0070"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 9,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-09-25garbage"
+      },
+      "name" : "graph-time-date-0071"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 0,
+          "month" : 0,
+          "year" : 0
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "0000-00-00"
+      },
+      "name" : "graph-time-date-0072"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 9,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "-2026-09-25"
+      },
+      "name" : "graph-time-date-0073"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 9,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026--09-25"
+      },
+      "name" : "graph-time-date-0074"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 25,
+          "month" : 9,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-09-25٠"
+      },
+      "name" : "graph-time-date-0075"
+    },
+    {
+      "expected" : {
+        "date" : null
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "26-09-25T00:00:00"
+      },
+      "name" : "graph-time-date-0076"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 30,
+          "month" : 2,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-02-30T00:00:00"
+      },
+      "name" : "graph-time-date-0077"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 22,
+          "month" : 4,
+          "year" : 1995
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "1995-04-22T00:00:00.0000000"
+      },
+      "name" : "graph-time-date-0078"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 1998
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "1998-10-03 junk"
+      },
+      "name" : "graph-time-date-0079"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 20,
+          "month" : 12,
+          "year" : 2018
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2018-12-20 junk"
+      },
+      "name" : "graph-time-date-0080"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 13,
+          "month" : 9,
+          "year" : 2035
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2035-09-13T10:30:00Z"
+      },
+      "name" : "graph-time-date-0081"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 3,
+          "year" : 2022
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2022-03-03T00:00:00"
+      },
+      "name" : "graph-time-date-0082"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 27,
+          "month" : 1,
+          "year" : 1998
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "1998-01-27T10:30:00Z"
+      },
+      "name" : "graph-time-date-0083"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 27,
+          "month" : 10,
+          "year" : 2040
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2040-10-27T00:00:00.0000000"
+      },
+      "name" : "graph-time-date-0084"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 15,
+          "month" : 9,
+          "year" : 2014
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2014-09-15 junk"
+      },
+      "name" : "graph-time-date-0085"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 16,
+          "month" : 5,
+          "year" : 2030
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2030-05-16"
+      },
+      "name" : "graph-time-date-0086"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 6,
+          "month" : 9,
+          "year" : 1991
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "1991-09-06T10:30:00Z"
+      },
+      "name" : "graph-time-date-0087"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 20,
+          "month" : 2,
+          "year" : 2033
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2033-02-20T00:00:00"
+      },
+      "name" : "graph-time-date-0088"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 6,
+          "month" : 11,
+          "year" : 2028
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2028-11-06 junk"
+      },
+      "name" : "graph-time-date-0089"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 3,
+          "month" : 5,
+          "year" : 2034
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2034-05-03T10:30:00Z"
+      },
+      "name" : "graph-time-date-0090"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 4,
+          "month" : 7,
+          "year" : 2004
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2004-07-04T00:00:00.0000000"
+      },
+      "name" : "graph-time-date-0091"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 7,
+          "month" : 12,
+          "year" : 2018
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2018-12-07T00:00:00"
+      },
+      "name" : "graph-time-date-0092"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 5,
+          "month" : 10,
+          "year" : 1994
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "1994-10-05T00:00:00"
+      },
+      "name" : "graph-time-date-0093"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 6,
+          "month" : 4,
+          "year" : 1991
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "1991-04-06T00:00:00.0000000"
+      },
+      "name" : "graph-time-date-0094"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 8,
+          "month" : 11,
+          "year" : 2028
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2028-11-08T00:00:00.0000000"
+      },
+      "name" : "graph-time-date-0095"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 13,
+          "month" : 9,
+          "year" : 1990
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "1990-09-13"
+      },
+      "name" : "graph-time-date-0096"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 2,
+          "month" : 6,
+          "year" : 2007
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2007-06-02T00:00:00"
+      },
+      "name" : "graph-time-date-0097"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 10,
+          "month" : 1,
+          "year" : 2005
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2005-01-10T00:00:00.0000000"
+      },
+      "name" : "graph-time-date-0098"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 7,
+          "month" : 5,
+          "year" : 2029
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2029-05-07T10:30:00Z"
+      },
+      "name" : "graph-time-date-0099"
+    },
+    {
+      "expected" : {
+        "date" : {
+          "day" : 16,
+          "month" : 1,
+          "year" : 2026
+        }
+      },
+      "input" : {
+        "fn" : "date",
+        "text" : "2026-01-16 junk"
+      },
+      "name" : "graph-time-date-0100"
+    },
+    {
+      "expected" : {
+        "text" : "2026-09-25T10:00:00"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1790355600000,
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "graph-time-format-0101"
+    },
+    {
+      "expected" : {
+        "text" : "1970-01-01T00:00:00"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 0,
+        "zone" : "UTC"
+      },
+      "name" : "graph-time-format-0102"
+    },
+    {
+      "expected" : {
+        "text" : "2026-03-08T03:00:00"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1772953200000,
+        "zone" : "America/New_York"
+      },
+      "name" : "graph-time-format-0103"
+    },
+    {
+      "expected" : {
+        "text" : "2026-03-08T01:59:59"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1772953199000,
+        "zone" : "America/New_York"
+      },
+      "name" : "graph-time-format-0104"
+    },
+    {
+      "expected" : {
+        "text" : "2026-11-01T01:30:00"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1793511000000,
+        "zone" : "America/New_York"
+      },
+      "name" : "graph-time-format-0105"
+    },
+    {
+      "expected" : {
+        "text" : "2026-11-01T01:30:00"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1793514600000,
+        "zone" : "America/New_York"
+      },
+      "name" : "graph-time-format-0106"
+    },
+    {
+      "expected" : {
+        "text" : "2024-03-01T05:29:59"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1709251199000,
+        "zone" : "Asia/Kolkata"
+      },
+      "name" : "graph-time-format-0107"
+    },
+    {
+      "expected" : {
+        "text" : "2000-01-01T13:59:59"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 946684799000,
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "graph-time-format-0108"
+    },
+    {
+      "expected" : {
+        "text" : "2011-12-31T00:00:00"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1325239200000,
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "graph-time-format-0109"
+    },
+    {
+      "expected" : {
+        "text" : "9999-12-31T23:00:00"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 253402297200000,
+        "zone" : "UTC"
+      },
+      "name" : "graph-time-format-0110"
+    },
+    {
+      "expected" : {
+        "text" : "1999-03-15T00:44:29"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 921437969000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "graph-time-format-0111"
+    },
+    {
+      "expected" : {
+        "text" : "1991-08-26T05:17:20"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 683209040000,
+        "zone" : "America/Phoenix"
+      },
+      "name" : "graph-time-format-0112"
+    },
+    {
+      "expected" : {
+        "text" : "2032-04-12T13:56:38"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1965408998000,
+        "zone" : "America/Chicago"
+      },
+      "name" : "graph-time-format-0113"
+    },
+    {
+      "expected" : {
+        "text" : "2003-10-31T08:46:22"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1067582782000,
+        "zone" : "Africa/Johannesburg"
+      },
+      "name" : "graph-time-format-0114"
+    },
+    {
+      "expected" : {
+        "text" : "1994-03-13T15:09:48"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 763610988000,
+        "zone" : "Pacific/Midway"
+      },
+      "name" : "graph-time-format-0115"
+    },
+    {
+      "expected" : {
+        "text" : "2035-11-24T23:59:20"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 2079518360000,
+        "zone" : "Pacific/Norfolk"
+      },
+      "name" : "graph-time-format-0116"
+    },
+    {
+      "expected" : {
+        "text" : "1993-02-12T15:45:23"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 729512123000,
+        "zone" : "Asia/Kolkata"
+      },
+      "name" : "graph-time-format-0117"
+    },
+    {
+      "expected" : {
+        "text" : "1999-03-30T13:34:37"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 922826077000,
+        "zone" : "America/Denver"
+      },
+      "name" : "graph-time-format-0118"
+    },
+    {
+      "expected" : {
+        "text" : "2010-12-08T10:11:17"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1291803077000,
+        "zone" : "GMT"
+      },
+      "name" : "graph-time-format-0119"
+    },
+    {
+      "expected" : {
+        "text" : "2006-03-15T16:50:21"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1142473821000,
+        "zone" : "America/Anchorage"
+      },
+      "name" : "graph-time-format-0120"
+    },
+    {
+      "expected" : {
+        "text" : "2017-06-01T10:43:21"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1496299401000,
+        "zone" : "Asia/Dubai"
+      },
+      "name" : "graph-time-format-0121"
+    },
+    {
+      "expected" : {
+        "text" : "2000-06-23T00:33:04"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 961705984000,
+        "zone" : "Europe/Moscow"
+      },
+      "name" : "graph-time-format-0122"
+    },
+    {
+      "expected" : {
+        "text" : "2014-02-03T22:47:08"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1391460428000,
+        "zone" : "Europe/Istanbul"
+      },
+      "name" : "graph-time-format-0123"
+    },
+    {
+      "expected" : {
+        "text" : "2034-09-05T17:50:49"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 2041044649000,
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "graph-time-format-0124"
+    },
+    {
+      "expected" : {
+        "text" : "1999-01-22T12:39:55"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 917023195000,
+        "zone" : "America/Halifax"
+      },
+      "name" : "graph-time-format-0125"
+    },
+    {
+      "expected" : {
+        "text" : "2007-05-10T23:42:33"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1178880153000,
+        "zone" : "Pacific/Midway"
+      },
+      "name" : "graph-time-format-0126"
+    },
+    {
+      "expected" : {
+        "text" : "2034-10-13T19:00:42"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 2044358142000,
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "graph-time-format-0127"
+    },
+    {
+      "expected" : {
+        "text" : "2031-06-03T15:36:23"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1938220583000,
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "graph-time-format-0128"
+    },
+    {
+      "expected" : {
+        "text" : "2000-09-30T23:49:45"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 970397385000,
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "graph-time-format-0129"
+    },
+    {
+      "expected" : {
+        "text" : "1995-05-24T20:18:01"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 801312481000,
+        "zone" : "Australia/Darwin"
+      },
+      "name" : "graph-time-format-0130"
+    },
+    {
+      "expected" : {
+        "text" : "2025-01-26T12:37:03"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1737907623000,
+        "zone" : "America/St_Johns"
+      },
+      "name" : "graph-time-format-0131"
+    },
+    {
+      "expected" : {
+        "text" : "1999-01-09T03:49:22"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 915846562000,
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "graph-time-format-0132"
+    },
+    {
+      "expected" : {
+        "text" : "1992-04-18T17:43:14"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 703615394000,
+        "zone" : "Africa/Lagos"
+      },
+      "name" : "graph-time-format-0133"
+    },
+    {
+      "expected" : {
+        "text" : "2005-04-14T22:34:25"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1113532465000,
+        "zone" : "America/Havana"
+      },
+      "name" : "graph-time-format-0134"
+    },
+    {
+      "expected" : {
+        "text" : "2030-02-19T08:28:30"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1897703910000,
+        "zone" : "Asia/Kabul"
+      },
+      "name" : "graph-time-format-0135"
+    },
+    {
+      "expected" : {
+        "text" : "2013-04-04T17:21:37"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1365081697000,
+        "zone" : "Europe/Moscow"
+      },
+      "name" : "graph-time-format-0136"
+    },
+    {
+      "expected" : {
+        "text" : "2002-07-15T13:35:21"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1026758121000,
+        "zone" : "America/Mexico_City"
+      },
+      "name" : "graph-time-format-0137"
+    },
+    {
+      "expected" : {
+        "text" : "2005-04-05T04:11:01"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1112658061000,
+        "zone" : "Asia/Tehran"
+      },
+      "name" : "graph-time-format-0138"
+    },
+    {
+      "expected" : {
+        "text" : "2036-01-16T12:32:35"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 2084099555000,
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "graph-time-format-0139"
+    },
+    {
+      "expected" : {
+        "text" : "2006-09-28T23:23:07"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1159478587000,
+        "zone" : "Africa/Cairo"
+      },
+      "name" : "graph-time-format-0140"
+    },
+    {
+      "expected" : {
+        "text" : "2009-04-20T14:37:09"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1240256229000,
+        "zone" : "America/Mexico_City"
+      },
+      "name" : "graph-time-format-0141"
+    },
+    {
+      "expected" : {
+        "text" : "2011-04-11T07:22:35"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1302475055000,
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "graph-time-format-0142"
+    },
+    {
+      "expected" : {
+        "text" : "2008-02-04T22:52:52"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1202178172000,
+        "zone" : "America/St_Johns"
+      },
+      "name" : "graph-time-format-0143"
+    },
+    {
+      "expected" : {
+        "text" : "2011-09-22T04:02:47"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1316660567000,
+        "zone" : "Europe/Lisbon"
+      },
+      "name" : "graph-time-format-0144"
+    },
+    {
+      "expected" : {
+        "text" : "1993-06-20T01:12:52"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 740567572000,
+        "zone" : "America/Anchorage"
+      },
+      "name" : "graph-time-format-0145"
+    },
+    {
+      "expected" : {
+        "text" : "2001-05-05T18:28:14"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 989053094000,
+        "zone" : "Australia/Adelaide"
+      },
+      "name" : "graph-time-format-0146"
+    },
+    {
+      "expected" : {
+        "text" : "2033-01-09T01:13:07"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1988799187000,
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "graph-time-format-0147"
+    },
+    {
+      "expected" : {
+        "text" : "1991-03-26T02:07:55"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 669989275000,
+        "zone" : "Pacific/Honolulu"
+      },
+      "name" : "graph-time-format-0148"
+    },
+    {
+      "expected" : {
+        "text" : "2002-11-13T08:50:26"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 1037161226000,
+        "zone" : "Asia/Kabul"
+      },
+      "name" : "graph-time-format-0149"
+    },
+    {
+      "expected" : {
+        "text" : "2001-02-11T22:24:45"
+      },
+      "input" : {
+        "fn" : "format",
+        "instant" : 981955485000,
+        "zone" : "America/Phoenix"
+      },
+      "name" : "graph-time-format-0150"
+    },
+    {
+      "expected" : {
+        "text" : "2026-09-05T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 5,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0151"
+    },
+    {
+      "expected" : {
+        "text" : "2026-12-31T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2026
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0152"
+    },
+    {
+      "expected" : {
+        "text" : "2024-02-29T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2024
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0153"
+    },
+    {
+      "expected" : {
+        "text" : "0001-01-01T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 1
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0154"
+    },
+    {
+      "expected" : {
+        "text" : "9999-12-31T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 9999
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0155"
+    },
+    {
+      "expected" : {
+        "text" : "12345-01-01T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 12345
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0156"
+    },
+    {
+      "expected" : {
+        "text" : "2026-13-45T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 45,
+          "month" : 13,
+          "year" : 2026
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0157"
+    },
+    {
+      "expected" : {
+        "text" : "2026-00-00T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 0,
+          "month" : 0,
+          "year" : 2026
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0158"
+    },
+    {
+      "expected" : {
+        "text" : "2022-01-14T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 14,
+          "month" : 1,
+          "year" : 2022
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0159"
+    },
+    {
+      "expected" : {
+        "text" : "2024-01-14T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 14,
+          "month" : 1,
+          "year" : 2024
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0160"
+    },
+    {
+      "expected" : {
+        "text" : "2026-10-03T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 3,
+          "month" : 10,
+          "year" : 2026
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0161"
+    },
+    {
+      "expected" : {
+        "text" : "2024-11-07T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 11,
+          "year" : 2024
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0162"
+    },
+    {
+      "expected" : {
+        "text" : "2011-09-04T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 4,
+          "month" : 9,
+          "year" : 2011
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0163"
+    },
+    {
+      "expected" : {
+        "text" : "2000-08-26T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 8,
+          "year" : 2000
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0164"
+    },
+    {
+      "expected" : {
+        "text" : "2025-01-15T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 15,
+          "month" : 1,
+          "year" : 2025
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0165"
+    },
+    {
+      "expected" : {
+        "text" : "2039-05-11T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 11,
+          "month" : 5,
+          "year" : 2039
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0166"
+    },
+    {
+      "expected" : {
+        "text" : "2024-12-17T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 17,
+          "month" : 12,
+          "year" : 2024
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0167"
+    },
+    {
+      "expected" : {
+        "text" : "2038-10-20T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 10,
+          "year" : 2038
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0168"
+    },
+    {
+      "expected" : {
+        "text" : "2030-05-13T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 5,
+          "year" : 2030
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0169"
+    },
+    {
+      "expected" : {
+        "text" : "2024-06-16T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 16,
+          "month" : 6,
+          "year" : 2024
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0170"
+    },
+    {
+      "expected" : {
+        "text" : "2030-05-22T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 22,
+          "month" : 5,
+          "year" : 2030
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0171"
+    },
+    {
+      "expected" : {
+        "text" : "2006-02-07T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 2,
+          "year" : 2006
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0172"
+    },
+    {
+      "expected" : {
+        "text" : "2034-04-25T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 4,
+          "year" : 2034
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0173"
+    },
+    {
+      "expected" : {
+        "text" : "2038-01-18T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 18,
+          "month" : 1,
+          "year" : 2038
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0174"
+    },
+    {
+      "expected" : {
+        "text" : "2005-12-09T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 9,
+          "month" : 12,
+          "year" : 2005
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0175"
+    },
+    {
+      "expected" : {
+        "text" : "2027-12-07T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 12,
+          "year" : 2027
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0176"
+    },
+    {
+      "expected" : {
+        "text" : "2036-10-10T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 10,
+          "month" : 10,
+          "year" : 2036
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0177"
+    },
+    {
+      "expected" : {
+        "text" : "2001-10-14T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 14,
+          "month" : 10,
+          "year" : 2001
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0178"
+    },
+    {
+      "expected" : {
+        "text" : "2003-10-21T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 21,
+          "month" : 10,
+          "year" : 2003
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0179"
+    },
+    {
+      "expected" : {
+        "text" : "2002-03-11T00:00:00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 11,
+          "month" : 3,
+          "year" : 2002
+        },
+        "fn" : "midnight"
+      },
+      "name" : "graph-time-midnight-0180"
+    },
+    {
+      "expected" : {
+        "text" : "2026-09-05"
+      },
+      "input" : {
+        "date" : {
+          "day" : 5,
+          "month" : 9,
+          "year" : 2026
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0181"
+    },
+    {
+      "expected" : {
+        "text" : "2026-12-31"
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 2026
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0182"
+    },
+    {
+      "expected" : {
+        "text" : "2024-02-29"
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 2,
+          "year" : 2024
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0183"
+    },
+    {
+      "expected" : {
+        "text" : "0001-01-01"
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 1
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0184"
+    },
+    {
+      "expected" : {
+        "text" : "9999-12-31"
+      },
+      "input" : {
+        "date" : {
+          "day" : 31,
+          "month" : 12,
+          "year" : 9999
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0185"
+    },
+    {
+      "expected" : {
+        "text" : "12345-01-01"
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 1,
+          "year" : 12345
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0186"
+    },
+    {
+      "expected" : {
+        "text" : "2026-13-45"
+      },
+      "input" : {
+        "date" : {
+          "day" : 45,
+          "month" : 13,
+          "year" : 2026
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0187"
+    },
+    {
+      "expected" : {
+        "text" : "2026-00-00"
+      },
+      "input" : {
+        "date" : {
+          "day" : 0,
+          "month" : 0,
+          "year" : 2026
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0188"
+    },
+    {
+      "expected" : {
+        "text" : "2001-01-26"
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 1,
+          "year" : 2001
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0189"
+    },
+    {
+      "expected" : {
+        "text" : "2027-03-09"
+      },
+      "input" : {
+        "date" : {
+          "day" : 9,
+          "month" : 3,
+          "year" : 2027
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0190"
+    },
+    {
+      "expected" : {
+        "text" : "1991-01-16"
+      },
+      "input" : {
+        "date" : {
+          "day" : 16,
+          "month" : 1,
+          "year" : 1991
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0191"
+    },
+    {
+      "expected" : {
+        "text" : "1990-03-07"
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 3,
+          "year" : 1990
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0192"
+    },
+    {
+      "expected" : {
+        "text" : "2033-11-13"
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 11,
+          "year" : 2033
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0193"
+    },
+    {
+      "expected" : {
+        "text" : "2031-08-09"
+      },
+      "input" : {
+        "date" : {
+          "day" : 9,
+          "month" : 8,
+          "year" : 2031
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0194"
+    },
+    {
+      "expected" : {
+        "text" : "1991-02-26"
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 2,
+          "year" : 1991
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0195"
+    },
+    {
+      "expected" : {
+        "text" : "2020-04-07"
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 4,
+          "year" : 2020
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0196"
+    },
+    {
+      "expected" : {
+        "text" : "2024-06-24"
+      },
+      "input" : {
+        "date" : {
+          "day" : 24,
+          "month" : 6,
+          "year" : 2024
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0197"
+    },
+    {
+      "expected" : {
+        "text" : "2009-11-07"
+      },
+      "input" : {
+        "date" : {
+          "day" : 7,
+          "month" : 11,
+          "year" : 2009
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0198"
+    },
+    {
+      "expected" : {
+        "text" : "1995-04-08"
+      },
+      "input" : {
+        "date" : {
+          "day" : 8,
+          "month" : 4,
+          "year" : 1995
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0199"
+    },
+    {
+      "expected" : {
+        "text" : "2022-09-12"
+      },
+      "input" : {
+        "date" : {
+          "day" : 12,
+          "month" : 9,
+          "year" : 2022
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0200"
+    },
+    {
+      "expected" : {
+        "text" : "2035-07-18"
+      },
+      "input" : {
+        "date" : {
+          "day" : 18,
+          "month" : 7,
+          "year" : 2035
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0201"
+    },
+    {
+      "expected" : {
+        "text" : "2013-11-14"
+      },
+      "input" : {
+        "date" : {
+          "day" : 14,
+          "month" : 11,
+          "year" : 2013
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0202"
+    },
+    {
+      "expected" : {
+        "text" : "2028-03-24"
+      },
+      "input" : {
+        "date" : {
+          "day" : 24,
+          "month" : 3,
+          "year" : 2028
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0203"
+    },
+    {
+      "expected" : {
+        "text" : "2004-02-25"
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 2,
+          "year" : 2004
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0204"
+    },
+    {
+      "expected" : {
+        "text" : "2018-04-01"
+      },
+      "input" : {
+        "date" : {
+          "day" : 1,
+          "month" : 4,
+          "year" : 2018
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0205"
+    },
+    {
+      "expected" : {
+        "text" : "2003-04-13"
+      },
+      "input" : {
+        "date" : {
+          "day" : 13,
+          "month" : 4,
+          "year" : 2003
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0206"
+    },
+    {
+      "expected" : {
+        "text" : "2018-08-23"
+      },
+      "input" : {
+        "date" : {
+          "day" : 23,
+          "month" : 8,
+          "year" : 2018
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0207"
+    },
+    {
+      "expected" : {
+        "text" : "2027-01-02"
+      },
+      "input" : {
+        "date" : {
+          "day" : 2,
+          "month" : 1,
+          "year" : 2027
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0208"
+    },
+    {
+      "expected" : {
+        "text" : "2030-07-20"
+      },
+      "input" : {
+        "date" : {
+          "day" : 20,
+          "month" : 7,
+          "year" : 2030
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0209"
+    },
+    {
+      "expected" : {
+        "text" : "2008-04-23"
+      },
+      "input" : {
+        "date" : {
+          "day" : 23,
+          "month" : 4,
+          "year" : 2008
+        },
+        "fn" : "dateText"
+      },
+      "name" : "graph-time-dateText-0210"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00Z"
+      },
+      "name" : "graph-time-parseInstant-0211"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00z"
+      },
+      "name" : "graph-time-parseInstant-0212"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00.1234567Z"
+      },
+      "name" : "graph-time-parseInstant-0213"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T10:00:00-07:00"
+      },
+      "name" : "graph-time-parseInstant-0214"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T22:30:00+05:30"
+      },
+      "name" : "graph-time-parseInstant-0215"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00.0000000"
+      },
+      "name" : "graph-time-parseInstant-0216"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "garbage"
+      },
+      "name" : "graph-time-parseInstant-0217"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : ""
+      },
+      "name" : "graph-time-parseInstant-0218"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "Z"
+      },
+      "name" : "graph-time-parseInstant-0219"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00+0530"
+      },
+      "name" : "graph-time-parseInstant-0220"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00+05"
+      },
+      "name" : "graph-time-parseInstant-0221"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00+05:3"
+      },
+      "name" : "graph-time-parseInstant-0222"
+    },
+    {
+      "expected" : {
+        "instant" : 1790335800000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00 +05:30"
+      },
+      "name" : "graph-time-parseInstant-0223"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00-00:00"
+      },
+      "name" : "graph-time-parseInstant-0224"
+    },
+    {
+      "expected" : {
+        "instant" : 1790305200000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00+14:00"
+      },
+      "name" : "graph-time-parseInstant-0225"
+    },
+    {
+      "expected" : {
+        "instant" : 1790398800000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00-12:00"
+      },
+      "name" : "graph-time-parseInstant-0226"
+    },
+    {
+      "expected" : {
+        "instant" : 1789993260000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00+99:99"
+      },
+      "name" : "graph-time-parseInstant-0227"
+    },
+    {
+      "expected" : {
+        "instant" : 1790368200000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00.5-03:30"
+      },
+      "name" : "graph-time-parseInstant-0228"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25+05:30"
+      },
+      "name" : "graph-time-parseInstant-0229"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25"
+      },
+      "name" : "graph-time-parseInstant-0230"
+    },
+    {
+      "expected" : {
+        "instant" : 1790294400000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T00:00:00Z"
+      },
+      "name" : "graph-time-parseInstant-0231"
+    },
+    {
+      "expected" : {
+        "instant" : null
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-02-30T00:00:00Z"
+      },
+      "name" : "graph-time-parseInstant-0232"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00ZZ"
+      },
+      "name" : "graph-time-parseInstant-0233"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00+aa:bb"
+      },
+      "name" : "graph-time-parseInstant-0234"
+    },
+    {
+      "expected" : {
+        "instant" : 1790355600000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2026-09-25T17:00:00+05:30:00"
+      },
+      "name" : "graph-time-parseInstant-0235"
+    },
+    {
+      "expected" : {
+        "instant" : 1113512151000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2005-04-14T20:55:51.0000000z"
+      },
+      "name" : "graph-time-parseInstant-0236"
+    },
+    {
+      "expected" : {
+        "instant" : 976538394000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2000-12-11T12:39:54.0000000Z"
+      },
+      "name" : "graph-time-parseInstant-0237"
+    },
+    {
+      "expected" : {
+        "instant" : 1208045448000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2008-04-13T14:10:48+14:00"
+      },
+      "name" : "graph-time-parseInstant-0238"
+    },
+    {
+      "expected" : {
+        "instant" : 1049604782000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2003-04-06T17:38:02.0000000+12:45"
+      },
+      "name" : "graph-time-parseInstant-0239"
+    },
+    {
+      "expected" : {
+        "instant" : 1933301619000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2031-04-07T16:58:39.0000000+12:45"
+      },
+      "name" : "graph-time-parseInstant-0240"
+    },
+    {
+      "expected" : {
+        "instant" : 2190623541000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2039-06-03T00:32:21.0000000+14:00"
+      },
+      "name" : "graph-time-parseInstant-0241"
+    },
+    {
+      "expected" : {
+        "instant" : 1308731844000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2011-06-22T08:37:24.0000000"
+      },
+      "name" : "graph-time-parseInstant-0242"
+    },
+    {
+      "expected" : {
+        "instant" : 1717591835000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2024-06-05 12:50:35.0000000+00:00"
+      },
+      "name" : "graph-time-parseInstant-0243"
+    },
+    {
+      "expected" : {
+        "instant" : 1573942304000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2019-11-16T22:11:44.0000000Z"
+      },
+      "name" : "graph-time-parseInstant-0244"
+    },
+    {
+      "expected" : {
+        "instant" : 1295302807000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2011-01-17T15:20:07-07:00"
+      },
+      "name" : "graph-time-parseInstant-0245"
+    },
+    {
+      "expected" : {
+        "instant" : 677967634000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "1991-06-26T20:20:34Z"
+      },
+      "name" : "graph-time-parseInstant-0246"
+    },
+    {
+      "expected" : {
+        "instant" : 1035581923000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2002-10-25T21:38:43.5347750z"
+      },
+      "name" : "graph-time-parseInstant-0247"
+    },
+    {
+      "expected" : {
+        "instant" : 1219141436000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2008-08-19T06:53:56.7079357-03:30"
+      },
+      "name" : "graph-time-parseInstant-0248"
+    },
+    {
+      "expected" : {
+        "instant" : 890039850000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "1998-03-16T22:02:30+12:45"
+      },
+      "name" : "graph-time-parseInstant-0249"
+    },
+    {
+      "expected" : {
+        "instant" : 2028148557000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2034-04-08T19:05:57.0000000-03:30"
+      },
+      "name" : "graph-time-parseInstant-0250"
+    },
+    {
+      "expected" : {
+        "instant" : 1027249665000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2002-07-22T01:07:45+14:00"
+      },
+      "name" : "graph-time-parseInstant-0251"
+    },
+    {
+      "expected" : {
+        "instant" : 1410206212000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2014-09-08 19:56:52.0000000+00:00"
+      },
+      "name" : "graph-time-parseInstant-0252"
+    },
+    {
+      "expected" : {
+        "instant" : 658336346000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "1990-11-11T15:12:26.0000000Z"
+      },
+      "name" : "graph-time-parseInstant-0253"
+    },
+    {
+      "expected" : {
+        "instant" : 649189353000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "1990-07-28T18:22:33.0000000"
+      },
+      "name" : "graph-time-parseInstant-0254"
+    },
+    {
+      "expected" : {
+        "instant" : 1640443584000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2021-12-25T14:46:24z"
+      },
+      "name" : "graph-time-parseInstant-0255"
+    },
+    {
+      "expected" : {
+        "instant" : 722413534000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "1992-11-22T02:55:34.0000000-03:30"
+      },
+      "name" : "graph-time-parseInstant-0256"
+    },
+    {
+      "expected" : {
+        "instant" : 1674906184000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2023-01-28T11:43:04.0000000Z"
+      },
+      "name" : "graph-time-parseInstant-0257"
+    },
+    {
+      "expected" : {
+        "instant" : 718416379000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "1992-10-06T17:06:19.9470907-07:00"
+      },
+      "name" : "graph-time-parseInstant-0258"
+    },
+    {
+      "expected" : {
+        "instant" : 1199713164000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2008-01-07T19:09:24+05:30"
+      },
+      "name" : "graph-time-parseInstant-0259"
+    },
+    {
+      "expected" : {
+        "instant" : 1182626225000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2007-06-23T12:17:05.0000000-07:00"
+      },
+      "name" : "graph-time-parseInstant-0260"
+    },
+    {
+      "expected" : {
+        "instant" : 1595488143000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2020-07-23T19:54:03.0000000+12:45"
+      },
+      "name" : "graph-time-parseInstant-0261"
+    },
+    {
+      "expected" : {
+        "instant" : 1484196496000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2017-01-12T04:48:16.9052702Z"
+      },
+      "name" : "graph-time-parseInstant-0262"
+    },
+    {
+      "expected" : {
+        "instant" : 1428280077000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2015-04-06T13:12:57+12:45"
+      },
+      "name" : "graph-time-parseInstant-0263"
+    },
+    {
+      "expected" : {
+        "instant" : 1761310693000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2025-10-24T12:58:13.7256544Z"
+      },
+      "name" : "graph-time-parseInstant-0264"
+    },
+    {
+      "expected" : {
+        "instant" : 1961235786000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2032-02-24T04:43:06.0000000-07:00"
+      },
+      "name" : "graph-time-parseInstant-0265"
+    },
+    {
+      "expected" : {
+        "instant" : 837312032000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "1996-07-14T15:25:32.0000000+12:45"
+      },
+      "name" : "graph-time-parseInstant-0266"
+    },
+    {
+      "expected" : {
+        "instant" : 1710800936000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2024-03-18T15:28:56.0000000-07:00"
+      },
+      "name" : "graph-time-parseInstant-0267"
+    },
+    {
+      "expected" : {
+        "instant" : 665877450000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "1991-02-06T21:57:30.0000000z"
+      },
+      "name" : "graph-time-parseInstant-0268"
+    },
+    {
+      "expected" : {
+        "instant" : 2056114919000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "2035-02-27 05:01:59.0000000+14:00"
+      },
+      "name" : "graph-time-parseInstant-0269"
+    },
+    {
+      "expected" : {
+        "instant" : 888063528000
+      },
+      "input" : {
+        "fn" : "parseInstant",
+        "text" : "1998-02-21T12:18:48.0000000z"
+      },
+      "name" : "graph-time-parseInstant-0270"
+    },
+    {
+      "expected" : {
+        "text" : "2026-09-25T17:00:00Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1790355600000
+      },
+      "name" : "graph-time-instantText-0271"
+    },
+    {
+      "expected" : {
+        "text" : "1970-01-01T00:00:00Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 0
+      },
+      "name" : "graph-time-instantText-0272"
+    },
+    {
+      "expected" : {
+        "text" : "2024-02-29T23:59:59Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1709251199000
+      },
+      "name" : "graph-time-instantText-0273"
+    },
+    {
+      "expected" : {
+        "text" : "1999-12-31T23:59:59Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 946684799000
+      },
+      "name" : "graph-time-instantText-0274"
+    },
+    {
+      "expected" : {
+        "text" : "1969-12-31T00:00:00Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : -86400000
+      },
+      "name" : "graph-time-instantText-0275"
+    },
+    {
+      "expected" : {
+        "text" : "9999-12-31T23:59:59Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 253402300799000
+      },
+      "name" : "graph-time-instantText-0276"
+    },
+    {
+      "expected" : {
+        "text" : "2009-12-07T17:52:43Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1260208363000
+      },
+      "name" : "graph-time-instantText-0277"
+    },
+    {
+      "expected" : {
+        "text" : "2031-11-21T17:07:29Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1953047249000
+      },
+      "name" : "graph-time-instantText-0278"
+    },
+    {
+      "expected" : {
+        "text" : "1976-12-14T05:53:02Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 219390782000
+      },
+      "name" : "graph-time-instantText-0279"
+    },
+    {
+      "expected" : {
+        "text" : "1990-05-18T20:28:51Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 643062531000
+      },
+      "name" : "graph-time-instantText-0280"
+    },
+    {
+      "expected" : {
+        "text" : "1976-11-13T14:47:56Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 216744476000
+      },
+      "name" : "graph-time-instantText-0281"
+    },
+    {
+      "expected" : {
+        "text" : "2015-12-10T02:26:09Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1449714369000
+      },
+      "name" : "graph-time-instantText-0282"
+    },
+    {
+      "expected" : {
+        "text" : "2005-07-21T00:48:22Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1121906902000
+      },
+      "name" : "graph-time-instantText-0283"
+    },
+    {
+      "expected" : {
+        "text" : "2028-09-27T13:41:41Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1853674901000
+      },
+      "name" : "graph-time-instantText-0284"
+    },
+    {
+      "expected" : {
+        "text" : "2019-01-30T20:51:53Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1548881513000
+      },
+      "name" : "graph-time-instantText-0285"
+    },
+    {
+      "expected" : {
+        "text" : "2011-12-12T17:45:41Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1323711941000
+      },
+      "name" : "graph-time-instantText-0286"
+    },
+    {
+      "expected" : {
+        "text" : "2011-04-17T07:45:45Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1303026345000
+      },
+      "name" : "graph-time-instantText-0287"
+    },
+    {
+      "expected" : {
+        "text" : "1985-06-10T00:53:46Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 487212826000
+      },
+      "name" : "graph-time-instantText-0288"
+    },
+    {
+      "expected" : {
+        "text" : "2019-06-26T18:59:43Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1561575583000
+      },
+      "name" : "graph-time-instantText-0289"
+    },
+    {
+      "expected" : {
+        "text" : "2018-09-02T23:59:50Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1535932790000
+      },
+      "name" : "graph-time-instantText-0290"
+    },
+    {
+      "expected" : {
+        "text" : "1991-08-02T14:36:54Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 681143814000
+      },
+      "name" : "graph-time-instantText-0291"
+    },
+    {
+      "expected" : {
+        "text" : "2011-03-30T09:36:33Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1301477793000
+      },
+      "name" : "graph-time-instantText-0292"
+    },
+    {
+      "expected" : {
+        "text" : "2028-05-06T03:48:20Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1841197700000
+      },
+      "name" : "graph-time-instantText-0293"
+    },
+    {
+      "expected" : {
+        "text" : "2019-12-22T19:41:44Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1577043704000
+      },
+      "name" : "graph-time-instantText-0294"
+    },
+    {
+      "expected" : {
+        "text" : "1998-01-21T12:53:04Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 885387184000
+      },
+      "name" : "graph-time-instantText-0295"
+    },
+    {
+      "expected" : {
+        "text" : "1995-03-06T20:37:57Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 794522277000
+      },
+      "name" : "graph-time-instantText-0296"
+    },
+    {
+      "expected" : {
+        "text" : "1982-04-07T09:07:24Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 387018444000
+      },
+      "name" : "graph-time-instantText-0297"
+    },
+    {
+      "expected" : {
+        "text" : "2019-12-09T16:10:49Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1575907849000
+      },
+      "name" : "graph-time-instantText-0298"
+    },
+    {
+      "expected" : {
+        "text" : "2021-02-18T02:23:29Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 1613615009000
+      },
+      "name" : "graph-time-instantText-0299"
+    },
+    {
+      "expected" : {
+        "text" : "2000-10-21T02:42:23Z"
+      },
+      "input" : {
+        "fn" : "instantText",
+        "instant" : 972096143000
+      },
+      "name" : "graph-time-instantText-0300"
+    }
+  ],
+  "schema" : 1
+}

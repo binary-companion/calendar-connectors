@@ -6,3 +6,4 @@
 # skipped by the script itself.
 docs/superpowers/plans/
 target/
+vectors/
