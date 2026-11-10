@@ -1,0 +1,122 @@
+# cargo-deny configuration (design section 6.2). `cargo deny check` runs in the rust-lint job of ci.yml.
+
+[graph]
+# The targets of design section 6.4, so platform-specific dependencies (Windows, Android) are checked too.
+targets = [
+    "aarch64-apple-darwin",
+    "x86_64-apple-darwin",
+    "aarch64-apple-ios",
+    "aarch64-apple-ios-sim",
+    "x86_64-pc-windows-msvc",
+    "aarch64-pc-windows-msvc",
+    "x86_64-unknown-linux-gnu",
+    "aarch64-unknown-linux-gnu",
+    "aarch64-linux-android",
+]
+
+[advisories]
+yanked = "deny"
+unmaintained = "all"
+ignore = []
+
+[licenses]
+# Not every licence in the list is in use today.
+unused-allowed-license = "allow"
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Unicode-3.0",
+    "Unicode-DFS-2016",
+    "Zlib",
+]
+
+[bans]
+multiple-versions = "deny"
+wildcards = "deny"
+allow-wildcard-paths = true
+
+# The workspace crates, the external crates and everything they pull in, as `cargo metadata` reports them at this
+# commit (all targets of design section 6.4). Anything else fails the check. Adding an external crate needs a decision
+# record (design section 6.2); scripts/ci/check-crate-architecture.py checks the direct dependencies of the workspace.
+allow = [
+    "async-trait",
+    "base64",
+    "block-buffer",
+    "calendar-caldav",
+    "calendar-core",
+    "calendar-google",
+    "calendar-ical",
+    "calendar-ical-subscription",
+    "calendar-microsoft",
+    "calendar-oauth",
+    "calendar-test-support",
+    "cfg-if",
+    "cpufeatures",
+    "crypto-common",
+    "digest",
+    "displaydoc",
+    "form_urlencoded",
+    "getrandom",
+    "hybrid-array",
+    "icu_collections",
+    "icu_locale_core",
+    "icu_normalizer",
+    "icu_normalizer_data",
+    "icu_properties",
+    "icu_properties_data",
+    "icu_provider",
+    "idna",
+    "idna_adapter",
+    "itoa",
+    "jiff",
+    "jiff-core",
+    "jiff-static",
+    "jiff-tzdb",
+    "jiff-tzdb-platform",
+    "libc",
+    "litemap",
+    "log",
+    "memchr",
+    "percent-encoding",
+    "pin-project-lite",
+    "portable-atomic",
+    "portable-atomic-util",
+    "potential_utf",
+    "proc-macro2",
+    "quick-xml",
+    "quote",
+    "r-efi",
+    "serde",
+    "serde_core",
+    "serde_derive",
+    "serde_json",
+    "sha2",
+    "smallvec",
+    "stable_deref_trait",
+    "syn",
+    "synstructure",
+    "thiserror",
+    "thiserror-impl",
+    "tinystr",
+    "tokio",
+    "tokio-macros",
+    "typenum",
+    "unicode-ident",
+    "url",
+    "utf8_iter",
+    "utf_types",
+    "uuid",
+    "windows-link",
+    "writeable",
+    "yoke",
+    "yoke-derive",
+    "zerofrom",
+    "zerofrom-derive",
+    "zerotrie",
+    "zerovec",
+    "zerovec-derive",
+    "zmij",
+]

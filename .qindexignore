@@ -5,3 +5,4 @@
 # already exclude untracked and ignored files; binaries, lockfiles, minified files and build output are
 # skipped by the script itself.
 docs/superpowers/plans/
+target/
