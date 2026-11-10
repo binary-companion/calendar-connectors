@@ -1,0 +1,457 @@
+{
+  "area" : "oauth/pkce",
+  "baseline" : "1.2.0",
+  "cases" : [
+    {
+      "expected" : {
+        "challenge" : "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
+      },
+      "input" : {
+        "verifier" : "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
+      },
+      "name" : "pkce-0001"
+    },
+    {
+      "expected" : {
+        "challenge" : "47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU"
+      },
+      "input" : {
+        "verifier" : ""
+      },
+      "name" : "pkce-0002"
+    },
+    {
+      "expected" : {
+        "challenge" : "ypeBEsobvcr6wjGzmiPcTaeG7_gUfE5yuYB3ha_uSLs"
+      },
+      "input" : {
+        "verifier" : "a"
+      },
+      "name" : "pkce-0003"
+    },
+    {
+      "expected" : {
+        "challenge" : "ungWv48Bz-pBQUDeXa4iI7ADYaOWF3qctBD_YfIAFa0"
+      },
+      "input" : {
+        "verifier" : "abc"
+      },
+      "name" : "pkce-0004"
+    },
+    {
+      "expected" : {
+        "challenge" : "n0OQ-NMMLdkuyfCVtl4rmumwqSWlJY4kHJ8ekQ9zQxg"
+      },
+      "input" : {
+        "verifier" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "pkce-0005"
+    },
+    {
+      "expected" : {
+        "challenge" : "s1Q5pKxvCUi21vnjxq8PX1kM4g8b3nCQ73lwaG7Gc4o"
+      },
+      "input" : {
+        "verifier" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "pkce-0006"
+    },
+    {
+      "expected" : {
+        "challenge" : "fT50oF19sVvOStnsBljqmOPwbu7PFrTG__LaRX3cLzQ"
+      },
+      "input" : {
+        "verifier" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "pkce-0007"
+    },
+    {
+      "expected" : {
+        "challenge" : "_-BU_nrgy23GXDr5th1SCfQ5hR20PQulmXM33xVGaOs"
+      },
+      "input" : {
+        "verifier" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "pkce-0008"
+    },
+    {
+      "expected" : {
+        "challenge" : "Y1NhxIu56rFBmOduqKt_GkFoXWrWKqkUbTAdTxfrCuA"
+      },
+      "input" : {
+        "verifier" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "pkce-0009"
+    },
+    {
+      "expected" : {
+        "challenge" : "DwBzhbb51LfusnSGBa_hqYSgo7-j8BTQnip4TOnlzRo"
+      },
+      "input" : {
+        "verifier" : "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "name" : "pkce-0010"
+    },
+    {
+      "expected" : {
+        "challenge" : "zNhOm5Jyonenca7bQzzpjUpwFDVrfhrbbOGCqgWA6HU"
+      },
+      "input" : {
+        "verifier" : "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      },
+      "name" : "pkce-0011"
+    },
+    {
+      "expected" : {
+        "challenge" : "hQ99xDkQ_4kPiHnA7Sb-aXyToGetk6fVD0ZqcCipv04"
+      },
+      "input" : {
+        "verifier" : "café"
+      },
+      "name" : "pkce-0012"
+    },
+    {
+      "expected" : {
+        "challenge" : "cnJtiBj2kwZs62mvo2Qhi2kuYuqSs4V4I2N4D0dSnCE"
+      },
+      "input" : {
+        "verifier" : "中文"
+      },
+      "name" : "pkce-0013"
+    },
+    {
+      "expected" : {
+        "challenge" : "0G8VJfeROXgJ-byYaCtcEzGOykwxI0M0Z_1N_9pE_RQ"
+      },
+      "input" : {
+        "verifier" : "🙂"
+      },
+      "name" : "pkce-0014"
+    },
+    {
+      "expected" : {
+        "challenge" : "uLjyWl_HEcrqHP6_4CNZ484rmo-c4C0Y_csbpH_wlfE"
+      },
+      "input" : {
+        "verifier" : "with space"
+      },
+      "name" : "pkce-0015"
+    },
+    {
+      "expected" : {
+        "challenge" : "aXr_ymDV0NyW8AqsSy2DPjrcBwik79i2V6zEIp9ESe8"
+      },
+      "input" : {
+        "verifier" : "line\nbreak"
+      },
+      "name" : "pkce-0016"
+    },
+    {
+      "expected" : {
+        "challenge" : "Df37j9I0AKLrZ9hUa5MPZRQ8sMv00DgGC7paMNuCQ5g"
+      },
+      "input" : {
+        "verifier" : "jq08PP4NktDI8LUpY3MYwnHjggZTKCLMxW35fRljOA1xvNrTxtwQgZme12Aqv8TyYt6eTcobNeXeMu2Ctv-DED1"
+      },
+      "name" : "pkce-0017"
+    },
+    {
+      "expected" : {
+        "challenge" : "8vM-rCotXVJm8JhSgN0qQyPodZNkNDpd9Xy5ysGwaqk"
+      },
+      "input" : {
+        "verifier" : "BkahOagNZ1wRj2RzvYZDdw74PEAmJ2G3uauwSOywSn2.HUlkoWf8~6phTMo~c.iV44pnqdRTAGLmfMpfh6F3APNL7hy1dNsL5p1cIPOZyT02jX3B1XkH3hpP6"
+      },
+      "name" : "pkce-0018"
+    },
+    {
+      "expected" : {
+        "challenge" : "PiEu921kOrvU0eLORkDgpTSm3dSguSk8tJyMI2qnVtE"
+      },
+      "input" : {
+        "verifier" : "0PHGTyNc-E~dfOnVbVoilDzvlOHwPHZkW_KhFX291XSWah_4B_5oL4kBffwrXuNm.cwjH5Ak"
+      },
+      "name" : "pkce-0019"
+    },
+    {
+      "expected" : {
+        "challenge" : "fLlKa68_Bc_sOehexekbee6ZSr6LV6ZmkBDpHECYSDo"
+      },
+      "input" : {
+        "verifier" : "iRJwanAJcMk2Gd079aHvaFYGESPfYdVnglpSqJDTpNgv5gt5S_KHsxKkR.YfUMD~TW_nXsuAx9"
+      },
+      "name" : "pkce-0020"
+    },
+    {
+      "expected" : {
+        "challenge" : "7ZsKGitnF1ZycuxVcpYgid8XKUhqVwqwKNztGIRIAKg"
+      },
+      "input" : {
+        "verifier" : "VaeF_1VAqSMY951OhTf0o1jjI.K4NOWjkbOjKWF3MNLtT4tcL0PnD8jdRaBiiOES50S-UWKn2xnSfN3tex"
+      },
+      "name" : "pkce-0021"
+    },
+    {
+      "expected" : {
+        "challenge" : "t_PB9BQeksjCk4T7P-Xsk-ZFKjzSIP1giu0UO98ZuwM"
+      },
+      "input" : {
+        "verifier" : "wLCN9a6LEA7Nxu1eEG7ZTj4qf4aFAxZIvyP8J5I7N9jM77al_W1cVA_7"
+      },
+      "name" : "pkce-0022"
+    },
+    {
+      "expected" : {
+        "challenge" : "lhVtFOgIupMdF8MlDCW1ceO0_HjFWnk7KfzNr3SsaqE"
+      },
+      "input" : {
+        "verifier" : "D88gRXBdcrOm4WVtqXfv4YfptJwxxfzyGX-7OLZJRkfu.tPa82q2VOsr4LTi693~NpsYsP8"
+      },
+      "name" : "pkce-0023"
+    },
+    {
+      "expected" : {
+        "challenge" : "DGGGkj1fmQ2koS539TML_toOS2uGOlQgrFFieFLySCs"
+      },
+      "input" : {
+        "verifier" : "XIr4~Fp~7qm~P6WuRF5f.RfKkyP7G6gPNHToMiMLbjmCrrVAlH"
+      },
+      "name" : "pkce-0024"
+    },
+    {
+      "expected" : {
+        "challenge" : "WbHzeatdIIzaX_-OP4C3urQ90_7AC9YkBaNQi3hYvcY"
+      },
+      "input" : {
+        "verifier" : "m.AQClTC1_eOv5d1n7rvWd.~TaK3~N3GLJtyLjyKKWRg-kvlf3t"
+      },
+      "name" : "pkce-0025"
+    },
+    {
+      "expected" : {
+        "challenge" : "YmugRkTqcheW3ZE77zCFKXLJBGsLIpSiP136oyefIkM"
+      },
+      "input" : {
+        "verifier" : "IK83OGt.d8-M2EOWd_nJLCYdSpIXWOTPLyJnlepmRwzN1gbev~9D4OKREyOlS~ldH4a.6UQgDo"
+      },
+      "name" : "pkce-0026"
+    },
+    {
+      "expected" : {
+        "challenge" : "4dNqFkO_5E7lz4_2cqhmKORA8Yyd0o4BvNCu0qs3kFA"
+      },
+      "input" : {
+        "verifier" : "LpBJiY7QOCzjQb7w27aa5hP-NzcAc4wb0rlP5UsmRqHtfiMrOw"
+      },
+      "name" : "pkce-0027"
+    },
+    {
+      "expected" : {
+        "challenge" : "GO9YRXuwneDbn5KioEvNQc-9liaRctdu4u6OhDP0Y3A"
+      },
+      "input" : {
+        "verifier" : "c5PexGUEP~3Qv1C3ANlypPVqe46jlOq1PLd3T~myYv6JsGmEXeunN1il_oAWbX5n1HsiTcLnYVuUzZ"
+      },
+      "name" : "pkce-0028"
+    },
+    {
+      "expected" : {
+        "challenge" : "jwmMOEHPXm4UWtCQd9pVS7MvxmrPtAWL0vRWl6_uETQ"
+      },
+      "input" : {
+        "verifier" : "CG-EAxD1DlW6o0hth5B71fUDzT32--59A_Lz~hDxLA4.bhuLEy0yq-9i0xg4lExVfMFhQUrESQH_UP9wI"
+      },
+      "name" : "pkce-0029"
+    },
+    {
+      "expected" : {
+        "challenge" : "sndEWxk4_ZkVt_64GXcGcbpwJ-CquaiZeJLZPfYBlWY"
+      },
+      "input" : {
+        "verifier" : "P3ZyboEpvMXHnCg-s0LK6lXM0ozhBM6ODh1VhNpcrexnzKoXYNp~QJePaVa_hSuzV4-Ugj6hp4~1X7ktW~WtGxzO77mmORIqnu38R5CNloUYf94H"
+      },
+      "name" : "pkce-0030"
+    },
+    {
+      "expected" : {
+        "challenge" : "WlFEFoRBoABpMPNKCN3-AUM9dGOcxY87Ir1hemimN7g"
+      },
+      "input" : {
+        "verifier" : "HD4Oa-Yn0YqQwcI~kRz3s6a2-GoMMOtSfKj8pIZie_BJ.itamcP6YZlg"
+      },
+      "name" : "pkce-0031"
+    },
+    {
+      "expected" : {
+        "challenge" : "Y_PGyI0V2Cjb_9_HJ5dySnyt-rHQtCTqqln1GlWUN_c"
+      },
+      "input" : {
+        "verifier" : "3nMC17.LUMW~zVV-YG9TSRgWHqAaDJtB1Dxn0scHDtoqte9M2zTHbz~YFS_.M1dMS8P6FIOiD3LWZzDenXh0PJBhb"
+      },
+      "name" : "pkce-0032"
+    },
+    {
+      "expected" : {
+        "challenge" : "vGDRXbZft-GazzACFxTQzWOR1cFPZfdK17f-DLi47aU"
+      },
+      "input" : {
+        "verifier" : "smqhUrYe9bt3MUVnnCOGUtleH2rktLt3WxzLPww-DRnr~m2jZsiw6rKgMIs97xrA.zQwIf~lFYjr77OTwAHw4OqQCxU5rK_i1NRDIJ-vA5FrnogT4.EtwiHjI"
+      },
+      "name" : "pkce-0033"
+    },
+    {
+      "expected" : {
+        "challenge" : "bcQAXgcS44auXTvhPRss5Gxx9DgJrfU127KMGlVKUdk"
+      },
+      "input" : {
+        "verifier" : "v05KzV7MgLgZCzF7ZxyJfO8OT92977vJXlXP4T~-RafeBnzWKqTBt.n"
+      },
+      "name" : "pkce-0034"
+    },
+    {
+      "expected" : {
+        "challenge" : "RdDpVUDEOgP-2_lhV_SsTbQNPuGB0Qymvnp6Bk5xMeE"
+      },
+      "input" : {
+        "verifier" : "cwAAk~L4CGNF-bCgDgp8LE2zRQTQ~UG0s8V739TKLQ~JMXQpUgRUm_vDqYzs6y2VS0hhuH_EnsJiR"
+      },
+      "name" : "pkce-0035"
+    },
+    {
+      "expected" : {
+        "challenge" : "ybnLfciwuw_kn8sg7g5Y6UCekqXYVYll-3qNaRRvkY4"
+      },
+      "input" : {
+        "verifier" : "kmkmWVDOqoLr1f6O3etvFrJpVId4p18~iDCxAlJGICqcd4A21Pa.j4Z~pb"
+      },
+      "name" : "pkce-0036"
+    },
+    {
+      "expected" : {
+        "challenge" : "rNLHiKmtnCqtRakKlxTZnyEVvjIm59noMwH48VLKxtc"
+      },
+      "input" : {
+        "verifier" : "s.k-bYuMAH7w.OcrtuTz5.pzN8-pExW1y6CvTuuuAa0sTb0fqmebwIbR~oopuVQMXu~eGw"
+      },
+      "name" : "pkce-0037"
+    },
+    {
+      "expected" : {
+        "challenge" : "1Q8H-F-CEXyoTQbI6-QAQ24NWJE_Qm0MJrdxIxivCn4"
+      },
+      "input" : {
+        "verifier" : "4kHk6sFsF-CP~X~SphkPw8M~IuO4d4bZcNJZ4ctvyQ.LMJuuAGE57VB0VKYaB.G9oMdWlmAgz3tk2XP0KZ5j~SazhqonlZRdAfQHBDSRNEH-tPzgEfEM"
+      },
+      "name" : "pkce-0038"
+    },
+    {
+      "expected" : {
+        "challenge" : "0gzGFqEeFwzcH_GiXoC7_uqAS13EgVlFMd_mVSEYCBo"
+      },
+      "input" : {
+        "verifier" : "K1axT-jXOHvxqTDA0hTL3C8_Nr50Pklm5zIXWc~uO.F1RKEmOAWk0EfwXZHIA.VC-.bdA7zDINj9NhyF1mu4L1ZGlipm8jLsh0~Dot6SHYfnDOb8GeeP0wxKFLPgY"
+      },
+      "name" : "pkce-0039"
+    },
+    {
+      "expected" : {
+        "challenge" : "nCZ5fAPe92gy3ioY7dEuQRhCqY6adb_iBKS6JZDCU4E"
+      },
+      "input" : {
+        "verifier" : "DueOsHu3Ryvd.ynohcDI1bijn6Ri0wHe9QrLn~MmAM2FqKJprDlcqZ2.2j5szBpH1WbEP5sFjz"
+      },
+      "name" : "pkce-0040"
+    },
+    {
+      "expected" : {
+        "challenge" : "VmBFMROPYUJ2mdCh9OusFnIcyfnbTITlf4na_rzEYtU"
+      },
+      "input" : {
+        "verifier" : "dQXL8f4ZGzr_JN_YZSPGCgKKcDDoeESNC79cqHn1bAS410S5fCTEZXTSbJL"
+      },
+      "name" : "pkce-0041"
+    },
+    {
+      "expected" : {
+        "challenge" : "-gpuW5GabNpMVyDuR3w-mYurNAb23fKXSv7Zc8FYZ8s"
+      },
+      "input" : {
+        "verifier" : "G3HAZXubkl.WxwtAFHQMahMfHJ05RKN4uRr8af81tZPNppaNN3JYd9UlFqIhRkB7iKJ-Sapq1Li53HCwdZkY9oOteDFzrxDiUy.L3~GI89k0_Gp0NKOHd3P42"
+      },
+      "name" : "pkce-0042"
+    },
+    {
+      "expected" : {
+        "challenge" : "WmwwzMaD1TbBX-VHRLUH9jou1zjes-_N3BRc-t-3ams"
+      },
+      "input" : {
+        "verifier" : "RF381TaZ-aK4zxMZkDHFYgs21dy~Grb-YNgo4lfzCnUZr49kBwX~k_9.KwLI_6_WBz8trpvFVs4bMzGO3KUzBI7YcddBVH.9k_p9vRidk"
+      },
+      "name" : "pkce-0043"
+    },
+    {
+      "expected" : {
+        "challenge" : "fW6WQbzjR6sOUDQR7qF7wKdmPtMdnoUEBZUTXEoO0LQ"
+      },
+      "input" : {
+        "verifier" : "4fn9O7_Ag5iVKNQYczUVRVQEkaxQp-gELow_CSzAdPxMgYpMhCWxSCCei9hp0kqlyFX4BZzOxt.TuHh32iNwMD50b-xmi1udk8G6fJ5gGcmzRwMyOu29JAgZIy"
+      },
+      "name" : "pkce-0044"
+    },
+    {
+      "expected" : {
+        "challenge" : "schQEJtyOoCU7Ly3-ZqAGKtyjD0SPcQZYsxJaAdyIPE"
+      },
+      "input" : {
+        "verifier" : "lif~oRMjJ8NyOf6Z_1i7yNaVnQPEfB8mYS7mnMhK8BjWPQz8Mg4~TkI2pRWJI7TEfqqCStESjnq6crNyzZeiVUx9CQRm6X7hWdedKjG~Zxm-xpL-~S7KuHFLDZvv"
+      },
+      "name" : "pkce-0045"
+    },
+    {
+      "expected" : {
+        "challenge" : "6g7Cl19XoNqJ_89MjLKZKe4RQGU6DFsbkqKbDUryA2o"
+      },
+      "input" : {
+        "verifier" : "fLdCWs0-zUbQJJVLQjvVt9Lo1NrDXkrE-MI3OIl8ek.CTJg4HyF1vmtDn1Ay"
+      },
+      "name" : "pkce-0046"
+    },
+    {
+      "expected" : {
+        "challenge" : "Ck9Dr1CwLFP9WiQNrFAYH1dkTfkxNkCTWKA8i79R65g"
+      },
+      "input" : {
+        "verifier" : "889njPgQN5ITRd.4aRMJgxagTZEAd6LQ.x6zM79uvh1mDdDjCwAIKWhVq9PBbjdvbnvKFHjZZm2"
+      },
+      "name" : "pkce-0047"
+    },
+    {
+      "expected" : {
+        "challenge" : "YrryEvCQeQju2jpJ24Q-sr9f0z1NoHSNWAGFRD_RO-U"
+      },
+      "input" : {
+        "verifier" : "sTt8p1vtajHmA3B-h2yoOdJj_NPVcQKxQJPsXBtspUoM6cSMmnNJLGZDjA1a8WkY-"
+      },
+      "name" : "pkce-0048"
+    },
+    {
+      "expected" : {
+        "challenge" : "DJ2jTjF5dh1mCc5hdWaRcztmusvsUHveCcYkXDc3AIw"
+      },
+      "input" : {
+        "verifier" : "b80OQvmZwavpisYN_c0mn2JEf.8E_TZMTKNjAWIfoT8oR5w~ijvc2EP5hO7_SuXfiNa40rid8bk1RTdV_y"
+      },
+      "name" : "pkce-0049"
+    },
+    {
+      "expected" : {
+        "challenge" : "T2ng_cqq599OMBTM6qdMlq8iVaTPuqNX22SZEs9LOXo"
+      },
+      "input" : {
+        "verifier" : "8T5VJjrsh6fie2.6F.IOOlkotWo9c2LJgmNZ1IYHGXXIv9rWuCwnclyfhiWnStuv9PQvKWJPIm6amcoTqsLCKOAau4VWI9EcECQ1ulA8"
+      },
+      "name" : "pkce-0050"
+    }
+  ],
+  "schema" : 1
+}

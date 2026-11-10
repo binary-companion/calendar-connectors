@@ -1,0 +1,6248 @@
+{
+  "area" : "core/conference",
+  "baseline" : "1.2.0",
+  "cases" : [
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+      },
+      "name" : "conference-provider-0001"
+    },
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://zoom.us/j/1"
+      },
+      "name" : "conference-provider-0002"
+    },
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "name" : "conference-provider-0003"
+    },
+    {
+      "expected" : {
+        "provider" : "meet"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://meet.google.com/abc-defg-hij"
+      },
+      "name" : "conference-provider-0004"
+    },
+    {
+      "expected" : {
+        "provider" : "teams"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+      },
+      "name" : "conference-provider-0005"
+    },
+    {
+      "expected" : {
+        "provider" : "teams"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://teams.live.com/meet/1"
+      },
+      "name" : "conference-provider-0006"
+    },
+    {
+      "expected" : {
+        "provider" : "webex"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "name" : "conference-provider-0007"
+    },
+    {
+      "expected" : {
+        "provider" : "webex"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-provider-0008"
+    },
+    {
+      "expected" : {
+        "provider" : "goToMeeting"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://gotomeet.me/x"
+      },
+      "name" : "conference-provider-0009"
+    },
+    {
+      "expected" : {
+        "provider" : "goToMeeting"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "name" : "conference-provider-0010"
+    },
+    {
+      "expected" : {
+        "provider" : "whereby"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://whereby.com/room"
+      },
+      "name" : "conference-provider-0011"
+    },
+    {
+      "expected" : {
+        "provider" : "jitsi"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://meet.jit.si/room"
+      },
+      "name" : "conference-provider-0012"
+    },
+    {
+      "expected" : {
+        "provider" : "slack"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "name" : "conference-provider-0013"
+    },
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "zoommtg://zoom.us/join?confno=123"
+      },
+      "name" : "conference-provider-0014"
+    },
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "zoommtg://acme.zoom.us/join"
+      },
+      "name" : "conference-provider-0015"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://docs.google.com/document/d/abc"
+      },
+      "name" : "conference-provider-0016"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-provider-0017"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://app.slack.com/client/T1/C1"
+      },
+      "name" : "conference-provider-0018"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://app.slack.com/huddlefoo/x"
+      },
+      "name" : "conference-provider-0019"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://zoom.us.evil.example/j/1"
+      },
+      "name" : "conference-provider-0020"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://evilzoom.us/j/1"
+      },
+      "name" : "conference-provider-0021"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://notmeet.google.com.example/abc"
+      },
+      "name" : "conference-provider-0022"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "zoommtg://evil.com/join?confno=1"
+      },
+      "name" : "conference-provider-0023"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "zoommtg://zoom.us.evil.example/j/1"
+      },
+      "name" : "conference-provider-0024"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://www.google.com/calendar/event?eid=abc123"
+      },
+      "name" : "conference-provider-0025"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://calendar.google.com/calendar/u/0/r/eventedit/abc123"
+      },
+      "name" : "conference-provider-0026"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://evilsafelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fa-b-c"
+      },
+      "name" : "conference-provider-0027"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "ftp://acme.zoom.us/j/1"
+      },
+      "name" : "conference-provider-0028"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://example.com/zoom.us/j/1"
+      },
+      "name" : "conference-provider-0029"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "file:///tmp/payload"
+      },
+      "name" : "conference-provider-0030"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "javascript:alert(1)"
+      },
+      "name" : "conference-provider-0031"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "data:text/html,hello"
+      },
+      "name" : "conference-provider-0032"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "custom://example.com/run"
+      },
+      "name" : "conference-provider-0033"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://user:pass@example.com/meeting"
+      },
+      "name" : "conference-provider-0034"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https:///missing-host"
+      },
+      "name" : "conference-provider-0035"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTP://example.com/meeting"
+      },
+      "name" : "conference-provider-0036"
+    },
+    {
+      "expected" : {
+        "provider" : "meet"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTPS://MEET.GOOGLE.COM/abc-defg-hij"
+      },
+      "name" : "conference-provider-0037"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "http://localhost:8080/"
+      },
+      "name" : "conference-provider-0038"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "mailto:a@example.test"
+      },
+      "name" : "conference-provider-0039"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "tel:+15555550100"
+      },
+      "name" : "conference-provider-0040"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://user@example.com/"
+      },
+      "name" : "conference-provider-0041"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "zoommtg://user@zoom.us/join"
+      },
+      "name" : "conference-provider-0042"
+    },
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "ZOOMMTG://ZOOM.US/join"
+      },
+      "name" : "conference-provider-0043"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://[::1]/x"
+      },
+      "name" : "conference-provider-0044"
+    },
+    {
+      "expected" : {
+        "provider" : null
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://127.0.0.1/x"
+      },
+      "name" : "conference-provider-0045"
+    },
+    {
+      "expected" : {
+        "provider" : "webex"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://x-y.webex.com/meet/x"
+      },
+      "name" : "conference-provider-0046"
+    },
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://x-y.zoom.us/j/123456789?pwd=abc"
+      },
+      "name" : "conference-provider-0047"
+    },
+    {
+      "expected" : {
+        "provider" : "webex"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://x-y.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-provider-0048"
+    },
+    {
+      "expected" : {
+        "provider" : "meet"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTPS://MEET.GOOGLE.COM/ABC-DEFG-HIJ"
+      },
+      "name" : "conference-provider-0049"
+    },
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "ZOOMMTG://ZOOM.US/JOIN?CONFNO=123"
+      },
+      "name" : "conference-provider-0050"
+    },
+    {
+      "expected" : {
+        "provider" : "goToMeeting"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1"
+      },
+      "name" : "conference-provider-0051"
+    },
+    {
+      "expected" : {
+        "provider" : "webex"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTPS://ACME.WEBEX.COM/MEET/X"
+      },
+      "name" : "conference-provider-0052"
+    },
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "ZOOMMTG://ZOOM.US/JOIN?CONFNO=123"
+      },
+      "name" : "conference-provider-0053"
+    },
+    {
+      "expected" : {
+        "provider" : "webex"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTPS://ACME.WEBEX.COM/ACME/J.PHP?MTID=M111"
+      },
+      "name" : "conference-provider-0054"
+    },
+    {
+      "expected" : {
+        "provider" : "whereby"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTPS://WHEREBY.COM/ROOM"
+      },
+      "name" : "conference-provider-0055"
+    },
+    {
+      "expected" : {
+        "provider" : "teams"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTPS://TEAMS.MICROSOFT.COM/L/MEETUP-JOIN/19%3AMEETING?A=1&B=2"
+      },
+      "name" : "conference-provider-0056"
+    },
+    {
+      "expected" : {
+        "provider" : "jitsi"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTPS://MEET.JIT.SI/ROOM"
+      },
+      "name" : "conference-provider-0057"
+    },
+    {
+      "expected" : {
+        "provider" : "webex"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "HTTPS://ACME.WEBEX.COM/MEET/X"
+      },
+      "name" : "conference-provider-0058"
+    },
+    {
+      "expected" : {
+        "provider" : "teams"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+      },
+      "name" : "conference-provider-0059"
+    },
+    {
+      "expected" : {
+        "provider" : "zoom"
+      },
+      "input" : {
+        "fn" : "provider",
+        "url" : "zoommtg://zoom.us/join?confno=123"
+      },
+      "name" : "conference-provider-0060"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+      },
+      "name" : "conference-isAllowed-0061"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://zoom.us/j/1"
+      },
+      "name" : "conference-isAllowed-0062"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "name" : "conference-isAllowed-0063"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://meet.google.com/abc-defg-hij"
+      },
+      "name" : "conference-isAllowed-0064"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+      },
+      "name" : "conference-isAllowed-0065"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://teams.live.com/meet/1"
+      },
+      "name" : "conference-isAllowed-0066"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "name" : "conference-isAllowed-0067"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-isAllowed-0068"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://gotomeet.me/x"
+      },
+      "name" : "conference-isAllowed-0069"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "name" : "conference-isAllowed-0070"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://whereby.com/room"
+      },
+      "name" : "conference-isAllowed-0071"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://meet.jit.si/room"
+      },
+      "name" : "conference-isAllowed-0072"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "name" : "conference-isAllowed-0073"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "zoommtg://zoom.us/join?confno=123"
+      },
+      "name" : "conference-isAllowed-0074"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "zoommtg://acme.zoom.us/join"
+      },
+      "name" : "conference-isAllowed-0075"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://docs.google.com/document/d/abc"
+      },
+      "name" : "conference-isAllowed-0076"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-isAllowed-0077"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://app.slack.com/client/T1/C1"
+      },
+      "name" : "conference-isAllowed-0078"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://app.slack.com/huddlefoo/x"
+      },
+      "name" : "conference-isAllowed-0079"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://zoom.us.evil.example/j/1"
+      },
+      "name" : "conference-isAllowed-0080"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://evilzoom.us/j/1"
+      },
+      "name" : "conference-isAllowed-0081"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://notmeet.google.com.example/abc"
+      },
+      "name" : "conference-isAllowed-0082"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "zoommtg://evil.com/join?confno=1"
+      },
+      "name" : "conference-isAllowed-0083"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "zoommtg://zoom.us.evil.example/j/1"
+      },
+      "name" : "conference-isAllowed-0084"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://www.google.com/calendar/event?eid=abc123"
+      },
+      "name" : "conference-isAllowed-0085"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://calendar.google.com/calendar/u/0/r/eventedit/abc123"
+      },
+      "name" : "conference-isAllowed-0086"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://evilsafelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fa-b-c"
+      },
+      "name" : "conference-isAllowed-0087"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "ftp://acme.zoom.us/j/1"
+      },
+      "name" : "conference-isAllowed-0088"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://example.com/zoom.us/j/1"
+      },
+      "name" : "conference-isAllowed-0089"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "file:///tmp/payload"
+      },
+      "name" : "conference-isAllowed-0090"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "javascript:alert(1)"
+      },
+      "name" : "conference-isAllowed-0091"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "data:text/html,hello"
+      },
+      "name" : "conference-isAllowed-0092"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "custom://example.com/run"
+      },
+      "name" : "conference-isAllowed-0093"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://user:pass@example.com/meeting"
+      },
+      "name" : "conference-isAllowed-0094"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https:///missing-host"
+      },
+      "name" : "conference-isAllowed-0095"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTP://example.com/meeting"
+      },
+      "name" : "conference-isAllowed-0096"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://MEET.GOOGLE.COM/abc-defg-hij"
+      },
+      "name" : "conference-isAllowed-0097"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "http://localhost:8080/"
+      },
+      "name" : "conference-isAllowed-0098"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "mailto:a@example.test"
+      },
+      "name" : "conference-isAllowed-0099"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "tel:+15555550100"
+      },
+      "name" : "conference-isAllowed-0100"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://user@example.com/"
+      },
+      "name" : "conference-isAllowed-0101"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "zoommtg://user@zoom.us/join"
+      },
+      "name" : "conference-isAllowed-0102"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "ZOOMMTG://ZOOM.US/join"
+      },
+      "name" : "conference-isAllowed-0103"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://[::1]/x"
+      },
+      "name" : "conference-isAllowed-0104"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://127.0.0.1/x"
+      },
+      "name" : "conference-isAllowed-0105"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "ftp://acme.zoom.us/j/1?q=1"
+      },
+      "name" : "conference-isAllowed-0106"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://user:pass@example.com/meeting/extra"
+      },
+      "name" : "conference-isAllowed-0107"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://MEET.GOOGLE.COM/ABC-DEFG-HIJ"
+      },
+      "name" : "conference-isAllowed-0108"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2#frag"
+      },
+      "name" : "conference-isAllowed-0109"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://user:pass@example.com/meeting#frag"
+      },
+      "name" : "conference-isAllowed-0110"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "data:text/html,hello"
+      },
+      "name" : "conference-isAllowed-0111"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111?q=1"
+      },
+      "name" : "conference-isAllowed-0112"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+      },
+      "name" : "conference-isAllowed-0113"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTP://LOCALHOST:8080/"
+      },
+      "name" : "conference-isAllowed-0114"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://acme.zoom.us/j/123456789?pwd=abc#frag"
+      },
+      "name" : "conference-isAllowed-0115"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://example.com/meeting/42?q=1"
+      },
+      "name" : "conference-isAllowed-0116"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://evilzoom.us/j/1?q=1"
+      },
+      "name" : "conference-isAllowed-0117"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "mailto:a@example.test?q=1"
+      },
+      "name" : "conference-isAllowed-0118"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-isAllowed-0119"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "zoommtg://zoom.us.evil.example/j/1"
+      },
+      "name" : "conference-isAllowed-0120"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://TEAMS.LIVE.COM/MEET/1"
+      },
+      "name" : "conference-isAllowed-0121"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://user@example.com//extra"
+      },
+      "name" : "conference-isAllowed-0122"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://MEET.GOOGLE.COM/ABC-DEFG-HIJ"
+      },
+      "name" : "conference-isAllowed-0123"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "mailto:a@example.test"
+      },
+      "name" : "conference-isAllowed-0124"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "javascript:alert(1)"
+      },
+      "name" : "conference-isAllowed-0125"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://127.0.0.1/x"
+      },
+      "name" : "conference-isAllowed-0126"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "zoommtg://user@zoom.us/join"
+      },
+      "name" : "conference-isAllowed-0127"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "ftp://acme.zoom.us/j/1/extra"
+      },
+      "name" : "conference-isAllowed-0128"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://USER@EXAMPLE.COM/"
+      },
+      "name" : "conference-isAllowed-0129"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://127.0.0.1/x"
+      },
+      "name" : "conference-isAllowed-0130"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "name" : "conference-isAllowed-0131"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://example.com/zoom.us/j/1"
+      },
+      "name" : "conference-isAllowed-0132"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "file:///tmp/payload/extra"
+      },
+      "name" : "conference-isAllowed-0133"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://[::1]/X"
+      },
+      "name" : "conference-isAllowed-0134"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "http://localhost:8080/"
+      },
+      "name" : "conference-isAllowed-0135"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://calendar.google.com/calendar/u/0/r/eventedit/abc123"
+      },
+      "name" : "conference-isAllowed-0136"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://ACME.WEBEX.COM/ACME/J.PHP?MTID=M111"
+      },
+      "name" : "conference-isAllowed-0137"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://EXAMPLE.COM/MEETING/42"
+      },
+      "name" : "conference-isAllowed-0138"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://u:p@teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+      },
+      "name" : "conference-isAllowed-0139"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://meet.jit.si/room?q=1"
+      },
+      "name" : "conference-isAllowed-0140"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "zoommtg://evil.com/join?confno=1"
+      },
+      "name" : "conference-isAllowed-0141"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://user@example.com/"
+      },
+      "name" : "conference-isAllowed-0142"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "zoommtg://zoom.us/join?confno=123#frag"
+      },
+      "name" : "conference-isAllowed-0143"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://u:p@example.com/zoom.us/j/1"
+      },
+      "name" : "conference-isAllowed-0144"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://US02WEB.ZOOM.COM/J/42"
+      },
+      "name" : "conference-isAllowed-0145"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://whereby.com/room"
+      },
+      "name" : "conference-isAllowed-0146"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://example.com/zoom.us/j/1?q=1"
+      },
+      "name" : "conference-isAllowed-0147"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2/extra"
+      },
+      "name" : "conference-isAllowed-0148"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://meet.google.com/abc-defg-hij?q=1"
+      },
+      "name" : "conference-isAllowed-0149"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "name" : "conference-isAllowed-0150"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://evilsafelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fa-b-c?q=1"
+      },
+      "name" : "conference-isAllowed-0151"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://notmeet.google.com.example/abc#frag"
+      },
+      "name" : "conference-isAllowed-0152"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://[::1]/x?q=1"
+      },
+      "name" : "conference-isAllowed-0153"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://evilzoom.us/j/1?q=1"
+      },
+      "name" : "conference-isAllowed-0154"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://US02WEB.ZOOM.COM/J/42"
+      },
+      "name" : "conference-isAllowed-0155"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://zoom.us/j/1/extra"
+      },
+      "name" : "conference-isAllowed-0156"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "mailto:a@example.test/extra"
+      },
+      "name" : "conference-isAllowed-0157"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "custom://example.com/run#frag"
+      },
+      "name" : "conference-isAllowed-0158"
+    },
+    {
+      "expected" : {
+        "allowed" : true
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "HTTPS://MEET.GOOGLE.COM/abc-defg-hij"
+      },
+      "name" : "conference-isAllowed-0159"
+    },
+    {
+      "expected" : {
+        "allowed" : false
+      },
+      "input" : {
+        "fn" : "isAllowed",
+        "url" : "https://u:p@acme.zoom.us/j/123456789?pwd=abc"
+      },
+      "name" : "conference-isAllowed-0160"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "https://acme.zoom.us/j/123456789?pwd=abc",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0161"
+    },
+    {
+      "expected" : {
+        "url" : "https://meet.google.com/abc-defg-hij"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Join: https://meet.google.com/abc-defg-hij.",
+        "url" : null
+      },
+      "name" : "conference-detect-0162"
+    },
+    {
+      "expected" : {
+        "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "<p><a href=\"https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&amp;b=2\">Join</a></p>",
+        "url" : null
+      },
+      "name" : "conference-detect-0163"
+    },
+    {
+      "expected" : {
+        "url" : "https://teams.microsoft.com/l/meetup-join/0"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Click https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fteams.microsoft.com%2Fl%2Fmeetup-join%2F0&data=05 now",
+        "url" : null
+      },
+      "name" : "conference-detect-0164"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.zoom.us/j/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://www.google.com/url?q=https://acme.zoom.us/j/1&sa=D",
+        "url" : null
+      },
+      "name" : "conference-detect-0165"
+    },
+    {
+      "expected" : {
+        "url" : "zoommtg://zoom.us/join?confno=123"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "zoommtg://zoom.us/join?confno=123",
+        "url" : null
+      },
+      "name" : "conference-detect-0166"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Agenda: https://docs.google.com/document/d/abc",
+        "url" : null
+      },
+      "name" : "conference-detect-0167"
+    },
+    {
+      "expected" : {
+        "url" : "https://meet.google.com/aaa-bbbb-ccc"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "https://meet.google.com/aaa-bbbb-ccc",
+        "notes" : "https://acme.zoom.us/j/1",
+        "url" : null
+      },
+      "name" : "conference-detect-0168"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.zoom.us/j/9"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Doc https://docs.google.com/x then https://acme.zoom.us/j/9",
+        "url" : null
+      },
+      "name" : "conference-detect-0169"
+    },
+    {
+      "expected" : {
+        "url" : "https://example.com/meeting/42"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : null,
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-detect-0170"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : null,
+        "url" : "https://www.google.com/calendar/event?eid=abc123"
+      },
+      "name" : "conference-detect-0171"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : null,
+        "url" : "https://calendar.google.com/calendar/u/0/r/eventedit/abc123"
+      },
+      "name" : "conference-detect-0172"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.zoom.us/j/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : null,
+        "url" : "https://www.google.com/url?q=https://acme.zoom.us/j/1&sa=D"
+      },
+      "name" : "conference-detect-0173"
+    },
+    {
+      "expected" : {
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://app.slack.com/huddle/T1/C1",
+        "url" : null
+      },
+      "name" : "conference-detect-0174"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://app.slack.com/client/T1/C1",
+        "url" : null
+      },
+      "name" : "conference-detect-0175"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "Bring laptop",
+        "url" : null
+      },
+      "name" : "conference-detect-0176"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "zoommtg://evil.com/join?confno=1",
+        "url" : null
+      },
+      "name" : "conference-detect-0177"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://evilsafelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fa-b-c",
+        "url" : null
+      },
+      "name" : "conference-detect-0178"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://app.slack.com/huddlefoo/x",
+        "url" : null
+      },
+      "name" : "conference-detect-0179"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://MEET.GOOGLE.COM/abc-defg-hij"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "HTTPS://MEET.GOOGLE.COM/abc-defg-hij",
+        "url" : null
+      },
+      "name" : "conference-detect-0180"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0181"
+    },
+    {
+      "expected" : {
+        "url" : "https://meet.google.com/abc-defg-hij"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "a https://www.google.com/url?url=https%3A%2F%2Fmeet.google.com%2Fabc-defg-hij&sa=D b zoommtg://zoom.us/join?confno=123 c",
+        "url" : null
+      },
+      "name" : "conference-detect-0182"
+    },
+    {
+      "expected" : {
+        "url" : "https://gotomeet.me/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "a https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fgotomeet.me%252Fx b https://acme.webex.com/meet/x c",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0183"
+    },
+    {
+      "expected" : {
+        "url" : "zoommtg://acme.zoom.us/join"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "<p>https://www.google.com/url?url=zoommtg%3A%2F%2Facme.zoom.us%2Fjoin&sa=D</p>",
+        "url" : null
+      },
+      "name" : "conference-detect-0184"
+    },
+    {
+      "expected" : {
+        "url" : "https://teams.live.com/meet/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "<p><a href=\"https://teams.live.com/meet/1\">Join</a></p>",
+        "url" : null
+      },
+      "name" : "conference-detect-0185"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "Meeting at https://acme.webex.com/meet/x, today.",
+        "url" : null
+      },
+      "name" : "conference-detect-0186"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "<p>https://nam02.safelinks.protection.outlook.com/?url=zoommtg%3A%2F%2Facme.zoom.us%2Fjoin&data=05%7C01</p>",
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "name" : "conference-detect-0187"
+    },
+    {
+      "expected" : {
+        "url" : "zoommtg://zoom.us/join?confno=123"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "Meeting at <a href=\"https://meet.google.com/abc-defg-hij\">Join</a> today.",
+        "url" : "zoommtg://zoom.us/join?confno=123"
+      },
+      "name" : "conference-detect-0188"
+    },
+    {
+      "expected" : {
+        "url" : "https://meet.google.com/abc-defg-hij"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Join: https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fmeet.google.com%252Fabc-defg-hij",
+        "url" : null
+      },
+      "name" : "conference-detect-0189"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Facme.webex.com%2Fmeet%2Fx&data=05%7C01\nfor details",
+        "url" : null
+      },
+      "name" : "conference-detect-0190"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Meeting at https://notmeet.google.com.example/abc today.",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0191"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://US02WEB.ZOOM.COM/J/42"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Join: HTTPS://US02WEB.ZOOM.COM/J/42",
+        "url" : null
+      },
+      "name" : "conference-detect-0192"
+    },
+    {
+      "expected" : {
+        "url" : "https://teams.live.com/meet/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://www.google.com/url?url=https%3A%2F%2Fteams.live.com%2Fmeet%2F1&sa=D",
+        "url" : null
+      },
+      "name" : "conference-detect-0193"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1",
+        "url" : "zoommtg://evil.com/join?confno=1"
+      },
+      "name" : "conference-detect-0194"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://ACME.ZOOM.US/J/123456789?PWD=ABC"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Meeting at HTTPS://ACME.ZOOM.US/J/123456789?PWD=ABC today.",
+        "url" : null
+      },
+      "name" : "conference-detect-0195"
+    },
+    {
+      "expected" : {
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Meeting at https://www.google.com/url?url=https%3A%2F%2Fus02web.zoom.com%2Fj%2F42&sa=D today.",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0196"
+    },
+    {
+      "expected" : {
+        "url" : "https://gotomeet.me/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "https://gotomeet.me/x",
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-detect-0197"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "see\n(https://acme.webex.com/meet/x)\nfor details",
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "name" : "conference-detect-0198"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "see\nhttps://zoom.us.evil.example/j/1\nfor details",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0199"
+    },
+    {
+      "expected" : {
+        "url" : "zoommtg://acme.zoom.us/join"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Meeting at https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fglobal.gotomeeting.com%2Fjoin%2F1&data=05%7C01 today.",
+        "url" : "zoommtg://acme.zoom.us/join"
+      },
+      "name" : "conference-detect-0200"
+    },
+    {
+      "expected" : {
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "<p><a href=\"https://global.gotomeeting.com/join/1\">Join</a></p>",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0201"
+    },
+    {
+      "expected" : {
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "https://www.google.com/url?url=https%3A%2F%2Fglobal.gotomeeting.com%2Fjoin%2F1&sa=D",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0202"
+    },
+    {
+      "expected" : {
+        "url" : "https://zoom.us/j/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Meeting at <a href=\"https://zoom.us/j/1\">Join</a> today.",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0203"
+    },
+    {
+      "expected" : {
+        "url" : "https://whereby.com/room"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fapp.slack.com%2Fhuddlefoo%2Fx&data=05%7C01\nfor details",
+        "url" : "https://whereby.com/room"
+      },
+      "name" : "conference-detect-0204"
+    },
+    {
+      "expected" : {
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fus02web.zoom.com%2Fj%2F42&data=05%7C01",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0205"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://US02WEB.ZOOM.COM/J/42"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Meeting at HTTPS://US02WEB.ZOOM.COM/J/42 today.",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0206"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://US02WEB.ZOOM.COM/J/42"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "HTTPS://US02WEB.ZOOM.COM/J/42 is the room",
+        "url" : null
+      },
+      "name" : "conference-detect-0207"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fapp.slack.com%2Fhuddlefoo%2Fx&data=05%7C01\nfor details",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0208"
+    },
+    {
+      "expected" : {
+        "url" : "https://meet.google.com/abc-defg-hij"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Join: <a href=\"https://meet.google.com/abc-defg-hij\">Join</a>",
+        "url" : null
+      },
+      "name" : "conference-detect-0209"
+    },
+    {
+      "expected" : {
+        "url" : "https://whereby.com/room"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "a https://whereby.com/room) b https://global.gotomeeting.com/join/1 c",
+        "url" : null
+      },
+      "name" : "conference-detect-0210"
+    },
+    {
+      "expected" : {
+        "url" : "https://meet.jit.si/room"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "<p>(https://meet.jit.si/room)</p>",
+        "url" : null
+      },
+      "name" : "conference-detect-0211"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dzoommtg%253A%252F%252Fevil.com%252Fjoin%253Fconfno%253D1 is the room",
+        "url" : null
+      },
+      "name" : "conference-detect-0212"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://example.com/zoom.us/j/1",
+        "url" : "zoommtg://zoom.us.evil.example/j/1"
+      },
+      "name" : "conference-detect-0213"
+    },
+    {
+      "expected" : {
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "<p>https://docs.google.com/document/d/abc</p>",
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "name" : "conference-detect-0214"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Meeting at https://acme.webex.com/acme/j.php?MTID=m111 today.",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0215"
+    },
+    {
+      "expected" : {
+        "url" : "https://zoom.us/j/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "a https://zoom.us/j/1 b https://gotomeet.me/x c",
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-detect-0216"
+    },
+    {
+      "expected" : {
+        "url" : "https://teams.live.com/meet/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "a https://teams.live.com/meet/1.) b https://whereby.com/room c",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0217"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "<p><a href=\"https://app.slack.com/huddlefoo/x\">Join</a></p>",
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-detect-0218"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Join: <a href=\"https://example.com/meeting/42\">Join</a>",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0219"
+    },
+    {
+      "expected" : {
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://www.google.com/url?q=https://global.gotomeeting.com/join/1&sa=D is the room",
+        "url" : null
+      },
+      "name" : "conference-detect-0220"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Meeting at zoommtg://zoom.us.evil.example/j/1! today.",
+        "url" : null
+      },
+      "name" : "conference-detect-0221"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.google.com%2Fcalendar%2Fevent%3Feid%3Dabc123&data=05%7C01\nfor details",
+        "url" : null
+      },
+      "name" : "conference-detect-0222"
+    },
+    {
+      "expected" : {
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "<a href=\"https://us02web.zoom.com/j/42\">Join</a> is the room",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0223"
+    },
+    {
+      "expected" : {
+        "url" : "https://teams.live.com/meet/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Join: https://teams.live.com/meet/1]",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0224"
+    },
+    {
+      "expected" : {
+        "url" : "https://zoom.us/j/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "(https://zoom.us/j/1)",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0225"
+    },
+    {
+      "expected" : {
+        "url" : "https://gotomeet.me/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgotomeet.me%2Fx&data=05%7C01 is the room",
+        "url" : "ftp://acme.zoom.us/j/1"
+      },
+      "name" : "conference-detect-0226"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "see\n<a href=\"https://www.google.com/calendar/event?eid=abc123\">Join</a>\nfor details",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0227"
+    },
+    {
+      "expected" : {
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "<p>https://www.google.com/url?q=https://us02web.zoom.com/j/42&sa=D</p>",
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-detect-0228"
+    },
+    {
+      "expected" : {
+        "url" : "https://meet.google.com/abc-defg-hij"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Meeting at https://meet.google.com/abc-defg-hij? today.",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0229"
+    },
+    {
+      "expected" : {
+        "url" : "zoommtg://acme.zoom.us/join"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dzoommtg%253A%252F%252Fevil.com%252Fjoin%253Fconfno%253D1 is the room",
+        "url" : "zoommtg://acme.zoom.us/join"
+      },
+      "name" : "conference-detect-0230"
+    },
+    {
+      "expected" : {
+        "url" : "https://zoom.us.evil.example/j/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "Meeting at <a href=\"https://evilzoom.us/j/1\">Join</a> today.",
+        "url" : "https://zoom.us.evil.example/j/1"
+      },
+      "name" : "conference-detect-0231"
+    },
+    {
+      "expected" : {
+        "url" : "https://meet.jit.si/room"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fmeet.jit.si%252Froom",
+        "url" : null
+      },
+      "name" : "conference-detect-0232"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1 is the room",
+        "url" : null
+      },
+      "name" : "conference-detect-0233"
+    },
+    {
+      "expected" : {
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "https://us02web.zoom.com/j/42 is the room",
+        "url" : null
+      },
+      "name" : "conference-detect-0234"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "Meeting at https://www.google.com/url?q=https://acme.webex.com/acme/j.php?MTID=m111&sa=D today.",
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-detect-0235"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://ACME.WEBEX.COM/ACME/J.PHP?MTID=M111"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Meeting at HTTPS://ACME.WEBEX.COM/ACME/J.PHP?MTID=M111 today.",
+        "url" : null
+      },
+      "name" : "conference-detect-0236"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Meeting at https://app.slack.com/client/T1/C1 today.",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0237"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Join: https://www.google.com/url?url=https%3A%2F%2Facme.webex.com%2Facme%2Fj.php%3FMTID%3Dm111&sa=D",
+        "url" : null
+      },
+      "name" : "conference-detect-0238"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fwww.google.com%252Fcalendar%252Fevent%253Feid%253Dabc123\nfor details",
+        "url" : "ftp://acme.zoom.us/j/1"
+      },
+      "name" : "conference-detect-0239"
+    },
+    {
+      "expected" : {
+        "url" : "https://gotomeet.me/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1 is the room",
+        "url" : "https://gotomeet.me/x"
+      },
+      "name" : "conference-detect-0240"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "see\nhttps://www.google.com/url?q=https://evilzoom.us/j/1&sa=D\nfor details",
+        "url" : null
+      },
+      "name" : "conference-detect-0241"
+    },
+    {
+      "expected" : {
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "(https://global.gotomeeting.com/join/1) is the room",
+        "url" : null
+      },
+      "name" : "conference-detect-0242"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "zoommtg://zoom.us.evil.example/j/1 is the room",
+        "url" : "https://calendar.google.com/calendar/u/0/r/eventedit/abc123"
+      },
+      "name" : "conference-detect-0243"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "a <a href=\"https://acme.webex.com/meet/x\">Join</a> b https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2 c",
+        "url" : null
+      },
+      "name" : "conference-detect-0244"
+    },
+    {
+      "expected" : {
+        "url" : "https://evilzoom.us/j/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "see\nhttps://evilsafelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fa-b-c\nfor details",
+        "url" : "https://evilzoom.us/j/1"
+      },
+      "name" : "conference-detect-0245"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fexample.com%252Fmeeting%252F42",
+        "url" : null
+      },
+      "name" : "conference-detect-0246"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://MEET.JIT.SI/ROOM"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "HTTPS://MEET.JIT.SI/ROOM",
+        "url" : null
+      },
+      "name" : "conference-detect-0247"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "https://www.google.com/url?url=https%3A%2F%2Fexample.com%2Fmeeting%2F42&sa=D",
+        "url" : null
+      },
+      "name" : "conference-detect-0248"
+    },
+    {
+      "expected" : {
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "a https://app.slack.com/huddle/T1/C1 b https://acme.webex.com/meet/x c",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0249"
+    },
+    {
+      "expected" : {
+        "url" : "https://teams.live.com/meet/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "a https://teams.live.com/meet/1 b https://acme.webex.com/meet/x c",
+        "url" : null
+      },
+      "name" : "conference-detect-0250"
+    },
+    {
+      "expected" : {
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Meeting at https://global.gotomeeting.com/join/1! today.",
+        "url" : null
+      },
+      "name" : "conference-detect-0251"
+    },
+    {
+      "expected" : {
+        "url" : "https://teams.live.com/meet/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fteams.live.com%2Fmeet%2F1&data=05%7C01\nfor details",
+        "url" : null
+      },
+      "name" : "conference-detect-0252"
+    },
+    {
+      "expected" : {
+        "url" : "https://zoom.us/j/1"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "<p>https://zoom.us/j/1)</p>",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0253"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "Join: <a href=\"https://acme.webex.com/meet/x\">Join</a>",
+        "url" : null
+      },
+      "name" : "conference-detect-0254"
+    },
+    {
+      "expected" : {
+        "url" : "HTTPS://MEET.GOOGLE.COM/ABC-DEFG-HIJ"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "see\nHTTPS://MEET.GOOGLE.COM/ABC-DEFG-HIJ\nfor details",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0255"
+    },
+    {
+      "expected" : {
+        "url" : "https://meet.google.com/abc-defg-hij"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : null,
+        "notes" : "a https://www.google.com/url?q=https://meet.google.com/abc-defg-hij&sa=D b https://zoom.us/j/1 c",
+        "url" : null
+      },
+      "name" : "conference-detect-0256"
+    },
+    {
+      "expected" : {
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "a https://www.google.com/url?q=https://notmeet.google.com.example/abc&sa=D b https://acme.webex.com/meet/x c",
+        "url" : "https://evilsafelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fa-b-c"
+      },
+      "name" : "conference-detect-0257"
+    },
+    {
+      "expected" : {
+        "url" : null
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "https://docs.google.com/document/d/abc",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0258"
+    },
+    {
+      "expected" : {
+        "url" : "https://gotomeet.me/x"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "https://gotomeet.me/x is the room",
+        "notes" : null,
+        "url" : null
+      },
+      "name" : "conference-detect-0259"
+    },
+    {
+      "expected" : {
+        "url" : "https://whereby.com/room"
+      },
+      "input" : {
+        "fn" : "detect",
+        "location" : "Room 4",
+        "notes" : "<a href=\"https://app.slack.com/huddlefoo/x\">Join</a> is the room",
+        "url" : "https://whereby.com/room"
+      },
+      "name" : "conference-detect-0260"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/aaa-bbbb-ccc"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/9"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "https://meet.google.com/aaa-bbbb-ccc",
+        "notes" : "or https://acme.zoom.us/j/9 and https://acme.webex.com/meet/x",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0261"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/9"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "https://acme.zoom.us/j/9",
+        "notes" : "https://ACME.zoom.us/j/9/ again",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0262"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/aaa-bbbb-ccc"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://acme.zoom.us/j/1 and https://meet.google.com/aaa-bbbb-ccc",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/1"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0263"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "eventURL",
+            "provider" : "other",
+            "url" : "https://example.com/meeting/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-conferences-0264"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/aaa-bbbb-ccc"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://meet.google.com/aaa-bbbb-ccc",
+        "structured" : [
+
+        ],
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-conferences-0265"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "https://acme.zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0266"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://meet.google.com/abc",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "zoom",
+            "url" : "file:///tmp/payload"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0267"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          },
+          {
+            "origin" : "structured",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m222"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          },
+          {
+            "origin" : "structured",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m222"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0268"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m222"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://acme.webex.com/acme/j.php?MTID=m111 https://acme.webex.com/acme/j.php?MTID=m222",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0269"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0270"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "",
+        "notes" : "",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0271"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nhttps://www.google.com/url?q=zoommtg://evil.com/join?confno=1&sa=D\nfor details",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0272"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "<p>https://evilsafelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fa-b-c</p>",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0273"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0274"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "HTTPS://ZOOM.US/J/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "HTTPS://ZOOM.US/J/1 is the room",
+        "structured" : [
+
+        ],
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "name" : "conference-conferences-0275"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dzoommtg%253A%252F%252Fzoom.us.evil.example%252Fj%252F1",
+        "notes" : "Meeting at HTTPS://APP.SLACK.COM/HUDDLE/T1/C1 today.",
+        "structured" : [
+
+        ],
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "name" : "conference-conferences-0276"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://zoom.us/join?confno=123"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "see\nzoommtg://zoom.us/join?confno=123;\nfor details",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0277"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "HTTPS://GOTOMEET.ME/X"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at zoommtg://evil.com/join?confno=1 today.",
+        "notes" : "see\nHTTPS://GOTOMEET.ME/X\nfor details",
+        "structured" : [
+
+        ],
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-conferences-0278"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          },
+          {
+            "origin" : "location",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "location",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "a https://whereby.com/room b https://acme.webex.com/meet/x c",
+        "notes" : null,
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0279"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "teams",
+            "url" : "https://teams.live.com/meet/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<a href=\"https://calendar.google.com/calendar/u/0/r/eventedit/abc123\">Join</a>",
+        "notes" : "a https://www.google.com/url?url=https%3A%2F%2Fapp.slack.com%2Fhuddle%2FT1%2FC1&sa=D b https://teams.live.com/meet/1 c",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0280"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0281"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Join: https://www.google.com/url?q=https://meet.google.com/abc-defg-hij&sa=D",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0282"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://us02web.zoom.com/j/42"
+          },
+          {
+            "origin" : "location",
+            "provider" : "webex",
+            "url" : "HTTPS://ACME.WEBEX.COM/MEET/X"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://gotomeet.me/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nHTTPS://ACME.WEBEX.COM/MEET/X\nfor details",
+        "notes" : "a https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fexample.com%2Fmeeting%2F42&data=05%7C01 b https://gotomeet.me/x c",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ],
+        "url" : "https://www.google.com/calendar/event?eid=abc123"
+      },
+      "name" : "conference-conferences-0283"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "zoommtg://zoom.us/join?confno=123"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "zoommtg://zoom.us/join?confno=123"
+      },
+      "name" : "conference-conferences-0284"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://gotomeet.me/x"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Join: https://www.google.com/url?url=https%3A%2F%2Fglobal.gotomeeting.com%2Fjoin%2F1&sa=D",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://gotomeet.me/x"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0285"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "jitsi",
+            "url" : "https://meet.jit.si/room"
+          },
+          {
+            "origin" : "url",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>https://www.google.com/url?url=https%3A%2F%2Fmeet.jit.si%2Froom&sa=D</p>",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-conferences-0286"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fus02web.zoom.com%2Fj%2F42&data=05%7C01\nfor details",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0287"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "teams",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "a https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2 b https://us02web.zoom.com/j/42 c",
+        "structured" : [
+
+        ],
+        "url" : "zoommtg://acme.zoom.us/join"
+      },
+      "name" : "conference-conferences-0288"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>https://whereby.com/room</p>",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0289"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "zoommtg://zoom.us/join?confno=123"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "(zoommtg://zoom.us/join?confno=123)",
+        "notes" : "<a href=\"zoommtg://acme.zoom.us/join\">Join</a> is the room",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0290"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "teams",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fteams.microsoft.com%2Fl%2Fmeetup-join%2F19%253ameeting%3Fa%3D1%26b%3D2&data=05%7C01\nfor details",
+        "notes" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dzoommtg%253A%252F%252Facme.zoom.us%252Fjoin\nfor details",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0291"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dzoommtg%253A%252F%252Fzoom.us.evil.example%252Fj%252F1</p>",
+        "notes" : "Join: (https://app.slack.com/huddle/T1/C1)",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0292"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: <a href=\"https://acme.zoom.us/j/123456789?pwd=abc\">Join</a>",
+        "notes" : "https://global.gotomeeting.com/join/1 is the room",
+        "structured" : [
+
+        ],
+        "url" : "https://docs.google.com/document/d/abc"
+      },
+      "name" : "conference-conferences-0293"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0294"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://gotomeet.me/x"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "see\n<a href=\"zoommtg://acme.zoom.us/join\">Join</a>\nfor details",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://gotomeet.me/x"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0295"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\n(https://whereby.com/room)\nfor details",
+        "notes" : "a https://example.com/zoom.us/j/1. b https://acme.webex.com/meet/x c",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0296"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "(https://evilzoom.us/j/1) is the room",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0297"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "eventURL",
+            "provider" : "other",
+            "url" : "https://zoom.us.evil.example/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "https://zoom.us.evil.example/j/1"
+      },
+      "name" : "conference-conferences-0298"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>(https://meet.google.com/abc-defg-hij)</p>",
+        "notes" : "Meeting at https://www.google.com/url?url=https%3A%2F%2Facme.webex.com%2Fmeet%2Fx&sa=D today.",
+        "structured" : [
+
+        ],
+        "url" : "zoommtg://evil.com/join?confno=1"
+      },
+      "name" : "conference-conferences-0299"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at HTTPS://APP.SLACK.COM/HUDDLE/T1/C1 today.",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "ftp://acme.zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0300"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at HTTPS://CALENDAR.GOOGLE.COM/CALENDAR/U/0/R/EVENTEDIT/ABC123 today.",
+        "notes" : "<p>https://zoom.us.evil.example/j/1</p>",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0301"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nhttps://meet.google.com/abc-defg-hij\nfor details",
+        "notes" : "<p>https://www.google.com/calendar/event?eid=abc123!</p>",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0302"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0303"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: https://www.google.com/url?url=https%3A%2F%2Fevilsafelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fmeet.google.com%252Fa-b-c&sa=D",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "zoommtg://zoom.us.evil.example/j/1"
+      },
+      "name" : "conference-conferences-0304"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0305"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: HTTPS://APP.SLACK.COM/CLIENT/T1/C1",
+        "notes" : "a (https://www.google.com/calendar/event?eid=abc123) b https://global.gotomeeting.com/join/1 c",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0306"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0307"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          },
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "zoommtg://zoom.us/join?confno=123"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "https://nam02.safelinks.protection.outlook.com/?url=zoommtg%3A%2F%2Fzoom.us%2Fjoin%3Fconfno%3D123&data=05%7C01 is the room",
+        "notes" : "https://www.google.com/url?q=https://app.slack.com/huddlefoo/x&sa=D is the room",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0308"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "<p>zoommtg://acme.zoom.us/join</p>",
+        "structured" : [
+
+        ],
+        "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+      },
+      "name" : "conference-conferences-0309"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nhttps://www.google.com/url?url=https%3A%2F%2Fwhereby.com%2Froom&sa=D\nfor details",
+        "notes" : "https://www.google.com/url?url=https%3A%2F%2Fevilzoom.us%2Fj%2F1&sa=D is the room",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0310"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0311"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://whereby.com/room"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "HTTPS://EXAMPLE.COM/MEETING/42 is the room",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://whereby.com/room"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0312"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "HTTPS://ACME.ZOOM.US/J/123456789?PWD=ABC"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nHTTPS://ACME.ZOOM.US/J/123456789?PWD=ABC\nfor details",
+        "notes" : "Join: https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fus02web.zoom.com%2Fj%2F42&data=05%7C01",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0313"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "teams",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19:meeting?a=1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<a href=\"zoommtg://zoom.us.evil.example/j/1\">Join</a> is the room",
+        "notes" : "<p>https://www.google.com/url?q=https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2&sa=D</p>",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0314"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0315"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fzoom.us%252Fj%252F1 today.",
+        "notes" : "Meeting at https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fexample.com%252Fzoom.us%252Fj%252F1 today.",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0316"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "<p>https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fexample.com%252Fzoom.us%252Fj%252F1</p>",
+        "structured" : [
+
+        ],
+        "url" : "https://zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0317"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Join: https://www.google.com/url?q=https://app.slack.com/huddlefoo/x&sa=D",
+        "structured" : [
+
+        ],
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "name" : "conference-conferences-0318"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fus02web.zoom.com%252Fj%252F42\nfor details",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0319"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "a https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Facme.webex.com%2Fmeet%2Fx&data=05%7C01 b https://whereby.com/room c",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://whereby.com/room"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0320"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "HTTPS://US02WEB.ZOOM.COM/J/42"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "a HTTPS://US02WEB.ZOOM.COM/J/42 b https://zoom.us/j/1 c",
+        "structured" : [
+
+        ],
+        "url" : "https://www.google.com/calendar/event?eid=abc123"
+      },
+      "name" : "conference-conferences-0321"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnotmeet.google.com.example%2Fabc&data=05%7C01",
+        "notes" : "<a href=\"https://app.slack.com/huddlefoo/x\">Join</a>",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0322"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Meeting at https://global.gotomeeting.com/join/1 today.",
+        "structured" : [
+
+        ],
+        "url" : "https://whereby.com/room"
+      },
+      "name" : "conference-conferences-0323"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Join: https://www.google.com/url?q=zoommtg://acme.zoom.us/join&sa=D",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0324"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0325"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://acme.webex.com/meet/x"
+          },
+          {
+            "origin" : "location",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "a https://www.google.com/url?url=https%3A%2F%2Fzoom.us.evil.example%2Fj%2F1&sa=D b https://meet.google.com/abc-defg-hij c",
+        "notes" : "see\nhttps://whereby.com/room\nfor details",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0326"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "<a href=\"https://global.gotomeeting.com/join/1\">Join</a>",
+        "structured" : [
+
+        ],
+        "url" : "zoommtg://acme.zoom.us/join"
+      },
+      "name" : "conference-conferences-0327"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at (https://zoom.us/j/1) today.",
+        "notes" : "Join: <a href=\"https://zoom.us.evil.example/j/1\">Join</a>",
+        "structured" : [
+
+        ],
+        "url" : "https://example.com/zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0328"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0329"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nhttps://www.google.com/url?q=https://app.slack.com/huddle/T1/C1&sa=D\nfor details",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0330"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "eventURL",
+            "provider" : "other",
+            "url" : "https://example.com/meeting/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "https://example.com/meeting/42"
+      },
+      "name" : "conference-conferences-0331"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\n<a href=\"https://evilzoom.us/j/1\">Join</a>\nfor details",
+        "notes" : "<p>https://acme.webex.com/meet/x</p>",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0332"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "eventURL",
+            "provider" : "other",
+            "url" : "https://example.com/zoom.us/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "https://evilzoom.us/j/1!",
+        "notes" : "Meeting at https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fevilzoom.us%252Fj%252F1 today.",
+        "structured" : [
+
+        ],
+        "url" : "https://example.com/zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0333"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0334"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://us02web.zoom.com/j/42"
+          },
+          {
+            "origin" : "url",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ],
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-conferences-0335"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "see\n(https://whereby.com/room)\nfor details",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0336"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          },
+          {
+            "origin" : "location",
+            "provider" : "teams",
+            "url" : "https://teams.live.com/meet/1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "a https://www.google.com/url?url=https%3A%2F%2Facme.webex.com%2Facme%2Fj.php%3FMTID%3Dm111&sa=D b https://teams.live.com/meet/1 c",
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=zoommtg%3A%2F%2Facme.zoom.us%2Fjoin&data=05%7C01",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0337"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          }
+        ],
+        "url" : "https://app.slack.com/client/T1/C1"
+      },
+      "name" : "conference-conferences-0338"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0339"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "teams",
+            "url" : "HTTPS://TEAMS.MICROSOFT.COM/L/MEETUP-JOIN/19%3AMEETING?A=1&B=2"
+          },
+          {
+            "origin" : "url",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at HTTPS://TEAMS.MICROSOFT.COM/L/MEETUP-JOIN/19%3AMEETING?A=1&B=2 today.",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "name" : "conference-conferences-0340"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "HTTPS://ACME.ZOOM.US/J/123456789?PWD=ABC"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fglobal.gotomeeting.com%252Fjoin%252F1</p>",
+        "notes" : "Join: HTTPS://ACME.ZOOM.US/J/123456789?PWD=ABC",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0341"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "teams",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2)",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0342"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "jitsi",
+            "url" : "https://meet.jit.si/room"
+          },
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          },
+          {
+            "origin" : "url",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "a (https://meet.jit.si/room) b zoommtg://acme.zoom.us/join c",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "name" : "conference-conferences-0343"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0344"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.live.com/meet/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.live.com/meet/1"
+          }
+        ],
+        "url" : "zoommtg://evil.com/join?confno=1"
+      },
+      "name" : "conference-conferences-0345"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://zoom.us/join?confno=123"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "a https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fabc-defg-hij&data=05%7C01 b zoommtg://zoom.us/join?confno=123 c",
+        "structured" : [
+
+        ],
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-conferences-0346"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://gotomeet.me/x"
+          },
+          {
+            "origin" : "location",
+            "provider" : "webex",
+            "url" : "HTTPS://ACME.WEBEX.COM/MEET/X"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "a HTTPS://ACME.WEBEX.COM/MEET/X b https://acme.webex.com/meet/x c",
+        "notes" : "Meeting at https://www.google.com/url?q=https://zoom.us/j/1&sa=D today.",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://gotomeet.me/x"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0347"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Join: https://www.google.com/url?q=https://global.gotomeeting.com/join/1&sa=D",
+        "structured" : [
+
+        ],
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "name" : "conference-conferences-0348"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://www.google.com/url?q=https://app.slack.com/huddle/T1/C1&sa=D",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://whereby.com/room"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0349"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://acme.webex.com/meet/x"
+          },
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "a https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dzoommtg%253A%252F%252Fevil.com%252Fjoin%253Fconfno%253D1 b https://acme.zoom.us/j/123456789?pwd=abc c",
+        "notes" : "(https://zoom.us/j/1) is the room",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0350"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://us02web.zoom.com/j/42"
+          },
+          {
+            "origin" : "url",
+            "provider" : "jitsi",
+            "url" : "https://meet.jit.si/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "https://app.slack.com/huddlefoo/x is the room",
+        "notes" : "a https://www.google.com/url?q=https://example.com/meeting/42&sa=D b https://acme.webex.com/meet/x c",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ],
+        "url" : "https://meet.jit.si/room"
+      },
+      "name" : "conference-conferences-0351"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+          },
+          {
+            "origin" : "url",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: https://www.google.com/url?q=https://acme.zoom.us/j/123456789?pwd=abc&sa=D",
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwhereby.com%2Froom&data=05%7C01 is the room",
+        "structured" : [
+
+        ],
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "name" : "conference-conferences-0352"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          },
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Meeting at https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Facme.webex.com%252Facme%252Fj.php%253FMTID%253Dm111 today.",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          }
+        ],
+        "url" : "https://zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0353"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Facme.webex.com%2Facme%2Fj.php%3FMTID%3Dm111&data=05%7C01",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0354"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "webex",
+            "url" : "HTTPS://ACME.WEBEX.COM/ACME/J.PHP?MTID=M111"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "meet",
+            "url" : "HTTPS://MEET.GOOGLE.COM/ABC-DEFG-HIJ"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: HTTPS://ACME.WEBEX.COM/ACME/J.PHP?MTID=M111",
+        "notes" : "a HTTPS://MEET.GOOGLE.COM/ABC-DEFG-HIJ b zoommtg://acme.zoom.us/join c",
+        "structured" : [
+
+        ],
+        "url" : "https://calendar.google.com/calendar/u/0/r/eventedit/abc123"
+      },
+      "name" : "conference-conferences-0355"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          },
+          {
+            "origin" : "url",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://zoom.us/join?confno=123"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "(https://zoom.us/j/1) is the room",
+        "notes" : "<p>https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dzoommtg%253A%252F%252Fzoom.us%252Fjoin%253Fconfno%253D123</p>",
+        "structured" : [
+
+        ],
+        "url" : "https://global.gotomeeting.com/join/1"
+      },
+      "name" : "conference-conferences-0356"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://zoom.us/j/1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: https://www.google.com/url?q=https://example.com/meeting/42&sa=D",
+        "notes" : "<p>(https://acme.webex.com/acme/j.php?MTID=m111)</p>",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://zoom.us/j/1"
+          }
+        ],
+        "url" : "https://example.com/zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0357"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "see\nhttps://www.google.com/url?q=https://docs.google.com/document/d/abc&sa=D\nfor details",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0358"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "teams",
+            "url" : "https://teams.live.com/meet/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "HTTPS://EVILZOOM.US/J/1 is the room",
+        "notes" : "Join: https://teams.live.com/meet/1!",
+        "structured" : [
+
+        ],
+        "url" : "https://evilsafelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fa-b-c"
+      },
+      "name" : "conference-conferences-0359"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "jitsi",
+            "url" : "https://meet.jit.si/room"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.jit.si%2Froom&data=05%7C01</p>",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0360"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "teams",
+            "url" : "https://teams.live.com/meet/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Join: (https://evilzoom.us/j/1)",
+        "structured" : [
+
+        ],
+        "url" : "https://teams.live.com/meet/1"
+      },
+      "name" : "conference-conferences-0361"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://meet.jit.si/room"
+          },
+          {
+            "origin" : "location",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://gotomeet.me/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "https://www.google.com/url?url=https%3A%2F%2Fwhereby.com%2Froom&sa=D is the room",
+        "notes" : "Join: (https://gotomeet.me/x)",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://meet.jit.si/room"
+          }
+        ],
+        "url" : "zoommtg://evil.com/join?confno=1"
+      },
+      "name" : "conference-conferences-0362"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://global.gotomeeting.com/join/1"
+          },
+          {
+            "origin" : "location",
+            "provider" : "goToMeeting",
+            "url" : "https://gotomeet.me/x"
+          },
+          {
+            "origin" : "url",
+            "provider" : "jitsi",
+            "url" : "https://meet.jit.si/room"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "https://www.google.com/url?url=https%3A%2F%2Fgotomeet.me%2Fx&sa=D is the room",
+        "notes" : null,
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ],
+        "url" : "https://meet.jit.si/room"
+      },
+      "name" : "conference-conferences-0363"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          },
+          {
+            "origin" : "location",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "jitsi",
+            "url" : "https://meet.jit.si/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nhttps://whereby.com/room.\nfor details",
+        "notes" : "a https://meet.jit.si/room b https://acme.webex.com/meet/x c",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ],
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "name" : "conference-conferences-0364"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Join: (https://app.slack.com/client/T1/C1)",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0365"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "teams",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          },
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>https://www.google.com/url?url=https%3A%2F%2Fteams.microsoft.com%2Fl%2Fmeetup-join%2F19%253ameeting%3Fa%3D1%26b%3D2&sa=D</p>",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "https://us02web.zoom.com/j/42"
+      },
+      "name" : "conference-conferences-0366"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://gotomeet.me/x"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p><a href=\"https://evilsafelinks.protection.outlook.com/?url=https%3A%2F%2Fmeet.google.com%2Fa-b-c\">Join</a></p>",
+        "notes" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fzoom.us%252Fj%252F1\nfor details",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://gotomeet.me/x"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0367"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "HTTPS://US02WEB.ZOOM.COM/J/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at HTTPS://US02WEB.ZOOM.COM/J/42 today.",
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fapp.slack.com%252Fhuddlefoo%252Fx",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0368"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+          },
+          {
+            "origin" : "url",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Facme.zoom.us%252Fj%252F123456789%253Fpwd%253Dabc\nfor details",
+        "notes" : "<p>https://www.google.com/url?url=https%3A%2F%2Fcalendar.google.com%2Fcalendar%2Fu%2F0%2Fr%2Feventedit%2Fabc123&sa=D</p>",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://whereby.com/room"
+          }
+        ],
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "name" : "conference-conferences-0369"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Meeting at https://www.google.com/url?url=https%3A%2F%2Facme.zoom.us%2Fj%2F123456789%3Fpwd%3Dabc&sa=D today.",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0370"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "see\nhttps://www.google.com/url?q=https://meet.google.com/abc-defg-hij&sa=D\nfor details",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0371"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "zoommtg://zoom.us/join?confno=123"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dzoommtg%253A%252F%252Fzoom.us%252Fjoin%253Fconfno%253D123</p>",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0372"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://gotomeet.me/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "see\n(https://example.com/zoom.us/j/1)\nfor details",
+        "notes" : "a https://www.google.com/url?url=zoommtg%3A%2F%2Facme.zoom.us%2Fjoin&sa=D b https://gotomeet.me/x c",
+        "structured" : [
+
+        ],
+        "url" : "https://whereby.com/room"
+      },
+      "name" : "conference-conferences-0373"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://zoom.us/j/1"
+          },
+          {
+            "origin" : "location",
+            "provider" : "webex",
+            "url" : "HTTPS://ACME.WEBEX.COM/ACME/J.PHP?MTID=M111"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at HTTPS://ACME.WEBEX.COM/ACME/J.PHP?MTID=M111 today.",
+        "notes" : "Join: ZOOMMTG://EVIL.COM/JOIN?CONFNO=1",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://zoom.us/j/1"
+          }
+        ],
+        "url" : "https://app.slack.com/huddlefoo/x"
+      },
+      "name" : "conference-conferences-0374"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://nam02.safelinks.protection.outlook.com/?url=ftp%3A%2F%2Facme.zoom.us%2Fj%2F1&data=05%7C01 is the room",
+        "structured" : [
+
+        ],
+        "url" : "https://app.slack.com/huddle/T1/C1"
+      },
+      "name" : "conference-conferences-0375"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Meeting at https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Facme.webex.com%252Fmeet%252Fx today.",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0376"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://www.google.com/url?url=zoommtg%3A%2F%2Fzoom.us.evil.example%2Fj%2F1&sa=D",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0377"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "jitsi",
+            "url" : "HTTPS://MEET.JIT.SI/ROOM"
+          },
+          {
+            "origin" : "url",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "teams",
+            "url" : "https://teams.live.com/meet/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: HTTPS://MEET.JIT.SI/ROOM",
+        "notes" : "(https://teams.live.com/meet/1)",
+        "structured" : [
+
+        ],
+        "url" : "https://whereby.com/room"
+      },
+      "name" : "conference-conferences-0378"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://www.google.com/url?url=https%3A%2F%2Fmeet.google.com%2Fabc-defg-hij&sa=D is the room",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0379"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>(https://www.google.com/calendar/event?eid=abc123)</p>",
+        "notes" : "<p>https://www.google.com/url?url=https%3A%2F%2Fus02web.zoom.com%2Fj%2F42&sa=D</p>",
+        "structured" : [
+
+        ],
+        "url" : "ftp://acme.zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0380"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ],
+        "url" : "https://app.slack.com/client/T1/C1"
+      },
+      "name" : "conference-conferences-0381"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "https://app.slack.com/huddle/T1/C1",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : "ftp://acme.zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0382"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          },
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "zoommtg://zoom.us/join?confno=123"
+          },
+          {
+            "origin" : "url",
+            "provider" : "zoom",
+            "url" : "https://zoom.us/j/1"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "a (https://acme.webex.com/meet/x) b zoommtg://zoom.us/join?confno=123 c",
+        "notes" : "Join: https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fus02web.zoom.com%2Fj%2F42&data=05%7C01",
+        "structured" : [
+
+        ],
+        "url" : "https://zoom.us/j/1"
+      },
+      "name" : "conference-conferences-0383"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://gotomeet.me/x"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "teams",
+            "url" : "https://teams.live.com/meet/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "a (https://gotomeet.me/x) b https://teams.live.com/meet/1 c",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0384"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "url",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "teams",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at https://evilzoom.us/j/1 today.",
+        "notes" : "see\nhttps://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2)\nfor details",
+        "structured" : [
+
+        ],
+        "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+      },
+      "name" : "conference-conferences-0385"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "see\nhttps://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fwww.google.com%2Fcalendar%2Fevent%3Feid%3Dabc123&data=05%7C01\nfor details",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0386"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          },
+          {
+            "origin" : "location",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "teams",
+            "url" : "https://teams.live.com/meet/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at <a href=\"https://meet.google.com/abc-defg-hij\">Join</a> today.",
+        "notes" : "https://teams.live.com/meet/1.)",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          }
+        ],
+        "url" : "https://app.slack.com/huddlefoo/x"
+      },
+      "name" : "conference-conferences-0387"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0388"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "teams",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "Meeting at https://www.google.com/url?url=https%3A%2F%2Fteams.microsoft.com%2Fl%2Fmeetup-join%2F19%253ameeting%3Fa%3D1%26b%3D2&sa=D today.",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0389"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Join: FTP://ACME.ZOOM.US/J/1",
+        "notes" : "https://www.google.com/url?url=https%3A%2F%2Fzoom.us.evil.example%2Fj%2F1&sa=D",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0390"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "zoommtg://acme.zoom.us/join"
+          },
+          {
+            "origin" : "location",
+            "provider" : "goToMeeting",
+            "url" : "HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1"
+          },
+          {
+            "origin" : "location",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "url",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/meet/x"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "a HTTPS://GLOBAL.GOTOMEETING.COM/JOIN/1 b https://whereby.com/room c",
+        "notes" : "<p>(https://us02web.zoom.com/j/42)</p>",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "zoommtg://acme.zoom.us/join"
+          }
+        ],
+        "url" : "https://acme.webex.com/meet/x"
+      },
+      "name" : "conference-conferences-0391"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "location",
+            "provider" : "goToMeeting",
+            "url" : "https://gotomeet.me/x"
+          },
+          {
+            "origin" : "location",
+            "provider" : "teams",
+            "url" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "a https://www.google.com/url?url=https%3A%2F%2Fgotomeet.me%2Fx&sa=D b https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2 c",
+        "notes" : "see\nhttps://calendar.google.com/calendar/u/0/r/eventedit/abc123\nfor details",
+        "structured" : [
+
+        ],
+        "url" : "https://docs.google.com/document/d/abc"
+      },
+      "name" : "conference-conferences-0392"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "https://acme.zoom.us/j/123456789?pwd=abc"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "https://www.google.com/url?q=https://docs.google.com/document/d/abc&sa=D is the room",
+        "notes" : "https://www.google.com/url?url=https%3A%2F%2Facme.zoom.us%2Fj%2F123456789%3Fpwd%3Dabc&sa=D",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0393"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0394"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://acme.zoom.us/join"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "webex",
+            "url" : "https://acme.webex.com/acme/j.php?MTID=m111"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>https://www.google.com/url?q=https://evilzoom.us/j/1&sa=D</p>",
+        "notes" : "a <a href=\"zoommtg://acme.zoom.us/join\">Join</a> b https://acme.webex.com/acme/j.php?MTID=m111 c",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0395"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "(https://app.slack.com/client/T1/C1) is the room",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0396"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://meet.jit.si/room"
+          },
+          {
+            "origin" : "location",
+            "provider" : "whereby",
+            "url" : "https://whereby.com/room"
+          },
+          {
+            "origin" : "url",
+            "provider" : "meet",
+            "url" : "https://meet.google.com/abc-defg-hij"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "<p>https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fnam02.safelinks.protection.outlook.com%2F%3Furl%3Dhttps%253A%252F%252Fwhereby.com%252Froom</p>",
+        "notes" : "<p><a href=\"https://zoom.us.evil.example/j/1\">Join</a></p>",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://meet.jit.si/room"
+          }
+        ],
+        "url" : "https://meet.google.com/abc-defg-hij"
+      },
+      "name" : "conference-conferences-0397"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "notes",
+            "provider" : "slack",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : null,
+        "notes" : "https://www.google.com/url?url=https%3A%2F%2Fapp.slack.com%2Fhuddle%2FT1%2FC1&sa=D",
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0398"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          },
+          {
+            "origin" : "location",
+            "provider" : "zoom",
+            "url" : "https://us02web.zoom.com/j/42"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "zoom",
+            "url" : "zoommtg://zoom.us/join?confno=123"
+          },
+          {
+            "origin" : "notes",
+            "provider" : "goToMeeting",
+            "url" : "https://global.gotomeeting.com/join/1"
+          }
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at https://www.google.com/url?q=https://us02web.zoom.com/j/42&sa=D today.",
+        "notes" : "a zoommtg://zoom.us/join?confno=123 b https://global.gotomeeting.com/join/1 c",
+        "structured" : [
+          {
+            "origin" : "structured",
+            "provider" : "other",
+            "url" : "https://app.slack.com/huddle/T1/C1"
+          }
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0399"
+    },
+    {
+      "expected" : {
+        "conferences" : [
+
+        ]
+      },
+      "input" : {
+        "fn" : "conferences",
+        "location" : "Meeting at https://www.google.com/url?url=https%3A%2F%2Fzoom.us.evil.example%2Fj%2F1&sa=D today.",
+        "notes" : null,
+        "structured" : [
+
+        ],
+        "url" : null
+      },
+      "name" : "conference-conferences-0400"
+    }
+  ],
+  "schema" : 1
+}

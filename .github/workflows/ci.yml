@@ -4,6 +4,7 @@
 #   windows-x64   swift test on windows-latest, with Swift installed by scripts/ci/install-swift-windows.ps1.
 #   windows-arm64 the same on windows-11-arm.
 #   architecture  portability rules, repository contracts and the tests of the release script and workflow.
+#   vectors-current the golden vectors under vectors/ equal what scripts/dev/export-vectors.sh produces (macOS only).
 #   compat        backward compatibility with the latest release (AGENTS.md, "Backward compatibility"): the public
 #                 API of every library product and the persisted-format fixtures. Skipped for semver:major.
 name: CI
@@ -203,6 +204,24 @@ jobs:
             git config --global --add safe.directory /work
             swift package diagnose-api-breaking-changes "$BASELINE" \
               --products CalendarCore CalendarOAuth GoogleCalendar MicrosoftCalendar ICalendar CalDAVCalendar ICalSubscription CalendarTestSupport'
+
+  # The golden vectors the Rust port replays (vectors/, conventions section 9) must be what the Swift code produces now.
+  # They depend on the runner's zone database and Foundation (zones/known.json, zones/offsets.json, ical/timezones.json,
+  # core/url-accept.json): if a later runner image changes a zone's rules or URL parsing, this job fails and the fix is to
+  # pin the cases to past dates, never to accept the new output silently (vectors/README.md).
+  vectors-current:
+    runs-on: macos-26
+    permissions:
+      contents: read
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Select newest Xcode
+        run: scripts/ci/select-xcode.sh
+      - name: Export the vectors
+        run: scripts/dev/export-vectors.sh
+      - name: The committed vectors are current
+        run: git diff --exit-code vectors/
 
   # The Rust port (v2 branch; docs/rust-port/README.md). Each job installs the toolchain pinned in
   # rust-toolchain.toml. The test steps use bash so that a failing cargo command fails the step on Windows too.

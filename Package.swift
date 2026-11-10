@@ -23,6 +23,8 @@ let package = Package(
         .target(name: "CalDAVCalendar", dependencies: ["CalendarCore", "ICalendar"]),
         .target(name: "ICalSubscription", dependencies: ["CalendarCore", "ICalendar"]),
         .target(name: "CalendarTestSupport", dependencies: ["CalendarCore"]),
+        // Writes the golden vectors the Rust port replays (vectors/). Built with -Xswiftc -enable-testing; see scripts/dev/export-vectors.sh.
+        .executableTarget(name: "VectorExporter", dependencies: ["CalendarCore", "ICalendar", "MicrosoftCalendar", "CalendarOAuth"]),
         .testTarget(name: "CalendarCoreTests", dependencies: ["CalendarCore", "CalendarTestSupport"]),
         .testTarget(name: "CalendarOAuthTests", dependencies: ["CalendarOAuth", "CalendarCore", "CalendarTestSupport"]),
         .testTarget(name: "GoogleCalendarTests", dependencies: ["GoogleCalendar", "CalendarOAuth", "CalendarCore", "CalendarTestSupport"]),
