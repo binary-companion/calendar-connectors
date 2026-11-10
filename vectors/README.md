@@ -55,3 +55,13 @@ The job also depends on the runner's zone database and Foundation. `zones/known.
 zones, and `core/url-accept.json` records Foundation's URL parsing. If a later runner image changes a zone's rules, adds or removes an
 identifier, or parses URLs differently, the job fails. The fix is to pin the cases to past dates (or to remove the identifier from the
 generated list), never to accept the new output silently, because the Rust port must reproduce the answers the shipped app gave.
+
+## When to re-check the vectors
+
+`.github/workflows/vectors-drift.yml` re-runs the export every Monday (and on `workflow_dispatch`) and opens an issue when it differs. Also re-check by hand when any of these changes:
+
+- [ ] Xcode, the macOS runner image or the Swift toolchain (run `scripts/dev/export-vectors.sh`, then inspect `git diff vectors/`).
+- [ ] Once the Rust crates exist: the `jiff` version (its zone database must still give the answers in the vectors).
+- [ ] A new Swift zone rule or zone-dependent behaviour: add a vector for it.
+
+Investigate every diff in `zones/*`, `ical/timezones`, `core/url-accept`; never accept one blindly. Pin the cases to past dates or fix the cause, as described elsewhere in this file.
