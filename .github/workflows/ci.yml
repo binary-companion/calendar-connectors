@@ -306,10 +306,14 @@ jobs:
         run: |
           python3 scripts/ci/check-crate-architecture.py
           python3 scripts/ci/check-tokio-features.py
+      - name: Swift-to-Rust test parity
+        run: python3 scripts/ci/check-test-parity.py
       - name: Tests of the Rust checks
         run: |
           python3 -m unittest discover -s scripts/ci/tests -p 'test_check_crate_architecture.py'
           python3 -m unittest discover -s scripts/ci/tests -p 'test_check_tokio_features.py'
+          python3 -m unittest discover -s scripts/ci/tests -p 'test_check_test_parity.py'
+          python3 -m unittest discover -s scripts/ci/tests -p 'test_swift_test_inventory.py'
 
   rust-targets:
     runs-on: macos-26
