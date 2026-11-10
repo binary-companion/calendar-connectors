@@ -14,7 +14,7 @@ import Foundation
 //
 // where D is { "year", "month", "day" }. 500 cases: 150 startOfDay, 100 dateOf, 100 canonical, 70 dates, 80 adding.
 // The startOfDay and canonical cases include days whose midnight does not exist (every transition from 2024 to
-// 2027 in a zone that moves at midnight) and the days the date line moved (Apia and Fakaofo, December 2011;
+// 2026-11-01 in a zone that moves at midnight) and the days the date line moved (Apia and Fakaofo, December 2011;
 // Kiritimati, December 1994).
 
 func exportZonesAllDay() -> [VectorCase] {
@@ -26,7 +26,7 @@ func exportZonesAllDay() -> [VectorCase] {
         cases.append(VectorCase(name: "all-day-\(kind)-\(fourDigits(cases.count + 1))", input: input, expected: expected))
     }
     func randomDay() -> CalendarDate {
-        let c = civilFromDays(daysFromCivil(2000, 1, 1) + rng.below(36 * 365))
+        let c = civilFromDays(daysFromCivil(2000, 1, 1) + rng.below(26 * 365))
         return CalendarDate(year: c.year, month: c.month, day: c.day)
     }
     func dayOf(_ ms: Int, _ id: String) -> CalendarDate {
@@ -41,7 +41,7 @@ func exportZonesAllDay() -> [VectorCase] {
     var transitionDays: [(String, CalendarDate)] = []
     for id in vectorZones {
         let tz = zone(id)
-        for t in dstTransitions(tz, from: utcMillis(2024, 1, 1), to: utcMillis(2028, 1, 1)) {
+        for t in dstTransitions(tz, from: utcMillis(2024, 1, 1), to: zoneHorizon) {
             transitionDays.append((id, dayOf(t, id)))
         }
     }
@@ -53,11 +53,11 @@ func exportZonesAllDay() -> [VectorCase] {
     startOfDay("Pacific/Kiritimati", CalendarDate(year: 1994, month: 12, day: 30))
     startOfDay("Pacific/Kiritimati", CalendarDate(year: 1995, month: 1, day: 1))
     for id in ["America/New_York", "Asia/Tokyo", "UTC", "Pacific/Auckland"] {
-        for day in [CalendarDate(year: 2024, month: 2, day: 29), CalendarDate(year: 2026, month: 12, day: 31),
-                    CalendarDate(year: 2027, month: 1, day: 1), CalendarDate(year: 2100, month: 2, day: 28)] { startOfDay(id, day) }
+        for day in [CalendarDate(year: 2024, month: 2, day: 29), CalendarDate(year: 2025, month: 12, day: 31),
+                    CalendarDate(year: 2026, month: 1, day: 1)] { startOfDay(id, day) }
     }
-    var shuffled = transitionDays
-    for i in stride(from: shuffled.count - 1, to: 0, by: -1) { shuffled.swapAt(i, rng.below(i + 1)) }
+    for id in ["Asia/Tokyo", "UTC"] { startOfDay(id, CalendarDate(year: 2100, month: 2, day: 28)) }
+    let shuffled = transitionDays.sorted { stableHash("\($0.0)|\($0.1)") < stableHash("\($1.0)|\($1.1)") }
     for (id, day) in shuffled.prefix(70) { startOfDay(id, day) }
     while cases.count < 150 { startOfDay(rng.pick(vectorZones), randomDay()) }
 
@@ -75,7 +75,7 @@ func exportZonesAllDay() -> [VectorCase] {
     }
     while cases.count < 150 + 100 {
         let id = rng.pick(vectorZones)
-        let t = utcMillis(2000, 1, 1) + rng.below(36 * 365 * 86_400) * 1000
+        let t = utcMillis(2000, 1, 1) + rng.below(26 * 365 * 86_400) * 1000
         add("dateOf", ["zone": id, "instant": t], ["date": dayJSON(AllDay.date(of: instant(ms: t), in: zone(id)))])
     }
 

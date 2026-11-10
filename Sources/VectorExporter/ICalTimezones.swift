@@ -154,7 +154,7 @@ func exportICalTimezones() -> [VectorCase] {
     for (i, v) in sample.enumerated() { dateVector(calendars[4].0, v, floating: floatingZones[i % floatingZones.count]) }
     while cases.count < 80 + 50 {
         let (text, tzids) = rng.pick(calendars)
-        let d = CalendarDate(year: rng.int(2024...2027), month: rng.int(1...12), day: rng.int(1...28))
+        let d = CalendarDate(year: rng.int(2024...2025), month: rng.int(1...12), day: rng.int(1...28))
         let value: ICalDateValue
         switch rng.below(5) {
         case 0: value = .date(d)

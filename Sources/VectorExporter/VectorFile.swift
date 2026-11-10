@@ -103,6 +103,22 @@ func civilFromSeconds(_ t: Int) -> (year: Int, month: Int, day: Int, hour: Int, 
     return (c.year, c.month, c.day, rest / 3600, (rest % 3600) / 60, rest % 60)
 }
 
+/// The last instant the zone-dependent cases may reach (Unix ms): 2026-11-01. Rules for later dates are the zone
+/// database's forecast and differ between operating system releases (America/Havana's 2027 rule did between
+/// macOS 26 and 27), so no case asks a zone about a later date; see vectors/README.md.
+let zoneHorizon = utcMillis(2026, 11, 1)
+
+/// FNV-1a over UTF-8: a sort key that does not depend on the other cases, so a change to one zone's rules moves
+/// only that zone's cases.
+func stableHash(_ text: String) -> UInt64 {
+    var hash: UInt64 = 0xcbf29ce484222325
+    for byte in text.utf8 { hash = (hash ^ UInt64(byte)) &* 0x100000001b3 }
+    return hash
+}
+
+/// An LCG for one case or zone, derived from the area's seed and an index, so cases do not share a stream.
+func derivedLCG(seed: UInt64, _ index: Int) -> LCG { LCG(state: seed &+ UInt64(index + 1) &* 0x9E37_79B9_7F4A_7C15) }
+
 /// The name part of a case: a zone id made safe for a name.
 func slug(_ text: String) -> String {
     String(text.map { $0.isLetter || $0.isNumber || $0 == "-" ? $0 : "_" })

@@ -78,6 +78,8 @@ func exportRecurrenceSetOccurrences() -> [VectorCase] {
 
     // Random sets.
     while cases.count < 240 {
+        // Each case draws from its own generator, so a zone-rule difference in one case cannot shift the others.
+        var rng = derivedLCG(seed: 0x5E7_0CC0_0002, cases.count)
         let a = randomAnchor(&rng)
         let (text, freq, span) = randomRuleText(&rng, anchor: a)
         var rules = [text]

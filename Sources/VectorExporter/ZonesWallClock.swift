@@ -10,12 +10,12 @@ import Foundation
 //
 // The name of a case says what the wall time is in its zone: "gap" (skipped by a daylight saving jump, resolved
 // forward by the gap), "overlap" (happens twice, resolved to the first) or "ordinary". Gap and overlap cases sit
-// within an hour and a half of every transition from 2024 through 2027; the ordinary cases are seeded random
-// times between 2000 and 2035. Every input is a real calendar date, so null does not occur.
+// within an hour and a half of every transition from 2024 up to 2026-11-01; the ordinary cases are seeded random
+// times between 2000 and 2026. Every input is a real calendar date, so null does not occur.
 
 func exportZonesWallClock() -> [VectorCase] {
     var rng = LCG(state: 0x3A11_C10C_4B)
-    let from = utcMillis(2024, 1, 1), to = utcMillis(2028, 1, 1)
+    let from = utcMillis(2024, 1, 1), to = zoneHorizon
     let deltas = [-5400, -3600, -1800, -900, -60, -1, 0, 1, 60, 900, 1800, 3599, 3600, 5400]
     var special: [(String, Int)] = []      // zone, wall seconds
     for id in vectorZones {
@@ -35,8 +35,8 @@ func exportZonesWallClock() -> [VectorCase] {
             expected: ["instant": orNull(result)])
     }
     var cases: [VectorCase] = []
-    var shuffled = special
-    for i in stride(from: shuffled.count - 1, to: 0, by: -1) { shuffled.swapAt(i, rng.below(i + 1)) }
+    // In an order that depends only on each candidate itself, so another zone's rules cannot reorder it.
+    let shuffled = special.sorted { stableHash("\($0.0)|\($0.1)") < stableHash("\($1.0)|\($1.1)") }
     var gaps = 0, overlaps = 0
     var taken = Set<String>()
     for (id, wall) in shuffled where cases.count < 330 {
@@ -52,7 +52,7 @@ func exportZonesWallClock() -> [VectorCase] {
     }
     while cases.count < 600 {
         let id = rng.pick(vectorZones)
-        let wall = utcMillis(2000, 1, 1) / 1000 + rng.below(35 * 365 * 86_400)
+        let wall = utcMillis(2000, 1, 1) / 1000 + rng.below(26 * 365 * 86_400)
         guard taken.insert("\(id)|\(wall)").inserted else { continue }
         cases.append(make(id, wall, cases.count + 1))
     }

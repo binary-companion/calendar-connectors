@@ -31,7 +31,7 @@ func exportMicrosoftGraphTime() -> [VectorCase] {
     func date(_ text: String) { add("date", ["text": text], ["date": GraphTime.date(text).map { dayJSON($0) } ?? NSNull()]) }
     func format(_ t: Int, _ id: String) { add("format", ["instant": t, "zone": id], ["text": GraphTime.format(instant(ms: t), in: zone(id))]) }
     func parseInstant(_ text: String) { add("parseInstant", ["text": text], ["instant": orNull(GraphTime.parseInstant(text))]) }
-    func randomDay() -> CalendarDate { CalendarDate(year: rng.int(1990...2040), month: rng.int(1...12), day: rng.int(1...28)) }
+    func randomDay() -> CalendarDate { CalendarDate(year: rng.int(1990...2025), month: rng.int(1...12), day: rng.int(1...28)) }
     func two(_ n: Int) -> String { String(format: "%02d", n) }
     func randomLocal(fraction: Bool = true) -> String {
         let d = randomDay()
@@ -66,7 +66,7 @@ func exportMicrosoftGraphTime() -> [VectorCase] {
     for (t, id) in [(1_790_355_600_000, "America/Los_Angeles"), (0, "UTC"), (utcMillis(2026, 3, 8, 7), "America/New_York"), (utcMillis(2026, 3, 8, 6, 59, 59), "America/New_York"),
                     (utcMillis(2026, 11, 1, 5, 30), "America/New_York"), (utcMillis(2026, 11, 1, 6, 30), "America/New_York"), (utcMillis(2024, 2, 29, 23, 59, 59), "Asia/Kolkata"),
                     (utcMillis(1999, 12, 31, 23, 59, 59), "Pacific/Kiritimati"), (utcMillis(2011, 12, 30, 10), "Pacific/Apia"), (utcMillis(9999, 12, 31, 23), "UTC")] { format(t, id) }
-    while cases.count < 60 + 40 + 50 { format(utcMillis(1990, 1, 1) + rng.below(50 * 365 * 86_400) * 1000, rng.pick(vectorZones)) }
+    while cases.count < 60 + 40 + 50 { format(utcMillis(1990, 1, 1) + rng.below(35 * 365 * 86_400) * 1000, rng.pick(vectorZones)) }
 
     // midnight and dateText.
     for d in [CalendarDate(year: 2026, month: 9, day: 5), CalendarDate(year: 2026, month: 12, day: 31), CalendarDate(year: 2024, month: 2, day: 29),

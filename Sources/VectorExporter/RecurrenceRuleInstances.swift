@@ -66,13 +66,15 @@ func exportRecurrenceRuleInstances() -> [VectorCase] {
     for anchor in specialAnchors() {
         for rule in commonRules {
             guard cases.count < 40 + 160 else { break }
-            add("anchor", rule: rule, anchor: anchor, before: anchor.ms + 3 * 366 * 86_400_000, limit: 14, skipTo: nil)
+            // Havana's rules for 2027 differ between zone databases: its cases stop at the horizon.
+            let before = anchor.zone == "America/Havana" ? zoneHorizon : anchor.ms + 3 * 366 * 86_400_000
+            add("anchor", rule: rule, anchor: anchor, before: before, limit: 14, skipTo: nil)
         }
     }
 
     // Random.
     while cases.count < 2000 {
-        let anchor = rng.chance(8) ? rng.pick(specialAnchors()) : randomAnchor(&rng)
+        let anchor = rng.chance(8) ? rng.pick(specialAnchors().filter { $0.zone != "America/Havana" }) : randomAnchor(&rng)
         let (text, freq, span) = randomRuleText(&rng, anchor: anchor)
         let limit = rng.pick([5, 12, 25, 40, 60])
         let before = anchor.ms + span * 1000

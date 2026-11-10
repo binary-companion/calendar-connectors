@@ -18,9 +18,11 @@ let vectorZones: [String] = [
     "Australia/Eucla", "Australia/Darwin", "Pacific/Norfolk", "Pacific/Marquesas", "Antarctica/Troll",
 ]
 
-/// The zones the recurrence, iCalendar and Graph vectors draw from.
+/// The zones the recurrence, iCalendar and Graph vectors draw from. Recurrence windows reach years ahead, so the
+/// pool holds only zones whose rules are stable by law (no America/Havana, whose 2027 rule differs between zone
+/// databases; Havana appears only in hand-placed cases that stop before 2026-11-01).
 let rulesZones: [String] = [
     "America/New_York", "America/Los_Angeles", "America/Chicago", "Europe/London", "Europe/Berlin", "Asia/Tokyo",
-    "Asia/Kolkata", "Australia/Sydney", "Australia/Lord_Howe", "America/Sao_Paulo", "America/Havana", "Pacific/Auckland",
+    "Asia/Kolkata", "Australia/Sydney", "Australia/Lord_Howe", "America/Sao_Paulo", "Pacific/Auckland",
     "UTC",
 ]
