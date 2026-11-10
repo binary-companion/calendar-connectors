@@ -108,6 +108,10 @@ func civilFromSeconds(_ t: Int) -> (year: Int, month: Int, day: Int, hour: Int, 
 /// macOS 26 and 27), so no case asks a zone about a later date; see vectors/README.md.
 let zoneHorizon = utcMillis(2026, 11, 1)
 
+/// The horizon for one zone. Africa/Casablanca stops on 2026-06-01: the runner's zone database predates the change
+/// of Morocco's rules on 2026-09-20 that the macOS 27 database has (the first transition the two disagree on).
+func horizon(of id: String) -> Int { id == "Africa/Casablanca" ? utcMillis(2026, 6, 1) : zoneHorizon }
+
 /// FNV-1a over UTF-8: a sort key that does not depend on the other cases, so a change to one zone's rules moves
 /// only that zone's cases.
 func stableHash(_ text: String) -> UInt64 {

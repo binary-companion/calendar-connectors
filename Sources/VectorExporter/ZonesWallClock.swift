@@ -15,12 +15,12 @@ import Foundation
 
 func exportZonesWallClock() -> [VectorCase] {
     var rng = LCG(state: 0x3A11_C10C_4B)
-    let from = utcMillis(2024, 1, 1), to = zoneHorizon
+    let from = utcMillis(2024, 1, 1)
     let deltas = [-5400, -3600, -1800, -900, -60, -1, 0, 1, 60, 900, 1800, 3599, 3600, 5400]
     var special: [(String, Int)] = []      // zone, wall seconds
     for id in vectorZones {
         let tz = zone(id)
-        for t in dstTransitions(tz, from: from, to: to) {
+        for t in dstTransitions(tz, from: from, to: horizon(of: id)) {
             let before = tz.secondsFromGMT(for: instant(ms: t - 1000))
             for d in deltas { special.append((id, t / 1000 + before + d)) }
         }

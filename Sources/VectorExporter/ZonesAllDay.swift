@@ -41,7 +41,7 @@ func exportZonesAllDay() -> [VectorCase] {
     var transitionDays: [(String, CalendarDate)] = []
     for id in vectorZones {
         let tz = zone(id)
-        for t in dstTransitions(tz, from: utcMillis(2024, 1, 1), to: zoneHorizon) {
+        for t in dstTransitions(tz, from: utcMillis(2024, 1, 1), to: horizon(of: id)) {
             transitionDays.append((id, dayOf(t, id)))
         }
     }

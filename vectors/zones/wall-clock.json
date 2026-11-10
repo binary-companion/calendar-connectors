@@ -3302,23 +3302,6 @@
     },
     {
       "expected" : {
-        "instant" : 1789862400000
-      },
-      "input" : {
-        "date" : {
-          "day" : 20,
-          "month" : 9,
-          "year" : 2026
-        },
-        "hour" : 1,
-        "minute" : 0,
-        "second" : 0,
-        "zone" : "Africa/Casablanca"
-      },
-      "name" : "wall-clock-overlap-Africa_Casablanca-0195"
-    },
-    {
-      "expected" : {
         "instant" : 1791042300000
       },
       "input" : {
@@ -3332,7 +3315,7 @@
         "second" : 0,
         "zone" : "Australia/Lord_Howe"
       },
-      "name" : "wall-clock-gap-Australia_Lord_Howe-0196"
+      "name" : "wall-clock-gap-Australia_Lord_Howe-0195"
     },
     {
       "expected" : {
@@ -3349,7 +3332,7 @@
         "second" : 0,
         "zone" : "America/Los_Angeles"
       },
-      "name" : "wall-clock-gap-America_Los_Angeles-0197"
+      "name" : "wall-clock-gap-America_Los_Angeles-0196"
     },
     {
       "expected" : {
@@ -3366,7 +3349,7 @@
         "second" : 1,
         "zone" : "America/Los_Angeles"
       },
-      "name" : "wall-clock-gap-America_Los_Angeles-0198"
+      "name" : "wall-clock-gap-America_Los_Angeles-0197"
     },
     {
       "expected" : {
@@ -3383,7 +3366,7 @@
         "second" : 0,
         "zone" : "America/Los_Angeles"
       },
-      "name" : "wall-clock-overlap-America_Los_Angeles-0199"
+      "name" : "wall-clock-overlap-America_Los_Angeles-0198"
     },
     {
       "expected" : {
@@ -3400,7 +3383,7 @@
         "second" : 0,
         "zone" : "America/Los_Angeles"
       },
-      "name" : "wall-clock-gap-America_Los_Angeles-0200"
+      "name" : "wall-clock-gap-America_Los_Angeles-0199"
     },
     {
       "expected" : {
@@ -3417,7 +3400,7 @@
         "second" : 59,
         "zone" : "Pacific/Chatham"
       },
-      "name" : "wall-clock-overlap-Pacific_Chatham-0201"
+      "name" : "wall-clock-overlap-Pacific_Chatham-0200"
     },
     {
       "expected" : {
@@ -3434,7 +3417,7 @@
         "second" : 0,
         "zone" : "Pacific/Chatham"
       },
-      "name" : "wall-clock-overlap-Pacific_Chatham-0202"
+      "name" : "wall-clock-overlap-Pacific_Chatham-0201"
     },
     {
       "expected" : {
@@ -3451,7 +3434,7 @@
         "second" : 0,
         "zone" : "America/Denver"
       },
-      "name" : "wall-clock-overlap-America_Denver-0203"
+      "name" : "wall-clock-overlap-America_Denver-0202"
     },
     {
       "expected" : {
@@ -3468,7 +3451,7 @@
         "second" : 0,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-overlap-Atlantic_Azores-0204"
+      "name" : "wall-clock-overlap-Atlantic_Azores-0203"
     },
     {
       "expected" : {
@@ -3485,7 +3468,7 @@
         "second" : 0,
         "zone" : "America/Havana"
       },
-      "name" : "wall-clock-overlap-America_Havana-0205"
+      "name" : "wall-clock-overlap-America_Havana-0204"
     },
     {
       "expected" : {
@@ -3502,7 +3485,7 @@
         "second" : 59,
         "zone" : "America/Denver"
       },
-      "name" : "wall-clock-overlap-America_Denver-0206"
+      "name" : "wall-clock-overlap-America_Denver-0205"
     },
     {
       "expected" : {
@@ -3519,7 +3502,7 @@
         "second" : 59,
         "zone" : "America/Havana"
       },
-      "name" : "wall-clock-overlap-America_Havana-0207"
+      "name" : "wall-clock-overlap-America_Havana-0206"
     },
     {
       "expected" : {
@@ -3536,7 +3519,7 @@
         "second" : 0,
         "zone" : "Pacific/Auckland"
       },
-      "name" : "wall-clock-gap-Pacific_Auckland-0208"
+      "name" : "wall-clock-gap-Pacific_Auckland-0207"
     },
     {
       "expected" : {
@@ -3553,7 +3536,7 @@
         "second" : 0,
         "zone" : "Pacific/Auckland"
       },
-      "name" : "wall-clock-gap-Pacific_Auckland-0209"
+      "name" : "wall-clock-gap-Pacific_Auckland-0208"
     },
     {
       "expected" : {
@@ -3570,7 +3553,7 @@
         "second" : 1,
         "zone" : "Pacific/Auckland"
       },
-      "name" : "wall-clock-gap-Pacific_Auckland-0210"
+      "name" : "wall-clock-gap-Pacific_Auckland-0209"
     },
     {
       "expected" : {
@@ -3587,7 +3570,7 @@
         "second" : 0,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-overlap-Atlantic_Azores-0211"
+      "name" : "wall-clock-overlap-Atlantic_Azores-0210"
     },
     {
       "expected" : {
@@ -3604,7 +3587,7 @@
         "second" : 0,
         "zone" : "Europe/Dublin"
       },
-      "name" : "wall-clock-overlap-Europe_Dublin-0212"
+      "name" : "wall-clock-overlap-Europe_Dublin-0211"
     },
     {
       "expected" : {
@@ -3621,7 +3604,7 @@
         "second" : 0,
         "zone" : "Europe/Berlin"
       },
-      "name" : "wall-clock-overlap-Europe_Berlin-0213"
+      "name" : "wall-clock-overlap-Europe_Berlin-0212"
     },
     {
       "expected" : {
@@ -3638,7 +3621,7 @@
         "second" : 0,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-overlap-Asia_Beirut-0214"
+      "name" : "wall-clock-overlap-Asia_Beirut-0213"
     },
     {
       "expected" : {
@@ -3655,7 +3638,7 @@
         "second" : 59,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-overlap-Asia_Beirut-0215"
+      "name" : "wall-clock-overlap-Asia_Beirut-0214"
     },
     {
       "expected" : {
@@ -3672,7 +3655,7 @@
         "second" : 1,
         "zone" : "America/Havana"
       },
-      "name" : "wall-clock-gap-America_Havana-0216"
+      "name" : "wall-clock-gap-America_Havana-0215"
     },
     {
       "expected" : {
@@ -3689,7 +3672,7 @@
         "second" : 0,
         "zone" : "America/Havana"
       },
-      "name" : "wall-clock-gap-America_Havana-0217"
+      "name" : "wall-clock-gap-America_Havana-0216"
     },
     {
       "expected" : {
@@ -3706,7 +3689,7 @@
         "second" : 0,
         "zone" : "America/Havana"
       },
-      "name" : "wall-clock-gap-America_Havana-0218"
+      "name" : "wall-clock-gap-America_Havana-0217"
     },
     {
       "expected" : {
@@ -3723,7 +3706,7 @@
         "second" : 0,
         "zone" : "Africa/Casablanca"
       },
-      "name" : "wall-clock-overlap-Africa_Casablanca-0219"
+      "name" : "wall-clock-overlap-Africa_Casablanca-0218"
     },
     {
       "expected" : {
@@ -3740,7 +3723,7 @@
         "second" : 59,
         "zone" : "Africa/Casablanca"
       },
-      "name" : "wall-clock-overlap-Africa_Casablanca-0220"
+      "name" : "wall-clock-overlap-Africa_Casablanca-0219"
     },
     {
       "expected" : {
@@ -3757,7 +3740,7 @@
         "second" : 0,
         "zone" : "America/St_Johns"
       },
-      "name" : "wall-clock-overlap-America_St_Johns-0221"
+      "name" : "wall-clock-overlap-America_St_Johns-0220"
     },
     {
       "expected" : {
@@ -3774,7 +3757,7 @@
         "second" : 0,
         "zone" : "America/Anchorage"
       },
-      "name" : "wall-clock-overlap-America_Anchorage-0222"
+      "name" : "wall-clock-overlap-America_Anchorage-0221"
     },
     {
       "expected" : {
@@ -3791,7 +3774,7 @@
         "second" : 0,
         "zone" : "Europe/Athens"
       },
-      "name" : "wall-clock-gap-Europe_Athens-0223"
+      "name" : "wall-clock-gap-Europe_Athens-0222"
     },
     {
       "expected" : {
@@ -3808,7 +3791,7 @@
         "second" : 0,
         "zone" : "Europe/Lisbon"
       },
-      "name" : "wall-clock-gap-Europe_Lisbon-0224"
+      "name" : "wall-clock-gap-Europe_Lisbon-0223"
     },
     {
       "expected" : {
@@ -3825,7 +3808,7 @@
         "second" : 0,
         "zone" : "Europe/Berlin"
       },
-      "name" : "wall-clock-overlap-Europe_Berlin-0225"
+      "name" : "wall-clock-overlap-Europe_Berlin-0224"
     },
     {
       "expected" : {
@@ -3842,7 +3825,7 @@
         "second" : 0,
         "zone" : "Europe/Lisbon"
       },
-      "name" : "wall-clock-gap-Europe_Lisbon-0226"
+      "name" : "wall-clock-gap-Europe_Lisbon-0225"
     },
     {
       "expected" : {
@@ -3859,7 +3842,7 @@
         "second" : 59,
         "zone" : "Europe/Lisbon"
       },
-      "name" : "wall-clock-overlap-Europe_Lisbon-0227"
+      "name" : "wall-clock-overlap-Europe_Lisbon-0226"
     },
     {
       "expected" : {
@@ -3876,7 +3859,7 @@
         "second" : 0,
         "zone" : "Europe/Lisbon"
       },
-      "name" : "wall-clock-overlap-Europe_Lisbon-0228"
+      "name" : "wall-clock-overlap-Europe_Lisbon-0227"
     },
     {
       "expected" : {
@@ -3893,7 +3876,7 @@
         "second" : 59,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-gap-Asia_Beirut-0229"
+      "name" : "wall-clock-gap-Asia_Beirut-0228"
     },
     {
       "expected" : {
@@ -3910,7 +3893,7 @@
         "second" : 0,
         "zone" : "Europe/Lisbon"
       },
-      "name" : "wall-clock-gap-Europe_Lisbon-0230"
+      "name" : "wall-clock-gap-Europe_Lisbon-0229"
     },
     {
       "expected" : {
@@ -3927,7 +3910,7 @@
         "second" : 0,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-overlap-America_Halifax-0231"
+      "name" : "wall-clock-overlap-America_Halifax-0230"
     },
     {
       "expected" : {
@@ -3944,7 +3927,7 @@
         "second" : 0,
         "zone" : "America/Havana"
       },
-      "name" : "wall-clock-gap-America_Havana-0232"
+      "name" : "wall-clock-gap-America_Havana-0231"
     },
     {
       "expected" : {
@@ -3961,7 +3944,7 @@
         "second" : 0,
         "zone" : "Asia/Jerusalem"
       },
-      "name" : "wall-clock-overlap-Asia_Jerusalem-0233"
+      "name" : "wall-clock-overlap-Asia_Jerusalem-0232"
     },
     {
       "expected" : {
@@ -3978,7 +3961,7 @@
         "second" : 0,
         "zone" : "Europe/Dublin"
       },
-      "name" : "wall-clock-gap-Europe_Dublin-0234"
+      "name" : "wall-clock-gap-Europe_Dublin-0233"
     },
     {
       "expected" : {
@@ -3995,7 +3978,7 @@
         "second" : 1,
         "zone" : "Europe/Dublin"
       },
-      "name" : "wall-clock-gap-Europe_Dublin-0235"
+      "name" : "wall-clock-gap-Europe_Dublin-0234"
     },
     {
       "expected" : {
@@ -4012,7 +3995,7 @@
         "second" : 0,
         "zone" : "Europe/Dublin"
       },
-      "name" : "wall-clock-gap-Europe_Dublin-0236"
+      "name" : "wall-clock-gap-Europe_Dublin-0235"
     },
     {
       "expected" : {
@@ -4029,7 +4012,7 @@
         "second" : 0,
         "zone" : "America/Havana"
       },
-      "name" : "wall-clock-overlap-America_Havana-0237"
+      "name" : "wall-clock-overlap-America_Havana-0236"
     },
     {
       "expected" : {
@@ -4046,7 +4029,7 @@
         "second" : 0,
         "zone" : "Australia/Adelaide"
       },
-      "name" : "wall-clock-overlap-Australia_Adelaide-0238"
+      "name" : "wall-clock-overlap-Australia_Adelaide-0237"
     },
     {
       "expected" : {
@@ -4063,7 +4046,7 @@
         "second" : 59,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-overlap-Australia_Sydney-0239"
+      "name" : "wall-clock-overlap-Australia_Sydney-0238"
     },
     {
       "expected" : {
@@ -4080,7 +4063,7 @@
         "second" : 0,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-overlap-Australia_Sydney-0240"
+      "name" : "wall-clock-overlap-Australia_Sydney-0239"
     },
     {
       "expected" : {
@@ -4097,7 +4080,7 @@
         "second" : 59,
         "zone" : "Europe/Dublin"
       },
-      "name" : "wall-clock-overlap-Europe_Dublin-0241"
+      "name" : "wall-clock-overlap-Europe_Dublin-0240"
     },
     {
       "expected" : {
@@ -4114,7 +4097,7 @@
         "second" : 0,
         "zone" : "Europe/Dublin"
       },
-      "name" : "wall-clock-overlap-Europe_Dublin-0242"
+      "name" : "wall-clock-overlap-Europe_Dublin-0241"
     },
     {
       "expected" : {
@@ -4131,7 +4114,7 @@
         "second" : 0,
         "zone" : "Europe/Paris"
       },
-      "name" : "wall-clock-gap-Europe_Paris-0243"
+      "name" : "wall-clock-gap-Europe_Paris-0242"
     },
     {
       "expected" : {
@@ -4148,7 +4131,7 @@
         "second" : 0,
         "zone" : "Pacific/Norfolk"
       },
-      "name" : "wall-clock-overlap-Pacific_Norfolk-0244"
+      "name" : "wall-clock-overlap-Pacific_Norfolk-0243"
     },
     {
       "expected" : {
@@ -4165,7 +4148,7 @@
         "second" : 0,
         "zone" : "America/New_York"
       },
-      "name" : "wall-clock-overlap-America_New_York-0245"
+      "name" : "wall-clock-overlap-America_New_York-0244"
     },
     {
       "expected" : {
@@ -4182,7 +4165,7 @@
         "second" : 0,
         "zone" : "America/Asuncion"
       },
-      "name" : "wall-clock-overlap-America_Asuncion-0246"
+      "name" : "wall-clock-overlap-America_Asuncion-0245"
     },
     {
       "expected" : {
@@ -4199,7 +4182,7 @@
         "second" : 0,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-overlap-Atlantic_Azores-0247"
+      "name" : "wall-clock-overlap-Atlantic_Azores-0246"
     },
     {
       "expected" : {
@@ -4216,7 +4199,7 @@
         "second" : 0,
         "zone" : "Asia/Jerusalem"
       },
-      "name" : "wall-clock-overlap-Asia_Jerusalem-0248"
+      "name" : "wall-clock-overlap-Asia_Jerusalem-0247"
     },
     {
       "expected" : {
@@ -4233,7 +4216,7 @@
         "second" : 0,
         "zone" : "Antarctica/Troll"
       },
-      "name" : "wall-clock-overlap-Antarctica_Troll-0249"
+      "name" : "wall-clock-overlap-Antarctica_Troll-0248"
     },
     {
       "expected" : {
@@ -4250,7 +4233,7 @@
         "second" : 0,
         "zone" : "Africa/Cairo"
       },
-      "name" : "wall-clock-gap-Africa_Cairo-0250"
+      "name" : "wall-clock-gap-Africa_Cairo-0249"
     },
     {
       "expected" : {
@@ -4267,7 +4250,7 @@
         "second" : 0,
         "zone" : "Pacific/Auckland"
       },
-      "name" : "wall-clock-gap-Pacific_Auckland-0251"
+      "name" : "wall-clock-gap-Pacific_Auckland-0250"
     },
     {
       "expected" : {
@@ -4284,7 +4267,7 @@
         "second" : 1,
         "zone" : "Pacific/Auckland"
       },
-      "name" : "wall-clock-gap-Pacific_Auckland-0252"
+      "name" : "wall-clock-gap-Pacific_Auckland-0251"
     },
     {
       "expected" : {
@@ -4301,7 +4284,7 @@
         "second" : 0,
         "zone" : "Pacific/Auckland"
       },
-      "name" : "wall-clock-gap-Pacific_Auckland-0253"
+      "name" : "wall-clock-gap-Pacific_Auckland-0252"
     },
     {
       "expected" : {
@@ -4318,7 +4301,7 @@
         "second" : 0,
         "zone" : "Australia/Adelaide"
       },
-      "name" : "wall-clock-overlap-Australia_Adelaide-0254"
+      "name" : "wall-clock-overlap-Australia_Adelaide-0253"
     },
     {
       "expected" : {
@@ -4335,7 +4318,7 @@
         "second" : 1,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-gap-Asia_Beirut-0255"
+      "name" : "wall-clock-gap-Asia_Beirut-0254"
     },
     {
       "expected" : {
@@ -4352,7 +4335,7 @@
         "second" : 0,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-gap-Asia_Beirut-0256"
+      "name" : "wall-clock-gap-Asia_Beirut-0255"
     },
     {
       "expected" : {
@@ -4369,7 +4352,7 @@
         "second" : 0,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-gap-Asia_Beirut-0257"
+      "name" : "wall-clock-gap-Asia_Beirut-0256"
     },
     {
       "expected" : {
@@ -4386,7 +4369,7 @@
         "second" : 0,
         "zone" : "America/St_Johns"
       },
-      "name" : "wall-clock-gap-America_St_Johns-0258"
+      "name" : "wall-clock-gap-America_St_Johns-0257"
     },
     {
       "expected" : {
@@ -4403,7 +4386,7 @@
         "second" : 0,
         "zone" : "America/Santiago"
       },
-      "name" : "wall-clock-gap-America_Santiago-0259"
+      "name" : "wall-clock-gap-America_Santiago-0258"
     },
     {
       "expected" : {
@@ -4420,7 +4403,7 @@
         "second" : 0,
         "zone" : "Australia/Lord_Howe"
       },
-      "name" : "wall-clock-overlap-Australia_Lord_Howe-0260"
+      "name" : "wall-clock-overlap-Australia_Lord_Howe-0259"
     },
     {
       "expected" : {
@@ -4437,7 +4420,7 @@
         "second" : 59,
         "zone" : "Africa/Casablanca"
       },
-      "name" : "wall-clock-gap-Africa_Casablanca-0261"
+      "name" : "wall-clock-gap-Africa_Casablanca-0260"
     },
     {
       "expected" : {
@@ -4454,7 +4437,7 @@
         "second" : 0,
         "zone" : "Europe/Paris"
       },
-      "name" : "wall-clock-gap-Europe_Paris-0262"
+      "name" : "wall-clock-gap-Europe_Paris-0261"
     },
     {
       "expected" : {
@@ -4471,7 +4454,7 @@
         "second" : 0,
         "zone" : "Asia/Jerusalem"
       },
-      "name" : "wall-clock-overlap-Asia_Jerusalem-0263"
+      "name" : "wall-clock-overlap-Asia_Jerusalem-0262"
     },
     {
       "expected" : {
@@ -4488,7 +4471,7 @@
         "second" : 59,
         "zone" : "Asia/Jerusalem"
       },
-      "name" : "wall-clock-overlap-Asia_Jerusalem-0264"
+      "name" : "wall-clock-overlap-Asia_Jerusalem-0263"
     },
     {
       "expected" : {
@@ -4505,7 +4488,7 @@
         "second" : 59,
         "zone" : "America/Anchorage"
       },
-      "name" : "wall-clock-gap-America_Anchorage-0265"
+      "name" : "wall-clock-gap-America_Anchorage-0264"
     },
     {
       "expected" : {
@@ -4522,7 +4505,7 @@
         "second" : 0,
         "zone" : "Africa/Cairo"
       },
-      "name" : "wall-clock-overlap-Africa_Cairo-0266"
+      "name" : "wall-clock-overlap-Africa_Cairo-0265"
     },
     {
       "expected" : {
@@ -4539,7 +4522,7 @@
         "second" : 0,
         "zone" : "America/Santiago"
       },
-      "name" : "wall-clock-overlap-America_Santiago-0267"
+      "name" : "wall-clock-overlap-America_Santiago-0266"
     },
     {
       "expected" : {
@@ -4556,7 +4539,7 @@
         "second" : 59,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-overlap-Atlantic_Azores-0268"
+      "name" : "wall-clock-overlap-Atlantic_Azores-0267"
     },
     {
       "expected" : {
@@ -4573,7 +4556,7 @@
         "second" : 0,
         "zone" : "Pacific/Norfolk"
       },
-      "name" : "wall-clock-gap-Pacific_Norfolk-0269"
+      "name" : "wall-clock-gap-Pacific_Norfolk-0268"
     },
     {
       "expected" : {
@@ -4590,7 +4573,7 @@
         "second" : 0,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-overlap-Atlantic_Azores-0270"
+      "name" : "wall-clock-overlap-Atlantic_Azores-0269"
     },
     {
       "expected" : {
@@ -4607,7 +4590,7 @@
         "second" : 0,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-gap-Asia_Beirut-0271"
+      "name" : "wall-clock-gap-Asia_Beirut-0270"
     },
     {
       "expected" : {
@@ -4624,7 +4607,7 @@
         "second" : 0,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-gap-Asia_Beirut-0272"
+      "name" : "wall-clock-gap-Asia_Beirut-0271"
     },
     {
       "expected" : {
@@ -4641,7 +4624,7 @@
         "second" : 1,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-gap-Asia_Beirut-0273"
+      "name" : "wall-clock-gap-Asia_Beirut-0272"
     },
     {
       "expected" : {
@@ -4658,7 +4641,7 @@
         "second" : 0,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-overlap-Atlantic_Azores-0274"
+      "name" : "wall-clock-overlap-Atlantic_Azores-0273"
     },
     {
       "expected" : {
@@ -4675,7 +4658,7 @@
         "second" : 0,
         "zone" : "Pacific/Auckland"
       },
-      "name" : "wall-clock-overlap-Pacific_Auckland-0275"
+      "name" : "wall-clock-overlap-Pacific_Auckland-0274"
     },
     {
       "expected" : {
@@ -4692,7 +4675,7 @@
         "second" : 59,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-overlap-Atlantic_Azores-0276"
+      "name" : "wall-clock-overlap-Atlantic_Azores-0275"
     },
     {
       "expected" : {
@@ -4709,7 +4692,7 @@
         "second" : 0,
         "zone" : "Pacific/Norfolk"
       },
-      "name" : "wall-clock-overlap-Pacific_Norfolk-0277"
+      "name" : "wall-clock-overlap-Pacific_Norfolk-0276"
     },
     {
       "expected" : {
@@ -4726,7 +4709,7 @@
         "second" : 0,
         "zone" : "Europe/Lisbon"
       },
-      "name" : "wall-clock-overlap-Europe_Lisbon-0278"
+      "name" : "wall-clock-overlap-Europe_Lisbon-0277"
     },
     {
       "expected" : {
@@ -4743,7 +4726,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-gap-Europe_London-0279"
+      "name" : "wall-clock-gap-Europe_London-0278"
     },
     {
       "expected" : {
@@ -4760,7 +4743,7 @@
         "second" : 0,
         "zone" : "America/St_Johns"
       },
-      "name" : "wall-clock-overlap-America_St_Johns-0280"
+      "name" : "wall-clock-overlap-America_St_Johns-0279"
     },
     {
       "expected" : {
@@ -4777,7 +4760,7 @@
         "second" : 0,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-gap-America_Halifax-0281"
+      "name" : "wall-clock-gap-America_Halifax-0280"
     },
     {
       "expected" : {
@@ -4794,7 +4777,7 @@
         "second" : 1,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-gap-America_Halifax-0282"
+      "name" : "wall-clock-gap-America_Halifax-0281"
     },
     {
       "expected" : {
@@ -4811,7 +4794,7 @@
         "second" : 0,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-gap-America_Halifax-0283"
+      "name" : "wall-clock-gap-America_Halifax-0282"
     },
     {
       "expected" : {
@@ -4828,7 +4811,7 @@
         "second" : 0,
         "zone" : "Europe/Athens"
       },
-      "name" : "wall-clock-overlap-Europe_Athens-0284"
+      "name" : "wall-clock-overlap-Europe_Athens-0283"
     },
     {
       "expected" : {
@@ -4845,7 +4828,7 @@
         "second" : 0,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-overlap-America_Halifax-0285"
+      "name" : "wall-clock-overlap-America_Halifax-0284"
     },
     {
       "expected" : {
@@ -4862,7 +4845,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-overlap-Europe_London-0286"
+      "name" : "wall-clock-overlap-Europe_London-0285"
     },
     {
       "expected" : {
@@ -4879,7 +4862,7 @@
         "second" : 0,
         "zone" : "America/St_Johns"
       },
-      "name" : "wall-clock-overlap-America_St_Johns-0287"
+      "name" : "wall-clock-overlap-America_St_Johns-0286"
     },
     {
       "expected" : {
@@ -4896,7 +4879,7 @@
         "second" : 0,
         "zone" : "America/Los_Angeles"
       },
-      "name" : "wall-clock-gap-America_Los_Angeles-0288"
+      "name" : "wall-clock-gap-America_Los_Angeles-0287"
     },
     {
       "expected" : {
@@ -4913,7 +4896,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-overlap-Europe_London-0289"
+      "name" : "wall-clock-overlap-Europe_London-0288"
     },
     {
       "expected" : {
@@ -4930,7 +4913,7 @@
         "second" : 0,
         "zone" : "America/New_York"
       },
-      "name" : "wall-clock-gap-America_New_York-0290"
+      "name" : "wall-clock-gap-America_New_York-0289"
     },
     {
       "expected" : {
@@ -4947,7 +4930,7 @@
         "second" : 0,
         "zone" : "America/Anchorage"
       },
-      "name" : "wall-clock-gap-America_Anchorage-0291"
+      "name" : "wall-clock-gap-America_Anchorage-0290"
     },
     {
       "expected" : {
@@ -4964,7 +4947,7 @@
         "second" : 0,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-overlap-America_Halifax-0292"
+      "name" : "wall-clock-overlap-America_Halifax-0291"
     },
     {
       "expected" : {
@@ -4981,7 +4964,7 @@
         "second" : 0,
         "zone" : "America/Los_Angeles"
       },
-      "name" : "wall-clock-gap-America_Los_Angeles-0293"
+      "name" : "wall-clock-gap-America_Los_Angeles-0292"
     },
     {
       "expected" : {
@@ -4998,7 +4981,7 @@
         "second" : 0,
         "zone" : "America/Santiago"
       },
-      "name" : "wall-clock-gap-America_Santiago-0294"
+      "name" : "wall-clock-gap-America_Santiago-0293"
     },
     {
       "expected" : {
@@ -5015,7 +4998,7 @@
         "second" : 0,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-gap-Atlantic_Azores-0295"
+      "name" : "wall-clock-gap-Atlantic_Azores-0294"
     },
     {
       "expected" : {
@@ -5032,7 +5015,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-overlap-Europe_London-0296"
+      "name" : "wall-clock-overlap-Europe_London-0295"
     },
     {
       "expected" : {
@@ -5049,7 +5032,7 @@
         "second" : 0,
         "zone" : "Africa/Cairo"
       },
-      "name" : "wall-clock-gap-Africa_Cairo-0297"
+      "name" : "wall-clock-gap-Africa_Cairo-0296"
     },
     {
       "expected" : {
@@ -5066,7 +5049,7 @@
         "second" : 1,
         "zone" : "Africa/Cairo"
       },
-      "name" : "wall-clock-gap-Africa_Cairo-0298"
+      "name" : "wall-clock-gap-Africa_Cairo-0297"
     },
     {
       "expected" : {
@@ -5083,7 +5066,7 @@
         "second" : 0,
         "zone" : "Africa/Cairo"
       },
-      "name" : "wall-clock-gap-Africa_Cairo-0299"
+      "name" : "wall-clock-gap-Africa_Cairo-0298"
     },
     {
       "expected" : {
@@ -5100,7 +5083,7 @@
         "second" : 0,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-gap-Atlantic_Azores-0300"
+      "name" : "wall-clock-gap-Atlantic_Azores-0299"
     },
     {
       "expected" : {
@@ -5117,7 +5100,7 @@
         "second" : 1,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-gap-Atlantic_Azores-0301"
+      "name" : "wall-clock-gap-Atlantic_Azores-0300"
     },
     {
       "expected" : {
@@ -5134,7 +5117,7 @@
         "second" : 0,
         "zone" : "Australia/Adelaide"
       },
-      "name" : "wall-clock-gap-Australia_Adelaide-0302"
+      "name" : "wall-clock-gap-Australia_Adelaide-0301"
     },
     {
       "expected" : {
@@ -5151,7 +5134,7 @@
         "second" : 0,
         "zone" : "Europe/Berlin"
       },
-      "name" : "wall-clock-overlap-Europe_Berlin-0303"
+      "name" : "wall-clock-overlap-Europe_Berlin-0302"
     },
     {
       "expected" : {
@@ -5168,7 +5151,7 @@
         "second" : 0,
         "zone" : "America/Anchorage"
       },
-      "name" : "wall-clock-overlap-America_Anchorage-0304"
+      "name" : "wall-clock-overlap-America_Anchorage-0303"
     },
     {
       "expected" : {
@@ -5185,7 +5168,7 @@
         "second" : 0,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-gap-Australia_Sydney-0305"
+      "name" : "wall-clock-gap-Australia_Sydney-0304"
     },
     {
       "expected" : {
@@ -5202,7 +5185,7 @@
         "second" : 0,
         "zone" : "Europe/Athens"
       },
-      "name" : "wall-clock-gap-Europe_Athens-0306"
+      "name" : "wall-clock-gap-Europe_Athens-0305"
     },
     {
       "expected" : {
@@ -5219,7 +5202,7 @@
         "second" : 0,
         "zone" : "Europe/Athens"
       },
-      "name" : "wall-clock-gap-Europe_Athens-0307"
+      "name" : "wall-clock-gap-Europe_Athens-0306"
     },
     {
       "expected" : {
@@ -5236,7 +5219,7 @@
         "second" : 1,
         "zone" : "Europe/Athens"
       },
-      "name" : "wall-clock-gap-Europe_Athens-0308"
+      "name" : "wall-clock-gap-Europe_Athens-0307"
     },
     {
       "expected" : {
@@ -5253,7 +5236,7 @@
         "second" : 59,
         "zone" : "Antarctica/Troll"
       },
-      "name" : "wall-clock-overlap-Antarctica_Troll-0309"
+      "name" : "wall-clock-overlap-Antarctica_Troll-0308"
     },
     {
       "expected" : {
@@ -5270,7 +5253,7 @@
         "second" : 0,
         "zone" : "Antarctica/Troll"
       },
-      "name" : "wall-clock-overlap-Antarctica_Troll-0310"
+      "name" : "wall-clock-overlap-Antarctica_Troll-0309"
     },
     {
       "expected" : {
@@ -5287,7 +5270,7 @@
         "second" : 0,
         "zone" : "Atlantic/Azores"
       },
-      "name" : "wall-clock-overlap-Atlantic_Azores-0311"
+      "name" : "wall-clock-overlap-Atlantic_Azores-0310"
     },
     {
       "expected" : {
@@ -5304,7 +5287,7 @@
         "second" : 0,
         "zone" : "Antarctica/Troll"
       },
-      "name" : "wall-clock-overlap-Antarctica_Troll-0312"
+      "name" : "wall-clock-overlap-Antarctica_Troll-0311"
     },
     {
       "expected" : {
@@ -5321,7 +5304,7 @@
         "second" : 0,
         "zone" : "America/Anchorage"
       },
-      "name" : "wall-clock-overlap-America_Anchorage-0313"
+      "name" : "wall-clock-overlap-America_Anchorage-0312"
     },
     {
       "expected" : {
@@ -5338,7 +5321,7 @@
         "second" : 0,
         "zone" : "Antarctica/Troll"
       },
-      "name" : "wall-clock-overlap-Antarctica_Troll-0314"
+      "name" : "wall-clock-overlap-Antarctica_Troll-0313"
     },
     {
       "expected" : {
@@ -5355,7 +5338,7 @@
         "second" : 0,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-gap-America_Halifax-0315"
+      "name" : "wall-clock-gap-America_Halifax-0314"
     },
     {
       "expected" : {
@@ -5372,7 +5355,7 @@
         "second" : 1,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-gap-America_Halifax-0316"
+      "name" : "wall-clock-gap-America_Halifax-0315"
     },
     {
       "expected" : {
@@ -5389,7 +5372,7 @@
         "second" : 0,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-gap-America_Halifax-0317"
+      "name" : "wall-clock-gap-America_Halifax-0316"
     },
     {
       "expected" : {
@@ -5406,7 +5389,7 @@
         "second" : 0,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-overlap-Asia_Beirut-0318"
+      "name" : "wall-clock-overlap-Asia_Beirut-0317"
     },
     {
       "expected" : {
@@ -5423,7 +5406,7 @@
         "second" : 59,
         "zone" : "Asia/Beirut"
       },
-      "name" : "wall-clock-overlap-Asia_Beirut-0319"
+      "name" : "wall-clock-overlap-Asia_Beirut-0318"
     },
     {
       "expected" : {
@@ -5440,7 +5423,7 @@
         "second" : 0,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-overlap-Australia_Sydney-0320"
+      "name" : "wall-clock-overlap-Australia_Sydney-0319"
     },
     {
       "expected" : {
@@ -5457,7 +5440,7 @@
         "second" : 0,
         "zone" : "America/Asuncion"
       },
-      "name" : "wall-clock-overlap-America_Asuncion-0321"
+      "name" : "wall-clock-overlap-America_Asuncion-0320"
     },
     {
       "expected" : {
@@ -5474,7 +5457,7 @@
         "second" : 0,
         "zone" : "Antarctica/Troll"
       },
-      "name" : "wall-clock-overlap-Antarctica_Troll-0322"
+      "name" : "wall-clock-overlap-Antarctica_Troll-0321"
     },
     {
       "expected" : {
@@ -5491,7 +5474,7 @@
         "second" : 59,
         "zone" : "Antarctica/Troll"
       },
-      "name" : "wall-clock-overlap-Antarctica_Troll-0323"
+      "name" : "wall-clock-overlap-Antarctica_Troll-0322"
     },
     {
       "expected" : {
@@ -5508,7 +5491,7 @@
         "second" : 0,
         "zone" : "Africa/Cairo"
       },
-      "name" : "wall-clock-overlap-Africa_Cairo-0324"
+      "name" : "wall-clock-overlap-Africa_Cairo-0323"
     },
     {
       "expected" : {
@@ -5525,7 +5508,7 @@
         "second" : 0,
         "zone" : "America/St_Johns"
       },
-      "name" : "wall-clock-gap-America_St_Johns-0325"
+      "name" : "wall-clock-gap-America_St_Johns-0324"
     },
     {
       "expected" : {
@@ -5542,7 +5525,7 @@
         "second" : 59,
         "zone" : "America/Havana"
       },
-      "name" : "wall-clock-gap-America_Havana-0326"
+      "name" : "wall-clock-gap-America_Havana-0325"
     },
     {
       "expected" : {
@@ -5559,7 +5542,7 @@
         "second" : 0,
         "zone" : "Pacific/Chatham"
       },
-      "name" : "wall-clock-overlap-Pacific_Chatham-0327"
+      "name" : "wall-clock-overlap-Pacific_Chatham-0326"
     },
     {
       "expected" : {
@@ -5576,7 +5559,7 @@
         "second" : 59,
         "zone" : "Pacific/Chatham"
       },
-      "name" : "wall-clock-overlap-Pacific_Chatham-0328"
+      "name" : "wall-clock-overlap-Pacific_Chatham-0327"
     },
     {
       "expected" : {
@@ -5593,7 +5576,7 @@
         "second" : 0,
         "zone" : "America/Halifax"
       },
-      "name" : "wall-clock-gap-America_Halifax-0329"
+      "name" : "wall-clock-gap-America_Halifax-0328"
     },
     {
       "expected" : {
@@ -5608,6 +5591,23 @@
         "hour" : 2,
         "minute" : 59,
         "second" : 59,
+        "zone" : "Europe/Paris"
+      },
+      "name" : "wall-clock-overlap-Europe_Paris-0329"
+    },
+    {
+      "expected" : {
+        "instant" : 1792889940000
+      },
+      "input" : {
+        "date" : {
+          "day" : 25,
+          "month" : 10,
+          "year" : 2026
+        },
+        "hour" : 2,
+        "minute" : 59,
+        "second" : 0,
         "zone" : "Europe/Paris"
       },
       "name" : "wall-clock-overlap-Europe_Paris-0330"
@@ -6600,23 +6600,6 @@
     },
     {
       "expected" : {
-        "instant" : 1789871400000
-      },
-      "input" : {
-        "date" : {
-          "day" : 20,
-          "month" : 9,
-          "year" : 2026
-        },
-        "hour" : 2,
-        "minute" : 30,
-        "second" : 0,
-        "zone" : "Africa/Casablanca"
-      },
-      "name" : "wall-clock-ordinary-Africa_Casablanca-0389"
-    },
-    {
-      "expected" : {
         "instant" : 1728140400000
       },
       "input" : {
@@ -6630,7 +6613,7 @@
         "second" : 0,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-ordinary-Australia_Sydney-0390"
+      "name" : "wall-clock-ordinary-Australia_Sydney-0389"
     },
     {
       "expected" : {
@@ -6647,7 +6630,7 @@
         "second" : 0,
         "zone" : "America/St_Johns"
       },
-      "name" : "wall-clock-ordinary-America_St_Johns-0391"
+      "name" : "wall-clock-ordinary-America_St_Johns-0390"
     },
     {
       "expected" : {
@@ -6664,7 +6647,7 @@
         "second" : 0,
         "zone" : "Africa/Cairo"
       },
-      "name" : "wall-clock-ordinary-Africa_Cairo-0392"
+      "name" : "wall-clock-ordinary-Africa_Cairo-0391"
     },
     {
       "expected" : {
@@ -6681,7 +6664,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-ordinary-Europe_London-0393"
+      "name" : "wall-clock-ordinary-Europe_London-0392"
     },
     {
       "expected" : {
@@ -6698,7 +6681,7 @@
         "second" : 1,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-ordinary-Europe_London-0394"
+      "name" : "wall-clock-ordinary-Europe_London-0393"
     },
     {
       "expected" : {
@@ -6715,7 +6698,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-ordinary-Europe_London-0395"
+      "name" : "wall-clock-ordinary-Europe_London-0394"
     },
     {
       "expected" : {
@@ -6732,7 +6715,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-ordinary-Europe_London-0396"
+      "name" : "wall-clock-ordinary-Europe_London-0395"
     },
     {
       "expected" : {
@@ -6749,7 +6732,7 @@
         "second" : 59,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-ordinary-Australia_Sydney-0397"
+      "name" : "wall-clock-ordinary-Australia_Sydney-0396"
     },
     {
       "expected" : {
@@ -6766,7 +6749,7 @@
         "second" : 0,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-ordinary-Australia_Sydney-0398"
+      "name" : "wall-clock-ordinary-Australia_Sydney-0397"
     },
     {
       "expected" : {
@@ -6783,7 +6766,7 @@
         "second" : 59,
         "zone" : "Europe/Lisbon"
       },
-      "name" : "wall-clock-ordinary-Europe_Lisbon-0399"
+      "name" : "wall-clock-ordinary-Europe_Lisbon-0398"
     },
     {
       "expected" : {
@@ -6800,7 +6783,24 @@
         "second" : 59,
         "zone" : "Asia/Jerusalem"
       },
-      "name" : "wall-clock-ordinary-Asia_Jerusalem-0400"
+      "name" : "wall-clock-ordinary-Asia_Jerusalem-0399"
+    },
+    {
+      "expected" : {
+        "instant" : 1774745999000
+      },
+      "input" : {
+        "date" : {
+          "day" : 29,
+          "month" : 3,
+          "year" : 2026
+        },
+        "hour" : 1,
+        "minute" : 59,
+        "second" : 59,
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "wall-clock-ordinary-Europe_Berlin-0400"
     },
     {
       "expected" : {
