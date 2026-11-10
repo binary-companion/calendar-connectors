@@ -10,7 +10,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, v2]
   pull_request:
     # labeled and unlabeled: adding or removing semver:major turns the compat checks off or on again.
     types: [opened, synchronize, reopened, labeled, unlabeled]
