@@ -1,0 +1,21 @@
+[package]
+name = "calendar-caldav"
+description = "CalDAV connector (port of CalDAVCalendar)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+calendar-core = { workspace = true }
+calendar-ical = { workspace = true }
+quick-xml = { workspace = true }
+url = { workspace = true }
+base64 = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }

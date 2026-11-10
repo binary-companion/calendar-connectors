@@ -1,0 +1,21 @@
+[package]
+name = "calendar-microsoft"
+description = "Microsoft Graph calendar connector (port of MicrosoftCalendar)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+calendar-core = { workspace = true }
+calendar-oauth = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+url = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }

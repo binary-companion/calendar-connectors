@@ -1,0 +1,26 @@
+[package]
+name = "calendar-core"
+description = "Portable calendar model, time, errors and seams (port of CalendarCore)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+jiff = { workspace = true }
+uuid = { workspace = true }
+url = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }
+getrandom = { workspace = true }
+tokio = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }

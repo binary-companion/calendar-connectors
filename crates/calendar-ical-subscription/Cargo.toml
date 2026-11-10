@@ -1,0 +1,19 @@
+[package]
+name = "calendar-ical-subscription"
+description = "Subscribed iCalendar feed connector (port of ICalSubscription)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+calendar-core = { workspace = true }
+calendar-ical = { workspace = true }
+url = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }
