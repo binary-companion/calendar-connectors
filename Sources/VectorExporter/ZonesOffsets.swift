@@ -8,7 +8,7 @@ import Foundation
 //   expected: { "offsetSeconds": <Int> }
 //
 // Sixty zones, at least 40 instants each: the second before, the instant of and the second after every daylight
-// saving transition from 2024 up to 2026-11-01 (found with nextDaylightSavingTimeTransition), then a fixed grid of
+// saving transition from 2024 up to 2026-11-01 (found by scanning the offsets, see dstTransitions), then a fixed grid of
 // quarter days and seeded random instants between 1990 and 2026 up to 40 instants. Each zone has its own
 // generator (derivedLCG) and nothing is later than 2026-11-01 (zoneHorizon).
 

@@ -43,7 +43,9 @@ see `docs/rust-port/parity-ledger.md`) or it is a bug.
 
 The zone-dependent cases stop at 2026-11-01 (`zoneHorizon` in `VectorFile.swift`): the zone database's rules for later dates are a
 forecast and differ between operating system releases (the first run of the job found that the runner's macOS 26 and the macOS 27 that
-wrote the files disagree on America/Havana's 2027 transitions). Each zone and each generated case draws from its own generator, so one
+wrote the files disagree on America/Havana's 2027 transitions). Transitions are found by scanning the offsets (`dstTransitions`), not with `nextDaylightSavingTimeTransition`, whose answer for
+Africa/Casablanca differed between the two releases (the zone database flags Morocco's daylight time the other way round) although the
+offsets agreed. Each zone and each generated case draws from its own generator, so one
 zone's difference changes only that zone's cases. The recurrence cases reach years ahead by design but draw only on zones whose rules are
 stable (Havana appears in hand-placed cases that end before the horizon).
 

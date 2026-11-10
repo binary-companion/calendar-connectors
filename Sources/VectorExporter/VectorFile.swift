@@ -126,13 +126,28 @@ func slug(_ text: String) -> String {
 
 func fourDigits(_ n: Int) -> String { String(format: "%04d", n) }
 
-/// The instants at which `tz` changes its daylight-saving state between `from` and `to` (Unix ms).
+/// The instants (Unix ms, whole seconds) at which `tz`'s offset from UTC changes between `from` and `to`: the first
+/// second of each new offset. Found by scanning every six hours and bisecting, not with nextDaylightSavingTimeTransition,
+/// because that method's answer depends on how the zone database flags daylight time (Africa/Casablanca's transitions
+/// differed between macOS 26 and 27 although the offsets agreed) and it skips changes of the standard offset.
 func dstTransitions(_ tz: TimeZone, from: Int, to: Int) -> [Int] {
+    func offset(_ t: Int) -> Int { tz.secondsFromGMT(for: instant(ms: t)) }
     var found: [Int] = []
-    var probe = instant(ms: from - 1)
-    while let next = tz.nextDaylightSavingTimeTransition(after: probe), ms(next) < to {
-        found.append(ms(next))
-        probe = next
+    var t = from
+    var current = offset(t)
+    while t < to {
+        let next = min(t + 6 * 3_600_000, to)
+        let after = offset(next)
+        if after != current {
+            var low = t, high = next            // offset(low) == current, offset(high) != current
+            while high - low > 1000 {
+                let mid = low + (high - low) / 2000 * 1000
+                if offset(mid) == current { low = mid } else { high = mid }
+            }
+            found.append(high)
+        }
+        current = after
+        t = next
     }
     return found
 }

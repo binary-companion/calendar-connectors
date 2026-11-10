@@ -18867,40 +18867,10 @@
         "offsetSeconds" : -10800
       },
       "input" : {
-        "instant" : 1728961199000,
-        "zone" : "America/Asuncion"
-      },
-      "name" : "offsets-America_Asuncion-0007"
-    },
-    {
-      "expected" : {
-        "offsetSeconds" : -10800
-      },
-      "input" : {
-        "instant" : 1728961200000,
-        "zone" : "America/Asuncion"
-      },
-      "name" : "offsets-America_Asuncion-0008"
-    },
-    {
-      "expected" : {
-        "offsetSeconds" : -10800
-      },
-      "input" : {
-        "instant" : 1728961201000,
-        "zone" : "America/Asuncion"
-      },
-      "name" : "offsets-America_Asuncion-0009"
-    },
-    {
-      "expected" : {
-        "offsetSeconds" : -10800
-      },
-      "input" : {
         "instant" : 1704110400000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0010"
+      "name" : "offsets-America_Asuncion-0007"
     },
     {
       "expected" : {
@@ -18910,7 +18880,7 @@
         "instant" : 1711972800000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0011"
+      "name" : "offsets-America_Asuncion-0008"
     },
     {
       "expected" : {
@@ -18920,7 +18890,7 @@
         "instant" : 1719835200000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0012"
+      "name" : "offsets-America_Asuncion-0009"
     },
     {
       "expected" : {
@@ -18930,7 +18900,7 @@
         "instant" : 1727784000000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0013"
+      "name" : "offsets-America_Asuncion-0010"
     },
     {
       "expected" : {
@@ -18940,7 +18910,7 @@
         "instant" : 1767268800000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0014"
+      "name" : "offsets-America_Asuncion-0011"
     },
     {
       "expected" : {
@@ -18950,7 +18920,7 @@
         "instant" : 1782907200000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0015"
+      "name" : "offsets-America_Asuncion-0012"
     },
     {
       "expected" : {
@@ -18960,7 +18930,7 @@
         "instant" : 0,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0016"
+      "name" : "offsets-America_Asuncion-0013"
     },
     {
       "expected" : {
@@ -18970,7 +18940,7 @@
         "instant" : 951825600000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0017"
+      "name" : "offsets-America_Asuncion-0014"
     },
     {
       "expected" : {
@@ -18980,7 +18950,7 @@
         "instant" : 1793491199000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0018"
+      "name" : "offsets-America_Asuncion-0015"
     },
     {
       "expected" : {
@@ -18990,7 +18960,7 @@
         "instant" : 1268007263000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0019"
+      "name" : "offsets-America_Asuncion-0016"
     },
     {
       "expected" : {
@@ -19000,7 +18970,7 @@
         "instant" : 1359786118000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0020"
+      "name" : "offsets-America_Asuncion-0017"
     },
     {
       "expected" : {
@@ -19010,7 +18980,7 @@
         "instant" : 1595979096000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0021"
+      "name" : "offsets-America_Asuncion-0018"
     },
     {
       "expected" : {
@@ -19020,7 +18990,7 @@
         "instant" : 1009550902000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0022"
+      "name" : "offsets-America_Asuncion-0019"
     },
     {
       "expected" : {
@@ -19030,7 +19000,7 @@
         "instant" : 1136380629000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0023"
+      "name" : "offsets-America_Asuncion-0020"
     },
     {
       "expected" : {
@@ -19040,7 +19010,7 @@
         "instant" : 1145832637000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0024"
+      "name" : "offsets-America_Asuncion-0021"
     },
     {
       "expected" : {
@@ -19050,7 +19020,7 @@
         "instant" : 1026424371000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0025"
+      "name" : "offsets-America_Asuncion-0022"
     },
     {
       "expected" : {
@@ -19060,7 +19030,7 @@
         "instant" : 920332001000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0026"
+      "name" : "offsets-America_Asuncion-0023"
     },
     {
       "expected" : {
@@ -19070,7 +19040,7 @@
         "instant" : 846699622000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0027"
+      "name" : "offsets-America_Asuncion-0024"
     },
     {
       "expected" : {
@@ -19080,7 +19050,7 @@
         "instant" : 1503203051000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0028"
+      "name" : "offsets-America_Asuncion-0025"
     },
     {
       "expected" : {
@@ -19090,7 +19060,7 @@
         "instant" : 1071153730000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0029"
+      "name" : "offsets-America_Asuncion-0026"
     },
     {
       "expected" : {
@@ -19100,7 +19070,7 @@
         "instant" : 1061147413000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0030"
+      "name" : "offsets-America_Asuncion-0027"
     },
     {
       "expected" : {
@@ -19110,7 +19080,7 @@
         "instant" : 1013187008000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0031"
+      "name" : "offsets-America_Asuncion-0028"
     },
     {
       "expected" : {
@@ -19120,7 +19090,7 @@
         "instant" : 1245844487000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0032"
+      "name" : "offsets-America_Asuncion-0029"
     },
     {
       "expected" : {
@@ -19130,7 +19100,7 @@
         "instant" : 1331496605000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0033"
+      "name" : "offsets-America_Asuncion-0030"
     },
     {
       "expected" : {
@@ -19140,7 +19110,7 @@
         "instant" : 1443027753000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0034"
+      "name" : "offsets-America_Asuncion-0031"
     },
     {
       "expected" : {
@@ -19150,7 +19120,7 @@
         "instant" : 1144060111000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0035"
+      "name" : "offsets-America_Asuncion-0032"
     },
     {
       "expected" : {
@@ -19160,7 +19130,7 @@
         "instant" : 1471124782000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0036"
+      "name" : "offsets-America_Asuncion-0033"
     },
     {
       "expected" : {
@@ -19170,7 +19140,7 @@
         "instant" : 1610329452000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0037"
+      "name" : "offsets-America_Asuncion-0034"
     },
     {
       "expected" : {
@@ -19180,7 +19150,7 @@
         "instant" : 1126267600000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0038"
+      "name" : "offsets-America_Asuncion-0035"
     },
     {
       "expected" : {
@@ -19190,7 +19160,7 @@
         "instant" : 741879662000,
         "zone" : "America/Asuncion"
       },
-      "name" : "offsets-America_Asuncion-0039"
+      "name" : "offsets-America_Asuncion-0036"
     },
     {
       "expected" : {
@@ -19198,6 +19168,36 @@
       },
       "input" : {
         "instant" : 1545677856000,
+        "zone" : "America/Asuncion"
+      },
+      "name" : "offsets-America_Asuncion-0037"
+    },
+    {
+      "expected" : {
+        "offsetSeconds" : -14400
+      },
+      "input" : {
+        "instant" : 1523334073000,
+        "zone" : "America/Asuncion"
+      },
+      "name" : "offsets-America_Asuncion-0038"
+    },
+    {
+      "expected" : {
+        "offsetSeconds" : -10800
+      },
+      "input" : {
+        "instant" : 1130024741000,
+        "zone" : "America/Asuncion"
+      },
+      "name" : "offsets-America_Asuncion-0039"
+    },
+    {
+      "expected" : {
+        "offsetSeconds" : -10800
+      },
+      "input" : {
+        "instant" : 1549856921000,
         "zone" : "America/Asuncion"
       },
       "name" : "offsets-America_Asuncion-0040"

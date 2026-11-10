@@ -6617,23 +6617,6 @@
     },
     {
       "expected" : {
-        "instant" : 1728955800000
-      },
-      "input" : {
-        "date" : {
-          "day" : 14,
-          "month" : 10,
-          "year" : 2024
-        },
-        "hour" : 22,
-        "minute" : 30,
-        "second" : 0,
-        "zone" : "America/Asuncion"
-      },
-      "name" : "wall-clock-ordinary-America_Asuncion-0390"
-    },
-    {
-      "expected" : {
         "instant" : 1728140400000
       },
       "input" : {
@@ -6647,7 +6630,7 @@
         "second" : 0,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-ordinary-Australia_Sydney-0391"
+      "name" : "wall-clock-ordinary-Australia_Sydney-0390"
     },
     {
       "expected" : {
@@ -6664,7 +6647,7 @@
         "second" : 0,
         "zone" : "America/St_Johns"
       },
-      "name" : "wall-clock-ordinary-America_St_Johns-0392"
+      "name" : "wall-clock-ordinary-America_St_Johns-0391"
     },
     {
       "expected" : {
@@ -6681,7 +6664,7 @@
         "second" : 0,
         "zone" : "Africa/Cairo"
       },
-      "name" : "wall-clock-ordinary-Africa_Cairo-0393"
+      "name" : "wall-clock-ordinary-Africa_Cairo-0392"
     },
     {
       "expected" : {
@@ -6698,7 +6681,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-ordinary-Europe_London-0394"
+      "name" : "wall-clock-ordinary-Europe_London-0393"
     },
     {
       "expected" : {
@@ -6715,7 +6698,7 @@
         "second" : 1,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-ordinary-Europe_London-0395"
+      "name" : "wall-clock-ordinary-Europe_London-0394"
     },
     {
       "expected" : {
@@ -6732,7 +6715,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-ordinary-Europe_London-0396"
+      "name" : "wall-clock-ordinary-Europe_London-0395"
     },
     {
       "expected" : {
@@ -6749,7 +6732,7 @@
         "second" : 0,
         "zone" : "Europe/London"
       },
-      "name" : "wall-clock-ordinary-Europe_London-0397"
+      "name" : "wall-clock-ordinary-Europe_London-0396"
     },
     {
       "expected" : {
@@ -6766,7 +6749,7 @@
         "second" : 59,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-ordinary-Australia_Sydney-0398"
+      "name" : "wall-clock-ordinary-Australia_Sydney-0397"
     },
     {
       "expected" : {
@@ -6783,7 +6766,7 @@
         "second" : 0,
         "zone" : "Australia/Sydney"
       },
-      "name" : "wall-clock-ordinary-Australia_Sydney-0399"
+      "name" : "wall-clock-ordinary-Australia_Sydney-0398"
     },
     {
       "expected" : {
@@ -6800,7 +6783,24 @@
         "second" : 59,
         "zone" : "Europe/Lisbon"
       },
-      "name" : "wall-clock-ordinary-Europe_Lisbon-0400"
+      "name" : "wall-clock-ordinary-Europe_Lisbon-0399"
+    },
+    {
+      "expected" : {
+        "instant" : 1761440399000
+      },
+      "input" : {
+        "date" : {
+          "day" : 26,
+          "month" : 10,
+          "year" : 2025
+        },
+        "hour" : 2,
+        "minute" : 59,
+        "second" : 59,
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "wall-clock-ordinary-Asia_Jerusalem-0400"
     },
     {
       "expected" : {
