@@ -5,10 +5,6 @@
 //! Swift keeps the recurrence as `[String: Any]`; here it is a `serde_json::Map`. Swift reads its numbers with
 //! `as? Int`; [`int_of`] reads a JSON integer, or a number with no fraction, the same way.
 
-// The writing and splitting half of this module is called by the write path (the next pull request); until then
-// only the tests reach it.
-#![cfg_attr(not(test), allow(dead_code))]
-
 use calendar_core::all_day::{AllDay, CalendarDate};
 use calendar_core::civil;
 use calendar_core::recurrence::rule::{

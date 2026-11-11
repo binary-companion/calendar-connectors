@@ -6,13 +6,17 @@ mod api_client_tests;
 mod brokered_connector_kind_tests;
 mod change_detection_tests;
 mod connector_kind_tests;
+mod fake_graph;
 mod graph_time_vectors;
 mod mapper_tests;
 mod persisted_format_tests;
 mod recurrence_mapper_tests;
 mod rust_additions_tests;
 mod source_tests;
+mod split_series_tests;
 mod time_tests;
+mod write_mapper_tests;
+mod write_source_tests;
 
 use serde_json::Value;
 
