@@ -22,10 +22,33 @@ pub type Sleeper =
 /// Foundation's limit for `TimeZone(secondsFromGMT:)`: 18 hours either side of GMT.
 const MAX_FIXED_OFFSET_SECONDS: i32 = 18 * 3600;
 
-/// Identifiers whose spelling `jiff` does not give back (aliases it resolves to another name, or names it matches
-/// case-insensitively), generated from `vectors/zones/known.json`: Foundation's spelling on the left. Empty when
-/// `jiff` reports every accepted identifier as spelled.
-const ALIASES: &[(&str, &str)] = &[];
+/// Identifiers in `vectors/zones/known.json` that a zone database without the legacy "backward" links (the system
+/// database of current Linux images) lacks, each with the zone it is a link to. Only used when the direct lookup
+/// fails, so macOS and the bundled Windows database never reach it; the identifier a [`Zone`] reports stays the
+/// spelling asked for.
+const ALIASES: &[(&str, &str)] = &[
+    ("America/Godthab", "America/Nuuk"),
+    ("Antarctica/South_Pole", "Pacific/Auckland"),
+    ("Asia/Calcutta", "Asia/Kolkata"),
+    ("Asia/Choibalsan", "Asia/Ulaanbaatar"),
+    ("Asia/Katmandu", "Asia/Kathmandu"),
+    ("Asia/Rangoon", "Asia/Yangon"),
+    ("EST", "America/Panama"),
+    ("Europe/Kiev", "Europe/Kyiv"),
+    ("Europe/Uzhgorod", "Europe/Kyiv"),
+    ("Europe/Zaporozhye", "Europe/Kyiv"),
+    ("GMT0", "GMT"),
+    ("PST8PDT", "America/Los_Angeles"),
+    ("Pacific/Enderbury", "Pacific/Kanton"),
+    ("Pacific/Ponape", "Pacific/Pohnpei"),
+    ("Pacific/Truk", "Pacific/Chuuk"),
+    ("US/Central", "America/Chicago"),
+    ("US/Eastern", "America/New_York"),
+    ("US/Mountain", "America/Denver"),
+    ("US/Pacific", "America/Los_Angeles"),
+    ("Universal", "UTC"),
+    ("Zulu", "UTC"),
+];
 
 /// Swift's `TimeZone`: an IANA zone or a fixed offset. Equality, ordering and hashing use [`Zone::identifier`].
 #[derive(Clone, Debug)]
@@ -47,14 +70,15 @@ impl Zone {
         if !plausible_identifier(identifier) {
             return None;
         }
-        let lookup = ALIASES
-            .iter()
-            .find(|(spelled, _)| *spelled == identifier)
-            .map_or(identifier, |(_, jiff_name)| *jiff_name);
-        let tz = TimeZone::get(lookup).ok()?;
-        if tz.iana_name() != Some(lookup) {
-            return None;
-        }
+        let exact = |name: &str| {
+            TimeZone::get(name)
+                .ok()
+                .filter(|tz| tz.iana_name() == Some(name))
+        };
+        let tz = exact(identifier).or_else(|| {
+            let (_, target) = ALIASES.iter().find(|(spelled, _)| *spelled == identifier)?;
+            exact(target)
+        })?;
         Some(Zone {
             identifier: identifier.to_string(),
             tz,
