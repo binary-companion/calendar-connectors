@@ -309,7 +309,7 @@ jobs:
         run: cargo fmt --all --check
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
-      # Keep the version equal to the one in AGENTS.md ("On v2: Rust").
+      # Keep the version equal to the one in AGENTS.md ("Rust (the main description on `v2`)").
       - name: Cache cargo-deny
         id: cargo-deny-cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6

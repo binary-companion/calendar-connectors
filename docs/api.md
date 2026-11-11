@@ -2,7 +2,7 @@
 
 Status: parts 1 to 10 describe the code on `master` once Phase 3 (write capabilities) has merged; part 11 lists the known gaps;
 part 12 describes the Microsoft connector (Phase 4); part 13 describes `ICalendar` and the CalDAV
-and iCloud connector (Phase 5); part 14 describes the iCal subscription connector (Phase 6); part 16 describes the Rust API of the 2.x line on the `v2` branch.
+and iCloud connector (Phase 5); part 14 describes the iCal subscription connector (Phase 6); part 15 describes external token sources (release 1.2.0); part 16 describes the Rust API of the 2.x line on the `v2` branch.
 The library is pre-1.0 and lives in this repository; it is meant to be extracted into its own repository once a
 second provider (Microsoft, Phase 4) has proved the API is provider-neutral: the connector exists, and the extraction
 waits for its live checks (part 12). Until then, anything here can change with a matching change to this document.
@@ -803,8 +803,8 @@ last repeated) and records the calls, for this library's tests and for hosts'.
 ## 16. Rust API (2.x)
 
 On `v2` the library is a Cargo workspace of eight crates, a file-for-file port of the Swift products above. Parts 1 to 15
-describe the behaviour, which the Rust code reproduces (every Swift test has a Rust counterpart, see
-`docs/rust-port/test-parity.md`, and the golden vectors under `vectors/` pin the numeric and text edge cases). This part
+describe the behaviour, which the Rust code reproduces (every Swift test has a Rust counterpart except the 12 `n/a` rows of
+`docs/rust-port/test-parity.md`, which are listed in 16.2, and the golden vectors under `vectors/` pin the numeric and text edge cases). This part
 lists what is different about the Rust surface. Names follow Rust style (`makeSource` is `make_source`, `ConnectionID`
 is `ConnectionId`); the per-file differences are in `docs/rust-port/file-map.md`.
 
@@ -835,7 +835,13 @@ kinds and the source, and keep everything else private, as the Swift products do
 - **Parsers never panic.** iCalendar text, WebDAV XML and JSON bodies return errors for any input, including invalid
   UTF-8 and truncated data.
 - **Removed seams.** There is no `SHA256Hashing` (the crate `sha2` is used and pinned by `vectors/oauth/pkce.json`)
-  and no `URLSessionTransport`; the host owns HTTP (next section).
+  and no `URLSessionTransport`; the host owns HTTP (next section). Their Swift tests (11 of the 12 `n/a` rows) have no
+  counterpart.
+- **No non-finite times.** A Swift `Date` can hold NaN or an infinity and `EventTiming.validate()` rejects it; a
+  `jiff::Timestamp` cannot hold either, so the Rust `EventTiming::validate` has no finiteness check (the twelfth `n/a`
+  row). Its other rules (`end <= start`, all-day form) are unchanged.
+- **Latest instant.** `jiff::Timestamp` ends on 9999-12-30T22:00:00Z, so a time in the last two hours of year 9999 is not representable (the Google mapper drops such an event;
+  `docs/rust-port/file-map.md`).
 - **Time zones.** Zones are `jiff` zones. The zone choice for a `VTIMEZONE` uses the Foundation identifier list captured
   in `crates/calendar-ical/src/zone_data.rs`, so the same zone is chosen on every platform.
 - **Persisted data.** `connections.json` and `sync-state.json` keep the Swift format. The files under
