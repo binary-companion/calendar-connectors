@@ -6,8 +6,14 @@ use std::sync::Mutex;
 
 use jiff::Timestamp;
 
+use std::collections::BTreeSet;
+use std::fmt::Debug;
+
 use crate::diagnostic_log::{DiagnosticEvent, DiagnosticLog};
+use crate::failure::Failure;
+use crate::model::Attendee;
 use crate::time::Zone;
+use crate::write::types::{EventField, WriteError};
 
 /// `ISO8601DateFormatter().date(from:)` for the Z-suffixed form the Swift tests use.
 pub(super) fn iso(text: &str) -> Timestamp {
@@ -80,4 +86,54 @@ pub(super) fn secrets(pairs: &[(&str, &str)]) -> std::collections::BTreeMap<Stri
         .iter()
         .map(|(k, v)| (k.to_string(), v.to_string()))
         .collect()
+}
+
+/// `TestHelpers.swift`'s `expectWriteError`: fails unless `result` is exactly `Err(expected)`.
+pub(super) fn expect_write_error<T: Debug, E: Into<Failure>>(
+    expected: WriteError,
+    result: Result<T, E>,
+) {
+    match result {
+        Ok(value) => panic!("expected {expected:?}, but nothing was thrown (got {value:?})"),
+        Err(error) => assert_eq!(error.into(), Failure::Write(expected)),
+    }
+}
+
+/// A set of event fields.
+pub(super) fn fields(list: &[EventField]) -> BTreeSet<EventField> {
+    list.iter().copied().collect()
+}
+
+/// `Attendee(email:)`: a required attendee who has not answered.
+pub(super) fn attendee(email: &str) -> Attendee {
+    Attendee::new(
+        None,
+        Some(email),
+        crate::model::AttendeeRole::Required,
+        crate::model::ResponseStatus::NeedsAction,
+        false,
+        false,
+    )
+}
+
+/// `Attendee(name:email:)`: a required attendee who has not answered.
+pub(super) fn named_attendee(name: &str, email: Option<&str>) -> Attendee {
+    Attendee::new(
+        Some(name.to_string()),
+        email,
+        crate::model::AttendeeRole::Required,
+        crate::model::ResponseStatus::NeedsAction,
+        false,
+        false,
+    )
+}
+
+/// `EventPatch(...)` with the arguments given by `set`: a hand-built patch (no base). `EventPatch` keeps its `base`
+/// private, so struct update syntax is not available outside its module.
+pub(super) fn hand_patch(
+    set: impl FnOnce(&mut crate::write::event_patch::EventPatch),
+) -> crate::write::event_patch::EventPatch {
+    let mut patch = crate::write::event_patch::EventPatch::default();
+    set(&mut patch);
+    patch
 }
