@@ -87,8 +87,12 @@ dependencies = [
  "async-trait",
  "calendar-core",
  "calendar-ical",
- "thiserror",
+ "calendar-test-support",
+ "jiff",
+ "serde_json",
+ "tokio",
  "url",
+ "uuid",
 ]
 
 [[package]]
