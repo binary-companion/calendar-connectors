@@ -36,3 +36,25 @@ The feed link is a credential (ADR 0018): whoever holds it can read the calendar
   query, but a host should not put the link in one at all, nor in its own logs.
 
 `ICalSubscriptionKind::new` repeats the first requirement in its documentation.
+
+## CalDAV (`calendar-caldav`)
+
+`ICloudConnectorKind::new` and `CalDavConnectorKind::new` take the host's `HttpTransport`. The Swift code built its
+default with `URLSessionTransport(followsRedirects: false)`, and these are the requirements:
+
+- **The transport must not follow redirects.** It returns a 3xx answer as the response, with its `Location` header.
+  `WebDavClient` follows redirects itself, hop by hop (301, 302, 303, 307, 308; at most five), and checks every hop
+  before any credential is sent: the target must be `https` (plain `http` only to `localhost` or `127.0.0.1`) and its
+  host must be the account's host base or a subdomain of it (`icloud.com` for iCloud, the entered server's host for
+  another server). A 303 becomes a `GET` without a body. A transport that follows redirects on its own would send the
+  HTTP Basic `Authorization` header (the account password) to places the library never checked.
+- **Do not add, change or log the `Authorization` header.** The library sends `Basic` over the standard base64
+  alphabet with padding. The host must keep the header (and the request URL's credentials, if any) out of its own logs
+  and out of the `Network` messages it returns; the library never puts the password into an error or a `Debug` output.
+- **Pass methods and headers through unchanged.** The requests use `PROPFIND`, `REPORT`, `OPTIONS`, `GET`, `PUT` and
+  `DELETE`, and the headers `Depth`, `Content-Type`, `If-Match` and `If-None-Match`. `412` and `207` answers are
+  ordinary responses.
+- **Return the answer's `ETag`, `DAV`, `Location` and `Retry-After` headers** (names are lowercased by
+  `HttpResponse::new`).
+- **No cache, no cookies, nothing on disk** (the general requirements above): every request carries credentials and
+  sync tokens, and a cached body would keep a calendar on disk.
