@@ -2,7 +2,24 @@
 
 ## What this is
 
-The portable calendar connector library used by TimeTug (Mac now, Windows next). It imports nothing from TimeTug and nothing Apple-only, has no package dependencies, and builds and passes its tests on Linux and Windows (x64 and ARM64). Platform adapters (Keychain, Network.framework loopback, EventKit, Windows Credential Locker) live in the apps, never here.
+The portable calendar connector library used by TimeTug (Mac now, Windows next). On `v2` it is written in Rust (see the Rust section below); on `main` it is the Swift package, whose rules follow the Rust section.
+
+Neither version imports anything from TimeTug. The Swift package imports nothing Apple-only, has no package dependencies, and builds and passes its tests on Linux and Windows (x64 and ARM64). Platform adapters (Keychain, Network.framework loopback, EventKit, Windows Credential Locker) live in the apps, never here.
+
+## Rust (the main description on `v2`)
+
+On the `v2` branch this repository is a Rust library: eight crates that port the Swift package file for file, with a Rust counterpart of every Swift test (`docs/rust-port/test-parity.md`; the connector crates are complete since phase 1 of the Rust engine program). The public surface is described in `docs/api.md` part 16, and what a host owes for HTTP in `docs/host-http-contract.md`. The program's design, conventions and tracker are in the `timetug` repository under `docs/superpowers/`; the port records are in `docs/rust-port/`. The Swift package stays untouched beside the crates until the end of phase 3, and `main` keeps releasing the Swift library. Everything after this section that mentions Swift describes the Swift package on `main` and the Swift CI jobs that still run on `v2`.
+
+- Layout: a Cargo workspace at the root, one crate per Swift product in `crates/` (`calendar-core`, `calendar-oauth`, `calendar-ical`, `calendar-google`, `calendar-microsoft`, `calendar-caldav`, `calendar-ical-subscription`, `calendar-test-support`). The dependency table is `ALLOWED` in `scripts/ci/check-crate-architecture.py`. `Cargo.lock` is committed.
+- Toolchain: pinned in `rust-toolchain.toml` (1.99.1, with rustfmt, clippy and the targets of design section 6.4); raise it only in a reviewed pull request, together with `timetug-shared`. External crates are pinned exactly in `[workspace.dependencies]`; a crate not on the list of conventions section 3 needs a decision record, and `deny.toml` (the `allow` list), `EXTERNAL` in the architecture script and the pin must change together. `tokio` has only `rt`, `time`, `sync`, `macros` (`scripts/ci/check-tokio-features.py`). `cargo-deny` is pinned at 0.20.2 in the `rust-lint` job of `ci.yml`. The `rust-lint` job also runs `check-test-parity.py --require-complete` for every connector test target, so a Swift test without a Rust counterpart (or an `n/a` reason) fails CI.
+- Verify: `cargo test --workspace && cargo clippy --workspace --all-targets -- -D warnings && cargo fmt --all --check && cargo deny check && python3 scripts/ci/check-crate-architecture.py && python3 scripts/ci/check-tokio-features.py && python3 scripts/ci/check-test-parity.py && python3 -m unittest discover -s scripts/ci/tests -p 'test_*.py'`. In CI these are the `rust-macos`, `rust-linux`, `rust-windows-x64`, `rust-windows-arm64`, `rust-lint` and `rust-targets` jobs.
+- Golden vectors: `vectors/` holds reference answers produced by the Swift code (`scripts/dev/export-vectors.sh`, the `VectorExporter` target; see `vectors/README.md`). The `vectors-current` job (macOS) fails when the committed files differ from a fresh export; a Swift behaviour change therefore needs the regenerated vectors in the same pull request. Never edit a vector by hand or regenerate it to make Rust pass.
+- Re-check the vectors: re-run `scripts/dev/export-vectors.sh` and inspect `git diff vectors/` whenever Xcode, the macOS runner image, the Swift toolchain or jiff changes. Investigate diffs in `zones/*`, `ical/timezones`, `core/url-accept`, never accept them blindly; a new Swift zone rule needs a new vector (`vectors/README.md`).
+- Rules for ported code: the conventions file `docs/superpowers/plans/2026-11-10-rust-port-conventions.md` in `timetug`. Open pull requests against `v2`; never push to `v2` or `main`.
+
+## Swift package (on `main`; kept unchanged on `v2` until the end of phase 3)
+
+The sections up to "Finding code" below are the Swift package's rules.
 
 ## Repositories
 
@@ -39,17 +56,6 @@ With the `semver:major` label each check is skipped with a notice; the checks ar
 ## Release flow
 
 Do not tag by hand. Merging a pull request to `main` runs `release.yml`: the highest `semver:*` label among the pull requests merged since the latest tag picks the bump (patch by default), the workflow tags and publishes. After a version is published, the `notify` job of `release.yml` dispatches `library-released` to `timetug` and to `timetug-shared` (one dispatch each; a failure to reach one does not stop the other, and fails the run), whose `Bump dependencies` workflows open a "Bump calendar-connectors to X.Y.Z" pull request (opened by `timetug-bot`, never merged by it). The loop is proven only once the first bump pull request has run; until then the owner checks that it opened, and moves the pin by hand if it did not. Breaking changes to `docs/api.md` need `semver:major`. The agent never merges or publishes; the owner does.
-
-## On v2: Rust
-
-The `v2` branch holds the Rust port of this library (Rust engine program; design, conventions and tracker are in the `timetug` repository under `docs/superpowers/`, see `docs/rust-port/README.md` once it exists). The Swift package stays untouched beside it until the end of phase 3, and `main` keeps releasing the Swift library.
-
-- Layout: a Cargo workspace at the root, one crate per Swift product in `crates/` (`calendar-core`, `calendar-oauth`, `calendar-ical`, `calendar-google`, `calendar-microsoft`, `calendar-caldav`, `calendar-ical-subscription`, `calendar-test-support`). The dependency table is `ALLOWED` in `scripts/ci/check-crate-architecture.py`. `Cargo.lock` is committed.
-- Toolchain: pinned in `rust-toolchain.toml` (1.99.1, with rustfmt, clippy and the targets of design section 6.4); raise it only in a reviewed pull request, together with `timetug-shared`. External crates are pinned exactly in `[workspace.dependencies]`; a crate not on the list of conventions section 3 needs a decision record, and `deny.toml` (the `allow` list), `EXTERNAL` in the architecture script and the pin must change together. `tokio` has only `rt`, `time`, `sync`, `macros` (`scripts/ci/check-tokio-features.py`). `cargo-deny` is pinned at 0.20.2 in the `rust-lint` job of `ci.yml`.
-- Verify: `cargo test --workspace && cargo clippy --workspace --all-targets -- -D warnings && cargo fmt --all --check && cargo deny check && python3 scripts/ci/check-crate-architecture.py && python3 scripts/ci/check-tokio-features.py && python3 -m unittest discover -s scripts/ci/tests -p 'test_*.py'`. In CI these are the `rust-macos`, `rust-linux`, `rust-windows-x64`, `rust-windows-arm64`, `rust-lint` and `rust-targets` jobs.
-- Golden vectors: `vectors/` holds reference answers produced by the Swift code (`scripts/dev/export-vectors.sh`, the `VectorExporter` target; see `vectors/README.md`). The `vectors-current` job (macOS) fails when the committed files differ from a fresh export; a Swift behaviour change therefore needs the regenerated vectors in the same pull request. Never edit a vector by hand or regenerate it to make Rust pass.
-- Re-check the vectors: re-run `scripts/dev/export-vectors.sh` and inspect `git diff vectors/` whenever Xcode, the macOS runner image, the Swift toolchain or (once the Rust crates exist) jiff changes. Investigate diffs in `zones/*`, `ical/timezones`, `core/url-accept`, never accept them blindly; a new Swift zone rule needs a new vector (`vectors/README.md`).
-- Rules for ported code: the conventions file `docs/superpowers/plans/2026-11-10-rust-port-conventions.md` in `timetug`. Open pull requests against `v2`; never push to `v2` or `main`.
 
 ## Finding code
 

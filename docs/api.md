@@ -2,7 +2,7 @@
 
 Status: parts 1 to 10 describe the code on `master` once Phase 3 (write capabilities) has merged; part 11 lists the known gaps;
 part 12 describes the Microsoft connector (Phase 4); part 13 describes `ICalendar` and the CalDAV
-and iCloud connector (Phase 5); part 14 describes the iCal subscription connector (Phase 6).
+and iCloud connector (Phase 5); part 14 describes the iCal subscription connector (Phase 6); part 15 describes external token sources (release 1.2.0); part 16 describes the Rust API of the 2.x line on the `v2` branch.
 The library is pre-1.0 and lives in this repository; it is meant to be extracted into its own repository once a
 second provider (Microsoft, Phase 4) has proved the API is provider-neutral: the connector exists, and the extraction
 waits for its live checks (part 12). Until then, anything here can change with a matching change to this document.
@@ -799,6 +799,76 @@ public protocol AccountIdentityFamily { var identityFamily: String { get } }   /
 
 `CalendarTestSupport`: `FakeExternalTokenSource` scripts `accessToken` and `signIn` answers (each consumed in order, the
 last repeated) and records the calls, for this library's tests and for hosts'.
+
+## 16. Rust API (2.x)
+
+On `v2` the library is a Cargo workspace of eight crates, a file-for-file port of the Swift products above. Parts 1 to 15
+describe the behaviour, which the Rust code reproduces (every Swift test has a Rust counterpart except the 12 `n/a` rows of
+`docs/rust-port/test-parity.md`, which are listed in 16.2, and the golden vectors under `vectors/` pin the numeric and text edge cases). This part
+lists what is different about the Rust surface. Names follow Rust style (`makeSource` is `make_source`, `ConnectionID`
+is `ConnectionId`); the per-file differences are in `docs/rust-port/file-map.md`.
+
+### 16.1 The crates
+
+| Crate | Swift product | Public modules and items | Depends on |
+|---|---|---|---|
+| `calendar-core` | `CalendarCore` | `model`, `source_types` (`CalendarSource`, `PollingCalendarSource`, `SeriesSource`, `SourceError`, `CalendarChange`), `connection` (`Connection`, `ConnectorKind`, `ConnectorRegistry`, `CredentialStore`, `SyncStateStore`, in-memory stores), `http` (`HttpTransport`, `HttpRequest`, `HttpResponse`), `failure` (`Failure`, `Outcome`), `time` (`Zone`, `DateInterval`), `civil`, `all_day`, `recurrence` (`rule`, `set`, `occurrences`, `expander`), `write` (`event_draft`, `event_patch`, `patch_merge`, `types`, `writable_source`), `change_monitor`, `external_tokens`, `diagnostic_log`, `file_connection_store`, `file_sync_state_store`, `files`, `join_url_policy`, `conference_detector`, `calendar_user_address`, `shared_connector_helpers`, `windows_time_zones`, `json`, `url_string` | external crates only |
+| `calendar-oauth` | `CalendarOAuth` | `oauth` (`OAuthClient`, `OAuthConfig`, `OAuthTokens`), `pkce`, `access_token_provider`, `access_token_supplying`, `external_access_token_provider`, `oauth_connections` | `calendar-core` |
+| `calendar-ical` | `ICalendar` | `component`, `content_line` (`ICalParser`, `ICalSerializer`), `ical_values`, `ical_text`, `event_reader`, `event_writer`, `event_resource`, `alarm_mapper`, `attendee_mapper`, `series_editor`, `time_zone_resolver`, `vtimezone_writer` | `calendar-core` |
+| `calendar-google` | `GoogleCalendar` | `GoogleConnectorKind`, `GoogleOAuthConfig`, `GoogleCalendarSource` | `calendar-core`, `calendar-oauth` |
+| `calendar-microsoft` | `MicrosoftCalendar` | `MicrosoftConnectorKind`, `MicrosoftOAuthConfig`, `MicrosoftBrokeredConnectorKind`, `MicrosoftCalendarSource` | `calendar-core`, `calendar-oauth` |
+| `calendar-caldav` | `CalDAVCalendar` | `ICloudConnectorKind`, `CalDavConnectorKind`, `CalDavCalendarSource` | `calendar-core`, `calendar-ical` |
+| `calendar-ical-subscription` | `ICalSubscription` | `ICalSubscriptionKind`, `RetentionWindow`, `ICalSubscriptionSource` | `calendar-core`, `calendar-ical` |
+| `calendar-test-support` | `CalendarTestSupport` | `fake_transport`, `fake_writable_source`, `fake_external_token_source`, `collecting_diagnostic_log`, and the conformance helpers (`all_day_conformance`, `provided_fields_conformance`, `writable_source_conformance`) | `calendar-core` |
+
+The allowed dependencies are `ALLOWED` in `scripts/ci/check-crate-architecture.py`; the Apple-only products
+(`CalendarApple`, `EventKitSource`) and `CalendarBridge` have no Rust counterpart here. The provider crates export the
+kinds and the source, and keep everything else private, as the Swift products do with `internal`.
+
+### 16.2 What differs from Swift
+
+- **Async.** Sources, stores and the HTTP seam are `#[async_trait]` traits that are `Send + Sync`; any async runtime
+  can drive them. The crates read no clock, no environment and no network: time arrives as an argument or as a `now`
+  closure, and waiting as a sleeper, exactly as the Swift initializers took them. `tokio` is a dependency of tests only.
+- **Errors.** Failures are `Failure` (`Source(SourceError)`, `Write(WriteError)`, `Cancelled` and `Host(String)` for a
+  failure the host reports), returned in `Outcome<T> = Result<T, Failure>`. Cancellation is its own variant and is never a network error.
+- **Parsers never panic.** iCalendar text, WebDAV XML and JSON bodies return errors for any input, including invalid
+  UTF-8 and truncated data.
+- **Removed seams.** There is no `SHA256Hashing` (the crate `sha2` is used and pinned by `vectors/oauth/pkce.json`)
+  and no `URLSessionTransport`; the host owns HTTP (next section). Their Swift tests (11 of the 12 `n/a` rows) have no
+  counterpart.
+- **No non-finite times.** A Swift `Date` can hold NaN or an infinity and `EventTiming.validate()` rejects it; a
+  `jiff::Timestamp` cannot hold either, so the Rust `EventTiming::validate` has no finiteness check (the twelfth `n/a`
+  row). Its other rules (`end <= start`, all-day form) are unchanged.
+- **Latest instant.** `jiff::Timestamp` ends on 9999-12-30T22:00:00Z, so a time in the last two hours of year 9999 is not representable (the Google mapper drops such an event;
+  `docs/rust-port/file-map.md`).
+- **Time zones.** Zones are `jiff` zones. The zone choice for a `VTIMEZONE` uses the Foundation identifier list captured
+  in `crates/calendar-ical/src/zone_data.rs`, so the same zone is chosen on every platform.
+- **Persisted data.** `connections.json` and `sync-state.json` keep the Swift format. The files under
+  `Tests/PersistedFormats/` load unchanged (the `PersistedFormatTests` of the Rust crates check them).
+- **`unsafe`.** Every crate has `#![forbid(unsafe_code)]`.
+
+### 16.3 What a host owes the library
+
+The library has no HTTP client. A host implements `calendar_core::http::HttpTransport` and passes it to each connector
+kind (`GoogleConnectorKind::new`, `MicrosoftConnectorKind::new`, `MicrosoftBrokeredConnectorKind::new`,
+`ICloudConnectorKind::new`, `CalDavConnectorKind::new`, `ICalSubscriptionKind::new`). The full obligations are in
+`docs/host-http-contract.md`; in short:
+
+- return every HTTP answer, 4xx and 5xx included, as a response; map a transport failure to
+  `Failure::Source(SourceError::Network(message))` and a cancelled request to `Failure::Cancelled`;
+- keep no cache, no cookies and nothing on disk, and set finite timeouts;
+- do not follow redirects for CalDAV, iCloud and iCal subscription (the library follows them itself, hop by hop, and
+  checks every hop before sending a credential); never forward an `Authorization` header to a host other than the one
+  it was built for;
+- pass methods, headers and addresses through unchanged (`Prefer` for Graph, `$`-prefixed query names, opaque delta and
+  next links) and return the `Retry-After`, `ETag`, `DAV` and `Location` headers;
+- keep tokens, passwords, authorization codes, PKCE verifiers and feed links out of the host's own logs and out of the
+  `Network` messages it returns.
+
+The host also supplies the `CredentialStore` and `SyncStateStore` (or the file-backed ones in `calendar-core`), the
+`AuthorizationInteraction` for the OAuth browser flow, the OAuth client ids, and for the brokered Microsoft kind an
+`ExternalTokenSource`.
 
 ## Calendar identity and permissions
 
