@@ -107,7 +107,7 @@ fn swift_reference_date_fractional_and_reference_instant() {
     assert!(serde_json::from_str::<Ref>("{\"at\":1e300}").is_err());
     // Between the range of `Timestamp` and the sanity limit: an error, not a clamped instant.
     assert!(serde_json::from_str::<Ref>("{\"at\":300000000000}").is_err());
-    assert!(serde_json::from_str::<Ref>("{\"at\":1,\"maybe\":-300000000000}").is_err());
+    assert!(serde_json::from_str::<Ref>("{\"at\":1,\"maybe\":-400000000000}").is_err());
     assert!(serde_json::from_str::<Millis>("{\"at\":3e17}").is_err());
 }
 
