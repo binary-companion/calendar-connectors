@@ -443,6 +443,33 @@ async fn a_link_on_a_look_alike_host_or_scheme_is_refused() {
     }
 }
 
+#[tokio::test]
+async fn a_relative_next_link_is_refused_like_swift() {
+    // `URL(string:)` accepts a relative reference, which then fails the host check; a link it rejects ends the walk.
+    let h = ClientHarness::new().await;
+    h.transport.route(
+        "/me/calendars",
+        vec![ok(
+            json!({"value": [], "@odata.nextLink": "/v1.0/me/calendars?$skiptoken=2"}),
+        )],
+    );
+    let result = h
+        .client
+        .pages::<GraphListPage<GraphIDDTO>, _>(
+            &GraphApiClient::url("/me/calendars", &[]).unwrap(),
+            &[],
+            |_| Ok(()),
+        )
+        .await;
+    assert_eq!(
+        result,
+        Err(crate::api_client::GraphError::Other(Failure::Source(
+            SourceError::InvalidResponse("unexpected link host".to_string())
+        )))
+    );
+    assert_eq!(h.transport.requests().len(), 1);
+}
+
 // The delta position.
 
 #[test]
