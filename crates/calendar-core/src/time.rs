@@ -87,18 +87,20 @@ impl Zone {
         })
     }
 
-    /// `TimeZone(secondsFromGMT:)`: nil beyond 18 hours. The identifier is `GMT`, or `GMT+HHMM` / `GMT-HHMM`.
+    /// `TimeZone(secondsFromGMT:)`: nil beyond 18 hours. The identifier is `GMT`, or `GMT+HHMM` / `GMT-HHMM` with the offset
+    /// rounded to the nearest minute.
     pub fn fixed(seconds_from_gmt: i32) -> Option<Zone> {
         if seconds_from_gmt.unsigned_abs() > MAX_FIXED_OFFSET_SECONDS.unsigned_abs() {
             return None;
         }
         let offset = Offset::from_seconds(seconds_from_gmt).ok()?;
-        let identifier = if seconds_from_gmt == 0 {
+        // The identifier names whole minutes, rounded half up (`GMT+0131` for 5,445 s); under 30 s it is `GMT`.
+        let minutes = (seconds_from_gmt.unsigned_abs() + 30) / 60;
+        let identifier = if minutes == 0 {
             "GMT".to_string()
         } else {
-            let abs = seconds_from_gmt.unsigned_abs();
             let sign = if seconds_from_gmt < 0 { '-' } else { '+' };
-            format!("GMT{sign}{:02}{:02}", abs / 3600, (abs % 3600) / 60)
+            format!("GMT{sign}{:02}{:02}", minutes / 60, minutes % 60)
         };
         Some(Zone {
             identifier,

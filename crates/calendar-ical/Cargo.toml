@@ -13,4 +13,9 @@ workspace = true
 
 [dependencies]
 calendar-core = { workspace = true }
+jiff = { workspace = true }
 thiserror = { workspace = true }
+
+[dev-dependencies]
+calendar-test-support = { workspace = true }
+serde_json = { workspace = true }
