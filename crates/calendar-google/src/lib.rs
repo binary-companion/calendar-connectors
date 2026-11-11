@@ -18,6 +18,8 @@ mod dtos;
 mod event_mapper;
 mod source;
 mod source_series;
+mod source_write;
+mod write_mapper;
 
 pub use connector_kind::{GoogleConnectorKind, GoogleOAuthConfig};
 pub use source::GoogleCalendarSource;

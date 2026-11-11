@@ -394,3 +394,100 @@ fn garbage_and_truncated_json_never_panic_the_decoders() {
         let _ = serde_json::from_slice::<GoogleEventDTO>(&sample[..cut]);
     }
 }
+
+// Write path: the series-splitting helpers read provider text, so they must survive any string.
+
+#[test]
+fn the_series_splitting_helpers_never_panic_on_garbage_lines() {
+    use crate::write_mapper::GoogleWriteMapper;
+    let mut seed: u64 = 0x9E37_79B9_7F4A_7C15;
+    let mut next = move || {
+        seed ^= seed << 13;
+        seed ^= seed >> 7;
+        seed ^= seed << 17;
+        seed
+    };
+    let alphabet: Vec<char> =
+        "RRULE:EXDATE;RDATE=,TZID/PCOUNTUNTIL0123456789TZßéİ\u{130}\u{212a}日本 \t-+"
+            .chars()
+            .collect();
+    let split = instant("2026-09-15T15:00:00Z");
+    let zone = Zone::utc();
+    for _ in 0..2000 {
+        let line: String = (0..(next() % 60) as usize)
+            .map(|_| alphabet[(next() % alphabet.len() as u64) as usize])
+            .collect();
+        let lines = vec![
+            line.clone(),
+            format!("RRULE:{line}"),
+            format!("EXDATE:{line}"),
+            format!("RDATE;TZID={line}:{line}"),
+        ];
+        let _ = GoogleWriteMapper::truncated(&lines, split, false, Some(&zone));
+        let _ = GoogleWriteMapper::truncated(&lines, split, true, None);
+        let _ = GoogleWriteMapper::carried_over(&lines, split, &zone);
+        let _ = GoogleWriteMapper::count_in(&lines);
+        let _ = GoogleWriteMapper::replacing_count(&lines, 3);
+        let _ = GoogleWriteMapper::rrule_lines(&lines);
+    }
+}
+
+#[test]
+fn a_master_with_missing_or_odd_fields_is_rejected_not_panicked_on() {
+    use crate::write_mapper::GoogleWriteMapper;
+    use calendar_core::write::event_patch::EventPatch;
+    for master in [
+        json!({}),
+        json!({"start": "x", "end": {"date": "2026-09-01"}}),
+        json!({"start": {"date": "2026-09-01"}, "end": {"date": "2026-09-01"}}),
+        json!({"start": {"date": "garbage"}, "end": {"date": "2026-09-01"}}),
+        json!({"start": {"dateTime": "2026-09-01T10:00:00Z"}, "end": {"dateTime": "2026-09-01T09:00:00Z"}}),
+        json!({"start": {"dateTime": "x"}, "end": {"dateTime": "y"}}),
+        json!({"start": {"dateTime": 5}, "end": null, "attendees": [1, 2]}),
+    ] {
+        let master = master.as_object().cloned().unwrap();
+        let result = GoogleWriteMapper::new_series_body(
+            &master,
+            instant("2026-09-15T15:00:00Z"),
+            &EventPatch::default(),
+            Vec::new(),
+            Some("UTC"),
+        );
+        assert!(result.is_err(), "{master:?}");
+    }
+}
+
+#[test]
+fn date_values_are_trimmed_of_exactly_the_characters_foundation_trims() {
+    use crate::write_mapper::GoogleWriteMapper;
+    let split = instant("2026-09-15T15:00:00Z");
+    let utc = Zone::utc();
+    // Tab, space, no-break space and the zero-width space are trimmed (`CharacterSet.whitespaces`, probed on macOS), so
+    // the value reads as 22 September and moves to the new series.
+    for pad in ["\t", " ", "\u{A0}", "\u{200B}", "\u{3000}"] {
+        let lines = vec![format!("EXDATE:{pad}20260922T150000Z{pad}")];
+        assert_eq!(
+            GoogleWriteMapper::carried_over(&lines, split, &utc),
+            lines,
+            "{pad:?}"
+        );
+        assert!(
+            GoogleWriteMapper::truncated(&lines, split, false, Some(&utc)).is_empty(),
+            "{pad:?}"
+        );
+    }
+    // Form feed, vertical tab, NEL and the line and paragraph separators are not: the value is unreadable, so it stays
+    // with the master and does not move.
+    for pad in ["\u{C}", "\u{B}", "\u{85}", "\u{2028}", "\u{2029}"] {
+        let lines = vec![format!("EXDATE:{pad}20260922T150000Z")];
+        assert!(
+            GoogleWriteMapper::carried_over(&lines, split, &utc).is_empty(),
+            "{pad:?}"
+        );
+        assert_eq!(
+            GoogleWriteMapper::truncated(&lines, split, false, Some(&utc)),
+            lines,
+            "{pad:?}"
+        );
+    }
+}
