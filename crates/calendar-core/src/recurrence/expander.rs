@@ -237,44 +237,77 @@ impl<'a> RuleExpander<'a> {
     // MARK: Periods
 
     /// The period `index` periods after the anchor's (a multiple of `interval`).
+    ///
+    /// A period whose first day is outside the range of a `Timestamp` (years beyond about 9999, reached only through
+    /// an absurd `INTERVAL`) starts at `Timestamp::MAX`: Swift's `Date` still represents such a day and the period
+    /// starts after every bound, which ends the loop. Swift's `startInstant` falls back to the anchor (`?? anchor`);
+    /// here that would spin to the iteration cap and report `truncated`.
     fn period(&self, index: i64) -> Option<Period> {
+        let beyond_range = Some(Period {
+            start: Timestamp::MAX,
+            days: Vec::new(),
+        });
         match self.rule.frequency {
             Frequency::Yearly => {
-                let year = self.anchor_date.year.checked_add(index)?;
+                let Some(year) = self.anchor_date.year.checked_add(index) else {
+                    return beyond_range;
+                };
                 let first = CalendarDate::new(year, 1, 1);
+                let Some(start) = AllDay::start_of_day(&first, self.zone) else {
+                    return beyond_range;
+                };
                 Some(Period {
-                    start: self.start_instant(&first),
+                    start,
                     days: (0..days_in_year(year))
                         .map(|d| first.adding_days(d))
                         .collect(),
                 })
             }
             Frequency::Monthly => {
-                let total = (self.anchor_date.month - 1).checked_add(index)?;
+                let Some(total) = (self.anchor_date.month - 1).checked_add(index) else {
+                    return beyond_range;
+                };
                 // `Int(floor(Double(total) / 12))` is a floored division.
-                let year = self.anchor_date.year.checked_add(total.div_euclid(12))?;
+                let Some(year) = self.anchor_date.year.checked_add(total.div_euclid(12)) else {
+                    return beyond_range;
+                };
                 let month = ((total % 12) + 12) % 12 + 1;
                 let first = CalendarDate::new(year, month, 1);
+                let Some(start) = AllDay::start_of_day(&first, self.zone) else {
+                    return beyond_range;
+                };
                 Some(Period {
-                    start: self.start_instant(&first),
+                    start,
                     days: (0..days_in_month(year, month))
                         .map(|d| first.adding_days(d))
                         .collect(),
                 })
             }
             Frequency::Weekly => {
-                let first = self
-                    .week_start_of(&self.anchor_date)
-                    .adding_days(index.checked_mul(7)?);
+                let first = index.checked_mul(7).and_then(|days| {
+                    self.week_start_of(&self.anchor_date)
+                        .checked_adding_days(days)
+                });
+                let Some(first) = first else {
+                    return beyond_range;
+                };
+                let Some(start) = AllDay::start_of_day(&first, self.zone) else {
+                    return beyond_range;
+                };
                 Some(Period {
-                    start: self.start_instant(&first),
+                    start,
                     days: (0..7).map(|d| first.adding_days(d)).collect(),
                 })
             }
             Frequency::Daily => {
-                let day = self.anchor_date.adding_days(index);
+                let Some(day) = self.anchor_date.checked_adding_days(index) else {
+                    return beyond_range;
+                };
+                let Some(start) = AllDay::start_of_day(&day, self.zone) else {
+                    return beyond_range;
+                };
                 Some(Period {
-                    start: self.start_instant(&day),
+                    start,
                     days: vec![day],
                 })
             }
@@ -527,10 +560,6 @@ impl<'a> RuleExpander<'a> {
     }
 
     // MARK: Date helpers
-
-    fn start_instant(&self, day: &CalendarDate) -> Timestamp {
-        AllDay::start_of_day(day, self.zone).unwrap_or(self.anchor)
-    }
 
     fn floor_to_unit(&self, date: Timestamp, unit: f64) -> Timestamp {
         let c = civil::components(date, self.zone);

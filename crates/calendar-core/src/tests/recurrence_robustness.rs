@@ -96,3 +96,34 @@ fn absurd_numbers_neither_panic_nor_hang() {
         let _ = rule.instances(anchor, &new_york, false, before, 100, None);
     }
 }
+
+/// DeepSeek review finding F1 (confirmed): a period beyond the range of a `Timestamp` must end the loop at the
+/// bound, as Swift's far-future `Date` does, instead of spinning to the iteration cap and reporting `truncated`.
+#[test]
+fn a_period_beyond_the_timestamp_range_ends_the_expansion() {
+    let utc = zone("UTC");
+    let anchor = crate::civil::date_from(2026, 1, 1, 14, 0, 0, &utc).unwrap();
+    let before = crate::civil::date_from(2050, 1, 1, 0, 0, 0, &utc).unwrap();
+    let skip_to = crate::civil::date_from(2026, 1, 1, 13, 0, 0, &utc).unwrap();
+    for text in [
+        "FREQ=YEARLY;INTERVAL=2000000",
+        "FREQ=YEARLY;INTERVAL=10000",
+        "FREQ=MONTHLY;INTERVAL=200000",
+        "FREQ=WEEKLY;INTERVAL=2000000",
+        "FREQ=DAILY;INTERVAL=9223372036854775807",
+    ] {
+        let rule = RecurrenceRule::from_rrule(text, None).unwrap();
+        for skip in [None, Some(skip_to)] {
+            let result = rule.instances(anchor, &utc, false, before, 5000, skip);
+            assert_eq!(result.starts, vec![anchor], "{text}");
+            assert!(!result.truncated, "{text}");
+        }
+    }
+    // A weekly rule with days after the anchor must not repeat them when the next period is out of range.
+    let rule =
+        RecurrenceRule::from_rrule("FREQ=WEEKLY;INTERVAL=2000000;BYDAY=TH,FR", None).unwrap();
+    let result = rule.instances(anchor, &utc, false, before, 5000, None);
+    // 2026-01-01 is a Thursday: the anchor and the Friday after it, nothing from the out-of-range period.
+    assert_eq!(result.starts.len(), 2);
+    assert!(!result.truncated);
+}
