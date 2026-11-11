@@ -27,10 +27,25 @@ impl FeedValidators {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub(crate) enum FeedResponse {
     NotModified,
     Body(Vec<u8>, FeedValidators),
+}
+
+/// Prints the length of the body, never the body: a server can echo the link into the page it sends (Swift's `Data`
+/// describes itself by its length too).
+impl std::fmt::Debug for FeedResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            FeedResponse::NotModified => f.write_str("NotModified"),
+            FeedResponse::Body(data, validators) => f
+                .debug_tuple("Body")
+                .field(&format_args!("{} bytes", data.len()))
+                .field(validators)
+                .finish(),
+        }
+    }
 }
 
 /// Downloads a feed.

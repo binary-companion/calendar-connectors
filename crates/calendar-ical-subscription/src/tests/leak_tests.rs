@@ -138,3 +138,26 @@ async fn any_other_failure_from_the_transport_is_replaced_by_a_fixed_message() {
         );
     }
 }
+
+/// A server can echo the link into the page it sends; the fetch result must not print the page.
+#[tokio::test(flavor = "current_thread", start_paused = true)]
+async fn the_fetch_result_never_prints_the_body() {
+    let transport = FakeTransport::new();
+    transport.route(
+        PRIVATE_PATH,
+        vec![calendar_core::http::HttpResponse::new(
+            200,
+            Default::default(),
+            format!("<html>{}</html>", feed_url().as_str()).into_bytes(),
+        )],
+    );
+    let response = FeedFetcher::new(Arc::new(transport))
+        .fetch(&feed_url(), None)
+        .await
+        .unwrap();
+    let text = format!("{response:?} {response:#?}");
+    assert!(
+        !text.contains(PRIVATE_PATH) && !text.contains("example.test"),
+        "{text}"
+    );
+}

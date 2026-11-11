@@ -81,6 +81,7 @@ async fn debug_output_never_contains_the_link() {
     let FeedResponse::Body(data, validators) = &response else {
         panic!("expected a body");
     };
+    assert!(format!("{response:?}").contains(&format!("{} bytes", data.len())));
     let parsed = FeedParser::parse(data).unwrap();
     let store = InMemoryCredentialStore::new();
     let connection = kind(transport)
@@ -88,6 +89,7 @@ async fn debug_output_never_contains_the_link() {
         .await
         .unwrap();
     for text in [
+        format!("{response:?}"),
         format!("{validators:?}"),
         format!("{parsed:?}"),
         format!("{connection:?}"),
