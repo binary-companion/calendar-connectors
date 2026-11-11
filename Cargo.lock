@@ -36,9 +36,12 @@ dependencies = [
  "base64",
  "calendar-core",
  "calendar-ical",
+ "calendar-test-support",
+ "jiff",
  "quick-xml",
- "thiserror",
- "url",
+ "serde_json",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]
