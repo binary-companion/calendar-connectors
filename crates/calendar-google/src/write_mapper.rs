@@ -674,9 +674,7 @@ impl GoogleWriteMapper {
             .split('/')
             .find(|piece| !piece.is_empty())
             .unwrap_or(text);
-        let mut value = first
-            .trim_matches(|c: char| c == '\t' || (c.is_whitespace() && c != '\n' && c != '\r'))
-            .to_uppercase();
+        let mut value = first.trim_matches(is_foundation_whitespace).to_uppercase();
         let is_utc = value.ends_with('Z');
         if is_utc {
             value.pop();
@@ -922,4 +920,15 @@ impl GoogleWriteMapper {
 /// Swift's `Int(String)`: an optional sign and decimal digits.
 fn swift_int(text: &str) -> Option<i64> {
     text.parse::<i64>().ok()
+}
+
+/// `CharacterSet.whitespaces` (probed on macOS over every scalar): tab, space, no-break space, Ogham space mark, the
+/// spaces U+2000 to U+200B, narrow no-break space, medium mathematical space and ideographic space. It does not
+/// contain the line and paragraph separators, NEL, vertical tab or form feed, which `char::is_whitespace` does.
+fn is_foundation_whitespace(c: char) -> bool {
+    matches!(
+        c,
+        '\u{9}' | '\u{20}' | '\u{A0}' | '\u{1680}' | '\u{2000}'
+            ..='\u{200B}' | '\u{202F}' | '\u{205F}' | '\u{3000}'
+    )
 }

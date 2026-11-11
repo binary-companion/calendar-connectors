@@ -456,3 +456,38 @@ fn a_master_with_missing_or_odd_fields_is_rejected_not_panicked_on() {
         assert!(result.is_err(), "{master:?}");
     }
 }
+
+#[test]
+fn date_values_are_trimmed_of_exactly_the_characters_foundation_trims() {
+    use crate::write_mapper::GoogleWriteMapper;
+    let split = instant("2026-09-15T15:00:00Z");
+    let utc = Zone::utc();
+    // Tab, space, no-break space and the zero-width space are trimmed (`CharacterSet.whitespaces`, probed on macOS), so
+    // the value reads as 22 September and moves to the new series.
+    for pad in ["\t", " ", "\u{A0}", "\u{200B}", "\u{3000}"] {
+        let lines = vec![format!("EXDATE:{pad}20260922T150000Z{pad}")];
+        assert_eq!(
+            GoogleWriteMapper::carried_over(&lines, split, &utc),
+            lines,
+            "{pad:?}"
+        );
+        assert!(
+            GoogleWriteMapper::truncated(&lines, split, false, Some(&utc)).is_empty(),
+            "{pad:?}"
+        );
+    }
+    // Form feed, vertical tab, NEL and the line and paragraph separators are not: the value is unreadable, so it stays
+    // with the master and does not move.
+    for pad in ["\u{C}", "\u{B}", "\u{85}", "\u{2028}", "\u{2029}"] {
+        let lines = vec![format!("EXDATE:{pad}20260922T150000Z")];
+        assert!(
+            GoogleWriteMapper::carried_over(&lines, split, &utc).is_empty(),
+            "{pad:?}"
+        );
+        assert_eq!(
+            GoogleWriteMapper::truncated(&lines, split, false, Some(&utc)),
+            lines,
+            "{pad:?}"
+        );
+    }
+}
