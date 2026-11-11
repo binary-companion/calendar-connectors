@@ -16,6 +16,12 @@ calendar-core = { workspace = true }
 calendar-oauth = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-url = { workspace = true }
-thiserror = { workspace = true }
 async-trait = { workspace = true }
+jiff = { workspace = true }
+uuid = { workspace = true }
+getrandom = { workspace = true }
+tokio = { workspace = true }
+
+[dev-dependencies]
+calendar-test-support = { workspace = true }
+tokio = { workspace = true, features = ["test-util"] }
