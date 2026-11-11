@@ -1,9 +1,20 @@
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
 
+mod all_day_tests;
+mod all_day_vectors;
+mod calendar_user_address_tests;
+mod conference_detector_tests;
+mod conference_vectors;
+mod diagnostic_log_tests;
 mod files;
+mod http_tests;
 mod json_helpers;
+mod model_tests;
+mod support;
 mod time_vectors;
+mod url_accessor_tests;
 mod url_vectors;
+mod windows_zone_vectors;
 
 use serde_json::Value;
 

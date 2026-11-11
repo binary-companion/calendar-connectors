@@ -22,12 +22,14 @@ pub type Sleeper =
 /// Foundation's limit for `TimeZone(secondsFromGMT:)`: 18 hours either side of GMT.
 const MAX_FIXED_OFFSET_SECONDS: i32 = 18 * 3600;
 
-/// Identifiers in `vectors/zones/known.json` that a zone database without the legacy "backward" links (the system
+/// Identifiers in `vectors/zones/known.json` and `vectors/zones/windows-names.json` that a zone database without the legacy "backward" links (the system
 /// database of current Linux images) lacks, each with the zone it is a link to. Only used when the direct lookup
 /// fails, so macOS and the bundled Windows database never reach it; the identifier a [`Zone`] reports stays the
 /// spelling asked for.
 const ALIASES: &[(&str, &str)] = &[
+    ("America/Buenos_Aires", "America/Argentina/Buenos_Aires"),
     ("America/Godthab", "America/Nuuk"),
+    ("America/Indianapolis", "America/Indiana/Indianapolis"),
     ("Antarctica/South_Pole", "Pacific/Auckland"),
     ("Asia/Calcutta", "Asia/Kolkata"),
     ("Asia/Choibalsan", "Asia/Ulaanbaatar"),
