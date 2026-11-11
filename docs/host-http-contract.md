@@ -58,3 +58,26 @@ default with `URLSessionTransport(followsRedirects: false)`, and these are the r
   `HttpResponse::new`).
 - **No cache, no cookies, nothing on disk** (the general requirements above): every request carries credentials and
   sync tokens, and a cached body would keep a calendar on disk.
+
+## Google (`calendar-google`)
+
+`GoogleConnectorKind::new` takes the host's `HttpTransport`. The Swift code built its default with
+`URLSessionTransport()`, and these are the requirements:
+
+- **Redirects are not needed.** The Google endpoints (`accounts.google.com`, `oauth2.googleapis.com`,
+  `www.googleapis.com`) answer directly, and the library treats any 3xx as an unexpected status. A transport that
+  follows redirects does no harm here, because the only secret the library sends, the `Authorization: Bearer` access
+  token, goes to Google's own hosts.
+- **Do not add, change or log the `Authorization` header.** The library sends `Bearer <access token>` and, at sign-in,
+  the OAuth client id and secret and the authorization code in the body of a `POST` to the token endpoint
+  (`application/x-www-form-urlencoded`). The host must keep these out of its own logs and out of the `Network`
+  messages it returns; the library never puts a token, the client secret or the refresh token into an error, a
+  `Debug` output or a diagnostic.
+- **Pass methods and headers through unchanged.** The requests use `GET`, `POST`, `PATCH` and `DELETE`, and the headers
+  `Accept`, `Content-Type`, `If-Match` and `Authorization`. Status codes 400, 401, 403, 404, 409, 410, 412 and 429 are
+  ordinary responses that the library interprets (a 410 on a sync token means "start over", a 412 on `If-Match` means
+  "the event changed").
+- **Return the answer's `Retry-After` header** (the name is lowercased by `HttpResponse::new`): the library honors it
+  exactly when it backs off from a rate limit, and waits `0.5` to `1` second times a power of two otherwise.
+- **No cache, no cookies, nothing on disk** (the general requirements above): every request carries a bearer token and
+  sync tokens, and a cached body would keep a calendar on disk.
