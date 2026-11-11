@@ -84,16 +84,50 @@ pub(crate) fn abbreviation(zone: &Zone, at: Timestamp) -> String {
     generic_abbreviation(zone.offset_seconds(at))
 }
 
+/// `GMT+h` or `GMT+h:mm`, the offset rounded to the nearest minute (`GMT+1:31` for 5,445 s); `GMT+0` at zero.
 fn generic_abbreviation(seconds: i32) -> String {
     if seconds == 0 {
         return "GMT+0".to_string();
     }
+    let minutes = (seconds.unsigned_abs() + 30) / 60;
+    if minutes == 0 {
+        return "GMT".to_string();
+    }
     let sign = if seconds > 0 { '+' } else { '-' };
-    let total = seconds.unsigned_abs();
-    let (hours, minutes) = (total / 3600, (total % 3600) / 60);
+    let (hours, minutes) = (minutes / 60, minutes % 60);
     if minutes == 0 {
         format!("GMT{sign}{hours}")
     } else {
         format!("GMT{sign}{hours}:{minutes:02}")
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::generic_abbreviation;
+
+    /// `TimeZone(secondsFromGMT:).abbreviation(for:)`, read from Foundation (macOS 27, `en_US`).
+    #[test]
+    fn generic_names_round_to_the_minute_like_foundation() {
+        for (seconds, name) in [
+            (29, "GMT"),
+            (30, "GMT+0:01"),
+            (89, "GMT+0:01"),
+            (90, "GMT+0:02"),
+            (3599, "GMT+1"),
+            (3630, "GMT+1:01"),
+            (5429, "GMT+1:30"),
+            (5430, "GMT+1:31"),
+            (5445, "GMT+1:31"),
+            (-29, "GMT"),
+            (-30, "GMT-0:01"),
+            (-5445, "GMT-1:31"),
+            (-5430, "GMT-1:31"),
+            (-5429, "GMT-1:30"),
+            (64800, "GMT+18"),
+            (-12600, "GMT-3:30"),
+        ] {
+            assert_eq!(generic_abbreviation(seconds), name, "{seconds} s");
+        }
     }
 }
