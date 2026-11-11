@@ -486,3 +486,17 @@ fn debug_output_hides_tokens_and_the_client_secret() {
         "{text}"
     );
 }
+
+/// `Date.addingTimeInterval` does not trap on a lifetime far beyond the date range; neither does the port.
+#[tokio::test(flavor = "current_thread", start_paused = true)]
+async fn an_enormous_expires_in_does_not_panic() {
+    let (transport, _, c) = the_client();
+    transport.route(
+        "token",
+        vec![json_response(
+            &json!({"access_token": "a", "expires_in": 1e300}),
+            200,
+        )],
+    );
+    assert_eq!(c.refresh("rt").await.unwrap().access_token, "a");
+}

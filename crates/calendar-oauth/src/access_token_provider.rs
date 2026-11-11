@@ -185,6 +185,12 @@ impl AccessTokenProvider {
             let mut state = self.inner.lock();
             if let Some(inflight) = &state.inflight {
                 inflight.clone()
+            } else if let Some(fresh) = state.cached.clone()
+                && seconds_between((self.inner.now)(), fresh.expires_at) > Self::SAFETY_MARGIN
+            {
+                // A refresh finished between the caller's cache check and this lock (Swift's actor makes the two
+                // one step); use its answer instead of starting a second refresh.
+                return Ok(fresh);
             } else {
                 // The flight clears `inflight` itself when the refresh finishes, so a cancelled first caller
                 // cannot let a second refresh start while this one is still running.

@@ -120,6 +120,12 @@ impl ExternalAccessTokenProvider {
             let mut state = self.inner.lock();
             if let Some(inflight) = &state.inflight {
                 inflight.clone()
+            } else if let Some(fresh) = state.cached.clone()
+                && seconds_between((self.inner.now)(), fresh.expires_at) > Self::SAFETY_MARGIN
+            {
+                // A request finished between the caller's cache check and this lock (Swift's actor makes the two
+                // one step); use its answer instead of starting a second request.
+                return Ok(fresh);
             } else {
                 let force_refresh = state.force_next_request;
                 state.force_next_request = false;
