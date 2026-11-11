@@ -21,6 +21,7 @@ use calendar_core::source_types::{
 use calendar_core::time::{DateInterval, Now, Zone};
 use calendar_core::windows_time_zones::WindowsTimeZones;
 use calendar_core::write::types::{EventField, RecurrenceScope};
+use calendar_core::write::writable_source::WritableCalendarSource;
 use tokio::sync::mpsc::{UnboundedReceiver, unbounded_channel};
 
 use crate::api_client::{GraphApiClient, GraphApiError, GraphError, query_item};
@@ -337,6 +338,10 @@ impl CalendarSource for MicrosoftCalendarSource {
     }
 
     fn as_series(&self) -> Option<&dyn SeriesSource> {
+        Some(self)
+    }
+
+    fn as_writable(&self) -> Option<&dyn WritableCalendarSource> {
         Some(self)
     }
 }

@@ -8,14 +8,14 @@ use calendar_core::change_monitor::ChangeMonitor;
 use calendar_core::connection::{
     Connection, CredentialStore, InMemoryCredentialStore, InMemorySyncStateStore, SyncStateStore,
 };
-use calendar_core::http::{HttpResponse, HttpTransport};
+use calendar_core::http::{HttpRequest, HttpResponse, HttpTransport};
 use calendar_core::time::{DateInterval, Sleeper};
 use calendar_oauth::{AccessTokenProvider, OAuthTokens, RefreshFunction};
 use calendar_test_support::fake_transport::{
     FakeTransport, TestNow, json_response, json_response_with_headers, text_response,
 };
 use jiff::Timestamp;
-use serde_json::{Value, json};
+use serde_json::{Map, Value, json};
 
 use crate::api_client::GraphApiClient;
 use crate::dtos::GraphEventDTO;
@@ -47,6 +47,16 @@ pub(super) fn graph_error_message(code: &str, message: &str, status: i64) -> Htt
         &json!({"error": {"code": code, "message": message}}),
         status,
     )
+}
+
+/// Swift's `bodyJSON`: the request body as a JSON object (empty when it is not one).
+pub(super) fn body_json(request: &HttpRequest) -> Map<String, Value> {
+    request
+        .body
+        .as_deref()
+        .and_then(|bytes| serde_json::from_slice::<Value>(bytes).ok())
+        .and_then(|value| value.as_object().cloned())
+        .unwrap_or_default()
 }
 
 /// Swift's `calendarsJSON`.
@@ -329,4 +339,15 @@ pub(super) fn day_window() -> DateInterval {
 pub(super) fn one_hour_window() -> DateInterval {
     let start = Timestamp::from_second(1_790_000_000).unwrap();
     DateInterval::new(start, calendar_core::time::add_seconds(start, 3600.0))
+}
+
+/// Swift's `expectWriteError`: the result is exactly this `WriteError`.
+pub(super) fn expect_write_error<T: std::fmt::Debug>(
+    expected: calendar_core::write::types::WriteError,
+    result: calendar_core::failure::Outcome<T>,
+) {
+    assert_eq!(
+        result.err(),
+        Some(calendar_core::failure::Failure::Write(expected))
+    );
 }

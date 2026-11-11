@@ -23,7 +23,10 @@ mod graph_time;
 mod recurrence_mapper;
 mod source;
 mod source_series;
+mod source_split;
 mod source_sync;
+mod source_write;
+mod write_mapper;
 
 pub use brokered_connector_kind::MicrosoftBrokeredConnectorKind;
 pub use connector_kind::{MicrosoftConnectorKind, MicrosoftOAuthConfig};

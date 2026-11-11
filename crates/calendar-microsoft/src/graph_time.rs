@@ -94,8 +94,7 @@ impl GraphTime {
         )
     }
 
-    /// `yyyy-MM-dd'T'00:00:00` for a calendar day. (Used by the write path.)
-    #[allow(dead_code)]
+    /// `yyyy-MM-dd'T'00:00:00` for a calendar day.
     pub(crate) fn midnight(date: &CalendarDate) -> String {
         format!(
             "{:04}-{:02}-{:02}T00:00:00",
@@ -103,8 +102,7 @@ impl GraphTime {
         )
     }
 
-    /// `yyyy-MM-dd` for a calendar day (a recurrence range's `startDate` and `endDate`). (Used by the write path.)
-    #[allow(dead_code)]
+    /// `yyyy-MM-dd` for a calendar day (a recurrence range's `startDate` and `endDate`).
     pub(crate) fn date_text(date: &CalendarDate) -> String {
         format!("{:04}-{:02}-{:02}", date.year, date.month, date.day)
     }
