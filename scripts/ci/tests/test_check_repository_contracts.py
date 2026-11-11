@@ -4,6 +4,17 @@ from pathlib import Path
 SCRIPT = Path(__file__).resolve().parents[1] / 'check-repository-contracts.py'
 GOOD_SCOPES = '''let scopes = ["Calendars.Read", "Calendars.Read.Shared", "MailboxSettings.Read"]\n'''
 GOOD_SOURCE = 'canWrite: true, canEditAttendees: true\n'
+GOOD_RUST_KIND = '''/// Read-only (ADR 0017). Not "Calendars.ReadWrite".
+pub const SCOPES: [&'static str; 5] = [
+    "offline_access", "User.Read", "MailboxSettings.Read", "Calendars.Read", "Calendars.Read.Shared",
+];
+'''
+GOOD_RUST_BROKERED = '''pub fn scopes() -> Vec<String> {
+    MicrosoftConnectorKind::SCOPES.iter().filter(|s| **s != "offline_access").map(|s| s.to_string()).collect()
+}
+'''
+RUST_KIND = 'crates/calendar-microsoft/src/connector_kind.rs'
+RUST_BROKERED = 'crates/calendar-microsoft/src/brokered_connector_kind.rs'
 CI = '''name: CI
 on: [pull_request]
 jobs:
@@ -47,6 +58,8 @@ def make(root: Path, **overrides):
         'Sources/CalendarCore/A.swift': 'import Foundation\n',
         'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift': GOOD_SCOPES,
         'Sources/MicrosoftCalendar/MicrosoftCalendarSource.swift': GOOD_SOURCE,
+        RUST_KIND: GOOD_RUST_KIND,
+        RUST_BROKERED: GOOD_RUST_BROKERED,
         'Sources/MicrosoftCalendar/MicrosoftCalendarSource+Write.swift': 'extension MicrosoftCalendarSource: WritableCalendarSource {}\n',
         'Sources/GoogleCalendar/GoogleCalendarSource.swift': 'canWrite: true\n',
         'Sources/GoogleCalendar/GoogleCalendarSource+Write.swift': 'extension GoogleCalendarSource: WritableCalendarSource {}\n',
@@ -465,6 +478,64 @@ class Contracts(unittest.TestCase):
     def test_secret_in_a_nested_composite_action_fails(self):
         self.check(False, 'composite action uses secret SIGNING_KEY', **{
             '.github/actions/a/b/action.yaml': ACTION.replace('echo hi', "echo ${{ secrets['SIGNING_KEY'] }}")})
+
+    # --- the Rust port of the Microsoft connector requests the pinned scopes ---
+
+    def test_rust_scopes_in_the_pinned_order_pass(self):
+        self.check(True)
+
+    def test_a_missing_rust_kind_file_fails(self):
+        self.check(False, 'missing documented path: ' + RUST_KIND, **{RUST_KIND: None})
+
+    def test_a_missing_rust_brokered_file_fails(self):
+        self.check(False, 'missing documented path: ' + RUST_BROKERED, **{RUST_BROKERED: None})
+
+    def test_an_extra_rust_scope_fails(self):
+        self.check(False, 'Rust Microsoft scopes differ from the pinned list', **{
+            RUST_KIND: GOOD_RUST_KIND.replace('"Calendars.Read.Shared",', '"Calendars.Read.Shared", "Mail.Read",')})
+
+    def test_a_missing_rust_scope_fails(self):
+        self.check(False, 'Rust Microsoft scopes differ from the pinned list', **{
+            RUST_KIND: GOOD_RUST_KIND.replace('"MailboxSettings.Read", ', '')})
+
+    def test_a_reordered_rust_scope_list_fails(self):
+        self.check(False, 'Rust Microsoft scopes differ from the pinned list', **{
+            RUST_KIND: GOOD_RUST_KIND.replace('"User.Read", "MailboxSettings.Read"', '"MailboxSettings.Read", "User.Read"')})
+
+    def test_a_rust_write_scope_fails(self):
+        self.check(False, 'Rust Microsoft scopes differ from the pinned list', **{
+            RUST_KIND: GOOD_RUST_KIND.replace('"Calendars.Read",', '"Calendars.ReadWrite",')})
+
+    def test_a_rust_write_scope_outside_the_list_fails(self):
+        self.check(False, 'must stay read-only in the Rust crate', **{
+            RUST_KIND: GOOD_RUST_KIND + 'const LATER: &str = "Calendars.ReadWrite.Shared";\n'})
+
+    def test_a_rust_scope_only_in_a_comment_is_not_requested(self):
+        self.check(False, 'Rust Microsoft scopes differ from the pinned list', **{
+            RUST_KIND: GOOD_RUST_KIND.replace('"Calendars.Read.Shared",', '// "Calendars.Read.Shared",')})
+
+    def test_a_forbidden_rust_scope_in_comments_passes(self):
+        self.check(True, **{
+            RUST_KIND: GOOD_RUST_KIND + '/* "Calendars.ReadWrite" */ // "Calendars.ReadWrite.Shared"\n'})
+
+    def test_a_comment_marker_inside_a_rust_string_starts_no_comment(self):
+        self.check(False, 'must stay read-only in the Rust crate', **{
+            RUST_KIND: GOOD_RUST_KIND + 'const URL: &str = "https://x"; const W: &str = "Calendars.ReadWrite";\n'})
+
+    def test_a_rust_scope_after_a_raw_string_with_a_comment_marker_is_still_read(self):
+        self.check(False, 'Rust Microsoft scopes differ from the pinned list', **{
+            RUST_KIND: GOOD_RUST_KIND.replace('"Calendars.Read.Shared",', 'r#"//"#, "Calendars.Read.Shared",')})
+
+    def test_a_missing_rust_scopes_constant_fails(self):
+        self.check(False, 'SCOPES constant not found', **{RUST_KIND: '// no constant\n'})
+
+    def test_a_rust_brokered_kind_that_spells_its_own_scopes_fails(self):
+        self.check(False, 'must not spell scopes of its own', **{
+            RUST_BROKERED: GOOD_RUST_BROKERED + 'const OWN: [&str; 1] = ["Calendars.Read"];\n'})
+
+    def test_a_rust_brokered_kind_that_ignores_the_browser_kinds_scopes_fails(self):
+        self.check(False, 'derive its scopes from MicrosoftConnectorKind::SCOPES', **{
+            RUST_BROKERED: 'pub fn scopes() -> Vec<String> { Vec::new() }\n'})
 
 if __name__ == '__main__':
     unittest.main()

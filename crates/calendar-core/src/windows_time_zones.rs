@@ -194,6 +194,13 @@ impl WindowsTimeZones {
         Zone::named(trimmed)
     }
 
+    /// Every `(Windows name, IANA identifier)` pair of the table, in the table's order. For tests that check the table
+    /// as a whole (`MicrosoftCalendarTests/TimeTests.swift` reads `WindowsTimeZones.table`).
+    #[doc(hidden)]
+    pub fn table_entries() -> &'static [(&'static str, &'static str)] {
+        TABLE
+    }
+
     /// The Windows name Graph accepts for `zone`; `None` when the table has none (the caller writes UTC instead).
     pub fn windows_name_for(zone: &Zone) -> Option<String> {
         let identifier = zone.identifier();

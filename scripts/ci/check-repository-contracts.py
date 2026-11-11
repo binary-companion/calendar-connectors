@@ -136,6 +136,71 @@ for scope in ('Calendars.Read', 'Calendars.Read.Shared', 'MailboxSettings.Read')
     require(f'"{scope}"' in scopes, f'intended Microsoft scope absent: {scope}')
 for scope in ('Calendars.ReadWrite', 'Calendars.ReadWrite.Shared'):
     require(f'"{scope}"' not in scopes_uncommented, f'Microsoft scope must stay read-only (ADR 0017 in timetug): {scope}')
+# The Rust port of the Microsoft connector (crates/calendar-microsoft) must request exactly the same scopes, in the same
+# order (ADR 0017: read-only). The list below is the pinned one; the Rust constant must equal it, and the brokered kind
+# must derive its scopes from that constant instead of spelling any of its own.
+PINNED_MICROSOFT_SCOPES = ['offline_access', 'User.Read', 'MailboxSettings.Read', 'Calendars.Read', 'Calendars.Read.Shared']
+
+def strip_rust_comments(text):
+    """The Rust text without its comments (// and /* */, nested, doc comments included). String literals (plain, byte,
+    raw with any number of #) and char literals are copied whole, so a comment marker inside one starts no comment.
+    Newlines survive."""
+    n = len(text)
+    out, i = [], 0
+    while i < n:
+        if text.startswith('//', i):
+            end = text.find('\n', i)
+            i = n if end < 0 else end
+        elif text.startswith('/*', i):
+            depth, i = 1, i + 2
+            while i < n and depth:
+                if text.startswith('/*', i):
+                    depth += 1; i += 2
+                elif text.startswith('*/', i):
+                    depth -= 1; i += 2
+                else:
+                    if text[i] == '\n':
+                        out.append('\n')
+                    i += 1
+        else:
+            raw = re.match(r'b?r(#*)"', text[i:i + 70])
+            if raw:
+                closer = '"' + raw.group(1)
+                end = text.find(closer, i + raw.end())
+                end = n if end < 0 else end + len(closer)
+                out.append(text[i:end]); i = end
+            elif text[i] == '"' or text.startswith('b"', i):
+                j = i + (2 if text[i] == 'b' else 1)
+                while j < n and text[j] != '"':
+                    j += 2 if text[j] == '\\' else 1
+                end = min(j + 1, n)
+                out.append(text[i:end]); i = end
+            else:
+                char = re.match(r"b?'(?:\\.[^']*|[^\\'])'", text[i:i + 16])
+                if char:
+                    out.append(char.group(0)); i += char.end()
+                else:
+                    out.append(text[i]); i += 1
+    return ''.join(out)
+
+def rust_string_literals(text):
+    """The contents of the plain string literals in text, in order."""
+    return [m.group(1) for m in re.finditer(r'"((?:[^"\\]|\\.)*)"', text)]
+
+rust_kind = strip_rust_comments(read('crates/calendar-microsoft/src/connector_kind.rs'))
+declaration = re.search(r'\bconst\s+SCOPES\b.*?=\s*\[(.*?)\]\s*;', rust_kind, re.S)
+require(declaration is not None, 'Rust Microsoft SCOPES constant not found in crates/calendar-microsoft/src/connector_kind.rs')
+if declaration:
+    rust_scopes = rust_string_literals(declaration.group(1))
+    require(rust_scopes == PINNED_MICROSOFT_SCOPES,
+            f'Rust Microsoft scopes differ from the pinned list: {rust_scopes} != {PINNED_MICROSOFT_SCOPES}')
+require('ReadWrite' not in ''.join(rust_string_literals(rust_kind)),
+        'Microsoft scope must stay read-only in the Rust crate (ADR 0017 in timetug): ReadWrite')
+rust_brokered = strip_rust_comments(read('crates/calendar-microsoft/src/brokered_connector_kind.rs'))
+require('MicrosoftConnectorKind::SCOPES' in rust_brokered,
+        'Rust brokered Microsoft kind must derive its scopes from MicrosoftConnectorKind::SCOPES')
+require(not any('.Read' in literal or 'ReadWrite' in literal for literal in rust_string_literals(rust_brokered)),
+        'Rust brokered Microsoft kind must not spell scopes of its own')
 source = read('Sources/MicrosoftCalendar/MicrosoftCalendarSource.swift')
 require('canWrite: true' in source and 'canEditAttendees: true' in source, 'Microsoft write capabilities changed')
 require('extension MicrosoftCalendarSource: WritableCalendarSource' in

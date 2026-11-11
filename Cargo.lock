@@ -108,10 +108,13 @@ dependencies = [
  "async-trait",
  "calendar-core",
  "calendar-oauth",
+ "calendar-test-support",
+ "getrandom",
+ "jiff",
  "serde",
  "serde_json",
- "thiserror",
- "url",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]

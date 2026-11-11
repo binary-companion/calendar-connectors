@@ -81,3 +81,39 @@ default with `URLSessionTransport(followsRedirects: false)`, and these are the r
   exactly when it backs off from a rate limit, and waits `0.5` to `1` second times a power of two otherwise.
 - **No cache, no cookies, nothing on disk** (the general requirements above): every request carries a bearer token and
   sync tokens, and a cached body would keep a calendar on disk.
+
+## Microsoft (`calendar-microsoft`)
+
+`MicrosoftConnectorKind::new` and `MicrosoftBrokeredConnectorKind::new` take the host's `HttpTransport`. The Swift code
+built its default with `URLSessionTransport()`, and these are the requirements. The browser kind talks to
+`login.microsoftonline.com` (sign-in and token refresh) and `graph.microsoft.com`; the brokered kind talks to
+`graph.microsoft.com` only.
+
+- **Redirects are not needed.** Both hosts answer directly, and the library treats any 3xx as an unexpected status. A
+  transport that follows redirects must never send the `Authorization` header to a host other than the one it was
+  built for. The library itself follows an `@odata.nextLink` or delta link only when it is `https` on
+  `graph.microsoft.com`, and otherwise stops with `SourceError::InvalidResponse("unexpected link host")`, so the bearer
+  token never leaves Graph's host through a link.
+- **Do not add, change or log the `Authorization` header.** The library sends `Bearer <access token>` to Graph. At
+  sign-in the browser kind also sends the OAuth client id, the authorization code and the PKCE verifier (or, to refresh,
+  the refresh token) in the body of a `POST` to the token endpoint (`application/x-www-form-urlencoded`); it is a
+  public client, so there is no client secret. The host must keep all of these out of its own logs and out of the
+  `Network` messages it returns; the library never puts a token, a code or a verifier into an error, a `Debug` output
+  or a diagnostic. The brokered kind never sees a refresh token: the access tokens come from the host's
+  `ExternalTokenSource`, go only into the `Bearer` header, and nothing is stored.
+- **Pass methods, headers and addresses through unchanged.** The requests use `GET`, `POST`, `PATCH` and `DELETE`, and
+  the headers `Accept`, `Content-Type`, `Authorization` and `Prefer`. `Prefer` carries several preferences in one
+  header, quotes included, for example `IdType="ImmutableId", outlook.timezone="Pacific Standard Time",
+  outlook.body-content-type="text"` or `odata.maxpagesize=200`; the host must send it as given (not merge it with its
+  own, not drop the quotes) because Graph returns times in the zone named there. The request address is sent as the
+  library wrote it: `$select`, `$top`, `$filter`, `$deltatoken` and `$skiptoken` keep their `$`, and the commas and
+  colons of a query value stay unescaped, exactly as `URLComponents` would write them. Delta and next links are opaque
+  and must not be re-encoded or normalized.
+- **Status codes are ordinary answers.** 400, 401, 403, 404, 409, 410, 412, 429, 503 and 504 are interpreted by the
+  library (a 410, or a 400 whose Graph error code names an invalid delta token, means "start the delta over"; a 401 is
+  retried once with a fresh token). `202` (an RSVP) and `204` (a delete) answer with an empty body and are successes.
+- **Return the answer's `Retry-After` header** (the name is lowercased by `HttpResponse::new`): on a 429, 503 or 504
+  the library honors it exactly when it backs off, and otherwise waits `0.5` to `1` second times a power of two, at most
+  three times.
+- **No cache, no cookies, nothing on disk** (the general requirements above): every request carries a bearer token,
+  and a cached body would keep a calendar on disk.
