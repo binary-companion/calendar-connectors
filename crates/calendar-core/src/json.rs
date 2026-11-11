@@ -57,7 +57,8 @@ macro_rules! date_module {
                 if !value.is_finite() || value.abs() >= crate::json::DATE_LIMIT {
                     return None;
                 }
-                Some(($from_f64)(value))
+                // `add_seconds` saturates; a saturated result means the number was beyond the range of `Timestamp`.
+                Some(($from_f64)(value)).filter(|t| *t != Timestamp::MIN && *t != Timestamp::MAX)
             }
 
             pub fn serialize<S: Serializer>(t: &Timestamp, serializer: S) -> Result<S::Ok, S::Error> {
