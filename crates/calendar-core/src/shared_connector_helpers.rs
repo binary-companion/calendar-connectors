@@ -75,7 +75,9 @@ fn short_type_name<T>() -> String {
 }
 
 /// Decodes a provider response body; any failure becomes `SourceError::InvalidResponse` naming the type (the Rust
-/// type name without its module path, so a DTO keeps the name its Swift counterpart had).
+/// type name without its module path, so a DTO keeps the name its Swift counterpart had). Every call site in the Swift
+/// source decodes a top-level DTO, where the names agree; a generic or nested type would print the Rust spelling
+/// (`Vec<Item>`, not Swift's `Array<Item>`).
 pub fn decode_response<T: DeserializeOwned>(data: &[u8]) -> Outcome<T> {
     serde_json::from_slice(data).map_err(|_| {
         Failure::Source(SourceError::InvalidResponse(format!(

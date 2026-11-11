@@ -112,7 +112,7 @@ fn decode_response_throws_invalid_response_naming_the_type() {
 }
 
 #[test]
-fn decode_response_names_generic_types_without_module_paths() {
+fn decode_response_names_generic_types_in_rust_spelling_without_module_paths() {
     assert_eq!(
         decode_response::<Vec<Item>>(b"nope").unwrap_err(),
         Failure::Source(SourceError::InvalidResponse(
