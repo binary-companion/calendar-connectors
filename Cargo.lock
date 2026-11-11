@@ -74,6 +74,9 @@ name = "calendar-ical"
 version = "0.0.0"
 dependencies = [
  "calendar-core",
+ "calendar-test-support",
+ "jiff",
+ "serde_json",
  "thiserror",
 ]
 

@@ -107,6 +107,34 @@ fn fixed_zones() {
     assert!(Zone::fixed(18 * 3600).is_some());
 }
 
+/// `TimeZone(secondsFromGMT:).identifier` for offsets with seconds, read from Foundation: whole minutes, rounded half
+/// up. Found by `ical/timezones.json` (the `+013045` observance), which is not a multiple of a minute.
+#[test]
+fn fixed_zone_identifiers_round_to_the_minute() {
+    for (seconds, identifier) in [
+        (1, "GMT"),
+        (29, "GMT"),
+        (30, "GMT+0001"),
+        (89, "GMT+0001"),
+        (90, "GMT+0002"),
+        (3599, "GMT+0100"),
+        (3630, "GMT+0101"),
+        (5429, "GMT+0130"),
+        (5430, "GMT+0131"),
+        (5445, "GMT+0131"),
+        (-29, "GMT"),
+        (-30, "GMT-0001"),
+        (-5445, "GMT-0131"),
+        (-5429, "GMT-0130"),
+        (64800, "GMT+1800"),
+        (-64800, "GMT-1800"),
+    ] {
+        let zone = Zone::fixed(seconds).unwrap();
+        assert_eq!(zone.identifier(), identifier, "{seconds} s");
+        assert_eq!(zone.offset_seconds(ts(0)), seconds, "{seconds} s");
+    }
+}
+
 #[test]
 fn zone_equality_ordering_hashing_use_identifier() {
     use std::collections::HashSet;
