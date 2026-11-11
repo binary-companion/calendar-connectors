@@ -15,6 +15,7 @@ pub mod http;
 pub mod join_url_policy;
 pub mod json;
 pub mod model;
+pub mod recurrence;
 pub mod source_types;
 pub mod time;
 pub mod url_string;

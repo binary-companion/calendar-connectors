@@ -21,16 +21,16 @@ impl CalendarDate {
     /// The day `days` after (or, when negative, before) this one. Computed from noon in UTC, as the Swift code does.
     /// Swift traps when the result is outside the range of a `Date`; this returns the date unchanged instead.
     pub fn adding_days(&self, days: i64) -> CalendarDate {
+        self.checked_adding_days(days).unwrap_or(*self)
+    }
+
+    /// `adding_days`, or `None` when the result is outside the range of a `Timestamp` (about years -9999 to 9999).
+    pub(crate) fn checked_adding_days(&self, days: i64) -> Option<CalendarDate> {
         let utc = Zone::utc();
-        let moved = civil::date_from(self.year, self.month, self.day, 12, 0, 0, &utc)
-            .and_then(|base| civil::add(Unit::Day, days, base, &utc));
-        match moved {
-            Some(moved) => {
-                let c = civil::components(moved, &utc);
-                CalendarDate::new(c.year, c.month, c.day)
-            }
-            None => *self,
-        }
+        let base = civil::date_from(self.year, self.month, self.day, 12, 0, 0, &utc)?;
+        let moved = civil::add(Unit::Day, days, base, &utc)?;
+        let c = civil::components(moved, &utc);
+        Some(CalendarDate::new(c.year, c.month, c.day))
     }
 }
 

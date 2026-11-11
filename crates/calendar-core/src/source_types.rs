@@ -1,7 +1,6 @@
 //! What a source can do and what it reports, and the `CalendarSource` seam. Port of `SourceTypes.swift`.
 //!
-//! `SeriesSource` and `CalendarSource::as_series` come with the recurrence port (they name `CalendarSeries`);
-//! `as_writable` comes with the write model.
+//! `CalendarSource::as_writable` comes with the write model.
 
 use std::collections::BTreeSet;
 
@@ -11,6 +10,7 @@ use tokio::sync::mpsc::UnboundedReceiver;
 use crate::failure::Outcome;
 use crate::model::{CalendarDescriptor, CalendarEvent};
 use crate::raw_enum::raw_enum;
+use crate::recurrence::set::CalendarSeries;
 use crate::time::DateInterval;
 use crate::write::types::{EventField, RecurrenceScope};
 
@@ -134,6 +134,10 @@ pub trait CalendarSource: Send + Sync {
     fn as_polling(&self) -> Option<&dyn PollingCalendarSource> {
         None
     }
+    /// Swift's `as? SeriesSource`: `Some` when the source can return a series' rules.
+    fn as_series(&self) -> Option<&dyn SeriesSource> {
+        None
+    }
 }
 
 #[async_trait]
@@ -141,4 +145,13 @@ pub trait PollingCalendarSource: CalendarSource {
     /// One cheap incremental check (sync token / delta). Returns the change since the last call, or `None` for none.
     /// The first call establishes the baseline and returns `None`.
     async fn check_for_changes(&self) -> Outcome<Option<CalendarChange>>;
+}
+
+/// A source that can return a recurring series' rules on demand, so `events_in` stays cheap. Declared through
+/// `ProvidedField::RecurrenceRules`; a source declares it exactly when it conforms.
+#[async_trait]
+pub trait SeriesSource: CalendarSource {
+    /// The series with this id (an instance's `SeriesInfo::Occurrence { series_id, .. }`). Fails with
+    /// `SourceError::NotFound` for an unknown id or an id that is not a recurring series.
+    async fn series(&self, id: &str, calendar_id: &str) -> Outcome<CalendarSeries>;
 }
