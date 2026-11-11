@@ -1,0 +1,144 @@
+//! What a source can do and what it reports, and the `CalendarSource` seam. Port of `SourceTypes.swift`.
+//!
+//! `SeriesSource` and `CalendarSource::as_series` come with the recurrence port (they name `CalendarSeries`);
+//! `as_writable` comes with the write model.
+
+use std::collections::BTreeSet;
+
+use async_trait::async_trait;
+use tokio::sync::mpsc::UnboundedReceiver;
+
+use crate::failure::Outcome;
+use crate::model::{CalendarDescriptor, CalendarEvent};
+use crate::raw_enum::raw_enum;
+use crate::time::DateInterval;
+use crate::write::types::{EventField, RecurrenceScope};
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
+pub enum SyncKind {
+    #[default]
+    None,
+    Token,
+    Notification,
+}
+
+raw_enum! {
+    /// A field a source reliably fills on the events (or calendars) it reads. A listed field is never `None`; an
+    /// unlisted one may be `None` or partly filled, and `None` means "this source does not say", never "none".
+    pub enum ProvidedField {
+        // Events
+        Kind = "kind", Visibility = "visibility", Availability = "availability", Reminders = "reminders",
+        Series = "series", Participation = "participation",
+        /// Supplies structured conference data (Google `conferenceData`); says nothing about whether an event has
+        /// links.
+        StructuredConference = "structuredConference",
+        Version = "version", LastModified = "lastModified", Created = "created", UidScope = "uidScope",
+        /// The source can return a series' recurrence rules (`SeriesSource`); declared exactly when it conforms.
+        RecurrenceRules = "recurrenceRules",
+        // Calendars
+        IsDefault = "isDefault", CalendarTimeZone = "calendarTimeZone", DefaultReminders = "defaultReminders",
+        Provider = "provider", SupportedAvailabilities = "supportedAvailabilities",
+        /// `permissions.can_share` and `can_view_private` are never `None`.
+        PermissionDetails = "permissionDetails"
+    }
+}
+
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct SourceCapabilities {
+    pub can_write: bool,
+    pub can_edit_attendees: bool,
+    pub can_respond_to_invite: bool,
+    /// What this source reliably fills on the events it reads (see [`ProvidedField`]). Separate from
+    /// `writable_fields`, which is what a write can change; a few names overlap (reminders, availability) with
+    /// different meanings.
+    pub provided_fields: BTreeSet<ProvidedField>,
+    pub sync_kind: SyncKind,
+    pub supports_push: bool,
+    /// The fields create/update can write; drives validation and `EventDraft(copying:for:)`. Empty when read-only.
+    pub writable_fields: BTreeSet<EventField>,
+    /// Honors `NotifyPolicy` on create, update and delete (Google: `sendUpdates`); false means the server decides for
+    /// those. A connector may still honor the policy for a response to an invite (Microsoft: `sendResponse`).
+    pub controls_notifications: bool,
+    /// Scopes accepted for update/delete on a recurring series. Empty when read-only.
+    pub recurrence_scopes: BTreeSet<RecurrenceScope>,
+}
+
+/// What the library reports through `changes()`. Sources fail with `SourceError`; they never leak provider types.
+#[derive(Clone, Debug, PartialEq, thiserror::Error)]
+pub enum SourceError {
+    #[error("authorization expired")]
+    AuthExpired,
+    #[error("network error: {0}")]
+    Network(String),
+    #[error("rate limited")]
+    RateLimited { retry_after: Option<f64> },
+    #[error("server error {status}")]
+    Server { status: i64 },
+    #[error("invalid response: {0}")]
+    InvalidResponse(String),
+    /// The OS or user has not granted access to a local data store (EventKit). Never raised by network connectors.
+    #[error("access not granted")]
+    NeedsPermission,
+    /// The id names nothing the source can find (a series that does not exist, or an event that does not recur).
+    #[error("not found")]
+    NotFound,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub enum CalendarChange {
+    /// The calendar set changed. Consumers must reload the calendar list AND events; event changes detected in the
+    /// same check are not reported separately.
+    CalendarsChanged,
+    /// `None` calendar ids mean the scope is unknown.
+    EventsChanged {
+        calendar_ids: Option<BTreeSet<String>>,
+    },
+    /// Terminal: the stream finishes after this (e.g. `AuthExpired`) so the app can surface it and re-authorize.
+    SourceFailed(SourceError),
+}
+
+/// Something about a source worth a quiet hint in a front end (a warning icon), as opposed to a failure.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct SourceNotice {
+    pub kind: SourceNoticeKind,
+    pub count: i64,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SourceNoticeKind {
+    /// Repeating events whose rule could not be read; `count` is the number of such events (series).
+    UnreadableRecurrence,
+}
+
+impl SourceNotice {
+    pub fn new(kind: SourceNoticeKind, count: i64) -> SourceNotice {
+        SourceNotice { kind, count }
+    }
+}
+
+#[async_trait]
+pub trait CalendarSource: Send + Sync {
+    fn id(&self) -> String;
+    fn display_name(&self) -> String;
+    fn capabilities(&self) -> SourceCapabilities;
+    async fn calendars(&self) -> Outcome<Vec<CalendarDescriptor>>;
+    /// Events of every visible calendar of the account that overlap `interval`.
+    async fn events_in(&self, interval: DateInterval) -> Outcome<Vec<CalendarEvent>>;
+    /// A new receiver for what the source reports; every call returns its own. Changes are never dropped.
+    fn changes(&self) -> UnboundedReceiver<CalendarChange>;
+    /// What the source noticed in the data it last loaded. Optional: the default is none.
+    async fn notices(&self) -> Vec<SourceNotice> {
+        Vec::new()
+    }
+    /// Swift's `as? PollingCalendarSource`: `Some` when the source can poll.
+    fn as_polling(&self) -> Option<&dyn PollingCalendarSource> {
+        None
+    }
+}
+
+#[async_trait]
+pub trait PollingCalendarSource: CalendarSource {
+    /// One cheap incremental check (sync token / delta). Returns the change since the last call, or `None` for none.
+    /// The first call establishes the baseline and returns `None`.
+    async fn check_for_changes(&self) -> Outcome<Option<CalendarChange>>;
+}
