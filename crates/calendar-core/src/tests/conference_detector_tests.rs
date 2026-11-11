@@ -389,6 +389,20 @@ fn invalid_structured_conference_falls_back_to_safe_link() {
 }
 
 #[test]
+fn the_scheme_matches_the_way_a_case_insensitive_icu_pattern_does() {
+    // Not in the Swift tests (found in review, checked against NSRegularExpression): U+017F folds to `s`, so the
+    // whole text is one candidate and its host is not a provider; the K of U+212A is not part of any scheme.
+    assert_eq!(
+        detect_in_notes("http\u{17f}://https://meet.google.com/a"),
+        None
+    );
+    assert_eq!(
+        ConferenceDetector::candidates_in("see HTTP\u{17f}://x.test/a now"),
+        vec!["HTTP\u{17f}://x.test/a".to_string()]
+    );
+}
+
+#[test]
 fn the_scanner_never_panics_on_odd_text() {
     // Not in the Swift tests: the hand-written scanner replaces a regular expression, so feed it awkward text.
     let pieces = [

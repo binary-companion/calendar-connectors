@@ -96,7 +96,7 @@ impl DiagnosticField {
     pub fn unredacted_text(&self) -> String {
         match &self.value {
             DiagnosticFieldValue::Int(number) => number.to_string(),
-            DiagnosticFieldValue::Double(number) => format!("{number:?}"),
+            DiagnosticFieldValue::Double(number) => swift_double_description(*number),
             DiagnosticFieldValue::Bool(flag) => flag.to_string(),
             DiagnosticFieldValue::String(text) => text.clone(),
         }
@@ -278,4 +278,24 @@ fn text(field: &DiagnosticField) -> String {
         .replace('\n', "\\n")
         .replace('\r', "\\r");
     format!("\"{escaped}\"")
+}
+
+/// Swift's `String(Double)`: the shortest round-trip digits, `1e+16` / `1e-05` style exponents (a sign and at least
+/// two digits), `inf`, `-inf` and `nan`.
+fn swift_double_description(number: f64) -> String {
+    if number.is_nan() {
+        return "nan".to_string();
+    }
+    if number.is_infinite() {
+        return if number < 0.0 { "-inf" } else { "inf" }.to_string();
+    }
+    let shortest = format!("{number:?}");
+    let Some((mantissa, exponent)) = shortest.split_once('e') else {
+        return shortest;
+    };
+    let (sign, digits) = match exponent.strip_prefix('-') {
+        Some(digits) => ('-', digits),
+        None => ('+', exponent),
+    };
+    format!("{mantissa}e{sign}{digits:0>2}")
 }

@@ -212,12 +212,7 @@ fn match_link(text: &str, start: usize) -> Option<usize> {
     let rest = &text[start..];
     let after_scheme = ["https://", "http://", "zoommtg://"]
         .iter()
-        .find_map(|scheme| {
-            let candidate = rest.get(..scheme.len())?;
-            candidate
-                .eq_ignore_ascii_case(scheme)
-                .then_some(scheme.len())
-        })?;
+        .find_map(|scheme| prefix_len_ignoring_case(rest, scheme))?;
     let body = &rest[after_scheme..];
     let length: usize = body
         .chars()
@@ -225,6 +220,23 @@ fn match_link(text: &str, start: usize) -> Option<usize> {
         .map(char::len_utf8)
         .sum();
     (length > 0).then_some(start + after_scheme + length)
+}
+
+/// The byte length of the start of `text` that matches `scheme` the way a case-insensitive ICU pattern does:
+/// ASCII case-insensitively, and U+017F (long s) folds to `s`.
+fn prefix_len_ignoring_case(text: &str, scheme: &str) -> Option<usize> {
+    let mut chars = text.chars();
+    let mut length = 0;
+    for expected in scheme.chars() {
+        let actual = chars.next()?;
+        let same =
+            actual.eq_ignore_ascii_case(&expected) || (expected == 's' && actual == '\u{17f}');
+        if !same {
+            return None;
+        }
+        length += actual.len_utf8();
+    }
+    Some(length)
 }
 
 /// The characters outside `[^\s<>"'\)\]]`: ICU's `\s` is `[\t\n\f\r\p{Z}]`.

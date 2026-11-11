@@ -147,3 +147,23 @@ fn fan_out_sends_to_every_log_and_null_discards() {
     );
     assert_eq!(events[1].date, epoch());
 }
+
+#[test]
+fn double_fields_render_like_swifts_string_of_double() {
+    // Expected texts were produced by `String(Double)` in Swift.
+    let cases = [
+        (1.5, "1.5"),
+        (2.0, "2.0"),
+        (0.0001, "0.0001"),
+        (1e300, "1e+300"),
+        (1e-5, "1e-05"),
+        (1e16, "1e+16"),
+        (1.5e-7, "1.5e-07"),
+        (123456789012345680.0, "1.2345678901234568e+17"),
+        (f64::NAN, "nan"),
+        (f64::NEG_INFINITY, "-inf"),
+    ];
+    for (number, text) in cases {
+        assert_eq!(DiagnosticField::double("x", number).unredacted_text(), text);
+    }
+}
