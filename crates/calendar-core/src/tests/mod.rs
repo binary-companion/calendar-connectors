@@ -8,12 +8,15 @@ mod conference_detector_tests;
 mod conference_vectors;
 mod connection_tests;
 mod diagnostic_log_tests;
+mod event_draft_tests;
+mod event_patch_tests;
 mod external_token_tests;
 mod file_stores_tests;
 mod files;
 mod http_tests;
 mod json_helpers;
 mod model_tests;
+mod patch_merge_tests;
 mod persisted_format_tests;
 mod recurrence_robustness;
 mod recurrence_rule_tests;
@@ -27,6 +30,7 @@ mod time_vectors;
 mod url_accessor_tests;
 mod url_vectors;
 mod windows_zone_vectors;
+mod write_types_tests;
 
 use serde_json::Value;
 

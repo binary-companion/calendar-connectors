@@ -1,6 +1,7 @@
-//! Port of `ModelTests.swift`. Two tests need later tasks and stay `pending` in the parity table until then:
-//! `aDeclaredFieldThatIsNilIsReportedAndAnUndeclaredNilIsFine` (`ProvidedFieldsConformance`, Task 6) and
-//! `draftAndPatchReportOnlyAvailabilityAndVisibilityAdjustments` (`EventDraft`, `EventPatch`, Task 5).
+//! Port of `ModelTests.swift`. `aDeclaredFieldThatIsNilIsReportedAndAnUndeclaredNilIsFine` uses
+//! `ProvidedFieldsConformance`, which lives in `calendar-test-support`; its Rust test is in that crate
+//! (`crates/calendar-test-support/src/tests/provided_fields_tests.rs`) because a dev-dependency from this crate on
+//! `calendar-test-support` would link two copies of `calendar-core`.
 
 use std::collections::BTreeSet;
 
@@ -315,4 +316,45 @@ fn raw_value_enums_round_trip_through_their_swift_raw_strings() {
             Some(*value)
         );
     }
+}
+
+#[test]
+fn draft_and_patch_report_only_availability_and_visibility_adjustments() {
+    use crate::model::Visibility;
+    use crate::write::event_draft::{EventDraft, EventTiming};
+    use crate::write::types::EventField;
+    let mut stored = event("e", "c", 0, 60);
+    stored.availability = Some(Availability::Busy);
+    stored.visibility = Some(Visibility::Default);
+    let draft = EventDraft {
+        availability: Availability::Tentative,
+        visibility: Visibility::Default,
+        ..EventDraft::new("T", EventTiming::new(stored.start, stored.end, None, false))
+    };
+    let set = |list: &[EventField]| list.iter().copied().collect::<BTreeSet<_>>();
+    assert_eq!(
+        draft.adjustments_compared_to(&stored),
+        set(&[EventField::Availability])
+    );
+    let patch = |availability, visibility| {
+        super::support::hand_patch(|p| {
+            p.availability = availability;
+            p.visibility = visibility;
+        })
+    };
+    assert_eq!(
+        patch(
+            Some(Availability::Tentative),
+            Some(Visibility::Confidential)
+        )
+        .adjustments_compared_to(&stored),
+        set(&[EventField::Availability, EventField::Visibility])
+    );
+    assert!(
+        patch(Some(Availability::Busy), None)
+            .adjustments_compared_to(&stored)
+            .is_empty()
+    );
+    stored.availability = None; // unknown is never an adjustment
+    assert!(draft.adjustments_compared_to(&stored).is_empty());
 }

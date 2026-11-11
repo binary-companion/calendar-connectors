@@ -1,6 +1,4 @@
-//! Port of `Write/WriteTypes.swift`. Only the two types that `SourceCapabilities` names are here so far; the rest
-//! of the file (`NotifyPolicy`, `ConferenceRequest`, ...) arrives with the write model. `WriteError` is here
-//! already because `RecurrenceRule::validate` throws it.
+//! Port of `Write/WriteTypes.swift`.
 
 use std::collections::BTreeSet;
 
@@ -8,6 +6,7 @@ use jiff::Timestamp;
 
 use crate::model::CalendarEvent;
 use crate::raw_enum::raw_enum;
+use crate::source_types::SourceCapabilities;
 
 raw_enum! {
     /// A part of an event that a write can touch. Used for validation, conflict reports and capabilities.
@@ -16,6 +15,14 @@ raw_enum! {
         Availability = "availability", Visibility = "visibility", Reminders = "reminders",
         Attendees = "attendees", Recurrence = "recurrence", Conference = "conference"
     }
+}
+
+/// Whether the provider may email attendees about a write. Callers must choose; there is no default.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum NotifyPolicy {
+    All,
+    ExternalOnly,
+    None,
 }
 
 /// Which occurrences of a recurring event a write applies to. Ignored for an event that is not part of a series.
@@ -33,6 +40,20 @@ impl RecurrenceScope {
         RecurrenceScope::ThisAndFollowing,
         RecurrenceScope::AllInSeries,
     ];
+}
+
+/// On a draft: whether to ask the provider for a generated conference link.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum ConferenceRequest {
+    None,
+    Generate,
+}
+
+/// On a patch: generate a link or remove the existing one.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub enum ConferenceChange {
+    Generate,
+    Remove,
 }
 
 #[derive(Clone, Debug, PartialEq, thiserror::Error)]
@@ -115,5 +136,25 @@ impl EventRef {
 
     pub fn set_series_id(&mut self, series_id: Option<String>) {
         self.series_id = series_id.filter(|id| !id.is_empty());
+    }
+}
+
+pub enum WriteValidation {}
+
+impl WriteValidation {
+    /// Fails with `Unsupported` naming every field in `fields` that `capabilities.writable_fields` lacks.
+    pub fn require_writable(
+        fields: &BTreeSet<EventField>,
+        capabilities: &SourceCapabilities,
+    ) -> Result<(), WriteError> {
+        let missing: BTreeSet<EventField> = fields
+            .difference(&capabilities.writable_fields)
+            .copied()
+            .collect();
+        if missing.is_empty() {
+            Ok(())
+        } else {
+            Err(WriteError::Unsupported { fields: missing })
+        }
     }
 }

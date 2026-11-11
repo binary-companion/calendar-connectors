@@ -1,6 +1,4 @@
 //! What a source can do and what it reports, and the `CalendarSource` seam. Port of `SourceTypes.swift`.
-//!
-//! `CalendarSource::as_writable` comes with the write model.
 
 use std::collections::BTreeSet;
 
@@ -13,6 +11,7 @@ use crate::raw_enum::raw_enum;
 use crate::recurrence::set::CalendarSeries;
 use crate::time::DateInterval;
 use crate::write::types::{EventField, RecurrenceScope};
+use crate::write::writable_source::WritableCalendarSource;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash)]
 pub enum SyncKind {
@@ -136,6 +135,10 @@ pub trait CalendarSource: Send + Sync {
     }
     /// Swift's `as? SeriesSource`: `Some` when the source can return a series' rules.
     fn as_series(&self) -> Option<&dyn SeriesSource> {
+        None
+    }
+    /// Swift's `as? WritableCalendarSource`: `Some` when the source can also write.
+    fn as_writable(&self) -> Option<&dyn WritableCalendarSource> {
         None
     }
 }
