@@ -187,3 +187,15 @@ fn test_now_provider_follows_the_clock_and_clones_share_it() {
     assert_eq!(provider().as_second(), 160);
     assert_eq!(now.date().as_second(), 160);
 }
+
+#[tokio::test(flavor = "current_thread", start_paused = true)]
+async fn an_empty_route_shadows_older_matching_routes() {
+    let transport = FakeTransport::new();
+    transport.route("example.test", vec![text_response("general", 200)]);
+    transport.route("example.test", vec![]);
+    let response = transport
+        .send(request("https://example.test/x"))
+        .await
+        .unwrap();
+    assert_eq!(response.status, 404);
+}

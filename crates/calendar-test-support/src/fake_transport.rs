@@ -78,11 +78,13 @@ impl HttpTransport for FakeTransport {
         let url = request.url.as_str().to_string();
         state.requests.push(request);
         for route in state.routes.iter_mut().rev() {
-            if url.contains(&route.matching) && !route.outcomes.is_empty() {
-                if route.outcomes.len() > 1 {
-                    return route.outcomes.remove(0);
+            if url.contains(&route.matching) {
+                match route.outcomes.len() {
+                    // Swift traps on `responses[0]`; the nearest answer is the no-route 404, not an older route.
+                    0 => break,
+                    1 => return route.outcomes[0].clone(),
+                    _ => return route.outcomes.remove(0),
                 }
-                return route.outcomes[0].clone();
             }
         }
         Ok(HttpResponse::new(
