@@ -65,7 +65,7 @@ fn known_vector() {
     assert_no_failures("zones/known", cases.len(), failures);
 }
 
-/// Task 3 replays this vector through `WallClock`; replaying it here pins `civil::date_from` early.
+/// `recurrence_vectors` replays this vector through `WallClock`; replaying it here pins `civil::date_from` directly.
 #[test]
 fn wall_clock_vector_through_date_from() {
     let cases = vector_cases(WALL_CLOCK);
