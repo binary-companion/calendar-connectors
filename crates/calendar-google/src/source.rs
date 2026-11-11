@@ -20,6 +20,7 @@ use calendar_core::source_types::{
 };
 use calendar_core::time::DateInterval;
 use calendar_core::write::types::{EventField, RecurrenceScope};
+use calendar_core::write::writable_source::WritableCalendarSource;
 use serde::Deserialize;
 use tokio::sync::mpsc::{UnboundedReceiver, unbounded_channel};
 
@@ -365,6 +366,10 @@ impl CalendarSource for GoogleCalendarSource {
     }
 
     fn as_series(&self) -> Option<&dyn SeriesSource> {
+        Some(self)
+    }
+
+    fn as_writable(&self) -> Option<&dyn WritableCalendarSource> {
         Some(self)
     }
 }

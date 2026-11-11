@@ -8,8 +8,10 @@ use calendar_core::change_monitor::ChangeMonitor;
 use calendar_core::connection::{
     Connection, CredentialStore, InMemoryCredentialStore, InMemorySyncStateStore, SyncStateStore,
 };
-use calendar_core::http::{HttpResponse, HttpTransport};
+use calendar_core::failure::Failure;
+use calendar_core::http::{HttpRequest, HttpResponse, HttpTransport};
 use calendar_core::time::{DateInterval, Sleeper};
+use calendar_core::write::types::WriteError;
 use calendar_oauth::{AccessTokenProvider, OAuthTokens, RefreshFunction};
 use calendar_test_support::fake_transport::{
     FakeTransport, TestNow, json_response, json_response_with_headers, text_response,
@@ -216,4 +218,86 @@ impl Harness {
 pub(super) fn one_hour_window() -> DateInterval {
     let start = Timestamp::from_second(1_790_000_000).unwrap();
     DateInterval::new(start, calendar_core::time::add_seconds(start, 3600.0))
+}
+
+/// Asserts that a write failed with exactly `expected` (Swift's `expectWriteError`).
+pub(super) fn assert_write_error<T: std::fmt::Debug>(
+    result: Result<T, Failure>,
+    expected: WriteError,
+) {
+    assert_eq!(result.unwrap_err(), Failure::Write(expected));
+}
+
+/// A minimal Google event resource with the default etag `e1` and summary `Standup`; `extra` overrides or adds keys.
+pub(super) fn google_event(id: &str, extra: Value) -> Value {
+    google_event_full(id, "e1", "Standup", extra)
+}
+
+pub(super) fn google_event_full(id: &str, etag: &str, summary: &str, extra: Value) -> Value {
+    let mut json = json!({
+        "id": id, "etag": etag, "summary": summary,
+        "start": {"dateTime": "2026-09-21T10:00:00Z", "timeZone": "UTC"},
+        "end": {"dateTime": "2026-09-21T10:30:00Z", "timeZone": "UTC"},
+    });
+    if let Value::Object(map) = extra {
+        for (key, value) in map {
+            json[key] = value;
+        }
+    }
+    json
+}
+
+/// The request body parsed as a JSON object (empty when it is not one).
+pub(super) fn body_json(request: &HttpRequest) -> Value {
+    request
+        .body
+        .as_deref()
+        .and_then(|body| serde_json::from_slice::<Value>(body).ok())
+        .filter(Value::is_object)
+        .unwrap_or_else(|| json!({}))
+}
+
+pub(super) fn google_error(reason: &str, message: &str, status: i64) -> HttpResponse {
+    json_response(
+        &json!({"error": {"errors": [{"reason": reason}], "message": message}}),
+        status,
+    )
+}
+
+pub(super) fn google_error_with_headers(
+    reason: &str,
+    status: i64,
+    headers: &[(&str, &str)],
+) -> HttpResponse {
+    json_response_with_headers(
+        &json!({"error": {"errors": [{"reason": reason}], "message": "m"}}),
+        status,
+        headers,
+    )
+}
+
+/// A bare response with a status and no body (Swift's `HTTPResponse(status:)`).
+pub(super) fn bare(status: i64) -> HttpResponse {
+    HttpResponse::new(status, Default::default(), Vec::new())
+}
+
+/// Swift's `Intercept`: answers `hook`'s outcome instead of the routed one when it returns one; the routed transport
+/// still records the request.
+pub(super) struct Intercept {
+    pub(super) inner: Arc<FakeTransport>,
+    #[allow(clippy::type_complexity)]
+    pub(super) hook: Box<
+        dyn Fn(&HttpRequest) -> Option<calendar_core::failure::Outcome<HttpResponse>> + Send + Sync,
+    >,
+}
+
+#[async_trait::async_trait]
+impl HttpTransport for Intercept {
+    async fn send(&self, request: HttpRequest) -> calendar_core::failure::Outcome<HttpResponse> {
+        let routed = self.inner.send(request.clone()).await;
+        match (self.hook)(&request) {
+            Some(answer) => answer,
+            None => routed,
+        }
+    }
 }
