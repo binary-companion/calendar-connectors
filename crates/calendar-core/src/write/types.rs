@@ -4,6 +4,8 @@
 
 use std::collections::BTreeSet;
 
+use jiff::Timestamp;
+
 use crate::model::CalendarEvent;
 use crate::raw_enum::raw_enum;
 
@@ -57,4 +59,61 @@ pub enum WriteError {
     /// A multi-step write stopped half way (Google `.thisAndFollowing`: series truncated, new series not created).
     #[error("partial write: {0}")]
     Partial(String),
+}
+
+/// What a write needs to find an event. Build one from the event you read.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub struct EventRef {
+    pub calendar_id: String,
+    pub event_id: String,
+    /// The version the caller last saw; used for optimistic locking.
+    pub version: Option<String>,
+    /// An empty id means "no series" (normalised to `None` by [`EventRef::new`], [`EventRef::with_series_id`] and
+    /// [`EventRef::set_series_id`], as Swift's `init` and `didSet` do).
+    series_id: Option<String>,
+    /// The occurrence's slot in its series (Google `originalStartTime`, EventKit `occurrenceDate`); differs from
+    /// `start` for a moved occurrence. It identifies the occurrence when `event_id` is shared and is the split
+    /// point for `.thisAndFollowing`.
+    pub original_start: Option<Timestamp>,
+}
+
+impl EventRef {
+    /// Swift's `init(calendarID:eventID:version:seriesID:originalStart:)` with the optional arguments left at nil.
+    pub fn new(calendar_id: impl Into<String>, event_id: impl Into<String>) -> EventRef {
+        EventRef {
+            calendar_id: calendar_id.into(),
+            event_id: event_id.into(),
+            version: None,
+            series_id: None,
+            original_start: None,
+        }
+    }
+
+    /// Swift's `init(_ event:)`.
+    pub fn from_event(event: &CalendarEvent) -> EventRef {
+        EventRef {
+            calendar_id: event.calendar_id.clone(),
+            event_id: event.event_id.clone(),
+            version: event.version.clone(),
+            series_id: event
+                .series_id()
+                .map(str::to_string)
+                .filter(|id| !id.is_empty()),
+            original_start: event.original_start(),
+        }
+    }
+
+    #[must_use]
+    pub fn with_series_id(mut self, series_id: Option<&str>) -> EventRef {
+        self.set_series_id(series_id.map(str::to_string));
+        self
+    }
+
+    pub fn series_id(&self) -> Option<&str> {
+        self.series_id.as_deref()
+    }
+
+    pub fn set_series_id(&mut self, series_id: Option<String>) {
+        self.series_id = series_id.filter(|id| !id.is_empty());
+    }
 }

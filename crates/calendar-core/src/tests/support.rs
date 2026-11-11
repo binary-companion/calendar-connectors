@@ -46,3 +46,38 @@ impl CollectingDiagnosticLog {
 pub(super) fn zone_or_none(identifier: &str) -> Option<Zone> {
     Zone::named(identifier)
 }
+
+/// A directory under the system temp dir, removed when dropped. Swift's tests make `temporaryDirectory/<UUID>/...`;
+/// the process id plus a counter keep concurrent tests apart.
+pub(super) struct TempDir(std::path::PathBuf);
+
+impl TempDir {
+    pub(super) fn new(tag: &str) -> TempDir {
+        use std::sync::atomic::{AtomicU64, Ordering};
+        static COUNTER: AtomicU64 = AtomicU64::new(0);
+        let n = COUNTER.fetch_add(1, Ordering::Relaxed);
+        let mut path = std::env::temp_dir();
+        path.push(format!("calendar-core-{tag}-{}-{n}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&path);
+        std::fs::create_dir_all(&path).unwrap();
+        TempDir(path)
+    }
+
+    pub(super) fn path(&self) -> &std::path::Path {
+        &self.0
+    }
+}
+
+impl Drop for TempDir {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.0);
+    }
+}
+
+/// A `[String: String]` literal.
+pub(super) fn secrets(pairs: &[(&str, &str)]) -> std::collections::BTreeMap<String, String> {
+    pairs
+        .iter()
+        .map(|(k, v)| (k.to_string(), v.to_string()))
+        .collect()
+}
