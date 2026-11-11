@@ -32,8 +32,22 @@ pub(crate) fn next_transition(zone: &Zone, after: Timestamp) -> Option<Timestamp
     None
 }
 
+/// The zones whose current rules the main tzdata format writes with "negative" daylight time (standard time in summer,
+/// daylight time in winter). Foundation's data is the rearguard form, where the larger offset is the daylight one,
+/// and the zone database on Linux may be either; for these zones daylight time is read from the offset, so both agree.
+/// Their standard offset is UTC.
+const NEGATIVE_DST_ZONES: &[&str] = &[
+    "Europe/Dublin",
+    "Eire",
+    "Africa/Casablanca",
+    "Africa/El_Aaiun",
+];
+
 /// `isDaylightSavingTime(for:)`.
 pub(crate) fn is_daylight_saving(zone: &Zone, at: Timestamp) -> bool {
+    if NEGATIVE_DST_ZONES.contains(&zone.identifier()) {
+        return zone.offset_seconds(at) > 0;
+    }
     zone.as_jiff().to_offset_info(at).dst().is_dst()
 }
 
