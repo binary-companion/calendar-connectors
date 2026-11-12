@@ -236,6 +236,9 @@ class Frozen(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             repo = Repo(directory)
             self.assertEqual(repo.compat('frozen', '1.0.0', '--moved', OLD_DIR).returncode, 2)
+            # A mode flag without a value is a usage error, not a silent pass (the check it names would never run).
+            self.assertEqual(repo.compat('frozen', '1.0.0', '--strict', NEW_DIR, '--moved').returncode, 2)
+            self.assertEqual(repo.compat('frozen', '1.0.0', '--strict').returncode, 2)
 
     # --- the other modes of the shared script, kept so the copies stay alike ---
 

@@ -103,6 +103,9 @@ expect 2 "" --latest 1.2.1 --labels "" --prerelease 'a$(id)'
 expect 2 "" --latest 1.2.1 --labels "" --prerelease "*"
 expect 2 "" --latest 1.2.1 --labels "" --prerelease alpha.1 --override 2.0.0
 expect 2 "" --latest 1.2.1 --labels "" --prerelease
+expect 2 "" --latest 1.2.1 --labels "" --prerelease $'alpha\nbeta'
+expect 2 "" --latest 1.2.1 --labels "" --prerelease $'alpha\n'
+expect 2 "" --latest 1.2.1 --labels "" --prerelease $'\nalpha'
 expect_usage_error "--prerelease" --latest 1.0.0 --labels "" --prerelease
 expect_usage_error "prerelease" --prerelease "alpha 1"
 expect_usage_error "cannot be combined" --prerelease alpha.1 --override 2.0.0

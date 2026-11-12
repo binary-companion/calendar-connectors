@@ -182,13 +182,17 @@ def parse_frozen(args):
     if not args or args[0].startswith('--'):
         return None, {}
     modes, mode = {'strict': [], 'additive': [], 'appendable': [], 'moved': []}, 'strict'
+    seen = set()
     for arg in args[1:]:
         if arg.startswith('--'):
             mode = arg[2:]
             if mode not in modes:
                 return None, {}
+            seen.add(mode)
         else:
             modes[mode].append(arg)
+    if any(not modes[mode] for mode in seen):  # a mode flag with no value would silently skip its check
+        return None, {}
     return args[0], modes
 
 

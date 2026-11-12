@@ -34,7 +34,7 @@ The Rust crates read the system zone database on macOS and Linux and a bundled o
 
 ## When to re-check the vectors
 
-`.github/workflows/vectors-drift.yml` replays them every Monday on macOS and Linux (and on `workflow_dispatch`) and opens an issue when a run fails; the schedule only fires from the default branch, so until `v2` is the default branch, dispatch it by hand from `v2`. Also re-check by hand when any of these changes:
+`.github/workflows/vectors-drift.yml` replays them every Monday on macOS and Linux (and on `workflow_dispatch`) and opens an issue when a scheduled run fails (a manual dispatch only shows its result); the schedule only fires from the default branch, so until `v2` is the default branch, dispatch it by hand from `v2`. Also re-check by hand when any of these changes:
 
 - [ ] The `jiff` version or its zone database features (its zone database must still give the answers in the vectors).
 - [ ] The runner images of CI (a failing zone case on one platform only points at its database).

@@ -56,6 +56,9 @@ if [ -n "$have_prerelease" ]; then
   [ -z "$override" ] || { echo "--prerelease cannot be combined with --override" >&2; exit 2; }
   pre_identifier='^([0-9]|[1-9][0-9]+|[0-9]*[A-Za-z-][0-9A-Za-z-]*)$'
   [ -n "$prerelease" ] || { echo "prerelease is empty" >&2; exit 2; }
+  # read below is line based: a newline would hide everything after it from the validation.
+  [[ "$prerelease" =~ ^[0-9A-Za-z.-]+$ ]] ||
+    { echo "prerelease may hold only [0-9A-Za-z.-]: $prerelease" >&2; exit 2; }
   IFS='.' read -r -a identifiers <<< "$prerelease.x"
   unset 'identifiers[${#identifiers[@]}-1]'
   for identifier in "${identifiers[@]}"; do
