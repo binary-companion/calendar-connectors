@@ -1,4 +1,4 @@
-//! Port of `PersistedFormatTests.swift`: the Microsoft parts of `Tests/PersistedFormats` (the stored delta positions,
+//! Port of `PersistedFormatTests.swift`: the Microsoft parts of `fixtures/persisted-formats` (the stored delta positions,
 //! `"<baseline seconds>|<link>"`, and the calendar-set key, as 1.0.7 wrote them) and the brokered connection of 1.2.0.
 
 use std::collections::BTreeMap;
@@ -23,7 +23,7 @@ use crate::{MicrosoftBrokeredConnectorKind, MicrosoftConnectorKind, MicrosoftOAu
 fn persisted(version: &str, name: &str) -> Vec<u8> {
     let root = PathBuf::from(concat!(
         env!("CARGO_MANIFEST_DIR"),
-        "/../../Tests/PersistedFormats"
+        "/../../fixtures/persisted-formats"
     ));
     std::fs::read(root.join(version).join(name)).unwrap()
 }

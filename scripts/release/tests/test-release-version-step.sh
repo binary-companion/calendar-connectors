@@ -24,7 +24,8 @@ job = yaml.safe_load(open(workflow))['jobs']['publish']
 def check(condition, message):
     if not condition:
         sys.exit(f'FAIL: {workflow}: {message}')
-check(job.get('if') == "github.ref == 'refs/heads/main'", "job publish must run only for refs/heads/main")
+check(job.get('if') == "github.ref == 'refs/heads/main' && inputs.prerelease == ''",
+      "job publish must run only for refs/heads/main and never for a dispatch that carries a prerelease")
 check(job.get('environment') == 'publish', "job publish must use the publish environment")
 checkout = [s for s in job['steps'] if str(s.get('uses', '')).startswith('actions/checkout@')]
 check(len(checkout) == 1, "job publish must have exactly one checkout step")
@@ -84,6 +85,36 @@ check(sorted(fields) == sorted(['event_type=library-released',
       f"the dispatch fields must be exactly event_type, client_payload[library], client_payload[version] (got {fields})")
 open(script, 'w').write(run)
 PY
+# --- the prerelease job (v2): pinned shape, then its version step executed in throwaway repositories ---
+"$PYTHON" - "$WORKFLOW" "$T/prerelease.sh" <<'PY'
+import re, sys, yaml
+workflow, script = sys.argv[1:]
+jobs = yaml.safe_load(open(workflow))['jobs']
+def check(condition, message):
+    if not condition:
+        sys.exit(f'FAIL: {workflow}: prerelease: {message}')
+check('prerelease' in jobs, "job prerelease must exist")
+job = jobs['prerelease']
+check(job.get('if') == "inputs.prerelease != ''", "job prerelease must run only when the prerelease input is set")
+check('needs' not in job and 'environment' not in job, "job prerelease has no needs and no environment (the publish environment is limited to main)")
+check(job.get('permissions') == {'contents': 'write'}, "job prerelease must have only contents: write")
+check(not any('dispatches' in str(step.get('run', '')) or 'create-github-app-token' in str(step.get('uses', ''))
+              for step in job['steps']), "job prerelease must not notify any dependent or mint an app token")
+check('notify' in jobs and jobs['notify'].get('needs') in ('publish', ['publish']), "notify must depend on publish only, so a prerelease never notifies")
+checkout = [s for s in job['steps'] if str(s.get('uses', '')).startswith('actions/checkout@')]
+check(len(checkout) == 1 and re.search(r'@[0-9a-f]{40}$', checkout[0]['uses'].split()[0]), "one checkout pinned to a commit SHA")
+check(checkout[0].get('with', {}).get('persist-credentials') is False and checkout[0]['with'].get('fetch-depth') == 0,
+      "checkout must set persist-credentials: false and fetch-depth: 0")
+steps = [s for s in job['steps'] if s.get('id') == 'version']
+check(len(steps) == 1, "job prerelease must have exactly one step with id: version")
+check(sorted(steps[0].get('env', {})) == ['PRERELEASE', 'REF', 'SHA'], "the version step env must be exactly PRERELEASE, REF, SHA")
+check('${{' not in steps[0]['run'], "the version script must not contain ${{ }}")
+creates = [s for s in job['steps'] if 'gh release create' in str(s.get('run', ''))]
+check(len(creates) == 1 and '--prerelease' in creates[0]['run'] and '--target "$SHA"' in creates[0]['run'],
+      "one step must run gh release create --prerelease --target \"$SHA\"")
+open(script, 'w').write(steps[0]['run'])
+PY
+
 mkdir -p "$T/notify-bin"
 # The stub records every call and fails (HTTP 502) for each dependent named in $NOTIFY_FAIL_FOR.
 cat > "$T/notify-bin/gh" <<'STUB'
@@ -268,5 +299,48 @@ check "lower side-branch tag" 0 "version=1.2.1" 1
 # A reachable tag that is not strict X.Y.Z (a pre-release) is not the base.
 new_repo; tag 1.0.0; commit one; tag 1.1.0-rc1; commit two; run_step ""
 check "reachable pre-release tag" 0 "version=1.0.1" 2
+
+# --- the prerelease version step (v2 only) ---
+# run_pre <ref> <prerelease> [sha-rev]: runs the step in the current $R; sets STATUS and OUT.
+run_pre() {
+  STATUS=0; OUT="$STUB/output"; : > "$OUT"
+  (cd "$R" && GITHUB_OUTPUT="$OUT" REF="$1" PRERELEASE="$2" SHA="$(git rev-parse "${3-HEAD}")" \
+     "$STEP_SHELL" -e "$T/prerelease.sh") >"$STUB/stdout" 2>"$STUB/stderr" || STATUS=$?
+}
+pre_check() { # pre_check <case> <exit: 0|nonzero> <output line or none>
+  local name="$1" want_status="$2" want_out="$3" got
+  if [ "$want_status" = nonzero ]; then [ "$STATUS" != 0 ] || fail "$name: exit 0, wanted a failure"
+  else [ "$STATUS" = 0 ] || { cat "$STUB/stderr" "$STUB/stdout" >&2; fail "$name: exit $STATUS, wanted 0"; }; fi
+  got="$(grep '^version=' "$OUT" || true)"
+  if [ "$want_out" = none ]; then [ -z "$got" ] || fail "$name: wrote '$got', wanted none"
+  else [ "$got" = "$want_out" ] || fail "$name: wrote '$got', wanted '$want_out'"; fi
+}
+# P1. On v2 the version is 2.0.0-<prerelease>, with no API call and whatever 1.x tags exist.
+new_repo; tag 1.2.1; commit one; run_pre refs/heads/v2 alpha.1
+pre_check "prerelease on v2" 0 "version=2.0.0-alpha.1"
+[ ! -f "$STUB/calls" ] || fail "the prerelease step called gh"
+# P2. Any other ref is refused with an error and no version.
+for ref in refs/heads/main refs/heads/v3 refs/tags/2.0.0 refs/heads/v2-feature; do
+  new_repo; commit one; run_pre "$ref" alpha.1
+  pre_check "prerelease on $ref" nonzero none
+  grep -q '^::error::' "$STUB/stdout" || fail "prerelease on $ref: no ::error::"
+done
+# P3. A malformed prerelease fails and writes nothing.
+for bad in "" "alpha..1" "alpha 1" "01" 'a$(id)' "*" "alpha+x"; do
+  new_repo; commit one; run_pre refs/heads/v2 "$bad"
+  pre_check "malformed prerelease '$bad'" nonzero none
+done
+# P4. A tag of that name on another commit is refused (tags are immutable); on this commit it is a re-run and passes.
+new_repo; commit one; tag 2.0.0-alpha.1; commit two; run_pre refs/heads/v2 alpha.1
+pre_check "tag on another commit" nonzero none
+grep -q '^::error::' "$STUB/stdout" || fail "tag on another commit: no ::error::"
+new_repo; commit one; tag 2.0.0-alpha.1; run_pre refs/heads/v2 alpha.1
+pre_check "re-run on the tagged commit" 0 "version=2.0.0-alpha.1"
+# P5. Another prerelease name is free even when one exists.
+new_repo; commit one; tag 2.0.0-alpha.1; commit two; run_pre refs/heads/v2 alpha.2
+pre_check "next prerelease" 0 "version=2.0.0-alpha.2"
+# P6. A prerelease tag is not a release: the regular step ignores it as a base and as a tag at HEAD.
+new_repo; tag 1.0.0; commit one; tag 2.0.0-alpha.1; run_step ""
+check "prerelease tag at HEAD is not a release tag" 0 "version=1.0.1" 1
 
 echo PASS

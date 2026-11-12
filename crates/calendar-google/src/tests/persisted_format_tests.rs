@@ -1,4 +1,4 @@
-//! Port of `PersistedFormatTests.swift`: the Google connection of `Tests/PersistedFormats`, as 1.0.7 wrote it.
+//! Port of `PersistedFormatTests.swift`: the Google connection of `fixtures/persisted-formats`, as 1.0.7 wrote it.
 
 use std::collections::BTreeMap;
 use std::path::PathBuf;
@@ -15,7 +15,7 @@ use crate::{GoogleConnectorKind, GoogleOAuthConfig};
 fn persisted(version: &str, name: &str) -> Vec<u8> {
     let root = PathBuf::from(concat!(
         env!("CARGO_MANIFEST_DIR"),
-        "/../../Tests/PersistedFormats"
+        "/../../fixtures/persisted-formats"
     ));
     std::fs::read(root.join(version).join(name)).unwrap()
 }

@@ -1,12 +1,16 @@
-# Continuous integration for the library. Runs on pull requests and on every push to main.
-#   macos         swift test on the whole package.
-#   linux         swift test in the swift:6.0 container: proves the library stays portable.
-#   windows-x64   swift test on windows-latest, with Swift installed by scripts/ci/install-swift-windows.ps1.
-#   windows-arm64 the same on windows-11-arm.
-#   architecture  portability rules, repository contracts and the tests of the release script and workflow.
-#   vectors-current the golden vectors under vectors/ equal what scripts/dev/export-vectors.sh produces (macOS only).
-#   compat        backward compatibility with the latest release (AGENTS.md, "Backward compatibility"): the public
-#                 API of every library product and the persisted-format fixtures. Skipped for semver:major.
+# Continuous integration for the library: a Cargo workspace (v2 is Rust-only). Runs on pull requests and on every push
+# to main and v2. The job ids are the names the branch protection of main and v2 requires; see "Required checks" below.
+#   macos, linux, windows-x64, windows-arm64
+#                 cargo test --workspace and a release build on that platform (the pinned toolchain of rust-toolchain.toml).
+#   architecture  crate dependency rules, the tokio feature rule, repository contracts (pinned Microsoft scopes, workflow
+#                 secrets), and the tests of those checks, of the release script and of the compat tooling.
+#   rust-lint     rustfmt, clippy -D warnings, cargo-deny, and the Swift-to-Rust test parity table.
+#   rust-targets  release builds for the other Apple targets.
+#   compat        backward compatibility with the latest 1.x release (AGENTS.md, "Backward compatibility"): the
+#                 persisted-format fixtures. Skipped for semver:major.
+#   rust-macos, rust-linux, rust-windows-x64, rust-windows-arm64
+#                 aliases that pass when the job of the same platform above passed. The ruleset that protects v2 still
+#                 lists these names as required checks; delete the aliases after the ruleset drops them.
 name: CI
 
 on:
@@ -23,237 +27,37 @@ concurrency:
 permissions: {}
 
 jobs:
+  # Each platform job installs the toolchain pinned in rust-toolchain.toml. The steps use bash so that a failing cargo
+  # command fails the step on Windows too.
   macos:
     runs-on: macos-26
     permissions:
       contents: read
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Select newest Xcode
-        run: scripts/ci/select-xcode.sh
+      - name: Install the pinned Rust toolchain
+        run: rustup show active-toolchain || rustup toolchain install
       - name: Test
-        run: swift test
+        run: cargo test --workspace --locked
+      - name: Release build
+        run: cargo build --workspace --release --locked
 
   linux:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Log in to Docker Hub
-        if: env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_TOKEN != ''
-        run: |
-          for attempt in 1 2 3; do
-            echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin && exit 0
-            if [ "$attempt" -lt 3 ]; then sleep $((attempt * 15)); fi
-          done
-          echo "::warning::Docker Hub login failed; pulling anonymously."
-      - name: Pull the Swift image
-        run: |
-          for attempt in 1 2 3; do
-            docker pull swift:6.0 && exit 0
-            sleep $((attempt * 15))
-          done
-          exit 1
+      - name: Install the pinned Rust toolchain
+        run: rustup show active-toolchain || rustup toolchain install
       - name: Test
-        run: |
-          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$PWD:/work" -w /work swift:6.0 swift test
+        run: cargo test --workspace --locked
+      - name: Release build
+        run: cargo build --workspace --release --locked
 
   windows-x64:
-    runs-on: windows-latest
-    permissions:
-      contents: read
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Install Swift
-        shell: pwsh
-        run: ./scripts/ci/install-swift-windows.ps1
-      - name: Test
-        shell: pwsh
-        run: |
-          # PowerShell does not stop at a failing native command, and a later native command
-          # overwrites $LASTEXITCODE (a failing swift test followed by git made a step pass in the
-          # bring-up probe). So the exit code is read on the very next statement, and the step can
-          # only succeed when swift test exited 0 AND the log shows enough executed tests.
-          # Floor: the 865 Swift Testing tests of the 7 test targets run on macOS (measured with
-          # `swift test` on macOS, and the same 865 and 7 on both Windows runners: Core 251,
-          # OAuth 33, Google 200, Microsoft 121, ICalendar 59, CalDAV 98, ICalSubscription 103);
-          # 780 is about 90 % of that, so a silently skipped target or a zero turns the job red while normal growth needs no edit. --minimum-runs 7 is one
-          # summary per test target: it also catches a vanished target whose tests alone would not
-          # move the total below the floor. --minimum-per-run 1 makes every summary report at least
-          # one test: a target that still builds but holds no tests prints `Test run with 0 tests
-          # ... passed`, which the total and the run count alone would accept.
-          # Raise the floor and the run count when targets or tests are added.
-          $PSNativeCommandUseErrorActionPreference = $true
-          swift test 2>&1 | Tee-Object -FilePath test.log
-          $swiftExit = $LASTEXITCODE
-          # With the native-command preference above PowerShell normally throws first; this explicit
-          # check is the guard that does not depend on that preference.
-          if ($swiftExit -ne 0) {
-            Write-Host "::error::swift test exited with code $swiftExit"
-            exit $swiftExit
-          }
-          python --version
-          python scripts/ci/count-swift-tests.py test.log --minimum 780 --minimum-runs 7 --minimum-per-run 1
-          exit $LASTEXITCODE
-
-  windows-arm64:
-    runs-on: windows-11-arm
-    permissions:
-      contents: read
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Install Swift
-        shell: pwsh
-        run: ./scripts/ci/install-swift-windows.ps1
-      - name: Test
-        shell: pwsh
-        run: |
-          # Same step as windows-x64; see the comments there for the exit code handling and the floor.
-          $PSNativeCommandUseErrorActionPreference = $true
-          swift test 2>&1 | Tee-Object -FilePath test.log
-          $swiftExit = $LASTEXITCODE
-          # With the native-command preference above PowerShell normally throws first; this explicit
-          # check is the guard that does not depend on that preference.
-          if ($swiftExit -ne 0) {
-            Write-Host "::error::swift test exited with code $swiftExit"
-            exit $swiftExit
-          }
-          python --version
-          python scripts/ci/count-swift-tests.py test.log --minimum 780 --minimum-runs 7 --minimum-per-run 1
-          exit $LASTEXITCODE
-
-  architecture:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Install pinned test prerequisites
-        run: |
-          python3 -m venv build/venv
-          build/venv/bin/python -m pip install -r scripts/ci/requirements-test.txt
-      - name: Architecture rules
-        run: scripts/ci/check-architecture.sh
-      - name: Repository contracts
-        run: build/venv/bin/python scripts/ci/check-repository-contracts.py
-      - name: Tests of the checks and of the release script
-        run: |
-          scripts/ci/tests/test-check-architecture.sh
-          scripts/release/tests/test-next-version.sh
-          PYTHON="$PWD/build/venv/bin/python" scripts/release/tests/test-release-version-step.sh
-          build/venv/bin/python -m unittest discover -s scripts/ci/tests -p 'test_*.py'
-
-  compat:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    timeout-minutes: 30
-    env:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          # The baseline is a release tag; diagnose-api-breaking-changes checks it out from this clone.
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Decide whether the checks apply
-        id: gate
-        env:
-          BASE_REF: ${{ github.base_ref }}
-        run: python3 scripts/ci/compat/compat.py gate --base-ref "origin/${BASE_REF:-main}"
-      # Each check below runs even when an earlier one failed, so one run reports every broken category.
-      # The persisted formats model files on users' disks (the connection list and the sync state): an existing file
-      # never changes, even additively, and is never deleted; new files (a new version directory) are fine. The tests
-      # that load them run in every swift test job.
-      - name: Persisted-format fixtures of the baseline are unchanged
-        if: ${{ !cancelled() && steps.gate.outputs.run == 'true' }}
-        env:
-          BASELINE: ${{ steps.gate.outputs.baseline }}
-        run: python3 scripts/ci/compat/compat.py frozen "$BASELINE" --strict Tests/PersistedFormats
-      - name: Log in to Docker Hub
-        if: steps.gate.outputs.run == 'true' && env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_TOKEN != ''
-        run: |
-          for attempt in 1 2 3; do
-            echo "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin && exit 0
-            if [ "$attempt" -lt 3 ]; then sleep $((attempt * 15)); fi
-          done
-          echo "::warning::Docker Hub login failed; pulling anonymously."
-      - name: Pull the Swift image
-        if: steps.gate.outputs.run == 'true'
-        run: |
-          for attempt in 1 2 3; do
-            docker pull swift:6.0 && exit 0
-            sleep $((attempt * 15))
-          done
-          exit 1
-      # Every product is portable, so the Linux toolchain covers them all.
-      - name: Swift public API of every library product
-        if: ${{ !cancelled() && steps.gate.outputs.run == 'true' }}
-        env:
-          BASELINE: ${{ steps.gate.outputs.baseline }}
-        run: |
-          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e BASELINE -v "$PWD:/work" -w /work swift:6.0 bash -c '
-            set -euo pipefail
-            git config --global --add safe.directory /work
-            swift package diagnose-api-breaking-changes "$BASELINE" \
-              --products CalendarCore CalendarOAuth GoogleCalendar MicrosoftCalendar ICalendar CalDAVCalendar ICalSubscription CalendarTestSupport'
-
-  # The golden vectors the Rust port replays (vectors/, conventions section 9) must be what the Swift code produces now.
-  # They depend on the runner's zone database and Foundation (zones/known.json, zones/offsets.json, ical/timezones.json,
-  # core/url-accept.json): if a later runner image changes a zone's rules or URL parsing, this job fails and the fix is to
-  # pin the cases to past dates, never to accept the new output silently (vectors/README.md).
-  vectors-current:
-    runs-on: macos-26
-    permissions:
-      contents: read
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Select newest Xcode
-        run: scripts/ci/select-xcode.sh
-      - name: Export the vectors
-        run: scripts/dev/export-vectors.sh
-      - name: The committed vectors are current
-        run: git diff --exit-code vectors/
-
-  # The Rust port (v2 branch; docs/rust-port/README.md). Each job installs the toolchain pinned in
-  # rust-toolchain.toml. The test steps use bash so that a failing cargo command fails the step on Windows too.
-  rust-macos:
-    runs-on: macos-26
-    permissions:
-      contents: read
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Install the pinned Rust toolchain
-        run: rustup show active-toolchain || rustup toolchain install
-      - name: Test
-        run: cargo test --workspace --locked
-      - name: Release build
-        run: cargo build --workspace --release --locked
-
-  rust-linux:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Install the pinned Rust toolchain
-        run: rustup show active-toolchain || rustup toolchain install
-      - name: Test
-        run: cargo test --workspace --locked
-      - name: Release build
-        run: cargo build --workspace --release --locked
-
-  rust-windows-x64:
     runs-on: windows-latest
     permissions:
       contents: read
@@ -270,7 +74,7 @@ jobs:
       - name: Release build
         run: cargo build --workspace --release --locked
 
-  rust-windows-arm64:
+  windows-arm64:
     runs-on: windows-11-arm
     permissions:
       contents: read
@@ -296,6 +100,55 @@ jobs:
       - name: Release build
         run: cargo build --workspace --release --locked
 
+  architecture:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install pinned test prerequisites
+        run: |
+          python3 -m venv build/venv
+          build/venv/bin/python -m pip install -r scripts/ci/requirements-test.txt
+      - name: Crate architecture and tokio features
+        run: |
+          python3 scripts/ci/check-crate-architecture.py
+          python3 scripts/ci/check-tokio-features.py
+      - name: Repository contracts
+        run: build/venv/bin/python scripts/ci/check-repository-contracts.py
+      - name: Tests of the checks and of the release script
+        run: |
+          scripts/release/tests/test-next-version.sh
+          PYTHON="$PWD/build/venv/bin/python" scripts/release/tests/test-release-version-step.sh
+          build/venv/bin/python -m unittest discover -s scripts/ci/tests -p 'test_*.py'
+
+  compat:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # The baseline is a release tag: its files are read from this clone.
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Decide whether the checks apply
+        id: gate
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: python3 scripts/ci/compat/compat.py gate --base-ref "origin/${BASE_REF:-main}"
+      # The persisted formats model files on users' disks (the connection list and the sync state): an existing file
+      # never changes, even additively, and is never deleted; new files (a new version directory) are fine. The
+      # baseline is a 1.x tag, which keeps them under Tests/PersistedFormats; v2 moved them to fixtures/persisted-formats
+      # (--moved: a baseline file must exist byte-identical at either path). The Rust tests that load them run in every
+      # platform job.
+      - name: Persisted-format fixtures of the baseline are unchanged
+        if: ${{ !cancelled() && steps.gate.outputs.run == 'true' }}
+        env:
+          BASELINE: ${{ steps.gate.outputs.baseline }}
+        run: python3 scripts/ci/compat/compat.py frozen "$BASELINE" --strict fixtures/persisted-formats --moved Tests/PersistedFormats=fixtures/persisted-formats
+
   rust-lint:
     runs-on: ubuntu-latest
     permissions:
@@ -309,7 +162,7 @@ jobs:
         run: cargo fmt --all --check
       - name: Clippy
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
-      # Keep the version equal to the one in AGENTS.md ("Rust (the main description on `v2`)").
+      # Keep the version equal to the one in AGENTS.md ("Rust").
       - name: Cache cargo-deny
         id: cargo-deny-cache
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
@@ -321,19 +174,11 @@ jobs:
         run: cargo install --locked cargo-deny --version 0.20.2
       - name: Licences, bans and advisories
         run: cargo deny check
-      - name: Crate architecture and tokio features
-        run: |
-          python3 scripts/ci/check-crate-architecture.py
-          python3 scripts/ci/check-tokio-features.py
+      # The table of the Swift tests (frozen at the last dual-language commit) and the Rust tests that replaced them:
+      # a Rust test that is renamed or deleted fails here.
       - name: Swift-to-Rust test parity
         run: |
           python3 scripts/ci/check-test-parity.py --require-complete CalendarCoreTests --require-complete CalendarOAuthTests --require-complete ICalendarTests --require-complete ICalSubscriptionTests --require-complete CalDAVCalendarTests --require-complete GoogleCalendarTests --require-complete MicrosoftCalendarTests
-      - name: Tests of the Rust checks
-        run: |
-          python3 -m unittest discover -s scripts/ci/tests -p 'test_check_crate_architecture.py'
-          python3 -m unittest discover -s scripts/ci/tests -p 'test_check_tokio_features.py'
-          python3 -m unittest discover -s scripts/ci/tests -p 'test_check_test_parity.py'
-          python3 -m unittest discover -s scripts/ci/tests -p 'test_swift_test_inventory.py'
 
   rust-targets:
     runs-on: macos-26
@@ -349,3 +194,51 @@ jobs:
           for target in x86_64-apple-darwin aarch64-apple-ios aarch64-apple-ios-sim; do
             cargo build --workspace --release --locked --target "$target"
           done
+
+  # The ruleset "Protect v2" still lists rust-macos, rust-linux, rust-windows-x64 and rust-windows-arm64 as required
+  # checks (the platform jobs had those names while Swift and Rust ran side by side). These jobs keep the names
+  # reporting, and pass only when the platform job passed. always(): a skipped required check counts as passing, so a
+  # skipped or failed dependency must make the alias fail, never skip it. Remove them once the ruleset drops the names.
+  rust-macos:
+    needs: macos
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: The platform job passed
+        env:
+          RESULT: ${{ needs.macos.result }}
+        run: test "$RESULT" = success
+
+  rust-linux:
+    needs: linux
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: The platform job passed
+        env:
+          RESULT: ${{ needs.linux.result }}
+        run: test "$RESULT" = success
+
+  rust-windows-x64:
+    needs: windows-x64
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: The platform job passed
+        env:
+          RESULT: ${{ needs.windows-x64.result }}
+        run: test "$RESULT" = success
+
+  rust-windows-arm64:
+    needs: windows-arm64
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: The platform job passed
+        env:
+          RESULT: ${{ needs.windows-arm64.result }}
+        run: test "$RESULT" = success

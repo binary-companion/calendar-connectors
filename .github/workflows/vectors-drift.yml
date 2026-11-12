@@ -1,8 +1,11 @@
-# Weekly check that the golden vectors under vectors/ still equal what the Swift code produces on the current runner image.
-# The same steps as the vectors-current job of ci.yml, but on a schedule, so a new Xcode, macOS image or Swift toolchain
-# that changes a zone rule or Foundation's URL parsing shows up without waiting for a pull request.
+# Weekly check that the Rust crates still reproduce the golden vectors under vectors/ on the current runner images.
+# The vectors are frozen reference answers (vectors/README.md); the crates replay them in their tests. Rust reads the
+# system zone database on macOS and Linux (jiff, tz-system), so a runner image whose tzdata differs from the one the
+# vectors were written with shows up here without waiting for a pull request. Windows bundles its database and is
+# covered by the CI jobs on every pull request.
 # A failed scheduled run opens one issue (unless one is already open). Scheduled workflows only run from the default
-# branch; workflow_dispatch starts the check by hand from any branch.
+# branch (main until v2 replaces it; on main this file is the Swift version of the check); workflow_dispatch starts
+# the check by hand from any branch, v2 included.
 name: Vectors drift
 
 on:
@@ -14,22 +17,29 @@ permissions: {}
 
 jobs:
   vectors-drift:
-    runs-on: macos-26
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-26, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     permissions:
       contents: read
-      issues: write
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Select newest Xcode
-        run: scripts/ci/select-xcode.sh
-      - name: Export the vectors
-        run: scripts/dev/export-vectors.sh
-      - name: The committed vectors are current
-        run: |
-          git diff --exit-code vectors/
+      - name: Install the pinned Rust toolchain
+        run: rustup show active-toolchain || rustup toolchain install
+      - name: The crates reproduce the committed vectors
+        run: cargo test --workspace --locked
+
+  report:
+    needs: vectors-drift
+    if: ${{ failure() && github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
       - name: Open an issue when the vectors drifted
-        if: failure() && github.event_name == 'schedule'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
@@ -40,6 +50,6 @@ jobs:
             echo "An open issue already exists."
             exit 0
           fi
-          gh issue create --title "$title" --body "The weekly vectors check failed: $RUN_URL
+          gh issue create --title "$title" --body "The weekly check that the crates reproduce the vectors failed: $RUN_URL
 
-          Follow 'When to re-check the vectors' in vectors/README.md. Inspect the diff, never accept it blindly."
+          Follow 'When to re-check the vectors' in vectors/README.md. Inspect the failing case, never edit a vector to make it pass."

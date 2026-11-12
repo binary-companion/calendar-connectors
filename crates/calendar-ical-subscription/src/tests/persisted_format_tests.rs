@@ -1,5 +1,5 @@
 //! Port of `PersistedFormatTests.swift` (ICalSubscriptionTests): the iCal-link connection of
-//! `Tests/PersistedFormats`, as 1.0.7 wrote it.
+//! `fixtures/persisted-formats`, as 1.0.7 wrote it.
 
 use std::path::Path;
 use std::sync::Arc;
@@ -11,8 +11,10 @@ use calendar_test_support::fake_transport::FakeTransport;
 
 use super::fixtures::kind;
 
-const PERSISTED_FORMATS: &str =
-    concat!(env!("CARGO_MANIFEST_DIR"), "/../../Tests/PersistedFormats");
+const PERSISTED_FORMATS: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/persisted-formats"
+);
 
 fn persisted(version: &str, name: &str) -> Vec<u8> {
     std::fs::read(Path::new(PERSISTED_FORMATS).join(version).join(name)).unwrap()

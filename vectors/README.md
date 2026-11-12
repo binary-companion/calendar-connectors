@@ -1,6 +1,6 @@
 # Golden vectors
 
-Reference answers of the Swift library at baseline tag `1.2.0`, replayed by the Rust tests of the port. Format and rules:
+Reference answers of the Swift library at baseline tag `1.2.0`, replayed by the Rust tests of the port. The Swift exporter that wrote them was removed from `v2` with the Swift package; it is at the last dual-language commit named in `docs/rust-port/README.md` (the `Sources/VectorExporter/` paths below refer to it). Format and rules:
 conventions section 9 (`docs/superpowers/plans/2026-11-10-rust-port-conventions.md` in the `timetug` repository).
 A vector is never edited by hand and never regenerated to make Rust pass.
 
@@ -24,44 +24,19 @@ A vector is never edited by hand and never regenerated to make Rust pass.
 The `input` and `expected` shapes of each file are written as a comment at the top of its exporter, `Sources/VectorExporter/<Area>.swift`.
 The cases are synthetic: example hosts and addresses, no real calendar content.
 
-## Regenerating
+## Frozen
 
-```
-scripts/dev/export-vectors.sh
-git diff vectors/
-```
+Nothing regenerates the vectors on `v2`: `scripts/dev/export-vectors.sh` and the `vectors-current` job went with the Swift package, and a vector is never edited by hand. They are what the shipped Swift app answered, so a Rust answer that differs is a Rust bug (or, rarely, a documented difference that gets its own Rust test and an entry in `docs/rust-port/`), never a reason to change a file here. To regenerate for a reason that the owner has approved, check out the last dual-language commit, run `scripts/dev/export-vectors.sh` there, and bring the result over in a reviewed pull request.
 
-The script builds the `VectorExporter` executable target in release mode with `-Xswiftc -enable-testing` (it reads internal entry points
-through `@testable import`) and writes every file. The exporter is deterministic: hand-written cases first, then cases from a fixed-seed
-linear congruential generator (`LCG.swift`, one constant seed per area). Two runs give identical bytes.
+The zone-dependent cases stop at 2026-11-01 (`zoneHorizon` in `VectorFile.swift`): the zone database's rules for later dates are a forecast and differ between operating system releases (the first run of the job found that the runner's macOS 26 and the macOS 27 that wrote the files disagree on America/Havana's 2027 transitions). Africa/Casablanca stops earlier still (`horizon(of:)`, 2026-06-01): the runner's database lacks the change of Morocco's rules on 2026-09-20 that the newer one has. The recurrence cases reach years ahead by design but draw only on zones whose rules are stable.
 
-## The `vectors-current` job
-
-CI (`vectors-current` in `.github/workflows/ci.yml`, `macos-26`) runs the script and `git diff --exit-code vectors/`. It fails when a
-Swift change alters an answer, which is the point: either the change was meant (then it is a behaviour change the Rust port must receive,
-see `docs/rust-port/parity-ledger.md`) or it is a bug.
-
-The zone-dependent cases stop at 2026-11-01 (`zoneHorizon` in `VectorFile.swift`): the zone database's rules for later dates are a
-forecast and differ between operating system releases (the first run of the job found that the runner's macOS 26 and the macOS 27 that
-wrote the files disagree on America/Havana's 2027 transitions). Africa/Casablanca stops earlier still (`horizon(of:)`, 2026-06-01): the runner's database lacks the change of Morocco's rules on 2026-09-20 that the newer one has.
-Transitions are found by scanning the offsets (`dstTransitions`), not with `nextDaylightSavingTimeTransition`, whose answer for
-Africa/Casablanca differed between the two releases (the zone database flags Morocco's daylight time the other way round) although the
-offsets agreed. Each zone and each generated case draws from its own generator, so one
-zone's difference changes only that zone's cases. The recurrence cases reach years ahead by design but draw only on zones whose rules are
-stable (Havana appears in hand-placed cases that end before the horizon).
-
-The job also depends on the runner's zone database and Foundation. `zones/known.json` lists every identifier the system knows,
-`zones/offsets.json` and `zones/wall-clock.json` ask the system for offsets, `ical/timezones.json` matches `VTIMEZONE`s against the system's
-zones, and `core/url-accept.json` records Foundation's URL parsing. If a later runner image changes a zone's rules, adds or removes an
-identifier, or parses URLs differently, the job fails. The fix is to pin the cases to past dates (or to remove the identifier from the
-generated list), never to accept the new output silently, because the Rust port must reproduce the answers the shipped app gave.
+The Rust crates read the system zone database on macOS and Linux and a bundled one on Windows (`jiff`, see `Cargo.toml`), so `zones/known.json`, `zones/offsets.json`, `zones/wall-clock.json` and `ical/timezones.json` depend on the runner's database. If a later runner image changes a zone's rules or adds or removes an identifier, the Rust tests fail on that platform. The fix is to pin the cases to past dates in the Rust test (never to edit the vector), because the Rust port must reproduce the answers the shipped app gave.
 
 ## When to re-check the vectors
 
-`.github/workflows/vectors-drift.yml` re-runs the export every Monday (and on `workflow_dispatch`) and opens an issue when it differs. Also re-check by hand when any of these changes:
+`.github/workflows/vectors-drift.yml` replays them every Monday on macOS and Linux (and on `workflow_dispatch`) and opens an issue when a run fails; the schedule only fires from the default branch, so until `v2` is the default branch, dispatch it by hand from `v2`. Also re-check by hand when any of these changes:
 
-- [ ] Xcode, the macOS runner image or the Swift toolchain (run `scripts/dev/export-vectors.sh`, then inspect `git diff vectors/`).
-- [ ] Once the Rust crates exist: the `jiff` version (its zone database must still give the answers in the vectors).
-- [ ] A new Swift zone rule or zone-dependent behaviour: add a vector for it.
+- [ ] The `jiff` version or its zone database features (its zone database must still give the answers in the vectors).
+- [ ] The runner images of CI (a failing zone case on one platform only points at its database).
 
-Investigate every diff in `zones/*`, `ical/timezones`, `core/url-accept`; never accept one blindly. Pin the cases to past dates or fix the cause, as described elsewhere in this file.
+Investigate every failure in `zones/*`, `ical/timezones`; never accept one blindly.

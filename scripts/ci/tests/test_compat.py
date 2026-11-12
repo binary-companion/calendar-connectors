@@ -6,7 +6,6 @@ commands are what is tested: a persisted-format file of the baseline changed or 
 and the semver:major label from the event payload skips every check."""
 import json
 import os
-import re
 import subprocess
 import sys
 import tempfile
@@ -57,7 +56,11 @@ class Repo:
                               env={**os.environ, **GIT_ENV, **(env or {})})
 
 
-FROZEN = ['--strict', 'Tests/PersistedFormats']
+OLD_DIR = 'Tests/PersistedFormats'
+NEW_DIR = 'fixtures/persisted-formats'
+FROZEN = ['--strict', OLD_DIR]
+# What CI runs on v2, where the baseline (a 1.x tag) still has the fixtures at the old path.
+MOVED = ['--strict', NEW_DIR, '--moved', f'{OLD_DIR}={NEW_DIR}']
 
 
 class Baseline(unittest.TestCase):
@@ -187,6 +190,53 @@ class Frozen(unittest.TestCase):
         self.assert_breaks(lambda repo: repo.git('mv', CONNECTIONS, 'Tests/PersistedFormats/1.0.0/list.json'),
                            f'{CONNECTIONS}: deleted')
 
+    def move(self, repo):
+        (repo.root / NEW_DIR).parent.mkdir(parents=True, exist_ok=True)
+        repo.git('mv', OLD_DIR, NEW_DIR)
+
+    def test_a_moved_directory_passes_when_every_file_is_unchanged(self):
+        result = self.assert_passes(self.move, *MOVED)
+        self.assertIn('baseline files intact since 1.0.0', result.stdout)
+
+    def test_the_old_path_still_satisfies_the_baseline(self):
+        # A baseline file that exists unchanged at the old path is satisfied (the move has not happened yet).
+        self.assert_passes(lambda repo: repo.write('fixtures/persisted-formats/1.1.0/connections.json', '[]'), *MOVED)
+
+    def test_a_moved_file_that_changed_fails(self):
+        def change(repo):
+            self.move(repo)
+            repo.write(f'{NEW_DIR}/1.0.0/sync-state.json', '{"c1":{"_calendars":"a@example.com","x":"y"}}')
+        self.assert_breaks(change, 'sync-state.json: modified', *MOVED)
+
+    def test_a_moved_file_with_only_whitespace_changed_fails(self):
+        def change(repo):
+            self.move(repo)
+            repo.write(f'{NEW_DIR}/1.0.0/sync-state.json', '{"c1":{"_calendars":"a@example.com"}}\n')
+        self.assert_breaks(change, 'sync-state.json: modified', *MOVED)
+
+    def test_a_file_missing_from_both_paths_fails(self):
+        def change(repo):
+            self.move(repo)
+            (repo.root / NEW_DIR / '1.0.0' / 'connections.json').unlink()
+        self.assert_breaks(change, f'{OLD_DIR}/1.0.0/connections.json: deleted', *MOVED)
+
+    def test_a_new_file_at_the_new_path_passes_and_a_changed_one_there_fails_against_a_new_baseline(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Repo(directory)
+            self.move(repo)
+            repo.commit('move')
+            repo.git('tag', '1.1.0')
+            repo.write(f'{NEW_DIR}/1.0.0/sync-state.json', '{}')
+            repo.commit('change')
+            result = repo.compat('frozen', '1.1.0', *MOVED)
+            self.assertEqual(result.returncode, 1, result.stdout)
+            self.assertIn(f'{NEW_DIR}/1.0.0/sync-state.json: modified', result.stdout)
+
+    def test_the_moved_option_needs_old_and_new(self):
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Repo(directory)
+            self.assertEqual(repo.compat('frozen', '1.0.0', '--moved', OLD_DIR).returncode, 2)
+
     # --- the other modes of the shared script, kept so the copies stay alike ---
 
     def test_an_additive_change_passes_only_where_allowed(self):
@@ -249,31 +299,29 @@ class Workflow(unittest.TestCase):
 
     def test_the_compat_job_runs_every_check(self):
         runs = '\n'.join(step.get('run', '') for step in workflow()['jobs']['compat']['steps'])
-        self.assertIn('compat.py frozen "$BASELINE" --strict Tests/PersistedFormats', runs)
-        self.assertIn('diagnose-api-breaking-changes "$BASELINE"', runs)
+        self.assertIn(f'compat.py frozen "$BASELINE" --strict {NEW_DIR} --moved {OLD_DIR}={NEW_DIR}', runs)
 
-    def test_every_library_product_is_compared(self):
-        package = (ROOT / 'Package.swift').read_text()
-        runs = '\n'.join(step.get('run', '') for step in workflow()['jobs']['compat']['steps'])
-        products = re.findall(r'\.library\(name: "(\w+)"', package)
-        self.assertGreaterEqual(len(products), 8)
-        compared = runs.split('diagnose-api-breaking-changes', 1)[1]
-        for product in products:
-            self.assertRegex(compared, rf'\s{product}\b', product)
+    def test_the_compat_job_has_no_swift_left(self):
+        runs = '\n'.join(str(step.get('run', '')) + str(step.get('name', ''))
+                         for step in workflow()['jobs']['compat']['steps']).lower()
+        for word in ('swift', 'docker', 'diagnose-api-breaking-changes'):
+            self.assertNotIn(word, runs)
 
     def test_persisted_formats_exist_and_are_loaded_by_tests(self):
-        versions = sorted(path.parent.name for path in (ROOT / 'Tests' / 'PersistedFormats').glob('*/connections.json'))
+        directory = ROOT / NEW_DIR
+        versions = sorted(path.parent.name for path in directory.glob('*/connections.json'))
         self.assertIn('1.0.7', versions)
-        tests = (ROOT / 'Tests' / 'CalendarCoreTests' / 'PersistedFormatTests.swift').read_text()
+        self.assertFalse((ROOT / OLD_DIR).exists(), 'the fixtures moved to ' + NEW_DIR)
+        tests = (ROOT / 'crates' / 'calendar-core' / 'src' / 'tests' / 'persisted_format_tests.rs').read_text()
+        self.assertIn('/../../fixtures/persisted-formats', tests)
         for version in versions:
-            self.assertIn(f'persisted("{version}", "connections.json")', tests, version)
-            self.assertIn(f'persisted("{version}", "sync-state.json")', tests, version)
+            self.assertTrue((directory / version / 'sync-state.json').is_file(), version)
 
     def test_the_rule_is_documented(self):
         agents = (ROOT / 'AGENTS.md').read_text()
         self.assertIn('## Backward compatibility', agents)
         self.assertIn('semver:major', agents)
-        self.assertIn('Tests/PersistedFormats', agents)
+        self.assertIn('fixtures/persisted-formats', agents)
 
 
 if __name__ == '__main__':
