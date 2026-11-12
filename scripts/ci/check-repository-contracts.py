@@ -163,10 +163,9 @@ if (root / '.github' / 'workflows').is_dir():
 
 # The jobs of ci.yml are the status checks that the rulesets of main and v2 require, matched by name: a renamed or deleted
 # job leaves its check unreported and the pull request unmergeable, and `compat` (AGENTS.md, "Backward compatibility")
-# would silently stop enforcing its rule. The four rust-* platform names are aliases of the platform jobs, kept while the
-# ruleset of v2 still lists them (remove them here and in ci.yml together once it does not).
+# would silently stop enforcing its rule.
 REQUIRED_CI_JOBS = ['macos', 'linux', 'windows-x64', 'windows-arm64', 'architecture', 'compat', 'rust-lint',
-                    'rust-targets', 'rust-macos', 'rust-linux', 'rust-windows-x64', 'rust-windows-arm64']
+                    'rust-targets']
 ci_workflow = root / '.github' / 'workflows' / 'ci.yml'
 if ci_workflow.is_file():
     ci_jobs = load(ci_workflow).get('jobs')

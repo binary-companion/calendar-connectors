@@ -8,9 +8,6 @@
 #   rust-targets  release builds for the other Apple targets.
 #   compat        backward compatibility with the latest 1.x release (AGENTS.md, "Backward compatibility"): the
 #                 persisted-format fixtures. Skipped for semver:major.
-#   rust-macos, rust-linux, rust-windows-x64, rust-windows-arm64
-#                 aliases that pass when the job of the same platform above passed. The ruleset that protects v2 still
-#                 lists these names as required checks; delete the aliases after the ruleset drops them.
 name: CI
 
 on:
@@ -194,51 +191,3 @@ jobs:
           for target in x86_64-apple-darwin aarch64-apple-ios aarch64-apple-ios-sim; do
             cargo build --workspace --release --locked --target "$target"
           done
-
-  # The ruleset "Protect v2" still lists rust-macos, rust-linux, rust-windows-x64 and rust-windows-arm64 as required
-  # checks (the platform jobs had those names while Swift and Rust ran side by side). These jobs keep the names
-  # reporting, and pass only when the platform job passed. always(): a skipped required check counts as passing, so a
-  # skipped or failed dependency must make the alias fail, never skip it. Remove them once the ruleset drops the names.
-  rust-macos:
-    needs: macos
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    permissions: {}
-    steps:
-      - name: The platform job passed
-        env:
-          RESULT: ${{ needs.macos.result }}
-        run: test "$RESULT" = success
-
-  rust-linux:
-    needs: linux
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    permissions: {}
-    steps:
-      - name: The platform job passed
-        env:
-          RESULT: ${{ needs.linux.result }}
-        run: test "$RESULT" = success
-
-  rust-windows-x64:
-    needs: windows-x64
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    permissions: {}
-    steps:
-      - name: The platform job passed
-        env:
-          RESULT: ${{ needs.windows-x64.result }}
-        run: test "$RESULT" = success
-
-  rust-windows-arm64:
-    needs: windows-arm64
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    permissions: {}
-    steps:
-      - name: The platform job passed
-        env:
-          RESULT: ${{ needs.windows-arm64.result }}
-        run: test "$RESULT" = success

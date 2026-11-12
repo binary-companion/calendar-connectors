@@ -55,7 +55,6 @@ In CI the jobs are:
 - `rust-lint`: rustfmt, clippy `-D warnings`, `cargo deny check`, the test parity table.
 - `rust-targets`: release builds for the other Apple targets (macOS x86_64, iOS device and simulator).
 - `compat`: pull requests only (see Backward compatibility).
-- `rust-macos`, `rust-linux`, `rust-windows-x64`, `rust-windows-arm64`: aliases that pass when the platform job of the same platform passed. The ruleset "Protect v2" still lists these names as required checks (they were the Rust-only jobs while Swift and Rust ran side by side). Delete the aliases from `ci.yml` and from `REQUIRED_CI_JOBS` in `check-repository-contracts.py` once the ruleset lists only the plain names.
 
 The job ids are the status-check names the rulesets match: renaming a job makes its required check unreported and the pull request unmergeable, and `check-repository-contracts.py` fails when one goes missing. The weekly `vectors-drift.yml` replays the vectors on the current macOS and Linux runner images (see its header for when it actually runs).
 
