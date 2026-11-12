@@ -2,7 +2,7 @@
 //! `Character` rules of the parser, TEXT escaping, line folding, DURATION and DATE-TIME values, `String(decoding:)` of
 //! invalid UTF-8, `Double(String)`, the `VTIMEZONE` text of 30 zones and the zone chosen for 100 random `VTIMEZONE`
 //! definitions. `swift_probe.json` is written by `scripts/dev/ical-tables/probe-main.swift` (copy it over
-//! `Sources/VectorExporter/main.swift` in a scratch checkout, build with `-Xswiftc -enable-testing`, run it with an output
+//! `Sources/VectorExporter/main.swift` in a scratch checkout of the last dual-language commit (docs/rust-port/README.md; the Swift package is gone from `v2`), build with `-Xswiftc -enable-testing`, run it with an output
 //! path); the cases here are a fixed sample of its output. Strings are arrays of Unicode scalar values.
 
 use calendar_core::time::Zone;

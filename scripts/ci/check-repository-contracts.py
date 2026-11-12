@@ -18,126 +18,9 @@ def read(path):
     require(file.is_file(), f'missing documented path: {path}')
     return file.read_text() if file.is_file() else ''
 
-manifest = read('Package.swift')
-for line in (
-    '.target(name: "CalendarCore")',
-    '.target(name: "CalendarOAuth", dependencies: ["CalendarCore"])',
-    '.target(name: "GoogleCalendar", dependencies: ["CalendarCore", "CalendarOAuth"])',
-    '.target(name: "MicrosoftCalendar", dependencies: ["CalendarCore", "CalendarOAuth"])',
-):
-    require(line in manifest, f'manifest dependency changed: {line}')
-
-# The whole library must stay portable: no Apple-only or UI framework in any target under Sources.
-FORBIDDEN = {'AppKit', 'SwiftUI', 'EventKit', 'WidgetKit', 'FoundationModels',
-             'UIKit', 'Security', 'CryptoKit', 'Network', 'Combine'}
-# "import X", "@testable import X", "public import X", "@_exported public import X", "import struct X.Y".
-IMPORT = re.compile(
-    r'^[ \t]*(?:(?:@\w+(?:\([^)]*\))?|public|package|internal|fileprivate|private)[ \t]+)*'
-    r'import[ \t]+(?:(?:struct|class|enum|protocol|typealias|let|var|func)[ \t]+)?(\w+)', re.M)
-for file in sorted((root / 'Sources').rglob('*.swift')):
-    relative = file.relative_to(root / 'Sources')
-    text = file.read_text()
-    for match in IMPORT.finditer(text):
-        require(match.group(1) not in FORBIDDEN,
-                f'Apple/UI import in portable source ({relative.parts[0]}): '
-                f'Sources/{relative}:{text.count(chr(10), 0, match.start()) + 1}: import {match.group(1)}')
-
-def strip_swift_comments(text, trailing):
-    """The Swift text without its comments, for the scope checks.
-
-    Always removed: a "//" comment that starts its line (only whitespace before it) and "/* */"
-    blocks (nested, as in Swift). With trailing=True a "//" comment after code on the same line is
-    removed too; with trailing=False it is kept verbatim, so what sits in it still counts (the
-    absence check fails closed). String literals are scanned whole, including "\\( ... )"
-    interpolations that contain strings of their own, multi-line and raw strings, so a comment
-    marker inside a string starts no comment. The rest of a kept trailing comment is copied without
-    being scanned, so a "/*" in it opens nothing. Newlines survive."""
-    n = len(text)
-
-    def skip_string(i):
-        """Index after the string literal that starts at text[i] (a '"' or a '#' run before one)."""
-        hashes = 0
-        while text.startswith('#', i + hashes):
-            hashes += 1
-        quote = i + hashes
-        multiline = text.startswith('"""', quote)
-        opener = quote + (3 if multiline else 1)
-        closer = ('"""' if multiline else '"') + '#' * hashes
-        j = opener
-        while j < n:
-            if text.startswith('\\' + '#' * hashes + '(', j):
-                j = skip_parens(j + 1 + hashes)
-            elif hashes == 0 and text[j] == '\\':
-                j += 2
-            elif text.startswith(closer, j):
-                return j + len(closer)
-            elif not multiline and text[j] == '\n':
-                return j
-            else:
-                j += 1
-        return n
-
-    def skip_parens(i):
-        """Index after the ")" that closes the "(" at text[i], scanning nested strings and parens."""
-        depth, j = 0, i
-        while j < n:
-            if text[j] == '"':
-                j = skip_string(j)
-                continue
-            if text[j] == '(':
-                depth += 1
-            elif text[j] == ')':
-                depth -= 1
-                if depth == 0:
-                    return j + 1
-            j += 1
-        return n
-
-    out, i, line_start = [], 0, True
-    while i < n:
-        two = text[i:i + 2]
-        char = text[i]
-        if two == '/*':
-            depth, i = 1, i + 2
-            while i < n and depth:
-                if text.startswith('/*', i):
-                    depth += 1; i += 2
-                elif text.startswith('*/', i):
-                    depth -= 1; i += 2
-                else:
-                    if text[i] == '\n':
-                        out.append('\n'); line_start = True
-                    i += 1
-        elif two == '//':
-            end = text.find('\n', i)
-            end = n if end < 0 else end
-            if line_start or trailing:
-                pass  # a comment: drop it (the newline stays)
-            else:
-                out.append(text[i:end]); line_start = False
-            i = end
-        elif char == '"' or (char == '#' and re.match(r'#+"', text[i:i + 64])):
-            end = skip_string(i)
-            out.append(text[i:end]); i = end; line_start = False
-        else:
-            out.append(char)
-            line_start = char == '\n' or (line_start and char.isspace())
-            i += 1
-    return ''.join(out)
-
-# A scope that appears only in a comment is neither requested nor forbidden. The presence check
-# reads code with every comment removed (a mis-strip can only make it fail). The absence check
-# reads the text with only full-line comments and blocks removed, so it never trusts a trailing
-# comment to hide a forbidden scope.
-scope_text = read('Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift')
-scopes = strip_swift_comments(scope_text, trailing=True)
-scopes_uncommented = strip_swift_comments(scope_text, trailing=False)
-for scope in ('Calendars.Read', 'Calendars.Read.Shared', 'MailboxSettings.Read'):
-    require(f'"{scope}"' in scopes, f'intended Microsoft scope absent: {scope}')
-for scope in ('Calendars.ReadWrite', 'Calendars.ReadWrite.Shared'):
-    require(f'"{scope}"' not in scopes_uncommented, f'Microsoft scope must stay read-only (ADR 0017 in timetug): {scope}')
-# The Rust port of the Microsoft connector (crates/calendar-microsoft) must request exactly the same scopes, in the same
-# order (ADR 0017: read-only). The list below is the pinned one; the Rust constant must equal it, and the brokered kind
+# Microsoft sign-in stays read-only (ADR 0017 in timetug), and the whole library stays portable (crate dependencies:
+# scripts/ci/check-crate-architecture.py).
+# The Microsoft connector (crates/calendar-microsoft) must request exactly these scopes, in this order (ADR 0017: read-only). The list below is the pinned one; the Rust constant must equal it, and the brokered kind
 # must derive its scopes from that constant instead of spelling any of its own.
 PINNED_MICROSOFT_SCOPES = ['offline_access', 'User.Read', 'MailboxSettings.Read', 'Calendars.Read', 'Calendars.Read.Shared']
 
@@ -201,15 +84,6 @@ require('MicrosoftConnectorKind::SCOPES' in rust_brokered,
         'Rust brokered Microsoft kind must derive its scopes from MicrosoftConnectorKind::SCOPES')
 require(not any('.Read' in literal or 'ReadWrite' in literal for literal in rust_string_literals(rust_brokered)),
         'Rust brokered Microsoft kind must not spell scopes of its own')
-source = read('Sources/MicrosoftCalendar/MicrosoftCalendarSource.swift')
-require('canWrite: true' in source and 'canEditAttendees: true' in source, 'Microsoft write capabilities changed')
-require('extension MicrosoftCalendarSource: WritableCalendarSource' in
-        read('Sources/MicrosoftCalendar/MicrosoftCalendarSource+Write.swift'),
-        'Microsoft write protocol implementation absent')
-require('canWrite: true' in read('Sources/GoogleCalendar/GoogleCalendarSource.swift'), 'Google write capability changed')
-require('extension GoogleCalendarSource: WritableCalendarSource' in
-        read('Sources/GoogleCalendar/GoogleCalendarSource+Write.swift'), 'Google write protocol implementation absent')
-
 # Workflows: untrusted code never meets secrets (program design, section 8).
 ALLOWED_ANYWHERE = {'GITHUB_TOKEN', 'DOCKERHUB_USERNAME', 'DOCKERHUB_TOKEN'}
 def expressions_in(text):
@@ -287,15 +161,21 @@ if (root / '.github' / 'workflows').is_dir():
         require((root / '.github' / 'workflows' / documented).is_file(),
                 f'missing documented path: .github/workflows/{documented}')
 
-# The backward-compatibility job (AGENTS.md, "Backward compatibility") is documented by id and can become a required
-# check; a renamed or deleted one would silently stop enforcing the rule. Its persisted-format fixtures are documented
-# too: without them nothing proves that connections and sync state saved by an earlier release still load.
+# The jobs of ci.yml are the status checks that the rulesets of main and v2 require, matched by name: a renamed or deleted
+# job leaves its check unreported and the pull request unmergeable, and `compat` (AGENTS.md, "Backward compatibility")
+# would silently stop enforcing its rule. The four rust-* platform names are aliases of the platform jobs, kept while the
+# ruleset of v2 still lists them (remove them here and in ci.yml together once it does not).
+REQUIRED_CI_JOBS = ['macos', 'linux', 'windows-x64', 'windows-arm64', 'architecture', 'compat', 'rust-lint',
+                    'rust-targets', 'rust-macos', 'rust-linux', 'rust-windows-x64', 'rust-windows-arm64']
 ci_workflow = root / '.github' / 'workflows' / 'ci.yml'
 if ci_workflow.is_file():
     ci_jobs = load(ci_workflow).get('jobs')
-    require(isinstance(ci_jobs, dict) and 'compat' in ci_jobs, '.github/workflows/ci.yml: missing documented job compat')
-require(any((root / 'Tests' / 'PersistedFormats').glob('*/connections.json')),
-        'missing documented path: Tests/PersistedFormats/<version>/connections.json')
+    for job in REQUIRED_CI_JOBS:
+        require(isinstance(ci_jobs, dict) and job in ci_jobs, f'.github/workflows/ci.yml: missing documented job {job}')
+# The persisted-format fixtures are documented too: without them nothing proves that connections and sync state saved by
+# an earlier release still load. They moved from Tests/PersistedFormats when v2 became Rust-only.
+require(any((root / 'fixtures' / 'persisted-formats').glob('*/connections.json')),
+        'missing documented path: fixtures/persisted-formats/<version>/connections.json')
 
 for workflow in sorted((root / '.github' / 'workflows').glob('*.y*ml')):
     data = load(workflow)

@@ -79,4 +79,34 @@ expect_usage_error "--labels" --latest 1.0.0 --labels
 expect_usage_error "--latest" --latest
 expect_usage_error "--override" --latest 1.0.0 --labels "" --override
 expect_usage_error "override 0.9.0 is lower than the latest tag 1.0.6" --latest 1.0.6 --labels "" --override 0.9.0
+
+# The prerelease form (v2 only): 2.0.0-<prerelease>, whatever the latest tag and the labels are; the prerelease is a
+# semver pre-release part (dot-separated [0-9A-Za-z-] identifiers, no empty one, no leading zero in a numeric one).
+expect 0 2.0.0-alpha.1 --latest 1.2.1 --labels "" --prerelease alpha.1
+expect 0 2.0.0-alpha.1 --latest "" --labels "" --prerelease alpha.1
+expect 0 2.0.0-beta.2 --latest 1.2.1 --labels "semver:major,semver:minor" --prerelease beta.2
+expect 0 2.0.0-rc.10 --latest 1.2.1 --labels "" --prerelease rc.10
+expect 0 2.0.0-alpha --latest 1.2.1 --labels "" --prerelease alpha
+expect 0 2.0.0-x-y.0 --latest 1.2.1 --labels "" --prerelease x-y.0
+expect 0 2.0.0-0 --latest 1.2.1 --labels "" --prerelease 0
+expect 0 2.0.0-1a.01a --latest 1.2.1 --labels "" --prerelease 1a.01a
+expect 2 "" --latest 1.2.1 --labels "" --prerelease ""
+expect 2 "" --latest 1.2.1 --labels "" --prerelease alpha..1
+expect 2 "" --latest 1.2.1 --labels "" --prerelease .alpha
+expect 2 "" --latest 1.2.1 --labels "" --prerelease alpha.
+expect 2 "" --latest 1.2.1 --labels "" --prerelease alpha.01
+expect 2 "" --latest 1.2.1 --labels "" --prerelease 01
+expect 2 "" --latest 1.2.1 --labels "" --prerelease "alpha 1"
+expect 2 "" --latest 1.2.1 --labels "" --prerelease "alpha+build"
+expect 0 2.0.0-- --latest 1.2.1 --labels "" --prerelease "-"
+expect 2 "" --latest 1.2.1 --labels "" --prerelease 'a$(id)'
+expect 2 "" --latest 1.2.1 --labels "" --prerelease "*"
+expect 2 "" --latest 1.2.1 --labels "" --prerelease alpha.1 --override 2.0.0
+expect 2 "" --latest 1.2.1 --labels "" --prerelease
+expect 2 "" --latest 1.2.1 --labels "" --prerelease $'alpha\nbeta'
+expect 2 "" --latest 1.2.1 --labels "" --prerelease $'alpha\n'
+expect 2 "" --latest 1.2.1 --labels "" --prerelease $'\nalpha'
+expect_usage_error "--prerelease" --latest 1.0.0 --labels "" --prerelease
+expect_usage_error "prerelease" --prerelease "alpha 1"
+expect_usage_error "cannot be combined" --prerelease alpha.1 --override 2.0.0
 echo PASS

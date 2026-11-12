@@ -2,8 +2,6 @@ import subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parents[1] / 'check-repository-contracts.py'
-GOOD_SCOPES = '''let scopes = ["Calendars.Read", "Calendars.Read.Shared", "MailboxSettings.Read"]\n'''
-GOOD_SOURCE = 'canWrite: true, canEditAttendees: true\n'
 GOOD_RUST_KIND = '''/// Read-only (ADR 0017). Not "Calendars.ReadWrite".
 pub const SCOPES: [&'static str; 5] = [
     "offline_access", "User.Read", "MailboxSettings.Read", "Calendars.Read", "Calendars.Read.Shared",
@@ -22,10 +20,54 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "${{ secrets.GITHUB_TOKEN }}${{ secrets.DOCKERHUB_TOKEN }}"
+  macos:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo macos
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo linux
+  windows-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo windows-x64
+  windows-arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo windows-arm64
+  architecture:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo architecture
   compat:
     runs-on: ubuntu-latest
     steps:
       - run: echo compat
+  rust-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo rust-lint
+  rust-targets:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo rust-targets
+  rust-macos:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo rust-macos
+  rust-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo rust-linux
+  rust-windows-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo rust-windows-x64
+  rust-windows-arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo rust-windows-arm64
 '''
 
 RELEASE = '''name: Release
@@ -47,25 +89,13 @@ runs:
       run: echo hi
 '''
 
-def make_manifest():
-    return ('.target(name: "CalendarCore")\n.target(name: "CalendarOAuth", dependencies: ["CalendarCore"])\n'
-            '.target(name: "GoogleCalendar", dependencies: ["CalendarCore", "CalendarOAuth"])\n'
-            '.target(name: "MicrosoftCalendar", dependencies: ["CalendarCore", "CalendarOAuth"])\n')
-
 def make(root: Path, **overrides):
     files = {
-        'Package.swift': make_manifest(),
-        'Sources/CalendarCore/A.swift': 'import Foundation\n',
-        'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift': GOOD_SCOPES,
-        'Sources/MicrosoftCalendar/MicrosoftCalendarSource.swift': GOOD_SOURCE,
         RUST_KIND: GOOD_RUST_KIND,
         RUST_BROKERED: GOOD_RUST_BROKERED,
-        'Sources/MicrosoftCalendar/MicrosoftCalendarSource+Write.swift': 'extension MicrosoftCalendarSource: WritableCalendarSource {}\n',
-        'Sources/GoogleCalendar/GoogleCalendarSource.swift': 'canWrite: true\n',
-        'Sources/GoogleCalendar/GoogleCalendarSource+Write.swift': 'extension GoogleCalendarSource: WritableCalendarSource {}\n',
         '.github/workflows/ci.yml': CI,
         '.github/workflows/release.yml': RELEASE,
-        'Tests/PersistedFormats/1.0.7/connections.json': '[]\n',
+        'fixtures/persisted-formats/1.0.7/connections.json': '[]\n',
     }
     files.update(overrides)
     for name, text in files.items():
@@ -90,19 +120,24 @@ class Contracts(unittest.TestCase):
     def test_clean_fixture_passes(self):
         self.check(True)
 
-    def test_apple_import_in_portable_source_fails(self):
-        self.check(False, 'Apple/UI import', **{'Sources/CalendarCore/B.swift': 'import AppKit\n'})
+    def test_missing_persisted_formats_fail(self):
+        self.check(False, 'fixtures/persisted-formats', **{'fixtures/persisted-formats/1.0.7/connections.json': None})
+
+    def test_the_old_persisted_formats_path_does_not_count(self):
+        self.check(False, 'fixtures/persisted-formats', **{
+            'fixtures/persisted-formats/1.0.7/connections.json': None,
+            'Tests/PersistedFormats/1.0.7/connections.json': '[]\n'})
+
+    def test_a_renamed_required_ci_job_fails(self):
+        for job in ('macos', 'linux', 'windows-x64', 'windows-arm64', 'architecture', 'compat', 'rust-lint',
+                    'rust-targets', 'rust-macos', 'rust-linux', 'rust-windows-x64', 'rust-windows-arm64'):
+            with self.subTest(job=job):
+                self.check(False, f'missing documented job {job}', **{
+                    '.github/workflows/ci.yml': CI.replace(f'  {job}:\n', f'  renamed-{job}:\n')})
 
     def test_a_missing_compat_job_fails(self):
         self.check(False, 'missing documented job compat', **{
             '.github/workflows/ci.yml': CI.replace('  compat:\n', '  renamed-compat:\n')})
-
-    def test_missing_persisted_formats_fail(self):
-        self.check(False, 'Tests/PersistedFormats', **{'Tests/PersistedFormats/1.0.7/connections.json': None})
-
-    def test_microsoft_write_scope_fails(self):
-        self.check(False, 'Calendars.ReadWrite', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift': GOOD_SCOPES + '"Calendars.ReadWrite"\n'})
 
     def test_pull_request_target_fails(self):
         self.check(False, 'pull_request_target', **{
@@ -169,148 +204,9 @@ class Contracts(unittest.TestCase):
 
     # --- every remaining rule fails when its violation is introduced ---
 
-    def test_changed_manifest_dependency_fails(self):
-        self.check(False, 'manifest dependency changed: .target(name: "GoogleCalendar"', **{
-            'Package.swift': make_manifest().replace(
-                '.target(name: "GoogleCalendar", dependencies: ["CalendarCore", "CalendarOAuth"])',
-                '.target(name: "GoogleCalendar", dependencies: ["CalendarCore"])')})
-
-    def test_missing_manifest_fails(self):
-        self.check(False, 'missing documented path: Package.swift', **{'Package.swift': None})
-
-    def test_absent_intended_microsoft_scope_fails(self):
-        self.check(False, 'intended Microsoft scope absent: Calendars.Read.Shared', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                GOOD_SCOPES.replace('"Calendars.Read.Shared", ', '')})
-
-    def test_microsoft_shared_write_scope_fails(self):
-        self.check(False, ': Calendars.ReadWrite.Shared', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift': GOOD_SCOPES + '"Calendars.ReadWrite.Shared"\n'})
-
     # --- the scope checks read code, not comments ---
 
-    def test_read_scope_present_only_in_a_line_comment_fails(self):
-        self.check(False, 'intended Microsoft scope absent: Calendars.Read.Shared', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                '// "Calendars.Read.Shared"\n' + GOOD_SCOPES.replace('"Calendars.Read.Shared", ', '')})
-
-    def test_read_scope_present_only_in_a_trailing_comment_fails(self):
-        self.check(False, 'intended Microsoft scope absent: MailboxSettings.Read', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                'let scopes = ["Calendars.Read", "Calendars.Read.Shared"] // "MailboxSettings.Read"\n'})
-
-    def test_read_scope_present_only_in_a_block_comment_fails(self):
-        self.check(False, 'intended Microsoft scope absent: Calendars.Read', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                '/* scopes:\n   "Calendars.Read"\n*/\nlet scopes = ["Calendars.Read.Shared", "MailboxSettings.Read"]\n'})
-
-    def test_forbidden_scope_only_in_a_line_comment_passes(self):
-        self.check(True, **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                '// never request "Calendars.ReadWrite" or "Calendars.ReadWrite.Shared"\n' + GOOD_SCOPES})
-
-    def test_forbidden_scope_in_a_trailing_comment_fails_closed(self):
-        # Only full-line "//" comments and /* */ blocks are removed before the absence check, so a
-        # forbidden scope after code on the same line is reported rather than trusted as a comment.
-        self.check(False, ': Calendars.ReadWrite', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                GOOD_SCOPES.rstrip('\n') + ' // not "Calendars.ReadWrite"\n'})
-
-    def test_forbidden_scope_after_a_nested_string_in_an_interpolation_fails(self):
-        self.check(False, ': Calendars.ReadWrite', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                GOOD_SCOPES + 'let w = "\\(f("//")) " + "Calendars.ReadWrite"\n'})
-
-    def test_forbidden_scope_after_a_trailing_comment_with_a_block_opener_fails(self):
-        # "/*" inside a "//" comment opens nothing, so it must not hide what follows.
-        self.check(False, ': Calendars.ReadWrite', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                GOOD_SCOPES + 'let a = 1 // see /*\nlet w = "Calendars.ReadWrite"\n'})
-
-    def test_forbidden_scope_after_a_block_opener_inside_a_string_fails(self):
-        self.check(False, ': Calendars.ReadWrite', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                GOOD_SCOPES + 'let s = "/*"\nlet w = "Calendars.ReadWrite"\n// */\n'})
-
-    def test_forbidden_scope_after_a_raw_string_with_a_comment_marker_fails(self):
-        self.check(False, ': Calendars.ReadWrite', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                GOOD_SCOPES + 'let s = #"a "// b"#; let w = "Calendars.ReadWrite"\n'})
-
-    def test_forbidden_scope_in_a_full_line_comment_after_indentation_passes(self):
-        self.check(True, **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                GOOD_SCOPES + '    \t// "Calendars.ReadWrite" stays out\n'})
-
-    def test_forbidden_scope_only_in_a_block_comment_passes(self):
-        self.check(True, **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                '/* "Calendars.ReadWrite"\n   "Calendars.ReadWrite.Shared" */\n' + GOOD_SCOPES})
-
-    def test_forbidden_scope_after_a_comment_marker_inside_a_string_still_fails(self):
-        # The "//" sits in a string literal, so it starts no comment and the scope after it is code.
-        self.check(False, ': Calendars.ReadWrite', **{
-            'Sources/MicrosoftCalendar/MicrosoftConnectorKind.swift':
-                GOOD_SCOPES + 'let authority = "https://login.example/x", write = "Calendars.ReadWrite"\n'})
-
-    def test_microsoft_without_can_write_fails(self):
-        self.check(False, 'Microsoft write capabilities changed', **{
-            'Sources/MicrosoftCalendar/MicrosoftCalendarSource.swift': 'canEditAttendees: true\n'})
-
-    def test_microsoft_without_can_edit_attendees_fails(self):
-        self.check(False, 'Microsoft write capabilities changed', **{
-            'Sources/MicrosoftCalendar/MicrosoftCalendarSource.swift': 'canWrite: true\n'})
-
-    def test_microsoft_write_extension_absent_fails(self):
-        self.check(False, 'Microsoft write protocol implementation absent', **{
-            'Sources/MicrosoftCalendar/MicrosoftCalendarSource+Write.swift': '// nothing\n'})
-
-    def test_google_without_can_write_fails(self):
-        self.check(False, 'Google write capability changed', **{
-            'Sources/GoogleCalendar/GoogleCalendarSource.swift': 'canWrite: false\n'})
-
-    def test_google_write_extension_absent_fails(self):
-        self.check(False, 'Google write protocol implementation absent', **{
-            'Sources/GoogleCalendar/GoogleCalendarSource+Write.swift': '// nothing\n'})
-
-    def test_missing_documented_file_fails(self):
-        self.check(False, 'missing documented path: Sources/GoogleCalendar/GoogleCalendarSource+Write.swift', **{
-            'Sources/GoogleCalendar/GoogleCalendarSource+Write.swift': None})
-
     # --- portability: every spelling of an import, in every target and every nested directory ---
-
-    def test_apple_import_in_a_nested_directory_fails(self):
-        self.check(False, 'Sources/CalendarCore/Write/Probe.swift:2: import AppKit', **{
-            'Sources/CalendarCore/Write/Probe.swift': 'import Foundation\nimport AppKit\n'})
-
-    def test_apple_import_in_a_deeply_nested_directory_fails(self):
-        self.check(False, 'Apple/UI import', **{'Sources/GoogleCalendar/A/B/C/Probe.swift': 'import SwiftUI\n'})
-
-    def test_apple_import_in_a_target_outside_the_core_set_fails(self):
-        self.check(False, 'Apple/UI import', **{'Sources/ICalendar/Probe.swift': 'import AppKit\n'})
-
-    def test_every_forbidden_framework_fails(self):
-        for framework in ('AppKit', 'SwiftUI', 'EventKit', 'WidgetKit', 'FoundationModels',
-                          'UIKit', 'Security', 'CryptoKit', 'Network', 'Combine'):
-            with self.subTest(framework=framework):
-                self.check(False, f'import {framework}', **{
-                    'Sources/CalDAVCalendar/Probe.swift': f'import {framework}\n'})
-
-    def test_attribute_and_access_level_import_forms_fail(self):
-        for statement in ('@preconcurrency import AppKit', '@testable import AppKit', 'public import AppKit',
-                          'internal import AppKit', 'package import AppKit', 'fileprivate import AppKit',
-                          'private import AppKit', '@_exported public import AppKit',
-                          '@preconcurrency public import AppKit', '@available(macOS 14, *) import AppKit',
-                          'import struct AppKit.NSColor', 'public import class AppKit.NSView',
-                          '    import AppKit', '\timport AppKit'):
-            with self.subTest(statement=statement):
-                self.check(False, 'Apple/UI import', **{
-                    'Sources/CalendarOAuth/Probe.swift': statement + '\n'})
-
-    def test_allowed_import_forms_pass(self):
-        self.check(True, **{'Sources/CalendarOAuth/Probe.swift':
-                            '@_exported public import Foundation\nimport struct Foundation.Date\n'
-                            '#if canImport(FoundationNetworking)\nimport FoundationNetworking\n#endif\n'})
 
     # --- workflow secrets ---
 

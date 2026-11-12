@@ -4,14 +4,16 @@ Within a major version a release must drop into an existing front end with no ch
 but not remove, retype or change; that needs the label semver:major.
 
 A copy of scripts/ci/compat/compat.py in binary-companion/timetug-shared, without its C header, export and NuGet
-commands (this library has none of those). The repositories do not depend on each other: change both on purpose.
+commands (this library has none of those), and with the `--moved` option below. The repositories do not depend on each
+other: change both on purpose. This library has no API diff check any more: v2 is Rust-only, the 1.x baseline is a Swift
+package, and the only contract that carries over is the persisted data.
 
 Usage (from the repository root; the CI job `compat` runs these):
   compat.py gate [--base-ref REF]            decide whether the checks run: writes run=true|false and baseline=TAG
                                              to $GITHUB_OUTPUT (pull requests only; skipped with a notice for
                                              semver:major, other events and when no X.Y.Z tag exists)
   compat.py baseline [--ref REF]             print the highest X.Y.Z tag reachable from REF (default origin/main)
-  compat.py frozen BASELINE [--strict PATH...] [--additive PATH...] [--appendable PATH...]
+  compat.py frozen BASELINE [--strict PATH...] [--additive PATH...] [--appendable PATH...] [--moved OLD=NEW...]
                                              fail if a file under PATH that exists in BASELINE was deleted or
                                              changed in a way its kind does not allow:
                                                --strict      no change at all (persisted-data fixtures)
@@ -19,6 +21,10 @@ Usage (from the repository root; the CI job `compat` runs these):
                                                              their length
                                                --appendable  as --additive, and arrays may also gain entries at
                                                              the end
+                                               --moved       OLD=NEW: a directory that moved. Every file under
+                                                             OLD in BASELINE must exist byte-identical at its old
+                                                             path or at the same place under NEW (v2 moved
+                                                             Tests/PersistedFormats to fixtures/persisted-formats)
                                              New files are always allowed.
 
 The pull request's labels come from the event payload at $GITHUB_EVENT_PATH; the event name from $GITHUB_EVENT_NAME.
@@ -146,18 +152,47 @@ def frozen_problems(baseline, paths, mode):
     return problems
 
 
+def blob_id(revision, path):
+    """The git object id of path at revision, or None when it does not exist there."""
+    found = subprocess.run(['git', 'rev-parse', '--verify', '--quiet', f'{revision}:{path}'],
+                           capture_output=True, text=True)
+    return found.stdout.strip() if found.returncode == 0 else None
+
+
+def moved_problems(baseline, pair):
+    """[(path, reason)] for the files of baseline under OLD that are neither unchanged at their old path nor unchanged
+    under NEW (`pair` is `OLD=NEW`). Bytes are compared through the git object ids, so a whitespace change counts."""
+    old, _, new = pair.partition('=')
+    old, new = old.rstrip('/'), new.rstrip('/')
+    problems = []
+    for path in git('ls-tree', '-r', '--name-only', '-z', baseline, '--', old).split('\0'):
+        if not path:
+            continue
+        wanted = blob_id(baseline, path)
+        there = [blob_id('HEAD', candidate) for candidate in (path, new + path[len(old):])]
+        if not any(there):
+            problems.append((path, 'deleted (it exists at neither its old path nor under ' + new + ')'))
+        elif wanted not in there:
+            problems.append((path, 'modified (files here model data on users\' disks: existing ones never change)'))
+    return problems
+
+
 def parse_frozen(args):
-    """(baseline, {mode: [paths]}) from `BASELINE [--strict P...] [--additive P...] [--appendable P...]`."""
+    """(baseline, {mode: [paths]}) from `BASELINE [--strict P...] [--additive P...] [--appendable P...] [--moved O=N...]`."""
     if not args or args[0].startswith('--'):
         return None, {}
-    modes, mode = {'strict': [], 'additive': [], 'appendable': []}, 'strict'
+    modes, mode = {'strict': [], 'additive': [], 'appendable': [], 'moved': []}, 'strict'
+    seen = set()
     for arg in args[1:]:
         if arg.startswith('--'):
             mode = arg[2:]
             if mode not in modes:
                 return None, {}
+            seen.add(mode)
         else:
             modes[mode].append(arg)
+    if any(not modes[mode] for mode in seen):  # a mode flag with no value would silently skip its check
+        return None, {}
     return args[0], modes
 
 
@@ -187,7 +222,12 @@ def main(argv):
         if not baseline or not any(modes.values()):
             print(__doc__, file=sys.stderr)
             return 2
-        problems = [problem for mode, paths in modes.items() for problem in frozen_problems(baseline, paths, mode)]
+        if any('=' not in pair or pair.startswith('=') or pair.endswith('=') for pair in modes['moved']):
+            print(__doc__, file=sys.stderr)
+            return 2
+        problems = [problem for mode, paths in modes.items() if mode != 'moved'
+                    for problem in frozen_problems(baseline, paths, mode)]
+        problems += [problem for pair in modes['moved'] for problem in moved_problems(baseline, pair)]
         for path, why in problems:
             error(f'{path}: {why} since {baseline}; label the pull request {MAJOR_LABEL} for a breaking change')
         if not problems:

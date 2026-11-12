@@ -1,4 +1,4 @@
-//! Port of `PersistedFormatTests.swift` (CalDAVCalendarTests): the CalDAV parts of `Tests/PersistedFormats`, the
+//! Port of `PersistedFormatTests.swift` (CalDAVCalendarTests): the CalDAV parts of `fixtures/persisted-formats`, the
 //! account settings in `Connection.config` and the list signature and per-calendar markers in the sync state, as
 //! 1.0.7 wrote them.
 
@@ -18,8 +18,10 @@ use crate::account_config::CalDavAccountConfig;
 use crate::connector_kinds::{CalDavConnectorKind, ICloudConnectorKind};
 use crate::source::{CalDavCalendarInfo, CalDavCalendarSource};
 
-const PERSISTED_FORMATS: &str =
-    concat!(env!("CARGO_MANIFEST_DIR"), "/../../Tests/PersistedFormats");
+const PERSISTED_FORMATS: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/persisted-formats"
+);
 
 fn persisted(version: &str, name: &str) -> Vec<u8> {
     std::fs::read(Path::new(PERSISTED_FORMATS).join(version).join(name)).unwrap()

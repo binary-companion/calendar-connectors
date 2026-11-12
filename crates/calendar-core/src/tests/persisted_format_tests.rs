@@ -9,12 +9,14 @@ use crate::connection::{Connection, SyncStateStore};
 use crate::file_connection_store::{FileConnectionStore, LoadResult};
 use crate::file_sync_state_store::FileSyncStateStore;
 
-// Tests/PersistedFormats/<version> holds files that a release's own code wrote: the connection list and the sync
+// fixtures/persisted-formats/<version> holds files that a release's own code wrote: the connection list and the sync
 // state a host keeps on users' disks. They are add-only (AGENTS.md, "Backward compatibility"): the current code must
-// read every one of them, with the same meaning, for as long as the major version lasts. When phase 3 removes the
-// Swift tree they move to `fixtures/persisted-formats/` and this path changes with them.
-const PERSISTED_FORMATS: &str =
-    concat!(env!("CARGO_MANIFEST_DIR"), "/../../Tests/PersistedFormats");
+// read every one of them, with the same meaning, for as long as the major version lasts. They moved here from
+// `Tests/PersistedFormats/` when `v2` became Rust-only.
+const PERSISTED_FORMATS: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/persisted-formats"
+);
 
 fn fixture(version: &str, name: &str) -> PathBuf {
     Path::new(PERSISTED_FORMATS).join(version).join(name)
@@ -228,7 +230,7 @@ async fn the_sync_state_of120_loads() {
     );
 }
 
-/// Every version directory under `Tests/PersistedFormats`, sorted, so a fixture added later is covered at once.
+/// Every version directory under `fixtures/persisted-formats`, sorted, so a fixture added later is covered at once.
 fn versions() -> Vec<String> {
     let mut found: Vec<String> = fs::read_dir(PERSISTED_FORMATS)
         .unwrap()
