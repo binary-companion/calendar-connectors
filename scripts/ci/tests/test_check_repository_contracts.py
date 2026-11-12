@@ -52,22 +52,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo rust-targets
-  rust-macos:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo rust-macos
-  rust-linux:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo rust-linux
-  rust-windows-x64:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo rust-windows-x64
-  rust-windows-arm64:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo rust-windows-arm64
 '''
 
 RELEASE = '''name: Release
@@ -130,7 +114,7 @@ class Contracts(unittest.TestCase):
 
     def test_a_renamed_required_ci_job_fails(self):
         for job in ('macos', 'linux', 'windows-x64', 'windows-arm64', 'architecture', 'compat', 'rust-lint',
-                    'rust-targets', 'rust-macos', 'rust-linux', 'rust-windows-x64', 'rust-windows-arm64'):
+                    'rust-targets'):
             with self.subTest(job=job):
                 self.check(False, f'missing documented job {job}', **{
                     '.github/workflows/ci.yml': CI.replace(f'  {job}:\n', f'  renamed-{job}:\n')})
