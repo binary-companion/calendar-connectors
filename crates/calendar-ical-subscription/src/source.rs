@@ -267,7 +267,7 @@ impl SourceSettings {
 }
 
 /// One iCal subscription link: a read-only calendar of whatever the feed holds, re-read when it is older than
-/// `max_age`. Built by [`crate::ICalSubscriptionKind::make_source`]; the polling stream (`changes()`) keeps the
+/// `max_age`. Built by `ConnectorKind::make_source` of [`crate::ICalSubscriptionKind`]; the polling stream (`changes()`) keeps the
 /// source alive while a receiver exists, as the Swift stream keeps the class alive.
 pub struct ICalSubscriptionSource {
     connection: Connection,

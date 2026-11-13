@@ -37,6 +37,7 @@ base64 = { version = "=0.23.1", default-features = false, features = ["std"] }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"
+missing_docs = "deny"
 
 [workspace.lints.clippy]
 unwrap_used = "deny"
