@@ -2,8 +2,10 @@
 
 use crate::ical_text::ICalText;
 
+/// One parameter of a property, such as `TZID` or `PARTSTAT`.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ICalParameter {
+    /// Upper-case parameter name.
     pub name: String,
     /// Unquoted values; the serializer quotes a value that needs it.
     pub values: Vec<String>,
@@ -28,8 +30,11 @@ impl ICalParameter {
 /// property the library does not model is written back unchanged.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ICalProperty {
+    /// Upper-case property name.
     pub name: String,
+    /// Parameters in file order.
     pub parameters: Vec<ICalParameter>,
+    /// The raw value: the text after the first unquoted colon, escapes untouched.
     pub value: String,
 }
 
@@ -95,8 +100,11 @@ impl ICalProperty {
 /// A component (`VCALENDAR`, `VEVENT`, `VALARM`, `VTIMEZONE`, ...) with its properties and children, in file order.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ICalComponent {
+    /// Upper-case component name.
     pub name: String,
+    /// The component's own properties in file order.
     pub properties: Vec<ICalProperty>,
+    /// Nested components (for example `VALARM` inside `VEVENT`) in file order.
     pub components: Vec<ICalComponent>,
 }
 
@@ -114,6 +122,7 @@ impl ICalComponent {
         }
     }
 
+    /// The first property with this name (case-insensitive), or `None`.
     pub fn property(&self, name: &str) -> Option<&ICalProperty> {
         let key = name.to_uppercase();
         self.properties.iter().find(|property| property.name == key)
@@ -169,11 +178,13 @@ impl ICalComponent {
         }
     }
 
+    /// Removes every property with this name (case-insensitive).
     pub fn remove_properties_named(&mut self, name: &str) {
         let key = name.to_uppercase();
         self.properties.retain(|property| property.name != key);
     }
 
+    /// Adds `property` after the existing ones, without checking for another of the same name.
     pub fn append(&mut self, property: ICalProperty) {
         self.properties.push(property);
     }

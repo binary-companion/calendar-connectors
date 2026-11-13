@@ -8,9 +8,14 @@ use calendar_core::write::event_draft::AttendeeDraft;
 
 use crate::component::{ICalComponent, ICalParameter, ICalProperty};
 
+/// Reads and writes `ATTENDEE` and `ORGANIZER` properties of a `VEVENT`.
 pub enum AttendeeMapper {}
 
 impl AttendeeMapper {
+    /// Reads the `VEVENT`'s attendees and organizer. `self_addresses` (lowercased calendar-user addresses of the
+    /// account) decide which one is marked as the account itself. The organizer is always `Required` and `Accepted`; an
+    /// attendee whose email equals the organizer's is marked as organizer. Returns `(attendees, organizer)`;
+    /// `organizer` is `None` without an `ORGANIZER` property.
     pub fn read(
         vevent: &ICalComponent,
         self_addresses: &BTreeSet<String>,
@@ -52,6 +57,8 @@ impl AttendeeMapper {
             .or_else(|| CalendarUserAddress::email_from(property.parameter("EMAIL")))
     }
 
+    /// True when `address` (the property value) or `mailto:` plus `email` is in `self_addresses`, which holds
+    /// lowercased entries.
     pub fn is_self(address: &str, email: Option<&str>, self_addresses: &BTreeSet<String>) -> bool {
         if self_addresses.contains(&address.to_lowercase()) {
             return true;
@@ -144,6 +151,7 @@ impl AttendeeMapper {
         ICalProperty::new("ATTENDEE", parameters, format!("mailto:{}", draft.email()))
     }
 
+    /// Builds an `ORGANIZER` property whose value is `address` (for example `mailto:me@example.com`).
     pub fn organizer_property(address: &str) -> ICalProperty {
         ICalProperty::with_value("ORGANIZER", address)
     }

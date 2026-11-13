@@ -3,12 +3,15 @@
 use crate::component::{ICalComponent, ICalParameter, ICalProperty};
 use crate::grapheme::{characters, is, prefix};
 
+/// Error from parsing iCalendar text.
 #[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum ICalError {
+    /// The text is not valid iCalendar; the message says what was wrong.
     #[error("malformed: {0}")]
     Malformed(String),
 }
 
+/// Parses iCalendar text into an `ICalComponent` tree.
 pub enum ICalParser {}
 
 impl ICalParser {
@@ -206,6 +209,7 @@ pub(crate) fn is_whitespace(c: char) -> bool {
     )
 }
 
+/// Writes an `ICalComponent` tree as iCalendar text.
 pub enum ICalSerializer {}
 
 impl ICalSerializer {

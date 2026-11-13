@@ -21,12 +21,16 @@ use crate::event_resource::EventResource;
 use crate::ical_values::{ICalDateValue, ICalValues};
 use crate::time_zone_resolver::TimeZoneResolver;
 
+/// What the reader needs to know about the calendar an event resource came from.
 #[derive(Clone, Debug)]
 pub struct EventReadContext {
+    /// Id of the calendar the events belong to; copied to `CalendarEvent::calendar_id`.
     pub calendar_id: String,
     /// The resource's last path segment; the series id and the base of every event id.
     pub resource_name: String,
+    /// The server's entity tag for the resource, if known; copied to the events.
     pub etag: Option<String>,
+    /// Id of the source (connection) the events come from, if known; copied to the events.
     pub source_id: Option<String>,
     /// Floating times and all-day dates are read in this zone.
     pub calendar_zone: Zone,
@@ -35,6 +39,7 @@ pub struct EventReadContext {
 }
 
 impl EventReadContext {
+    /// Creates a context from its parts.
     pub fn new(
         calendar_id: impl Into<String>,
         resource_name: impl Into<String>,
@@ -58,19 +63,29 @@ impl EventReadContext {
 /// still ends at midnight.
 #[derive(Clone, Debug, PartialEq)]
 pub struct EventTimingInfo {
+    /// Start instant of the first occurrence. For an all-day event this is the start of its first day in `zone`.
     pub start: Timestamp,
+    /// End instant of the first occurrence. For an all-day event this is the start of the day after its last day (end
+    /// exclusive).
     pub end: Timestamp,
+    /// Time zone the event is shown in: its `TZID`, UTC for a `Z` time, or the calendar's zone for floating and all-day
+    /// events.
     pub zone: Zone,
+    /// True for a `VALUE=DATE` event.
     pub is_all_day: bool,
     /// Days covered by an all-day event (end exclusive); 0 for timed events.
     pub all_day_length: i64,
 }
 
+/// Reads `VEVENT`s into `CalendarEvent`s and expands recurring series.
 pub enum EventReader {}
 
 impl EventReader {
+    /// Largest number of occurrences produced for one recurring series in one expansion.
     pub const INSTANCE_LIMIT: i64 = 5000;
 
+    /// The id of an event: `resource_name` for a single event or a series master, and `resource_name#` plus the
+    /// occurrence's original start (`yyyymmdd` for all-day, UTC date-time otherwise) for an occurrence of a series.
     pub fn event_id(
         resource_name: &str,
         original_start: Option<Timestamp>,

@@ -12,6 +12,7 @@ use crate::grapheme::{drop_first, split};
 use crate::ical_values::{ICalDateValue, ICalValues};
 use crate::swift_number::swift_double;
 
+/// Reads `VALARM` components into `Reminder`s.
 pub enum AlarmMapper {}
 
 impl AlarmMapper {
