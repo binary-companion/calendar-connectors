@@ -80,6 +80,8 @@ pub struct ExternalAccessTokenProvider {
 impl ExternalAccessTokenProvider {
     const SAFETY_MARGIN: f64 = 60.0;
 
+    /// Creates a provider for `account` that asks `source` for tokens covering `scopes`. `now` is the clock used to
+    /// judge expiry. Nothing is requested until the first `access_token()` call.
     pub fn new(
         account: ExternalAccount,
         scopes: Vec<String>,
@@ -97,6 +99,8 @@ impl ExternalAccessTokenProvider {
         }
     }
 
+    /// Returns a valid access token: the cached one while it has more than 60 s left, otherwise a new one requested
+    /// from the token source (callers share one in-flight request). Failures are mapped as described on the type.
     pub async fn access_token(&self) -> Outcome<String> {
         let cached = self.inner.lock().cached.clone();
         if let Some(cached) = cached
@@ -107,6 +111,8 @@ impl ExternalAccessTokenProvider {
         Ok(self.request_shared().await?.access_token)
     }
 
+    /// Drops the cached token and any in-flight request; the next `access_token()` asks the source with `force_refresh:
+    /// true`. Call it after the provider answered 401.
     pub fn invalidate(&self) {
         let mut state = self.inner.lock();
         state.cached = None;
