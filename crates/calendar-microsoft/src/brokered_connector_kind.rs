@@ -29,6 +29,9 @@ use crate::api_client::GraphApiClient;
 use crate::connector_kind::MicrosoftConnectorKind;
 use crate::source::MicrosoftCalendarSource;
 
+/// Microsoft 365 / Outlook.com accounts whose tokens come from a host-supplied `ExternalTokenSource` (such as the
+/// Windows account service) instead of a browser OAuth flow. The library never sees a refresh token; it asks the host
+/// for access tokens.
 #[derive(Clone)]
 pub struct MicrosoftBrokeredConnectorKind {
     token_source: Arc<dyn ExternalTokenSource>,
@@ -40,6 +43,7 @@ pub struct MicrosoftBrokeredConnectorKind {
 }
 
 impl MicrosoftBrokeredConnectorKind {
+    /// Connector kind id of brokered Microsoft accounts, stored in `Connection::kind_id`.
     pub const KIND_ID: &'static str = "microsoft-brokered";
 
     /// `Connection.config` keys this kind writes, besides `email`.
@@ -74,6 +78,7 @@ impl MicrosoftBrokeredConnectorKind {
         }
     }
 
+    /// Sets the seconds between checks (default 60).
     #[must_use]
     pub fn with_poll_interval(mut self, seconds: f64) -> MicrosoftBrokeredConnectorKind {
         self.poll_interval = seconds;

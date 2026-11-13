@@ -9,7 +9,9 @@ use jiff::Timestamp;
 /// daylight-saving change an edge can shift by an hour. Without a window (the library default) everything is kept.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct RetentionWindow {
+    /// Days before now that are kept. Never negative.
     pub days_back: i64,
+    /// Days after now that are kept. Never negative.
     pub days_ahead: i64,
 }
 

@@ -30,11 +30,15 @@ use crate::source::GoogleCalendarSource;
 /// here. `Debug` hides the secret.
 #[derive(Clone, PartialEq, Eq)]
 pub struct GoogleOAuthConfig {
+    /// OAuth client id of the Google Cloud Desktop client.
     pub client_id: String,
+    /// OAuth client secret of that client. Google's token endpoint requires it even for desktop clients, although it is
+    /// not confidential.
     pub client_secret: String,
 }
 
 impl GoogleOAuthConfig {
+    /// Creates a configuration from the client id and client secret.
     pub fn new(
         client_id: impl Into<String>,
         client_secret: impl Into<String>,
@@ -55,6 +59,8 @@ impl fmt::Debug for GoogleOAuthConfig {
     }
 }
 
+/// Google Calendar accounts signed in through the browser with OAuth 2.0 and PKCE, read through the Google Calendar
+/// API. Refresh tokens are kept in the `CredentialStore`.
 #[derive(Clone)]
 pub struct GoogleConnectorKind {
     /// `None` only if `UrlString` refused one of the two constant OAuth endpoints (Swift force-unwraps them); sign-in
@@ -68,6 +74,7 @@ pub struct GoogleConnectorKind {
 }
 
 impl GoogleConnectorKind {
+    /// Connector kind id of Google accounts, stored in `Connection::kind_id`.
     pub const KIND_ID: &'static str = "google";
     /// Read-only, as in Swift (`scripts/ci/check-repository-contracts.py` pins them).
     pub const SCOPES: [&'static str; 2] = [
@@ -114,6 +121,7 @@ impl GoogleConnectorKind {
         }
     }
 
+    /// Sets the seconds between checks (default 60).
     pub fn with_poll_interval(mut self, seconds: f64) -> GoogleConnectorKind {
         self.poll_interval = seconds;
         self

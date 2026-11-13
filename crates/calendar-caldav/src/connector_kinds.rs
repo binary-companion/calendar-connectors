@@ -243,9 +243,13 @@ pub struct ICloudConnectorKind {
 }
 
 impl ICloudConnectorKind {
+    /// Connector kind id of iCloud accounts, stored in `Connection::kind_id`.
     pub const KIND_ID: &'static str = "icloud";
+    /// The fixed iCloud CalDAV server; the user is not asked for an address.
     pub const SERVER_URL: &'static str = "https://caldav.icloud.com";
 
+    /// Creates the iCloud kind. `transport`, `now`, `sleep` and `default_zone` are described on the type; the poll
+    /// interval starts at 60 seconds.
     pub fn new(
         transport: Arc<dyn HttpTransport>,
         now: Now,
@@ -363,8 +367,11 @@ pub struct CalDavConnectorKind {
 }
 
 impl CalDavConnectorKind {
+    /// Connector kind id of generic CalDAV accounts, stored in `Connection::kind_id`.
     pub const KIND_ID: &'static str = "caldav";
 
+    /// Creates the CalDAV kind. The arguments and the 60 second default poll interval are those of
+    /// `ICloudConnectorKind::new`.
     pub fn new(
         transport: Arc<dyn HttpTransport>,
         now: Now,
