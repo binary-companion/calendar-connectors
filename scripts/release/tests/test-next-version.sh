@@ -109,4 +109,9 @@ expect 2 "" --latest 1.2.1 --labels "" --prerelease $'\nalpha'
 expect_usage_error "--prerelease" --latest 1.0.0 --labels "" --prerelease
 expect_usage_error "prerelease" --prerelease "alpha 1"
 expect_usage_error "cannot be combined" --prerelease alpha.1 --override 2.0.0
+# The cutover (Rust 2.0.0 after 2.0.0-alpha.N prereleases): the base is the highest stable tag, a prerelease tag is never a base.
+expect 0 2.0.0 --latest 1.8.4 --labels "semver:major"
+expect 0 2.0.0 --latest 1.8.4 --labels "bug,semver:major,docs"
+expect 2 "" --latest 2.0.0-alpha.1 --labels "semver:major"
+expect 2 "" --latest 2.0.0-alpha.12 --labels ""
 echo PASS
