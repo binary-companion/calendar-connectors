@@ -14,6 +14,7 @@ pub enum PatchMerge {}
 
 /// The outcome of one write attempt.
 pub enum Attempt<Result> {
+    /// The write went through, with its result.
     Done(Result),
     /// The provider rejected the write because the version is out of date.
     Stale,

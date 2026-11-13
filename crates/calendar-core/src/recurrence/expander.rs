@@ -16,6 +16,7 @@ use crate::time::{Zone, add_seconds, seconds_between};
 /// The starts a rule generated, and whether a limit stopped it early.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct RuleExpansion {
+    /// The generated starts, in order, with the anchor first.
     pub starts: Vec<Timestamp>,
     /// True when `limit` or the iteration cap stopped the expansion before the rule's end or the bound.
     pub truncated: bool,

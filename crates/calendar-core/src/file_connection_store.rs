@@ -21,10 +21,14 @@ pub enum FileStoreError {
     Io(String),
 }
 
+/// What reading the connections file found.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum LoadResult {
+    /// The stored connections.
     Loaded(Vec<Connection>),
+    /// No file exists yet.
     Missing,
+    /// The file exists but could not be read or parsed; it is left untouched.
     Unreadable,
 }
 
@@ -38,6 +42,7 @@ pub struct FileConnectionStore {
 }
 
 impl FileConnectionStore {
+    /// Creates a store that keeps its connections in the file at `path`. Nothing is read or created yet.
     pub fn new(path: impl Into<PathBuf>) -> FileConnectionStore {
         FileConnectionStore {
             path: path.into(),
@@ -45,6 +50,7 @@ impl FileConnectionStore {
         }
     }
 
+    /// Reads the file.
     pub async fn load(&self) -> LoadResult {
         let _gate = lock(&self.gate);
         self.load_locked()
@@ -58,6 +64,8 @@ impl FileConnectionStore {
         }
     }
 
+    /// Replaces the stored list with `connections`. Fails with `FileStoreError::Unreadable` when an existing file is
+    /// unreadable, and with `FileStoreError::Io` when writing fails.
     pub async fn save(&self, connections: &[Connection]) -> Result<(), FileStoreError> {
         let _gate = lock(&self.gate);
         self.save_locked(connections)

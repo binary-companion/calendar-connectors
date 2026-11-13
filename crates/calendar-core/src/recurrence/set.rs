@@ -14,6 +14,7 @@ use crate::time::Zone;
 /// [`RecurrenceSet::occurrences`].
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct RecurrenceSet {
+    /// The recurrence rules (`RRULE`); usually one.
     pub rules: Vec<RecurrenceRule>,
     /// Extra occurrences (RDATE). `None` means the source cannot say (EventKit); `Some([])` means there are none.
     pub extra_dates: Option<Vec<Timestamp>>,
@@ -228,16 +229,22 @@ fn line(name: &str, dates: &[Timestamp], zone: &Zone, is_all_day: bool) -> Strin
 /// Instances stay parented to a series through `SeriesInfo`; the series owns the rule.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct CalendarSeries {
+    /// Id of the series, which its instances carry in `SeriesInfo::Occurrence`.
     pub series_id: String,
+    /// Id of the calendar that holds the series.
     pub calendar_id: String,
     /// The rule's anchor time (iCalendar `DTSTART`); an all-day series uses the canonical all-day form.
     pub start: Timestamp,
+    /// Time zone of the anchor time.
     pub time_zone: Zone,
+    /// True when the series repeats whole days.
     pub is_all_day: bool,
+    /// The rules and extra and skipped dates that make the series repeat.
     pub recurrence: RecurrenceSet,
 }
 
 impl CalendarSeries {
+    /// Creates a series from its parts.
     pub fn new(
         series_id: impl Into<String>,
         calendar_id: impl Into<String>,

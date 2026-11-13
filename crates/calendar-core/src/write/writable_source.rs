@@ -35,6 +35,7 @@ pub trait WritableCalendarSource: CalendarSource {
         notify: NotifyPolicy,
     ) -> Outcome<CalendarEvent>;
 
+    /// Deletes the event or occurrences selected by `scope`. Fails with `WriteError::NotFound` when the event is gone.
     async fn delete(
         &self,
         reference: &EventRef,

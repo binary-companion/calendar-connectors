@@ -28,7 +28,9 @@ impl Participation {
 /// The result of [`EventRef::write_target`] (Swift's labelled tuple `(id:, useVersion:)`).
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct WriteTarget {
+    /// Id to address the write to.
     pub id: String,
+    /// True when the caller's version of the event may be sent as a precondition for this id.
     pub use_version: bool,
 }
 

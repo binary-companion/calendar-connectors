@@ -29,12 +29,16 @@ pub(crate) fn lock<T>(mutex: &Mutex<T>) -> MutexGuard<'_, T> {
 /// ignored and `config` is required, as Swift's synthesized `Codable` has it.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Connection {
+    /// Id of the connector kind that owns this connection (`ConnectorKind::id`, for example `google`).
     #[serde(rename = "kindID")]
     pub kind_id: String,
+    /// Unique id of this connection; never reused. Keys the credentials, sync state and `source_id`.
     #[serde(rename = "connectionID")]
     pub connection_id: ConnectionId,
+    /// Account name shown to the user, usually the account's email address.
     #[serde(rename = "displayName")]
     pub display_name: String,
+    /// Non-secret per-connection settings (for example `email`); secrets belong in the `CredentialStore`.
     pub config: BTreeMap<String, String>,
 }
 
@@ -74,10 +78,14 @@ impl Connection {
     }
 }
 
+/// One input a `Password` authorization asks the user for.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct CredentialField {
+    /// Key under which the entered value is returned and stored (for example `username`).
     pub key: String,
+    /// Label the host shows next to the input.
     pub label: String,
+    /// True when the input must be masked and kept only in the `CredentialStore`.
     pub is_secret: bool,
 }
 
@@ -91,6 +99,7 @@ impl CredentialField {
         }
     }
 
+    /// Marks the field as secret.
     #[must_use]
     pub fn secret(mut self) -> CredentialField {
         self.is_secret = true;
@@ -98,10 +107,18 @@ impl CredentialField {
     }
 }
 
+/// How a connector kind signs the user in.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum AuthorizationMethod {
+    /// Browser sign-in with OAuth; the host provides an `OAuthRedirectSession`.
     Oauth,
-    Password { fields: Vec<CredentialField> },
+    /// The user types the listed fields, which the host collects through
+    /// `AuthorizationInteraction::prompt_credentials`.
+    Password {
+        /// The inputs to ask the user for, in display order.
+        fields: Vec<CredentialField>,
+    },
+    /// The operating system's own account service supplies access; no credentials are collected.
     System,
 }
 
@@ -109,12 +126,16 @@ pub enum AuthorizationMethod {
 /// password), with an optional link.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct CredentialHelp {
+    /// The explanation to show.
     pub text: String,
+    /// Text for the link, when `url` is set.
     pub link_title: Option<String>,
+    /// Where the link points, if the help has one.
     pub url: Option<UrlString>,
 }
 
 impl CredentialHelp {
+    /// Creates help with text only and no link.
     pub fn new(text: impl Into<String>) -> CredentialHelp {
         CredentialHelp {
             text: text.into(),
@@ -127,6 +148,7 @@ impl CredentialHelp {
 /// Adopted by a `.password` connector kind that has help to show with its fields. Optional: hosts check with
 /// [`ConnectorKind::as_credential_prompt_help`] (Swift `as?`).
 pub trait CredentialPromptHelp {
+    /// The help to show with this kind's credential prompt, if any.
     fn credential_help(&self) -> Option<CredentialHelp>;
 }
 
@@ -135,9 +157,13 @@ pub trait CredentialPromptHelp {
 pub struct Platform(u8);
 
 impl Platform {
+    /// macOS.
     pub const MACOS: Platform = Platform(1 << 0);
+    /// iOS.
     pub const IOS: Platform = Platform(1 << 1);
+    /// Linux hosts.
     pub const LINUX: Platform = Platform(1 << 2);
+    /// Windows hosts.
     pub const WINDOWS: Platform = Platform(1 << 3);
 
     /// `init(rawValue:)`.
@@ -145,6 +171,7 @@ impl Platform {
         Platform(raw)
     }
 
+    /// The bit-flag value; bit 0 is macOS, 1 iOS, 2 Linux, 3 Windows.
     pub fn raw_value(self) -> u8 {
         self.0
     }
@@ -154,6 +181,7 @@ impl Platform {
         Platform(0)
     }
 
+    /// True when no platform is in the set.
     pub fn is_empty(self) -> bool {
         self.0 == 0
     }
@@ -191,29 +219,38 @@ impl BitOr for Platform {
     }
 }
 
-/// A keyed map of secrets per connection (Google stores `["refresh_token": ...]`).
-/// The host supplies the real store (TimeTug: Keychain). The library ships only an in-memory one.
+/// A connection's secrets as stored, with the revision that identifies them.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct CredentialSnapshot {
+    /// The stored secrets by key (for example `refresh_token`).
     pub secrets: BTreeMap<String, String>,
+    /// Identifies this credential lifecycle; a new value is generated whenever the secrets are replaced, and unchanged
+    /// when only the refresh token is rotated.
     pub revision: Uuid,
 }
 
 impl CredentialSnapshot {
+    /// Creates a snapshot from its parts.
     pub fn new(secrets: BTreeMap<String, String>, revision: Uuid) -> CredentialSnapshot {
         CredentialSnapshot { secrets, revision }
     }
 }
 
+/// A keyed map of secrets per connection (Google stores `["refresh_token": ...]`). The host supplies the real store
+/// (for example on the system keychain). The library ships only an in-memory one.
 #[async_trait]
 pub trait CredentialStore: Send + Sync {
+    /// The secrets stored for `connection_id`, or `None` when there are none.
     async fn secrets(&self, connection_id: &str) -> Outcome<Option<BTreeMap<String, String>>>;
+    /// Replaces all secrets of `connection_id`; this starts a new credential lifecycle (a new revision).
     async fn set_secrets(
         &self,
         secrets: BTreeMap<String, String>,
         connection_id: &str,
     ) -> Outcome<()>;
+    /// Deletes the secrets of `connection_id`; a no-op when there are none.
     async fn remove_secrets(&self, connection_id: &str) -> Outcome<()>;
+    /// The secrets and revision stored for `connection_id`, or `None` when there are none.
     async fn credential_snapshot(&self, connection_id: &str)
     -> Outcome<Option<CredentialSnapshot>>;
     /// Only the same credential lifecycle may rotate its refresh token. The store must check and write atomically.
@@ -225,10 +262,15 @@ pub trait CredentialStore: Send + Sync {
     ) -> Outcome<bool>;
 }
 
+/// Stores each connection's opaque sync tokens (such as a change cursor), keyed by connection and scope. Losing them
+/// only costs a full re-sync.
 #[async_trait]
 pub trait SyncStateStore: Send + Sync {
+    /// The token stored for `connection_id` and `scope`, or `None`.
     async fn token(&self, connection_id: &str, scope: &str) -> Option<String>;
+    /// Stores `token` for `connection_id` and `scope`; `None` removes it.
     async fn set_token(&self, token: Option<&str>, connection_id: &str, scope: &str);
+    /// Removes every token of `connection_id`.
     async fn remove_all(&self, connection_id: &str);
 }
 
@@ -239,10 +281,12 @@ pub struct InMemoryCredentialStore {
 }
 
 impl InMemoryCredentialStore {
+    /// Creates an empty store.
     pub fn new() -> InMemoryCredentialStore {
         InMemoryCredentialStore::default()
     }
 
+    /// True when no connection has secrets stored.
     pub fn is_empty(&self) -> bool {
         lock(&self.storage).is_empty()
     }
@@ -311,6 +355,7 @@ pub struct InMemorySyncStateStore {
 }
 
 impl InMemorySyncStateStore {
+    /// Creates an empty store.
     pub fn new() -> InMemorySyncStateStore {
         InMemorySyncStateStore::default()
     }
@@ -350,25 +395,38 @@ pub trait OAuthRedirectSession: Send + Sync {
     fn redirect_uri(&self) -> UrlString;
     /// Opens `authorization_url` for the user, waits for the redirect and returns the redirect URL received.
     async fn authorize(&self, authorization_url: &UrlString) -> Outcome<UrlString>;
+    /// Releases the redirect listener. Call it once the redirect was received or sign-in was abandoned.
     async fn close(&self);
 }
 
 /// Implemented by the host app: the only OS/UI-specific part of authorization.
 #[async_trait]
 pub trait AuthorizationInteraction: Send + Sync {
+    /// Starts listening for an OAuth redirect and returns the session whose `redirect_uri` to use. Fails with
+    /// `Failure::Cancelled` if the user abandons the sign-in.
     async fn begin_oauth_redirect(&self) -> Outcome<Box<dyn OAuthRedirectSession>>;
+    /// Asks the user for `fields` and returns the entered values by field key. Fails with `Failure::Cancelled` if the
+    /// user cancels.
     async fn prompt_credentials(
         &self,
         fields: &[CredentialField],
     ) -> Outcome<BTreeMap<String, String>>;
 }
 
+/// One kind of account a host can connect (Google, Microsoft, iCloud, ...): how to sign in and how to make a
+/// `CalendarSource` for a connection. Register kinds in a `ConnectorRegistry`.
 #[async_trait]
 pub trait ConnectorKind: Send + Sync {
+    /// Stable kind id; stored in `Connection::kind_id`.
     fn id(&self) -> String;
+    /// Name the host shows for this kind of account.
     fn display_name(&self) -> String;
+    /// The platforms where this kind can be used.
     fn supported_platforms(&self) -> Platform;
+    /// How the user signs in to this kind.
     fn authorization(&self) -> AuthorizationMethod;
+    /// Signs the user in through `interaction`, stores the secrets in `credentials` and returns the new `Connection`.
+    /// Nothing is persisted when it fails.
     async fn authorize(
         &self,
         interaction: &dyn AuthorizationInteraction,
@@ -383,6 +441,8 @@ pub trait ConnectorKind: Send + Sync {
         interaction: &dyn AuthorizationInteraction,
         credentials: &dyn CredentialStore,
     ) -> Outcome<Connection>;
+    /// Creates the calendar source for `connection`, reading secrets from `credentials` and sync tokens from
+    /// `sync_state`. Fails when the connection's settings are incomplete.
     fn make_source(
         &self,
         connection: &Connection,
@@ -407,6 +467,7 @@ pub struct ConnectorRegistry {
 }
 
 impl ConnectorRegistry {
+    /// Creates an empty registry.
     pub fn new() -> ConnectorRegistry {
         ConnectorRegistry::default()
     }
@@ -416,6 +477,7 @@ impl ConnectorRegistry {
         self.kinds.insert(kind.id(), kind);
     }
 
+    /// The kind registered under `id`, if any.
     pub fn kind(&self, id: &str) -> Option<Arc<dyn ConnectorKind>> {
         self.kinds.get(id).cloned()
     }

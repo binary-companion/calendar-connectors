@@ -15,26 +15,55 @@ use crate::write::types::{EventField, WriteError};
 /// unusual (that is `RecurrenceRule::validate()`'s job when writing); only malformed text does.
 #[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum RecurrenceParseError {
+    /// The text is not a well-formed recurrence rule; the message says why.
     #[error("{0}")]
     Malformed(String),
 }
 
 raw_enum! {
+    /// How often a recurrence rule repeats (RFC 5545 `FREQ`).
     pub enum Frequency {
-        Secondly = "SECONDLY", Minutely = "MINUTELY", Hourly = "HOURLY",
-        Daily = "DAILY", Weekly = "WEEKLY", Monthly = "MONTHLY", Yearly = "YEARLY"
+        /// Every second.
+        Secondly = "SECONDLY",
+        /// Every minute.
+        Minutely = "MINUTELY",
+        /// Every hour.
+        Hourly = "HOURLY",
+        /// Every day.
+        Daily = "DAILY",
+        /// Every week.
+        Weekly = "WEEKLY",
+        /// Every month.
+        Monthly = "MONTHLY",
+        /// Every year.
+        Yearly = "YEARLY",
     }
 }
 
 raw_enum! {
+    /// A day of the week, with the two-letter RFC 5545 code as its raw value.
     pub enum Weekday {
-        Monday = "MO", Tuesday = "TU", Wednesday = "WE", Thursday = "TH", Friday = "FR", Saturday = "SA",
-        Sunday = "SU"
+        /// Monday.
+        Monday = "MO",
+        /// Tuesday.
+        Tuesday = "TU",
+        /// Wednesday.
+        Wednesday = "WE",
+        /// Thursday.
+        Thursday = "TH",
+        /// Friday.
+        Friday = "FR",
+        /// Saturday.
+        Saturday = "SA",
+        /// Sunday.
+        Sunday = "SU",
     }
 }
 
+/// A weekday in a `BYDAY` list, optionally counted within the month or year.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct WeekdayOccurrence {
+    /// The day of the week.
     pub weekday: Weekday,
     /// "Second Tuesday" is 2, "last Friday" is -1. Reading accepts -53...53 (yearly rules count weeks of the
     /// year); a writable rule is limited to 1...5 or -5...-1 on monthly and yearly rules.
@@ -42,6 +71,7 @@ pub struct WeekdayOccurrence {
 }
 
 impl WeekdayOccurrence {
+    /// Creates an occurrence; `ordinal` is `None` for every such weekday.
     pub fn new(weekday: Weekday, ordinal: Option<i64>) -> WeekdayOccurrence {
         WeekdayOccurrence { weekday, ordinal }
     }
@@ -50,7 +80,9 @@ impl WeekdayOccurrence {
 /// How a rule ends (Swift `RecurrenceRule.End`).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum RuleEnd {
+    /// No end: the rule repeats until the expansion bound.
     Never,
+    /// Stops after this many occurrences, counting the first.
     Count(i64),
     /// An instant. Rendered as a UTC date-time for timed events and as a date in the event's zone for all-day ones.
     Until(Timestamp),
@@ -59,11 +91,14 @@ pub enum RuleEnd {
 /// A rule part the library does not model (an `X-` part or a future extension), kept in order.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct UnrecognizedPart {
+    /// The part's name, as written.
     pub name: String,
+    /// The part's value, as written.
     pub value: String,
 }
 
 impl UnrecognizedPart {
+    /// Creates a part from its name and value.
     pub fn new(name: impl Into<String>, value: impl Into<String>) -> UnrecognizedPart {
         UnrecognizedPart {
             name: name.into(),
@@ -79,20 +114,33 @@ impl UnrecognizedPart {
 /// occurrence with `RecurrenceScope::ThisInstance`); they are read through `RecurrenceSet`.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct RecurrenceRule {
+    /// How often the rule repeats.
     pub frequency: Frequency,
+    /// Repeat every this many `frequency` units; at least 1 for a writable rule.
     pub interval: i64,
     /// The day the week starts on (`WKST`); the iCalendar default is Monday.
     pub week_start: Weekday,
+    /// `BYDAY`: the weekdays the rule applies to. Empty means the weekday of the anchor.
     pub weekdays: Vec<WeekdayOccurrence>,
+    /// `BYMONTHDAY`: days of the month, 1 to 31 or -31 to -1 counting from the end.
     pub month_days: Vec<i64>,
+    /// `BYMONTH`: months, 1 to 12.
     pub months: Vec<i64>,
+    /// `BYYEARDAY`: days of the year, counted from the start (positive) or the end (negative).
     pub year_days: Vec<i64>,
+    /// `BYWEEKNO`: week numbers of the year.
     pub week_numbers: Vec<i64>,
+    /// `BYSETPOS`: positions in each period's candidate set to keep.
     pub set_positions: Vec<i64>,
+    /// `BYHOUR`: hours, 0 to 23.
     pub hours: Vec<i64>,
+    /// `BYMINUTE`: minutes, 0 to 59.
     pub minutes: Vec<i64>,
+    /// `BYSECOND`: seconds, 0 to 59.
     pub seconds: Vec<i64>,
+    /// How the rule ends.
     pub end: RuleEnd,
+    /// Rule parts the library does not model, in order.
     pub unrecognized_parts: Vec<UnrecognizedPart>,
 }
 
@@ -138,6 +186,9 @@ impl RecurrenceRule {
             && self.unrecognized_parts.is_empty()
     }
 
+    /// Checks that a writer can express this rule. Fails with `WriteError::Invalid` for a bad value (interval or count
+    /// below 1, an ordinal weekday on a rule that is not monthly or yearly, a value out of range) and with
+    /// `WriteError::Unsupported` for rules no writer can express (a daily rule with weekdays).
     pub fn validate(&self) -> Result<(), WriteError> {
         let invalid = |message: &str| Err(WriteError::Invalid(message.to_string()));
         if self.interval < 1 {
@@ -402,6 +453,7 @@ impl RecurrenceRule {
         )
     }
 
+    /// Formats a date as `yyyymmdd`.
     pub fn date_text(date: &CalendarDate) -> String {
         format!("{:04}{:02}{:02}", date.year, date.month, date.day)
     }
