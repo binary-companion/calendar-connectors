@@ -34,6 +34,7 @@ pub struct FakeTransport {
 }
 
 impl FakeTransport {
+    /// Creates a transport with no routes; every request answers 404 until routes are registered.
     pub fn new() -> FakeTransport {
         FakeTransport::default()
     }
