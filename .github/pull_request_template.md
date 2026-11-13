@@ -2,7 +2,7 @@
 
 ## Version
 
-Add exactly one label before merging; a merge to `main` releases automatically.
+Add exactly one label before merging; a merge to `1.x` releases automatically.
 
 - `semver:major`: a breaking change to `docs/api.md`
 - `semver:minor`: new API
