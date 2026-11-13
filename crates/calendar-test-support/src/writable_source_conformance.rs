@@ -18,6 +18,9 @@ use crate::hand_patch;
 pub enum WritableSourceConformance {}
 
 impl WritableSourceConformance {
+    /// Runs the conformance checks against `source` using the calendar `calendar_id`, placing the test event inside
+    /// `window`. Returns a description of each violated expectation; an empty vector means the source conforms. The
+    /// event it creates is deleted before returning.
     pub async fn violations(
         source: &dyn WritableCalendarSource,
         calendar_id: &str,

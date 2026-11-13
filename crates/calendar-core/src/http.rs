@@ -7,11 +7,16 @@ use async_trait::async_trait;
 use crate::failure::Outcome;
 use crate::url_string::UrlString;
 
+/// An HTTP request for an `HttpTransport` to send.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct HttpRequest {
+    /// Absolute request URL.
     pub url: UrlString,
+    /// HTTP method in upper case; `GET` from `new`.
     pub method: String,
+    /// Request headers.
     pub headers: BTreeMap<String, String>,
+    /// Request body, or `None` for no body.
     pub body: Option<Vec<u8>>,
 }
 
@@ -27,11 +32,14 @@ impl HttpRequest {
     }
 }
 
+/// The answer to an `HttpRequest`. Any status is a response, not an error.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct HttpResponse {
+    /// HTTP status code.
     pub status: i64,
     /// Header names lowercased.
     pub headers: BTreeMap<String, String>,
+    /// Response body bytes.
     pub body: Vec<u8>,
 }
 

@@ -61,10 +61,12 @@ macro_rules! date_module {
                 Some(($from_f64)(value)).filter(|t| *t != Timestamp::MIN && *t != Timestamp::MAX)
             }
 
+            /// Writes `t` as a JSON number.
             pub fn serialize<S: Serializer>(t: &Timestamp, serializer: S) -> Result<S::Ok, S::Error> {
                 crate::json::f64_swift(&to_number(t), serializer)
             }
 
+            /// Reads a JSON number as an instant; fails when it is out of range.
             pub fn deserialize<'de, D: Deserializer<'de>>(deserializer: D) -> Result<Timestamp, D::Error> {
                 let value = f64::deserialize(deserializer)?;
                 from_number(value).ok_or_else(|| D::Error::custom("date out of range"))
@@ -76,6 +78,7 @@ macro_rules! date_module {
                 use jiff::Timestamp;
                 use serde::{Deserialize, Deserializer, Serializer, de::Error};
 
+                /// Writes `Some(t)` as a JSON number and `None` as `null`.
                 pub fn serialize<S: Serializer>(t: &Option<Timestamp>, serializer: S) -> Result<S::Ok, S::Error> {
                     match t {
                         Some(t) => super::serialize(t, serializer),
@@ -83,6 +86,7 @@ macro_rules! date_module {
                     }
                 }
 
+                /// Reads a JSON number or `null`; fails when a number is out of range.
                 pub fn deserialize<'de, D: Deserializer<'de>>(deserializer: D) -> Result<Option<Timestamp>, D::Error> {
                     match Option::<f64>::deserialize(deserializer)? {
                         None => Ok(None),

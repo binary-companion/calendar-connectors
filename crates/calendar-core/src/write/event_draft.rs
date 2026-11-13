@@ -21,13 +21,19 @@ use crate::write::types::{ConferenceRequest, EventField, WriteError};
 /// All-day timings use the library's canonical form (midnight of the first day in `time_zone`, `end` exclusive).
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct EventTiming {
+    /// First instant of the event.
     pub start: Timestamp,
+    /// End instant; after `start`. For an all-day event the midnight after the last day.
     pub end: Timestamp,
+    /// The zone the event is shown in. Required for an all-day event; `None` otherwise lets the connector choose its
+    /// fallback.
     pub time_zone: Option<Zone>,
+    /// True for whole-day events, which must start and end at midnight in `time_zone`.
     pub is_all_day: bool,
 }
 
 impl EventTiming {
+    /// Creates a timing from its parts without validating it; see `validate`.
     pub fn new(
         start: Timestamp,
         end: Timestamp,
@@ -68,11 +74,14 @@ impl EventTiming {
     }
 }
 
+/// A person to invite to a new event or add to an existing one.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct AttendeeDraft {
+    /// Display name, if known.
     pub name: Option<String>,
     /// Trimmed and lowercased. Set only through [`AttendeeDraft::new`] (Swift `private(set)`).
     email: String,
+    /// Whether the person is required, optional or a resource.
     pub role: AttendeeRole,
 }
 
@@ -120,6 +129,7 @@ impl AttendeeDraft {
         }
     }
 
+    /// The normalized (trimmed, lowercase) email address.
     pub fn email(&self) -> &str {
         &self.email
     }
@@ -144,16 +154,25 @@ impl AttendeeDraft {
 /// Everything needed to create an event. `EventDraft::copying` is the one lenient path.
 #[derive(Clone, Debug, PartialEq)]
 pub struct EventDraft {
+    /// Event title.
     pub title: String,
+    /// Free-text notes, `None` for none.
     pub notes: Option<String>,
+    /// Location text, `None` for none.
     pub location: Option<String>,
+    /// When the event happens.
     pub timing: EventTiming,
+    /// Busy or free; `Busy` from `new`.
     pub availability: Availability,
+    /// Who may see the event's details; `Default` from `new`.
     pub visibility: Visibility,
     /// `None` = the calendar's default reminders; empty = none.
     pub reminders: Option<Vec<Reminder>>,
+    /// People to invite.
     pub attendees: Vec<AttendeeDraft>,
+    /// Whether to ask the provider to generate a conference link.
     pub conference: ConferenceRequest,
+    /// The repeat rule, or `None` for a single event.
     pub recurrence: Option<RecurrenceRule>,
     /// An iCalendar UID identifying the meeting. Not content: a create that finds it already on the calendar fails
     /// with `WriteError::AlreadyExists`, and otherwise stores it so later copies are recognized.
@@ -181,6 +200,9 @@ impl EventDraft {
         }
     }
 
+    /// Checks the draft before anything is sent. Fails with `WriteError::Invalid` for invalid timing, an invalid
+    /// recurrence rule, an attendee email that is not valid, or a reminder that would fire after the point it counts
+    /// from.
     pub fn validate(&self) -> Result<(), WriteError> {
         self.timing.validate()?;
         if let Some(recurrence) = &self.recurrence {

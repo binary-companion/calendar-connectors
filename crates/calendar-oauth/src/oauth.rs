@@ -12,13 +12,16 @@ use calendar_core::time::{Now, add_seconds};
 use jiff::Timestamp;
 use serde_json::Value;
 
+/// Why a sign-in redirect could not be turned into an authorization code.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum AuthorizationError {
     /// The user declined or closed the sign-in.
     #[error("the sign-in was cancelled")]
     Cancelled,
+    /// The redirect's `state` did not equal the value sent with the authorization request (possible forged redirect).
     #[error("the sign-in answered with a different state")]
     StateMismatch,
+    /// The redirect carried no `code`, or an empty one.
     #[error("the sign-in answered without a code")]
     MissingCode,
 }
@@ -29,8 +32,10 @@ pub enum AuthorizationError {
 /// `SourceError` stays one.
 #[derive(Clone, Debug, PartialEq, thiserror::Error)]
 pub enum AuthorizationCodeError {
+    /// The redirect was rejected for an `AuthorizationError` reason.
     #[error(transparent)]
     Authorization(#[from] AuthorizationError),
+    /// The redirect carried a provider error other than `access_denied`, reported as `SourceError::InvalidResponse`.
     #[error(transparent)]
     Source(#[from] SourceError),
 }
@@ -47,14 +52,22 @@ impl From<AuthorizationCodeError> for Failure {
     }
 }
 
+/// Endpoints, client identity and scopes for one OAuth 2.0 authorization-code (PKCE) provider.
 #[derive(Clone, PartialEq, Eq)]
 pub struct OAuthConfig {
+    /// URL of the provider's authorization endpoint, where the user signs in. Any query it has is replaced when
+    /// building the sign-in URL.
     pub authorization_endpoint: UrlString,
+    /// URL of the provider's token endpoint, used for code exchange and refresh.
     pub token_endpoint: UrlString,
+    /// Public client id registered with the provider.
     pub client_id: String,
     /// For desktop clients this is not confidential, but the token endpoint still requires it. Supplied by the host app.
     pub client_secret: Option<String>,
+    /// Scopes requested at sign-in, joined with spaces in the `scope` parameter.
     pub scopes: Vec<String>,
+    /// Extra query parameters added to the authorization URL (for example `access_type` or `prompt`), in key order
+    /// after the standard ones.
     pub extra_auth_params: BTreeMap<String, String>,
 }
 
@@ -95,10 +108,16 @@ impl fmt::Debug for OAuthConfig {
     }
 }
 
+/// The result of a token request. `Debug` redacts the token values.
 #[derive(Clone, PartialEq, Eq)]
 pub struct OAuthTokens {
+    /// The bearer token sent with API requests.
     pub access_token: String,
+    /// When the access token expires: the response's `expires_in` seconds from the time it was received (3600 s when
+    /// the response gave none).
     pub expires_at: Timestamp,
+    /// The refresh token, if the response contained one. Providers that rotate refresh tokens send a new one on
+    /// refresh; `None` means keep using the old one.
     pub refresh_token: Option<String>,
 }
 
@@ -136,6 +155,8 @@ pub struct OAuthClient {
 }
 
 impl OAuthClient {
+    /// Creates a client for `config` that sends token requests through `transport` and reads the current time from
+    /// `now`.
     pub fn new(config: OAuthConfig, transport: Arc<dyn HttpTransport>, now: Now) -> OAuthClient {
         OAuthClient {
             config,
@@ -144,6 +165,9 @@ impl OAuthClient {
         }
     }
 
+    /// Builds the sign-in URL to open in the browser: the authorization endpoint with `client_id`, `redirect_uri`,
+    /// `response_type=code`, the joined scopes, `state`, the PKCE `code_challenge` (method `S256`) and then
+    /// `extra_auth_params`. A query already on the endpoint is replaced.
     pub fn authorization_url(
         &self,
         redirect_uri: &UrlString,
@@ -204,6 +228,8 @@ impl OAuthClient {
         }
     }
 
+    /// Exchanges the authorization `code` and PKCE `verifier` for tokens at the token endpoint. Fails with
+    /// `SourceError::InvalidResponse` when the provider answers with an error or no access token.
     pub async fn exchange(
         &self,
         code: &str,

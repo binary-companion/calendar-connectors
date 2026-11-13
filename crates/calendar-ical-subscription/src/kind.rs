@@ -53,6 +53,7 @@ pub struct ICalSubscriptionKind {
 }
 
 impl ICalSubscriptionKind {
+    /// Connector kind id of calendar subscriptions, stored in `Connection::kind_id`.
     pub const KIND_ID: &'static str = "icalsub";
     const LINK_KEY: &'static str = "link";
 
@@ -95,16 +96,19 @@ impl ICalSubscriptionKind {
         self
     }
 
+    /// Keeps only events inside `retention` (relative to now) when the feed is read; the default keeps everything.
     pub fn with_retention(mut self, retention: RetentionWindow) -> ICalSubscriptionKind {
         self.retention = Some(retention);
         self
     }
 
+    /// Sets the log that receives the feed fetch and parse diagnostics; the default discards them.
     pub fn with_diagnostics(mut self, diagnostics: Arc<dyn DiagnosticLog>) -> ICalSubscriptionKind {
         self.diagnostics = diagnostics;
         self
     }
 
+    /// Seconds between checks, as set by `new` (900) or `with_poll_interval`.
     pub fn poll_interval(&self) -> f64 {
         self.poll_interval
     }

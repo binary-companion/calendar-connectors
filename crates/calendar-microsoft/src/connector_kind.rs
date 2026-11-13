@@ -30,6 +30,7 @@ use crate::source::MicrosoftCalendarSource;
 /// configuration; never embedded here.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct MicrosoftOAuthConfig {
+    /// Application (client) id of the Entra app registration.
     pub client_id: String,
     /// The host name the redirect URI is sent with. The registration lists `http://localhost` (Microsoft ignores the
     /// port for a loopback redirect), while the loopback listener reports `127.0.0.1`; the browser reaches the
@@ -54,6 +55,8 @@ impl MicrosoftOAuthConfig {
     }
 }
 
+/// Microsoft 365 / Outlook.com accounts signed in through the browser with OAuth 2.0 and PKCE, read through Microsoft
+/// Graph. Refresh tokens are kept in the `CredentialStore`.
 #[derive(Clone)]
 pub struct MicrosoftConnectorKind {
     config: MicrosoftOAuthConfig,
@@ -68,6 +71,7 @@ pub struct MicrosoftConnectorKind {
 }
 
 impl MicrosoftConnectorKind {
+    /// Connector kind id of browser-signed-in Microsoft accounts, stored in `Connection::kind_id`.
     pub const KIND_ID: &'static str = "microsoft";
     /// `offline_access` returns the refresh token; `MailboxSettings.Read` is the account's time zone; `.Shared` reads
     /// the shared and delegated calendars the account can open. Read-only on purpose (ADR 0017): the host app only
@@ -121,6 +125,7 @@ impl MicrosoftConnectorKind {
         }
     }
 
+    /// Sets the seconds between checks (default 60).
     #[must_use]
     pub fn with_poll_interval(mut self, seconds: f64) -> MicrosoftConnectorKind {
         self.poll_interval = seconds;

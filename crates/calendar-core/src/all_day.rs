@@ -8,12 +8,16 @@ use crate::time::Zone;
 /// A calendar day without a time or zone. Ordered chronologically (year, then month, then day).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct CalendarDate {
+    /// Year in the proleptic Gregorian calendar.
     pub year: i64,
+    /// Month, 1 to 12.
     pub month: i64,
+    /// Day of the month, starting at 1.
     pub day: i64,
 }
 
 impl CalendarDate {
+    /// Creates a date; the values are not range checked.
     pub fn new(year: i64, month: i64, day: i64) -> CalendarDate {
         CalendarDate { year, month, day }
     }
@@ -47,6 +51,7 @@ impl AllDay {
         Some(civil::start_of_day(noon, zone))
     }
 
+    /// The calendar day that `instant` falls on in `zone`.
     pub fn date_of(instant: Timestamp, zone: &Zone) -> CalendarDate {
         let c = civil::components(instant, zone);
         CalendarDate::new(c.year, c.month, c.day)

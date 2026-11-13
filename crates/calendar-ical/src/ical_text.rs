@@ -6,6 +6,7 @@ use crate::grapheme::{characters, is};
 pub enum ICalText {}
 
 impl ICalText {
+    /// Escapes TEXT per RFC 5545: backslash, semicolon, comma and newline.
     pub fn escape(text: &str) -> String {
         let mut out = String::with_capacity(text.len());
         for character in characters(text) {
@@ -26,6 +27,7 @@ impl ICalText {
         out
     }
 
+    /// Reverses `escape`: turns `\n`, `\,`, `\;` and `\\` back into the characters they stand for.
     pub fn unescape(text: &str) -> String {
         let mut out = String::with_capacity(text.len());
         let mut escaping = false;

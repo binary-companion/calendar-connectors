@@ -13,8 +13,11 @@ use crate::write::types::{ConferenceChange, EventField};
 /// A field change where "leave alone" and "remove" are different things.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum FieldUpdate<Value> {
+    /// Leave the field as it is.
     Keep,
+    /// Replace the field with this value.
     Set(Value),
+    /// Remove the value from the field.
     Clear,
 }
 
@@ -29,6 +32,7 @@ impl<Value> Default for FieldUpdate<Value> {
 /// `add` upserts by email: an existing attendee keeps their response and takes the new name and role.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct AttendeeChanges {
+    /// Attendees to add, or update if their email is already on the event.
     pub add: Vec<AttendeeDraft>,
     /// Normalized (trimmed, lowercased) emails.
     pub remove: Vec<String>,
@@ -46,6 +50,7 @@ impl AttendeeChanges {
         }
     }
 
+    /// True when nothing is added or removed.
     pub fn is_empty(&self) -> bool {
         self.add.is_empty() && self.remove.is_empty()
     }
@@ -55,17 +60,25 @@ impl AttendeeChanges {
 /// (attachments, extended properties, colors) is never disturbed.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct EventPatch {
+    /// New title, or `None` to keep it.
     pub title: Option<String>,
+    /// Change to the notes.
     pub notes: FieldUpdate<String>,
+    /// Change to the location.
     pub location: FieldUpdate<String>,
     /// Time is one unit: start, end, zone and all-day together.
     pub timing: Option<EventTiming>,
+    /// New availability, or `None` to keep it.
     pub availability: Option<Availability>,
+    /// New visibility, or `None` to keep it.
     pub visibility: Option<Visibility>,
     /// `Clear` = the calendar's default reminders; `Set(vec![])` = none.
     pub reminders: FieldUpdate<Vec<Reminder>>,
+    /// Attendee changes, or `None` for none.
     pub attendees: Option<AttendeeChanges>,
+    /// Change to the recurrence rule.
     pub recurrence: FieldUpdate<RecurrenceRule>,
+    /// Generate or remove the conference link, or `None` to leave it.
     pub conference: Option<ConferenceChange>,
     /// The original the patch was diffed from; what conflicts are judged against. `None` for a hand-built patch,
     /// which conflicts on any stale version. Read it with [`EventPatch::base`] (Swift `private(set)`).
@@ -95,6 +108,7 @@ impl EventPatch {
         changed
     }
 
+    /// The fields this patch changes. An attendee change that adds and removes nobody does not count.
     pub fn touched_fields(&self) -> BTreeSet<EventField> {
         let mut fields = BTreeSet::new();
         if self.title.is_some() {
@@ -132,10 +146,12 @@ impl EventPatch {
         fields
     }
 
+    /// True when the patch changes nothing.
     pub fn is_empty(&self) -> bool {
         self.touched_fields().is_empty()
     }
 
+    /// A copy without the base event, so it conflicts on any stale version.
     #[must_use]
     pub fn without_base(&self) -> EventPatch {
         let mut copy = self.clone();
@@ -339,10 +355,12 @@ impl EventPatch {
 #[derive(Clone, Debug, PartialEq)]
 pub struct EventEdit {
     original: CalendarEvent,
+    /// The working copy; edit its fields directly.
     pub event: CalendarEvent,
 }
 
 impl EventEdit {
+    /// Starts an edit of `original` with a working copy equal to it.
     pub fn new(original: CalendarEvent) -> EventEdit {
         EventEdit {
             event: original.clone(),
@@ -355,10 +373,12 @@ impl EventEdit {
         &self.original
     }
 
+    /// The changes between the original and the working copy.
     pub fn patch(&self) -> EventPatch {
         EventPatch::diff(&self.original, &self.event)
     }
 
+    /// True when the working copy differs from the original in a field a patch can carry.
     pub fn has_changes(&self) -> bool {
         !self.patch().is_empty()
     }

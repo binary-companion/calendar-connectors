@@ -12,6 +12,7 @@ pub struct CollectingDiagnosticLog {
 }
 
 impl CollectingDiagnosticLog {
+    /// Creates an empty log.
     pub fn new() -> CollectingDiagnosticLog {
         CollectingDiagnosticLog::default()
     }
@@ -34,6 +35,7 @@ impl CollectingDiagnosticLog {
             .collect()
     }
 
+    /// Discards every recorded event.
     pub fn clear(&self) {
         self.lock().clear();
     }

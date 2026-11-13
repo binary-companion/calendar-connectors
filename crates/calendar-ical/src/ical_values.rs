@@ -9,15 +9,21 @@ use crate::component::ICalProperty;
 use crate::content_line::is_whitespace;
 use crate::grapheme::{characters, split};
 
+/// A calendar date and a wall-clock time with no zone attached.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct LocalDateTime {
+    /// The calendar date.
     pub date: CalendarDate,
+    /// Hour of day, 0 to 23.
     pub hour: i64,
+    /// Minute, 0 to 59.
     pub minute: i64,
+    /// Second, 0 to 59.
     pub second: i64,
 }
 
 impl LocalDateTime {
+    /// Creates a local date-time from its parts; the values are not range checked.
     pub fn new(date: CalendarDate, hour: i64, minute: i64, second: i64) -> LocalDateTime {
         LocalDateTime {
             date,
@@ -32,14 +38,20 @@ impl LocalDateTime {
 /// floating (`tzid == None`, read in the calendar's zone).
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ICalDateValue {
+    /// A date-only value (`VALUE=DATE`).
     Date(CalendarDate),
+    /// An absolute instant written with a trailing `Z`.
     Utc(Timestamp),
+    /// A wall-clock time with an optional `TZID`.
     Local {
+        /// The date and time as written.
         local: LocalDateTime,
+        /// The `TZID` parameter; `None` for a floating time.
         tzid: Option<String>,
     },
 }
 
+/// Parsing and formatting of iCalendar DATE, DATE-TIME and DURATION values.
 pub enum ICalValues {}
 
 impl ICalValues {
@@ -169,6 +181,8 @@ impl ICalValues {
         Some(sign * total)
     }
 
+    /// Formats seconds as an iCalendar duration such as `P1DT2H30M` or `-PT15M`. Rounds to whole seconds; zero gives
+    /// `PT0S`.
     pub fn duration_text(seconds: f64) -> String {
         let mut rest = seconds.abs().round() as i64;
         let sign = if seconds < 0.0 { "-" } else { "" };
@@ -200,14 +214,17 @@ impl ICalValues {
         text
     }
 
+    /// Formats an instant as UTC `yyyymmddTHHMMSSZ`.
     pub fn utc_text(date: Timestamp) -> String {
         ICalValues::local_text(date, &Zone::utc()) + "Z"
     }
 
+    /// Formats a date as `yyyymmdd`.
     pub fn date_text(date: &CalendarDate) -> String {
         format!("{:04}{:02}{:02}", date.year, date.month, date.day)
     }
 
+    /// Formats an instant as local `yyyymmddTHHMMSS` in `zone`, with no zone designator.
     pub fn local_text(date: Timestamp, zone: &Zone) -> String {
         let c = civil::components(date, zone);
         format!(

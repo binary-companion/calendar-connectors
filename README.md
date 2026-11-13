@@ -4,11 +4,11 @@ A portable library that reads and writes calendars through Google, Microsoft Gra
 
 ## Crates
 
-In `crates/`: `calendar-core` (model, connector and source traits, stores, recurrence), `calendar-oauth` (PKCE and refresh), `calendar-ical`, `calendar-google`, `calendar-microsoft`, `calendar-caldav`, `calendar-ical-subscription`, `calendar-test-support`. The public API is in [docs/api.md](docs/api.md) part 16; the host supplies HTTP through the `HttpTransport` trait ([docs/host-http-contract.md](docs/host-http-contract.md)). Every test of the Swift package has a Rust counterpart ([docs/rust-port/test-parity.md](docs/rust-port/test-parity.md)); the files that 1.x wrote on users' disks ([fixtures/persisted-formats](fixtures/persisted-formats)) and the golden vectors from the Swift code ([vectors](vectors/README.md)) are replayed by the Rust tests.
+In `crates/`: `calendar-core` (model, connector and source traits, stores, recurrence), `calendar-oauth` (PKCE and refresh), `calendar-ical`, `calendar-google`, `calendar-microsoft`, `calendar-caldav`, `calendar-ical-subscription`, `calendar-test-support`. The public Rust API reference, with runnable examples, is [docs/api.md](docs/api.md); the host supplies HTTP through the `HttpTransport` trait ([docs/host-http-contract.md](docs/host-http-contract.md)). Every test of the Swift package has a Rust counterpart ([docs/rust-port/test-parity.md](docs/rust-port/test-parity.md)); the files that 1.x wrote on users' disks ([fixtures/persisted-formats](fixtures/persisted-formats)) and the golden vectors from the Swift code ([vectors](vectors/README.md)) are replayed by the Rust tests.
 
 ## Use (Rust, 2.x on `v2`)
 
-The crates are not published to a registry. Hosts take them from a git tag: `2.0.0-<prerelease>` prereleases are cut from `v2` by hand (see Releases); the first `2.0.0-alpha` comes from the engine phase of the Rust engine program. Build and test with `cargo test --workspace` (the toolchain is pinned in `rust-toolchain.toml`). A host implements `HttpTransport`, `CredentialStore`, `SyncStateStore` and the OAuth interaction, then builds a connector kind such as `GoogleConnectorKind::new(...)`.
+The crates are not published to a registry. Hosts take them from a git tag: `2.0.0-<prerelease>` prereleases are cut from `v2` by hand (see Releases); the latest is `2.0.0-alpha.1`. Install lines and runnable examples are in [docs/api.md](docs/api.md). Build and test with `cargo test --workspace` (the toolchain is pinned in `rust-toolchain.toml`). A host implements `HttpTransport`, `CredentialStore`, `SyncStateStore` and the OAuth interaction, then builds a connector kind such as `GoogleConnectorKind::new(...)`.
 
 ## Use (Swift package, 1.x on `main`)
 
@@ -16,7 +16,7 @@ The crates are not published to a registry. Hosts take them from a git tag: `2.0
 .package(url: "https://github.com/binary-companion/calendar-connectors", from: "1.0.0")
 ```
 
-[TimeTug](https://github.com/binary-companion/timetug) is the reference host of the 1.x package: its `CalendarApple` package implements the seams with Keychain, CryptoKit and a loopback listener. The 1.x contract is described by the older parts of [docs/api.md](docs/api.md).
+[TimeTug](https://github.com/binary-companion/timetug) is the reference host of the 1.x package: its `CalendarApple` package implements the seams with Keychain, CryptoKit and a loopback listener. The 1.x behaviour contract is [docs/behaviour-contract-1x.md](docs/behaviour-contract-1x.md).
 
 ## Releases
 

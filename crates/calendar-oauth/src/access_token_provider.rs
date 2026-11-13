@@ -121,6 +121,7 @@ pub struct AccessTokenProvider {
 }
 
 impl AccessTokenProvider {
+    /// Key under which the refresh token is stored in the connection's secrets (see `CredentialStore`).
     pub const REFRESH_TOKEN_KEY: &'static str = "refresh_token";
     const SAFETY_MARGIN: f64 = 60.0;
 
@@ -146,6 +147,9 @@ impl AccessTokenProvider {
         }
     }
 
+    /// Returns a valid access token: the cached one while it has more than 60 s left, otherwise a fresh one obtained by
+    /// refreshing (callers share one in-flight refresh). Fails with `SourceError::AuthExpired` when the refresh token
+    /// is no longer valid or the stored credentials changed since the token was cached.
     pub async fn access_token(&self) -> Outcome<String> {
         let (cached, bound_revision) = {
             let state = self.inner.lock();

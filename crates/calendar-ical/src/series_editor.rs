@@ -147,6 +147,7 @@ impl SeriesEditor {
         Some(copy)
     }
 
+    /// Puts `vevent` in the resource as the override for `slot`, replacing any existing override of that slot.
     pub fn set_override(
         vevent: ICalComponent,
         slot: Timestamp,
@@ -167,6 +168,8 @@ impl SeriesEditor {
         resource.set_events(events);
     }
 
+    /// Excludes `slot` from the series: adds it to the master's `EXDATE` and drops any override of that slot. Fails
+    /// with `WriteError::NotFound` when there is no master or `slot` is not an occurrence of it.
     pub fn exclude(
         slot: Timestamp,
         resource: &mut EventResource,
@@ -200,6 +203,9 @@ impl SeriesEditor {
 
     // MARK: Series-wide changes
 
+    /// Moves the whole series by `delta` seconds: shifts `EXDATE` and `RDATE` dates and the `RECURRENCE-ID`s of
+    /// overrides, and moves each override that still sat at its slot. Does nothing without a master or when `delta` is
+    /// 0. The master's own `DTSTART` and `DTEND` are not touched here.
     pub fn shift(resource: &mut EventResource, delta: f64, calendar_zone: &Zone) {
         let Some(mut master) = resource.master().cloned() else {
             return;
@@ -250,6 +256,8 @@ impl SeriesEditor {
         resource.set_events(events);
     }
 
+    /// Drops `EXDATE`s that no longer match an occurrence of the rule, and overrides whose slot is no longer an
+    /// occurrence.
     pub fn prune_unmatched(resource: &mut EventResource, calendar_zone: &Zone) {
         let Some(mut master) = resource.master().cloned() else {
             return;
@@ -288,6 +296,10 @@ impl SeriesEditor {
 
     // MARK: Split
 
+    /// Splits the series at `slot` into the occurrences before it (first result, keeps the UID) and from it onward
+    /// (second result, gets `new_uid`). Overrides go with the part they belong to; `COUNT` is divided. Fails with
+    /// `WriteError::NotFound` when `slot` is not a later occurrence, and with `WriteError::Unsupported` for a series
+    /// with more than one rule or rules the library cannot read.
     pub fn split(
         resource: &EventResource,
         slot: Timestamp,

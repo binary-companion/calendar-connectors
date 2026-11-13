@@ -21,6 +21,7 @@ pub struct FileSyncStateStore {
 }
 
 impl FileSyncStateStore {
+    /// Creates a store backed by the file at `path`; the file is read when first used.
     pub fn new(path: impl Into<PathBuf>) -> FileSyncStateStore {
         FileSyncStateStore {
             path: path.into(),

@@ -8,11 +8,17 @@ use crate::time::Zone;
 /// `Calendar.dateComponents` for year to second, plus the weekday (1 = Sunday).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Components {
+    /// Year.
     pub year: i64,
+    /// Month, 1 to 12.
     pub month: i64,
+    /// Day of the month, starting at 1.
     pub day: i64,
+    /// Hour, 0 to 23.
     pub hour: i64,
+    /// Minute, 0 to 59.
     pub minute: i64,
+    /// Second, 0 to 59.
     pub second: i64,
     /// 1 = Sunday ... 7 = Saturday, as Foundation numbers it.
     pub weekday: i64,
@@ -97,11 +103,17 @@ fn days_from_civil(year: i64, month: i64) -> Option<i128> {
 /// `Calendar.Component` values `add` supports.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Unit {
+    /// One second.
     Second,
+    /// One minute.
     Minute,
+    /// One hour.
     Hour,
+    /// One calendar day (not always 24 hours across a daylight-saving change).
     Day,
+    /// One calendar month.
     Month,
+    /// One calendar year.
     Year,
 }
 

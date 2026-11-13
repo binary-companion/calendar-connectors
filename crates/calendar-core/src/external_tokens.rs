@@ -13,8 +13,11 @@ use crate::failure::Outcome;
 /// and `connection_id` are informational (a host can use them to find the account when its id is not enough).
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ExternalAccount {
+    /// The host's opaque, authoritative account identifier.
     pub id: String,
+    /// The account's email address, if the host knows it.
     pub email: Option<String>,
+    /// The connection this account was created for, if known.
     pub connection_id: Option<ConnectionId>,
 }
 
@@ -29,13 +32,17 @@ impl ExternalAccount {
     }
 }
 
+/// An access token obtained from the host's account service.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ExternalAccessToken {
+    /// The bearer token sent with API requests.
     pub access_token: String,
+    /// When the token expires.
     pub expires_at: Timestamp,
 }
 
 impl ExternalAccessToken {
+    /// Creates a token from its text and expiry.
     pub fn new(access_token: impl Into<String>, expires_at: Timestamp) -> ExternalAccessToken {
         ExternalAccessToken {
             access_token: access_token.into(),
@@ -48,8 +55,11 @@ impl ExternalAccessToken {
 /// a given account is a reconnect, with `email` as a hint for the host's account picker.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ExternalSignInRequest {
+    /// The account being reconnected, or `None` for a first sign-in.
     pub account: Option<ExternalAccount>,
+    /// A hint for the host's account picker.
     pub email: Option<String>,
+    /// Scopes the access token must cover.
     pub scopes: Vec<String>,
 }
 
@@ -64,13 +74,17 @@ impl ExternalSignInRequest {
     }
 }
 
+/// The outcome of an interactive sign-in.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ExternalSignInResult {
+    /// The account that signed in.
     pub account: ExternalAccount,
+    /// An access token for that account.
     pub token: ExternalAccessToken,
 }
 
 impl ExternalSignInResult {
+    /// Creates a result from its parts.
     pub fn new(account: ExternalAccount, token: ExternalAccessToken) -> ExternalSignInResult {
         ExternalSignInResult { account, token }
     }
@@ -97,5 +111,6 @@ pub trait ExternalTokenSource: Send + Sync {
 /// Optional: hosts check with `ConnectorKind::as_identity_family` (Swift `as?`), and a kind without it is its own
 /// family (its kind id).
 pub trait AccountIdentityFamily {
+    /// The identity family of this kind, shared with other kinds that sign in to the same accounts.
     fn identity_family(&self) -> String;
 }

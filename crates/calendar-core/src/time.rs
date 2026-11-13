@@ -116,6 +116,7 @@ impl Zone {
         }
     }
 
+    /// The zone's identifier, such as `Europe/Paris` or `GMT`.
     pub fn identifier(&self) -> &str {
         &self.identifier
     }
@@ -125,6 +126,7 @@ impl Zone {
         self.tz.to_offset(at).seconds()
     }
 
+    /// The underlying `jiff` time zone.
     pub fn as_jiff(&self) -> &TimeZone {
         &self.tz
     }
@@ -200,7 +202,9 @@ impl Hash for Zone {
 /// Foundation's `DateInterval`: `contains` includes both ends and `intersects` is true when the intervals only touch.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct DateInterval {
+    /// First instant of the interval.
     pub start: Timestamp,
+    /// Last instant of the interval; not before `start`.
     pub end: Timestamp,
 }
 

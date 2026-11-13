@@ -13,12 +13,16 @@ use calendar_core::source_types::SourceError;
 /// One recorded silent token request (Swift `FakeExternalTokenSource.TokenCall`).
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct TokenCall {
+    /// The account the token was requested for.
     pub account: ExternalAccount,
+    /// The scopes requested.
     pub scopes: Vec<String>,
+    /// Whether the request asked the account service to skip its cache.
     pub force_refresh: bool,
 }
 
 impl TokenCall {
+    /// Creates a record of one silent token request.
     pub fn new(account: ExternalAccount, scopes: Vec<String>, force_refresh: bool) -> TokenCall {
         TokenCall {
             account,

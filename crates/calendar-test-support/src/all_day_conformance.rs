@@ -9,6 +9,8 @@ use jiff::Timestamp;
 pub enum AllDayConformance {}
 
 impl AllDayConformance {
+    /// Returns the ways `event` breaks the canonical all-day form: start and end must each be the start of a day in the
+    /// event's time zone, and end must be after start. Empty for a timed event or a conforming all-day event.
     pub fn violations(event: &CalendarEvent) -> Vec<String> {
         if !event.is_all_day {
             return Vec::new();

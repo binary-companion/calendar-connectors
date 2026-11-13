@@ -15,10 +15,15 @@ use crate::time::Zone;
 /// How serious a diagnostic event is. Ordered, so a sink can filter with `event.level >= DiagnosticLevel::Info`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum DiagnosticLevel {
+    /// Detail useful only when investigating a problem.
     Debug,
+    /// Normal progress.
     Info,
+    /// A notable but expected event.
     Notice,
+    /// Something went wrong but the operation continued or was retried.
     Warning,
+    /// An operation failed.
     Error,
 }
 
@@ -38,9 +43,13 @@ impl DiagnosticLevel {
 /// The value of a [`DiagnosticField`] (Swift `DiagnosticField.Value`).
 #[derive(Clone, Debug, PartialEq)]
 pub enum DiagnosticFieldValue {
+    /// A whole number.
     Int(i64),
+    /// A floating-point number.
     Double(f64),
+    /// A flag.
     Bool(bool),
+    /// Text.
     String(String),
 }
 
@@ -49,12 +58,16 @@ pub enum DiagnosticFieldValue {
 /// personal text in a field, private or not: `is_private` only decides whether a report shows the value by default.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DiagnosticField {
+    /// Stable camelCase field name.
     pub name: String,
+    /// The value.
     pub value: DiagnosticFieldValue,
+    /// True when a report hides the value unless asked to include private values.
     pub is_private: bool,
 }
 
 impl DiagnosticField {
+    /// Creates a field with an explicit privacy setting.
     pub fn new(
         name: impl Into<String>,
         value: DiagnosticFieldValue,
@@ -107,14 +120,20 @@ impl DiagnosticField {
 /// camelCase `name` (for example `fetchCompleted`) that tests and support can rely on.
 #[derive(Clone, Debug, PartialEq)]
 pub struct DiagnosticEvent {
+    /// Severity.
     pub level: DiagnosticLevel,
+    /// Stable category, normally the connector (for example `icalsub`).
     pub category: String,
+    /// Stable camelCase event name (for example `fetchCompleted`).
     pub name: String,
+    /// The event's fields in the order they were given.
     pub fields: Vec<DiagnosticField>,
+    /// When the event happened, as supplied by the caller.
     pub date: Timestamp,
 }
 
 impl DiagnosticEvent {
+    /// Creates an event from its parts.
     pub fn new(
         level: DiagnosticLevel,
         category: impl Into<String>,
@@ -141,6 +160,7 @@ impl DiagnosticEvent {
 /// library. `log` is synchronous, never fails and must not block: it is called on the connector's own path.
 /// (Swift names this requirement `record(_:)`.)
 pub trait DiagnosticLog: Send + Sync {
+    /// Receives one event. Must not block or fail.
     fn log(&self, event: DiagnosticEvent);
 
     /// Swift's `record(_ level:, _ category:, _ name:, _ fields:, date:)` convenience.
@@ -170,6 +190,7 @@ pub struct FanOutDiagnosticLog {
 }
 
 impl FanOutDiagnosticLog {
+    /// Creates a log that forwards to `logs` in the given order.
     pub fn new(logs: Vec<Arc<dyn DiagnosticLog>>) -> FanOutDiagnosticLog {
         FanOutDiagnosticLog { logs }
     }
@@ -190,6 +211,7 @@ pub struct RingBufferDiagnosticLog {
 }
 
 impl RingBufferDiagnosticLog {
+    /// Capacity used by `with_default_capacity`.
     pub const DEFAULT_CAPACITY: usize = 500;
 
     /// A capacity below 1 is raised to 1.
@@ -214,6 +236,7 @@ impl RingBufferDiagnosticLog {
         self.lock().iter().cloned().collect()
     }
 
+    /// Discards every kept event.
     pub fn clear(&self) {
         self.lock().clear();
     }

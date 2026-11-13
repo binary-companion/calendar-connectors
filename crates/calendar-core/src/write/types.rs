@@ -11,25 +11,48 @@ use crate::source_types::SourceCapabilities;
 raw_enum! {
     /// A part of an event that a write can touch. Used for validation, conflict reports and capabilities.
     pub enum EventField {
-        Title = "title", Notes = "notes", Location = "location", Timing = "timing",
-        Availability = "availability", Visibility = "visibility", Reminders = "reminders",
-        Attendees = "attendees", Recurrence = "recurrence", Conference = "conference"
+        /// The event's title.
+        Title = "title",
+        /// The event's notes.
+        Notes = "notes",
+        /// The event's location text.
+        Location = "location",
+        /// Start, end, time zone and the all-day flag.
+        Timing = "timing",
+        /// Busy or free.
+        Availability = "availability",
+        /// Who may see the details.
+        Visibility = "visibility",
+        /// The event's reminders.
+        Reminders = "reminders",
+        /// The attendee list.
+        Attendees = "attendees",
+        /// The recurrence rule.
+        Recurrence = "recurrence",
+        /// The conference (join) link.
+        Conference = "conference",
     }
 }
 
 /// Whether the provider may email attendees about a write. Callers must choose; there is no default.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum NotifyPolicy {
+    /// Email every attendee.
     All,
+    /// Email only attendees outside the organizer's organization.
     ExternalOnly,
+    /// Email no one.
     None,
 }
 
 /// Which occurrences of a recurring event a write applies to. Ignored for an event that is not part of a series.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum RecurrenceScope {
+    /// Only the one occurrence.
     ThisInstance,
+    /// This occurrence and every later one.
     ThisAndFollowing,
+    /// Every occurrence of the series.
     AllInSeries,
 }
 
@@ -45,25 +68,36 @@ impl RecurrenceScope {
 /// On a draft: whether to ask the provider for a generated conference link.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ConferenceRequest {
+    /// Do not add a conference link.
     None,
+    /// Ask the provider to add a generated conference link.
     Generate,
 }
 
 /// On a patch: generate a link or remove the existing one.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ConferenceChange {
+    /// Ask the provider to add a generated conference link.
     Generate,
+    /// Remove the existing conference link.
     Remove,
 }
 
+/// Why a write failed.
 #[derive(Clone, Debug, PartialEq, thiserror::Error)]
 pub enum WriteError {
     /// The connector cannot write these fields (or the operation; RSVP is reported as `.attendees`).
     #[error("unsupported fields {fields:?}")]
-    Unsupported { fields: BTreeSet<EventField> },
+    Unsupported {
+        /// The fields (or operation) the connector cannot write.
+        fields: BTreeSet<EventField>,
+    },
     /// Someone else changed a field this patch touches.
     #[error("conflicting fields {fields:?}")]
-    Conflict { fields: BTreeSet<EventField> },
+    Conflict {
+        /// The fields the patch touches that someone else changed.
+        fields: BTreeSet<EventField>,
+    },
     /// The event or calendar is gone.
     #[error("not found")]
     NotFound,
@@ -85,7 +119,9 @@ pub enum WriteError {
 /// What a write needs to find an event. Build one from the event you read.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct EventRef {
+    /// Id of the calendar the event is on.
     pub calendar_id: String,
+    /// Id of the event or occurrence within that calendar.
     pub event_id: String,
     /// The version the caller last saw; used for optimistic locking.
     pub version: Option<String>,
@@ -124,21 +160,25 @@ impl EventRef {
         }
     }
 
+    /// Sets the series id; an empty id means none.
     #[must_use]
     pub fn with_series_id(mut self, series_id: Option<&str>) -> EventRef {
         self.set_series_id(series_id.map(str::to_string));
         self
     }
 
+    /// Id of the series the event belongs to, or `None` for a single event and when unknown.
     pub fn series_id(&self) -> Option<&str> {
         self.series_id.as_deref()
     }
 
+    /// Sets the series id; an empty id means none.
     pub fn set_series_id(&mut self, series_id: Option<String>) {
         self.series_id = series_id.filter(|id| !id.is_empty());
     }
 }
 
+/// Checks shared by connectors before a write.
 pub enum WriteValidation {}
 
 impl WriteValidation {

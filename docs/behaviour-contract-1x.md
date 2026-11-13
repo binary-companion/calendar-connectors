@@ -1,0 +1,832 @@
+# Calendar Connectors: behaviour contract (written for the 1.x Swift package)
+
+> This file is the behaviour description of the 1.x Swift package (`main` branch), kept because the Rust crates on
+> `v2` reproduce that behaviour: every Swift test has a Rust counterpart and the golden vectors pin the edge cases.
+> The code blocks are Swift and name Swift types (`CalendarCore`, `Sendable`, `URLSession`); in Rust the names are the
+> ones in the [API reference](api.md) (`makeSource` is `make_source`, `ConnectionID` is `ConnectionId`).
+> Read this for **what** the library does and why; read `api.md` for **how to call it from Rust**.
+
+Status: parts 1 to 10 describe the code on `master` once Phase 3 (write capabilities) has merged; part 11 lists the known gaps;
+part 12 describes the Microsoft connector (Phase 4); part 13 describes `ICalendar` and the CalDAV
+and iCloud connector (Phase 5); part 14 describes the iCal subscription connector (Phase 6); part 15 describes external token sources (release 1.2.0); part 16 describes the Rust API of the 2.x line on the `v2` branch.
+The library is pre-1.0 and lives in this repository; it is meant to be extracted into its own repository once a
+second provider (Microsoft, Phase 4) has proved the API is provider-neutral: the connector exists, and the extraction
+waits for its live checks (part 12). Until then, anything here can change with a matching change to this document.
+
+## 1. What the suite is
+
+A portable Swift library that lets a host application read (and, from Phase 3, write) calendars from several
+providers behind one model, plus the small amount of host-specific glue TimeTug needs.
+
+| Package / target | Role | Depends on | Platform notes |
+|---|---|---|---|
+| `CalendarConnectors` / `CalendarCore` | Model, source and connector protocols, stores, HTTP seam, change polling, all-day helpers | Foundation only | Portable; built on Linux and Windows in CI |
+| `CalendarConnectors` / `CalendarOAuth` | OAuth 2.0 authorization-code + PKCE client, access-token cache | `CalendarCore` | Portable; no crypto dependency (pure-Swift SHA-256 default) |
+| `CalendarConnectors` / `GoogleCalendar` | Google Calendar connector (REST v3) | `CalendarCore`, `CalendarOAuth` | Portable |
+| `CalendarConnectors` / `MicrosoftCalendar` | Microsoft (Outlook) connector over Microsoft Graph v1.0 | `CalendarCore`, `CalendarOAuth` | Portable |
+| `CalendarConnectors` / `ICalendar` | iCalendar (RFC 5545) parser and writer, time zones, `VEVENT`/`VALARM` mapping, series editing | `CalendarCore` | Portable |
+| `CalendarConnectors` / `CalDAVCalendar` | CalDAV connector (iCloud and other servers) over a small WebDAV client | `CalendarCore`, `ICalendar` | Portable; `FoundationXML` on Linux |
+| `CalendarConnectors` / `ICalSubscription` | iCal subscription link connector: one private feed, read-only | `CalendarCore`, `ICalendar` | Portable |
+| `CalendarConnectors` / `CalendarTestSupport` | Fakes and conformance helpers for connector tests | `CalendarCore` | Test-only product |
+| `CalendarApple` | Apple-only adapters: Keychain credentials, loopback and web-auth-session OAuth interaction, CryptoKit hashing | `CalendarCore`, `CalendarOAuth` | macOS |
+| `EventKitSource` | Apple Calendar via EventKit as a connector | `CalendarCore` | macOS |
+| `CalendarBridge` | Adapts a library source to TimeTug Core's own `CalendarSource` | `CalendarCore`, `TimeTugCore` | TimeTug only |
+
+Layering rule: maximise generic, cross-platform code in `CalendarConnectors`. Anything OS-specific (Keychain,
+Network.framework, EventKit, AuthenticationServices) lives in a separate adapter that implements a library
+protocol, so another host can supply its own.
+
+Dependency direction: `GoogleCalendar` and `MicrosoftCalendar` → `CalendarOAuth` → `CalendarCore`;
+`CalDAVCalendar` → `ICalendar` → `CalendarCore`; `ICalSubscription` → `ICalendar` → `CalendarCore`; adapters and the bridge depend on
+`CalendarCore`; nothing in `CalendarConnectors` depends on an adapter.
+
+## 2. Conventions every part of the contract relies on
+
+- **Concurrency.** All public types are `Sendable`; sources and stores are safe to call from any task. Swift 6
+  language mode (the Apple adapters build in Swift 5 mode because of AppKit/Network types).
+- **Errors.** Sources throw `SourceError` (part 3.6) and never leak provider or transport types. Cancellation
+  surfaces as `CancellationError`.
+- **Time.** Instants are `Date` and authoritative. `timeZone` is always set (non-optional): the zone the event is
+  shown in, a display hint for timed events. When the provider gives an event no zone the connector fills its
+  fallback: Google the calendar's zone, then UTC; EventKit the device zone. On writes `EventTiming.timeZone` stays
+  optional: nil means "no preference" (Google leaves out the zone name so the event takes the calendar's zone;
+  EventKit leaves the event's zone nil, a floating time), and a given zone is sent as it is.
+- **All-day events (canonical form).** `isAllDay == true` ⇒ `start` is midnight of the
+  first day in that zone, `end` is midnight of the day after the last day (exclusive). Days are interpreted in the
+  event's own zone, not the device's. Connectors build and read this form only through the `AllDay` helpers, and
+  their tests run fixtures through `AllDayConformance.violations`.
+- **Identity.** A calendar is identified by `CalendarDescriptor.id` within its source. An event is identified by
+  `(calendarID, eventID)` within its source (`CalendarEvent.id == "\(calendarID)/\(eventID)"`). A source is
+  identified by `CalendarSource.id`. For network connectors `id == Connection.sourceID == "<kindID>-<connectionID>"`.
+  EventKit is the documented exception: its source id is the constant `"eventkit"`, kept so previously stored
+  calendar keys stay valid. Hosts always identify a source by `source.id`.
+- **Secrets never live in the library.** Non-secret account data is a `Connection`; secrets go through a
+  host-supplied `CredentialStore`. OAuth client identifiers are injected by the host from configuration that is
+  not committed.
+- **Polling, not push.** Change detection uses provider sync tokens on a timer. There are no webhooks or relay
+  servers in the contract (the `supportsPush` capability is a seam only).
+
+## 3. `CalendarCore`
+
+### 3.1 Model
+
+```swift
+public struct CalendarDescriptor: Hashable, Sendable, Identifiable {
+    var id: String; var title: String
+    private(set) var colorHex: String?   // "#RRGGBB" uppercase, or nil if unknown/invalid
+    var service: CalendarService         // the connector reading it ("eventkit", "google"); always known
+    var provider: CalendarProvider?      // who hosts it (.iCloud, .google, .microsoft, .local, .subscription, .calDAV); nil = can't tell
+    var permissions: CalendarPermissions // canViewDetails, canEdit, canShare?, canViewPrivate?
+    var accessRole: AccessRole? { get }  // read-only summary: owner, writer, reader, freeBusyReader; nil for EventKit writable
+    var isDefault: Bool?                 // where new events go in its account; nil = can't tell
+    var timeZone: TimeZone?
+    var accountName: String?             // the owning account, e.g. the signed-in email
+    var kind: CalendarKind               // standard, subscribed, birthdays
+    var defaultReminders: [Reminder]?    // the calendar's own default reminders (Google); nil = source does not say
+    var supportedAvailabilities: Set<Availability>?   // what the calendar accepts; [] = none tracked; nil = unknown
+    static func normalizedHex(_:) -> String?   // "#RGB" | "#RRGGBB" | "RRGGBB" → "#RRGGBB"
+}
+```
+
+`CalendarEvent` (the one generic event type; TimeTug's own wrapper is `TimeTugCalendarEvent`):
+
+| Field | Type | Contract |
+|---|---|---|
+| `eventID` | `String` | Unique within its calendar; a recurring instance has its own id (see part 11 for EventKit) |
+| `id` | `String` (computed) | `"\(calendarID)/\(eventID)"`, unique within a source |
+| `uid` | `String?` | iCalendar UID (Google `iCalUID`); stable across copies of the same meeting |
+| `calendarID` | `String` | Owning calendar |
+| `title` | `String` | Non-optional; a connector substitutes its own placeholder for an untitled event ("(No title)" today) |
+| `notes`, `location` | `String?` | |
+| `start`, `end` | `Date` | See the all-day convention; `end` is exclusive |
+| `timeZone` | `TimeZone` | Always set; see Time above |
+| `isAllDay` | `Bool` | |
+| `status` | `EventStatus` | `confirmed`, `tentative`, `cancelled` |
+| `availability` | `Availability?` | `busy`, `free`, `tentative`, `unavailable`; nil when the source does not say (EventKit `.notSupported`) |
+| `visibility` | `Visibility?` | `default`, `publicEvent`, `privateEvent`, `confidential`; nil when the source does not say |
+| `kind` | `EventKind?` | `standard`, `focusTime`, `outOfOffice`, `workingLocation`, `birthday`, `other`; nil when the source does not say |
+| `series` | `SeriesInfo?` | `.notRecurring`, or `.occurrence(seriesID:originalStart:)` on an instance of a recurring series (Google `recurringEventId` and `originalStartTime`; EventKit `eventIdentifier` and `occurrenceDate`, for events that recur or are detached occurrences); nil when the source does not say. `seriesID` and `originalStart` are get-only accessors |
+| `attendees` | `[Attendee]` | `name?`, `email?` (trimmed, lowercased), `role` (`required/optional/resource`), `response`, `isSelf`, `isOrganizer` |
+| `organizer` | `Attendee?` | |
+| `conferences` | `[ConferenceInfo]` | Join links, most likely first: `url`, `provider` (`meet/teams/zoom/webex/goToMeeting/whereby/jitsi/slack/other`), `origin` (`structured/location/url/notes/eventURL`), computed `identity`. Filled by every connector through `ConferenceDetector`. `conference` is the first entry (get-only). |
+| `reminders` | `[Reminder]?` | `[]` means none, nil means the source does not say. Each `Reminder` is modeled on `EKAlarm`: `trigger` (`.relative(offset:to: .start/.end)`, `.absolute(Date)`, `.location(StructuredLocation, .enter/.leave)`), `type` (`.display`, `.audio(soundName:)`, `.email(address:)`, `.procedure(url:)`, `.other(String)`), `repeatCount`, `repeatInterval`, `isCalendarDefault`. `Reminder(minutesBefore:)` and `Reminder.before(minutes:type:isCalendarDefault:)` build the common case; `minutesBefore` is a get-only `Int?` (non-nil for a relative-to-start trigger) and `fireDate(eventStart:eventEnd:)` resolves relative and absolute triggers. Google `useDefault` resolves to the calendar's `defaultReminders` with `isCalendarDefault == true`. The library reports every reminder; the host decides which to honor |
+| `url` | `URL?` | Link to the event in the provider's UI |
+| `version` | `String?` | Opaque provider version (Google etag, EventKit `lastModifiedDate` as a fractional-epoch string); the base of optimistic writes (part 10) |
+| `participation` | `Participation?` | `.notInvited` or `.invited(ResponseStatus)`; nil when the source does not say. `myResponse` is a get-only accessor (nil for both unknown and not invited) |
+| `uidScope` | `UIDScope?` | `.global` (an iCalendar UID, comparable across sources), `.provider` (a provider id, comparable only within one service and provider), nil = unknown (treated as `.provider`) |
+| `sourceID` | `String?` | The source that produced the event (`Connection.sourceID`; `"eventkit"` for EventKit); lets a host route an event to its account. Does not change `id` |
+
+Reads return recurring events already expanded into instances. No read path returns a recurrence rule; a source that conforms to `SeriesSource` returns a series' rule on request.
+
+### 3.2 Sources
+
+```swift
+public protocol CalendarSource: Sendable {
+    var id: String { get }
+    var displayName: String { get }
+    var capabilities: SourceCapabilities { get }
+    func calendars() async throws -> [CalendarDescriptor]
+    /// Events of every visible calendar of the account that overlap `interval`.
+    func events(in interval: DateInterval) async throws -> [CalendarEvent]
+    func changes() -> AsyncStream<CalendarChange>
+}
+
+public protocol PollingCalendarSource: CalendarSource {
+    /// One cheap incremental check. Returns the change since the last call, or nil for none.
+    /// The first call establishes the baseline and returns nil.
+    func checkForChanges() async throws -> CalendarChange?
+}
+```
+
+Guarantees:
+
+- `events(in:)` returns events sorted by start (then id) for network connectors, excluding calendars the account
+  can no longer read. Cancelled events may be present in the model (`status == .cancelled`); consumers such as the
+  bridge drop them.
+- A source is read-only unless it also conforms to `WritableCalendarSource` (part 10).
+
+### 3.3 Capabilities
+
+```swift
+public struct SourceCapabilities: Equatable, Sendable {
+    var canWrite: Bool              // by convention true exactly when the source conforms to WritableCalendarSource
+    var canEditAttendees: Bool      // true exactly when writableFields contains .attendees (checked by the conformance suite)
+    var canRespondToInvite: Bool
+    var providedFields: Set<ProvidedField>   // what the source reliably fills on reads; a listed field is never nil
+    var syncKind: SyncKind          // .none, .token, .notification
+    var supportsPush: Bool
+    var writableFields: Set<EventField>          // what create/update can write; empty when read-only
+    var controlsNotifications: Bool              // honors NotifyPolicy; false = the server decides
+    var recurrenceScopes: Set<RecurrenceScope>   // scopes accepted on a series; empty when read-only
+}
+```
+
+Capabilities are what a source *can* do, declared per connector; the per-calendar `permissions` say which of its
+calendars are writable. The three write fields default to the read-only value. Current values:
+
+| | `canWrite` | `canEditAttendees` | `canRespondToInvite` | `providedFields` | `syncKind` | `writableFields` | `controlsNotifications` | `recurrenceScopes` |
+|---|---|---|---|---|---|---|---|---|
+| Google | true | true | true | true | `.token` | all | true | all three |
+| EventKit | true | false | false | false | `.notification` | title, notes, location, timing, availability, reminders, recurrence | false | all three (subject to the EventKit spike, part 11) |
+| CalDAV (iCloud, other) | true | true when the server schedules (`calendar-auto-schedule`) | true when the server schedules and the account has addresses | true (`participation` only with addresses) | `.token` (`sync-collection`, else ctag) | all but `conference` (attendees only when scheduling) | false | all three |
+
+### 3.4 Changes
+
+```swift
+public enum CalendarChange: Equatable, Sendable {
+    case calendarsChanged                      // reload calendars AND events; event changes in the same check are not reported separately
+    case eventsChanged(calendarIDs: Set<String>?)   // nil = scope unknown
+    case sourceFailed(SourceError)             // terminal: the stream finishes after this (e.g. .authExpired)
+}
+```
+
+`ChangeMonitor` (public struct) turns a `PollingCalendarSource.checkForChanges()` into `changes()`:
+default interval 60 s, exponential backoff on failures capped at 900 s, sleeping through an injectable `Sleeper`.
+Polling starts when the stream is created and stops when the consuming task is cancelled or the stream finishes;
+dropping the stream without cancelling does not stop it. Use one subscriber per source.
+
+### 3.5 Connecting
+
+```swift
+public struct Connection: Codable, Hashable, Sendable, Identifiable {
+    var kindID: String; var connectionID: ConnectionID   // ConnectionID = String
+    var displayName: String; var config: [String: String] // non-secret
+    var sourceID: String { "\(kindID)-\(connectionID)" }  // every consumer must use this helper
+}
+
+public protocol ConnectorKind: Sendable {                 // registered once per provider
+    var id: String { get }; var displayName: String { get }
+    var supportedPlatforms: Platform { get }              // OptionSet: macOS, iOS, linux, windows
+    var authorization: AuthorizationMethod { get }        // .oauth, .password(fields:), .system
+    func authorize(using: any AuthorizationInteraction, credentials: any CredentialStore) async throws -> Connection
+    func reauthorize(_: Connection, using: any AuthorizationInteraction, credentials: any CredentialStore) async throws -> Connection
+    func makeSource(for: Connection, credentials: any CredentialStore, syncState: any SyncStateStore) throws -> any CalendarSource
+}
+```
+
+- `authorize` stores secrets only after sign-in fully succeeds, under a fresh `ConnectionID`; a failure leaves
+  nothing stored.
+- `reauthorize` keeps the `connectionID` (so `sourceID`, calendar keys and sync state stay valid), replaces the
+  secrets, and throws `SourceError.invalidResponse` if the user signs in as a different account.
+- `ConnectorRegistry` (`register`, `kind(id:)`, `kinds(for: Platform)` sorted by id) is the host's lookup.
+
+Host-supplied seams:
+
+```swift
+public protocol CredentialStore: Sendable {   // keyed secrets per connection (Google: ["refresh_token": …])
+    func secrets(for:) async throws -> [String: String]?
+    func setSecrets(_:for:) async throws
+    func removeSecrets(for:) async throws
+}
+public protocol SyncStateStore: Sendable {    // per-connection, per-scope tokens; absent = full sync
+    func token(for:scope:) async -> String?
+    func setToken(_:for:scope:) async
+    func removeAll(for:) async
+}
+public protocol AuthorizationInteraction: Sendable {   // the only OS/UI-specific part of sign-in
+    func beginOAuthRedirect() async throws -> any OAuthRedirectSession
+    func promptCredentials(_ fields: [CredentialField]) async throws -> [String: String]
+}
+public protocol OAuthRedirectSession: Sendable {
+    var redirectURI: URL { get }
+    func authorize(at authorizationURL: URL) async throws -> URL   // opens the URL, waits, returns the redirect
+    func close() async
+}
+```
+
+Shipped implementations in `CalendarCore`: `InMemoryCredentialStore`, `InMemorySyncStateStore` (actors),
+`FileConnectionStore` (JSON list of `Connection`; a missing file loads as empty, an unreadable file is never
+overwritten and throws `FileStoreError.unreadable` on write), `FileSyncStateStore` (one JSON file; unreadable ⇒
+"no tokens", so sources re-bootstrap).
+
+### 3.6 Errors
+
+```swift
+public enum SourceError: Error, Sendable, Equatable {
+    case authExpired                    // re-authorize
+    case network(String)
+    case rateLimited(retryAfter: TimeInterval?)
+    case server(status: Int)
+    case invalidResponse(String)
+    case needsPermission                // OS/user has not granted access to a local store; never thrown by network connectors
+}
+```
+
+Provider-specific outcomes (404, 410, per-calendar 403) are handled inside the connector and never escape as
+provider types. Write methods additionally throw `WriteError` (part 10); authentication, network, rate-limit and server
+failures on a write are still `SourceError`.
+
+### 3.7 HTTP seam
+
+`HTTPTransport.send(_:)` returns any HTTP response including 4xx/5xx and throws `SourceError.network` for
+transport failures. `URLSessionTransport` is the default (`FoundationNetworking` on Linux); tests use
+`FakeTransport`. `HTTPRequest` and `HTTPResponse` are plain value types (response header names are lowercased).
+
+### 3.8 All-day helpers
+
+`CalendarDate` (`year, month, day`, `adding(days:)`, `Comparable`) and `AllDay` (`startOfDay`, `date(of:in:)`,
+`canonical(first:endExclusive:in:)`, `dates(start:end:in:)`, `endExclusive(afterLast:)`) are the only sanctioned way
+to convert between provider all-day dates and the canonical instants.
+
+### 3.9 Source notices
+
+`CalendarSource.notices() async -> [SourceNotice]` is an optional requirement (the default returns none) for quiet hints about the data a source last loaded, such as a warning icon, as opposed to a failure. `SourceNotice` has a `Kind` (`unreadableRecurrence`: repeating events whose rule could not be read) and a `count`. `ICalSubscriptionSource` reports the number of unreadable-rule groups in the held feed: it reads the current feed, so it survives a 304 re-parse, ignores the log dedupe and clears once the feed is fixed. `ConnectedSource` forwards it, `CalendarStore.refresh` collects it after a successful fetch (cleared on failure or when the source is removed) and `CalendarSnapshot.notices` (source id to notices, none for a source without any) carries it to the app.
+
+### 3.10 Diagnostics
+
+`DiagnosticLog` (`record(_ event: DiagnosticEvent)`, synchronous, non-throwing, must not block) is how a connector says what it is doing, without the library knowing where the words go. A `DiagnosticEvent` has a `DiagnosticLevel` (`debug` < `info` < `notice` < `warning` < `error`), a stable `category` (the kind id, for example `icalsub`), a stable camelCase `name`, `DiagnosticField`s and a `date`. A field is an int, double, bool or string with an `isPrivate` flag; strings are private by default (`.string("uid", uid)`), numbers and flags are public (`.int("events", 12)`). The privacy rule: connectors put counts, flags, fixed reason tokens and status codes in fields (host names are reserved for a public string field, none is logged yet), and never a credential, link, title, description, location or attendee, private or not; `isPrivate` only decides what a report shows by default.
+
+The library ships `NullDiagnosticLog` (`.none`, the default everywhere), `RingBufferDiagnosticLog` (last 500 events, thread-safe, `snapshot()`, `clear()`, `render(includePrivate:)` for a plain-text report with private values shown as `<private>`) and `FanOutDiagnosticLog` (several logs). `CalendarTestSupport.CollectingDiagnosticLog` is the test fake. Adapters to an OS logger or a file live outside the library (the library never imports `os`). Only `ICalSubscription` is instrumented so far.
+
+## 4. `CalendarOAuth`
+
+- `OAuthConfig`: authorization and token endpoints, client id, optional client secret (a desktop client's secret is
+  not confidential but the token endpoint still requires it), scopes, extra authorization parameters.
+- `OAuthClient(config:transport:now:)`: `authorizationURL(redirectURI:state:codeChallenge:)` (always PKCE `S256`),
+  `authorizationCode(from:expectedState:)` (throws `AuthorizationError.stateMismatch`, `.cancelled` for
+  `access_denied`, `.missingCode`), `exchange(code:verifier:redirectURI:)`, and `refresh(refreshToken:)`, which
+  throws `SourceError.authExpired` on `invalid_grant`.
+- `AccessTokenProvider` (actor): `accessToken()` returns a cached token or refreshes 60 s before expiry; concurrent
+  callers share one in-flight refresh; a rotated refresh token is written back to the `CredentialStore` (re-reading
+  first so other keys are not overwritten); `invalidate()` after a 401.
+- `PKCE`: verifier generation and `challenge(for:hasher:)`. `SHA256Hashing` is a one-method protocol; the library
+  ships `PureSwiftSHA256` (NIST-vector tested, used only on a public verifier) so `CalendarCore` and its dependents
+  need no crypto package; hosts may inject `CryptoKitSHA256` (from `CalendarApple`) or their own.
+
+## 5. `GoogleCalendar`
+
+Public surface: `GoogleOAuthConfig(clientID:clientSecret:)`, `GoogleConnectorKind(config:transport:now:sleep:pollInterval:hasher:)`,
+and the `CalendarSource` returned by `makeSource` (id `google-<connectionID>`).
+
+- **Kind:** id `google`, display name "Google", all platforms, `.oauth`. Scopes
+  `calendar.events` and `calendar.calendarlist.readonly` (the events scope already covers writes, so no
+  re-consent is needed; it cannot create calendars). Authorization requests `access_type=offline` and `prompt=consent` so a refresh token is issued.
+- **Connection:** `displayName` and `config["email"]` are the primary calendar's id (lowercased); sign-in throws
+  `invalidResponse` if no refresh token or no primary calendar comes back.
+- **Reads:** `calendarList` (paged, `showHidden=false`, `minAccessRole=freeBusyReader`), then per calendar
+  `events.list` with `singleEvents=true`, the requested window, paging and a restricted `fields` mask. All-day `date`
+  values are converted to the canonical form. A calendar that returns 404 or a plain `forbidden` 403 is skipped.
+- **Change detection:** one sync token per calendar plus a token for the set of calendars. Google forbids combining a
+  sync token with a time window, so a token is bootstrapped from one minimal listing. A changed calendar set yields
+  `.calendarsChanged`; changed events yield `.eventsChanged(calendarIDs:)`; HTTP 410 drops the token, re-bootstraps
+  and reports a change.
+- **HTTP behaviour:** 401 refreshes the token once, then `.authExpired`; 403 `insufficientPermissions` is
+  `.authExpired`; 429 and rate-limit 403 retry up to three times honoring `Retry-After` (else jittered exponential
+  backoff) and then throw `.rateLimited`; 5xx throws `.server`; anything else is `.invalidResponse`.
+- **Writes:** `GoogleCalendarSource` conforms to `WritableCalendarSource` (part 10). Create, update (only the changed fields, `If-Match` from `ref.version`), delete and RSVP, with all three recurrence scopes; `.thisAndFollowing` truncates the master's `RRULE` and inserts a new series (two calls; see part 10 for the failure handling). Write requests use a write mode of the client: 412 is a stale version (handled by `PatchMerge`), 400 is `.invalid`, and a 403 with any reason but `insufficientPermissions` is `.forbidden`, except quota reasons, which are `SourceError.rateLimited`. Reads keep their original mapping.
+- **Capabilities:** `canWrite`, `canEditAttendees`, `canRespondToInvite`, `providedFields`, `.token` sync, every field writable, `controlsNotifications`, all three scopes.
+
+## 6. `CalendarApple` (macOS adapters)
+
+| Type | Implements | Purpose |
+|---|---|---|
+| `KeychainCredentialStore(service:)` | `CredentialStore` | Secrets in the macOS Keychain |
+| `LoopbackAuthorizationInteraction` | `AuthorizationInteraction` | OAuth through a 127.0.0.1 ephemeral-port listener; `openURL` and an optional `AuthorizationPresenting` are host-supplied; times out after 300 s; errors in `LoopbackError` |
+| `WebAuthenticationSessionPresenter` | `AuthorizationPresenting` | Shows the sign-in page in an `ASWebAuthenticationSession` sheet that closes itself |
+| `CryptoKitSHA256` | `SHA256Hashing` | Hardware-backed hashing for PKCE |
+
+## 7. `EventKitSource`
+
+- `EventKitSource` (`CalendarSource`, id `"eventkit"`, display name "Apple Calendar"): `requestAccess()` prompts for
+  full calendar access; every read requires it and otherwise throws `.needsPermission`. Calendars map
+  `allowsContentModifications` to `permissions.canEdit` and EventKit's calendar types to `CalendarKind`.
+  All-day events are normalised from EventKit's floating device-local dates to the canonical form in the device zone.
+  `changes()` yields `.calendarsChanged` on every `EKEventStoreChanged`. `init(store:)` lets a host or test share an
+  `EKEventStore`. Reads fill `version` (`lastModifiedDate`), `sourceID`, and, for events that recur or are detached
+  occurrences, `seriesID` (the `eventIdentifier`) and `originalStart` (`occurrenceDate`).
+- `EventKitConnectorKind` (`.system` authorization, macOS only): `authorize` requests access and returns the
+  synthesised `Connection` (`kindID: "eventkit"`, `connectionID: "this-mac"`); hosts do not persist it, and
+  `makeSource` returns the shared source.
+- **Writes:** `EventKitSource` conforms to `WritableCalendarSource` (part 10). Create, update and delete with all three scopes (subject to the spike in part 11); `respond`, attendee changes, `visibility` and generated conferences throw `.unsupported`; a read-only calendar is `.forbidden`. Inputs are validated before the access check.
+- Capabilities: no conference links, `.notification` sync, `canWrite`, `writableFields` = title, notes, location, timing, availability, reminders, recurrence, no attendee editing or RSVP, no notification control, all three scopes.
+
+## 8. `CalendarBridge` (TimeTug only)
+
+Core defines its own `CalendarSource` (`calendars() -> [CalendarInfo]`, `events(in:) -> [TimeTugCalendarEvent]`,
+`changes() -> AsyncStream<Void>`, and an optional `notices()`) and sees only one library type, `SourceNotice`.
+
+- `ConnectedSource` wraps any library source. It maps calendars to `CalendarInfo`, events to `TimeTugCalendarEvent`
+  (dropping cancelled ones), forwards every library change (including `.sourceFailed`) as a `Void` yield, and translates
+  `needsPermission` and `authExpired` to Core's `SourceError`. Cancelling the consumer cancels the inner stream.
+- `TimeTugCalendarEvent { event, sourceID, conferenceURL, otherAttendeeCount, responseStatus, merge state… }` carries the
+  library event as is. Its `id` also appends the start time, because recurring events share a source event id but
+  differ in start.
+
+## 9. Rules for implementing a connector
+
+1. Conform to `CalendarSource`; add `PollingCalendarSource` and use `ChangeMonitor` when the provider has a cheap
+   incremental check.
+2. Throw only `SourceError` (and `WriteError` from write methods); map provider errors inside the module.
+3. Emit canonical all-day events and run your mapper fixtures through `AllDayConformance`.
+4. Set `id` to `Connection.sourceID` (unless a documented compatibility reason applies) and keep it stable across
+   `reauthorize`.
+5. Declare `capabilities` honestly; `calendars()` must set `service` and `permissions` per calendar.
+6. Keep secrets in the injected `CredentialStore` and persist nothing during a failed `authorize`.
+7. Test against `FakeTransport` (network) or pure mappers (local stores); no test may need a real account.
+8. To support writing, also conform to `WritableCalendarSource` (part 10), declare `writableFields`, `controlsNotifications` and `recurrenceScopes` honestly, throw `WriteError.unsupported` before changing anything for what you cannot write, and run `WritableSourceConformance` against a scratch calendar or a fake backend.
+
+## 10. Write capabilities (Phase 3)
+
+`docs/superpowers/specs/2026-09-23-calendar-connectors-phase3-design.md` is the design and rationale; this part is the
+contract as built. The types live in `CalendarCore` (`Write/`), so they are portable.
+
+**Opt-in.** Writing is an optional, separate protocol. A read-only connector never implements it.
+
+```swift
+public protocol WritableCalendarSource: CalendarSource {
+    func create(_ draft: EventDraft, in calendarID: String, notify: NotifyPolicy) async throws -> CalendarEvent
+    /// An empty patch writes nothing and returns the patch's `base`, or the current event when it has none.
+    func update(_ ref: EventRef, _ patch: EventPatch, scope: RecurrenceScope, notify: NotifyPolicy) async throws -> CalendarEvent
+    func delete(_ ref: EventRef, scope: RecurrenceScope, notify: NotifyPolicy) async throws
+    /// `response` must be `.accepted`, `.tentative` or `.declined`.
+    func respond(to ref: EventRef, _ response: ResponseStatus, scope: RecurrenceScope, notify: NotifyPolicy) async throws -> CalendarEvent
+}
+```
+
+Writes return the event in the provider's resulting form, including its new `version`. What a write on a series returns
+differs by connector, and callers that need instances re-read. Google: `create` with a recurrence, and the series-wide
+writes (`.allInSeries`, a `.thisAndFollowing` at the series' first occurrence, and the new series of a split), return the
+series master, now with `seriesID` set to its own id and `originalStart` to its start, so `EventRef(returned)` designates
+the whole series: a `.thisInstance` update, delete or respond on it throws `WriteError.invalid("this is a recurring series;
+use .allInSeries or read the occurrence first")` before any request (a single-instance write would otherwise hit the
+whole series). EventKit: the first occurrence. `scope` is ignored for an event that is not part of a series.
+
+**Three levels of "can I write?"**
+1. Conformance to `WritableCalendarSource` (checked by callers with `as?`). Invariant: `capabilities.canWrite` is true
+   exactly when the source conforms (a convention; `WritableSourceConformance` only checks that it is true on a writable source).
+2. `capabilities` (part 3.3): `writableFields` (what create/update can write, including `.recurrence`),
+   `controlsNotifications` and `recurrenceScopes`, alongside `canEditAttendees` (true exactly when `.attendees` is
+   writable) and `canRespondToInvite`. `writableFields` and `recurrenceScopes` are empty unless `canWrite`, and `canRespondToInvite` implies `canWrite` (conventions upheld by the read-only defaults and unit tests; the conformance checks verify only `canEditAttendees == writableFields.contains(.attendees)`).
+3. `CalendarDescriptor.permissions` per calendar (`canEdit == false` is `.forbidden`).
+
+**Unsupported means an error, never a partial write.** A write that touches something the connector cannot represent
+throws `WriteError.unsupported`, naming the fields, before any write request or store change. `WriteValidation.requireWritable(_:_:)`
+is the shared check of a set of fields against `writableFields`.
+
+```swift
+public enum EventField: String, Sendable, Hashable, CaseIterable { case title, notes, location, timing, availability, visibility, reminders, attendees, recurrence, conference }
+public enum NotifyPolicy: Sendable, Hashable { case all, externalOnly, none }        // required argument, no default
+public enum RecurrenceScope: Sendable, Hashable, CaseIterable { case thisInstance, thisAndFollowing, allInSeries }
+public enum ConferenceRequest: Sendable, Hashable { case none, generate }    // on a draft
+public enum ConferenceChange: Sendable, Hashable { case generate, remove }   // on a patch
+public enum WriteError: Error, Sendable, Equatable {
+    case unsupported(fields: Set<EventField>)   // the connector cannot write these (or the operation; RSVP is reported as .attendees)
+    case conflict(fields: Set<EventField>)      // someone else changed a field this patch touches
+    case notFound                               // the event or calendar is gone
+    case forbidden(String?)                     // read-only calendar or no permission on the event
+    case invalid(String)                        // malformed input (end before start, needsAction RSVP, bad rule, ...)
+    case partial(String)                        // a multi-step write stopped half way (Google .thisAndFollowing)
+}   // auth, network, rate-limit and 5xx stay SourceError
+public struct EventRef: Hashable, Sendable {
+    var calendarID: String; var eventID: String
+    var version: String?; var seriesID: String?
+    var originalStart: Date?   // the occurrence's slot in its series; identifies it when eventID is shared, and is the .thisAndFollowing split point
+    init(calendarID:eventID:version:seriesID:originalStart:)
+    init(_ event: CalendarEvent)
+}
+```
+
+A ref with a `seriesID` but no `originalStart` is handled per connector. Google: only `.thisAndFollowing` needs it (it throws `.invalid`, "this and following needs the occurrence's original start"); `.thisInstance`, `.allInSeries` and `respond` never read it, except that an `.allInSeries` update with a timing change and no `originalStart` is `.unsupported(fields: [.timing])`. EventKit: `.thisInstance` and `.thisAndFollowing` throw `.invalid` (a recurring occurrence is located by its original start); `.allInSeries` starts from the series' first occurrence and needs it only for a timing change (`.unsupported(fields: [.timing])` without it).
+`NotifyPolicy` with `controlsNotifications == false` is accepted only when nobody else would be told (EventKit: only for
+an event with no other attendees; otherwise `.unsupported(fields: [.attendees])`). CalDAV: only when the write tells nobody
+else (no attendees other than the account on create, update and delete); `respond` always tells the organizer, so it needs `.all`.
+
+**Models.**
+- `EventTiming { start, end, timeZone, isAllDay }`: time is one unit, in the canonical all-day form; `validate()` throws
+  `.invalid` for a non-finite time, `end <= start`, or an all-day timing without a zone or off midnight in it.
+- `AttendeeDraft(email:name:role:)`: `Hashable`; the email is trimmed and lowercased on init.
+- `EventDraft` (create): `title`, `timing`, `notes`, `location`, `availability` (`.busy`), `visibility` (`.default`),
+  `reminders` (`nil` = calendar defaults, empty = none), `attendees: [AttendeeDraft]`, `conference: ConferenceRequest`,
+  `recurrence: RecurrenceRule?`. `validate()` checks timing, recurrence, attendee emails and non-negative reminders;
+  `usedFields` is what the draft sets beyond defaults. `EventDraft(copying: event, for: capabilities)` is the one lenient
+  path: it carries over what the target's `writableFields` allow and drops the rest (self and email-less attendees
+  are dropped, an empty reminder list becomes `nil`, only a Meet link is re-requested, recurrence is never copied).
+- `EventPatch` (update): optional fields where `nil` means keep (`title`, `timing`, `availability`, `visibility`,
+  `attendees`, `conference`) and `FieldUpdate<Value>` = `.keep` (default), `.set(value)` or `.clear` where clearing is
+  meaningful (`notes`, `location`, `reminders`, `recurrence`; `.clear` on reminders means the calendar defaults). Attendees are a
+  delta, `AttendeeChanges(add:remove:)`, never a replacement list; `add` upserts by email (an existing attendee keeps their
+  response). `touchedFields` and `isEmpty` describe what it changes. `private(set) var base: CalendarEvent?` is the original the
+  patch was diffed from (`nil` for a hand-built patch), which is what lets conflicts be judged per field.
+  `EventPatch(from: original, to: edited)` computes the minimal patch and sets `base`. It compares title, notes, location,
+  timing, availability, visibility, reminders and attendees (by normalized email), plus removal of `conference`, and ignores
+  provider-owned fields, a changed or added conference, recurrence, the account owner (the `isSelf` attendee), and a name
+  cleared to `nil` with the role unchanged (an `AttendeeDraft` cannot express clearing a name). `withoutBase()` drops the
+  base; `applied(to:)` applies a patch to an event (used by the in-memory test source; `.clear` reminders gives nil, the calendar's defaults).
+- `EventEdit(original)` with `event` (the working copy), `patch` and `hasChanges` for callers that want tracked edits.
+- `RecurrenceRule`: frequency (daily/weekly/monthly/yearly), interval, weekdays with optional ordinal, month days,
+  months, and end (`.never`, `.count(n)`, `.until(date)`), with `init(rrule:in:)`, `validate()` and
+  `rruleString(allDay:in:)`. Anything outside this RFC 5545 subset (`BYSETPOS`, `BYHOUR`, sub-daily frequencies,
+  `COUNT` with `UNTIL`, a daily rule with `BYDAY`, ...) throws `WriteError.unsupported(fields: [.recurrence])`. EXDATE and RDATE are not
+  authorable; removing one occurrence is a `delete` with `.thisInstance`.
+
+**Conflicts.** A write sends `If-Match: ref.version` where the provider supports it (Google etag) or compares
+`lastModifiedDate` (EventKit). The shared helper in `CalendarCore` does the rest:
+
+```swift
+public enum PatchMerge {
+    public enum Attempt<Result> { case done(Result), stale }
+    public static func conflicts(patch: EventPatch, current: CalendarEvent) -> Set<EventField>
+    public static func apply<Result>(patch: EventPatch, version: String?, maxAttempts: Int = 3,
+        fetchCurrent: () async throws -> CalendarEvent,
+        write: (String?) async throws -> Attempt<Result>) async throws -> Result
+}
+```
+
+On `.stale` it fetches the current event and compares only the fields the patch touches against the patch's `base`
+(timing as a unit; `nil` and `""` equal for notes and location; reminder order ignored; attendees only for the emails the
+patch adds or removes, and an attendee someone else already changed to the wanted state is not a conflict). No difference:
+the patch is re-applied on the fresh version and re-judged if it goes stale again. A difference: `WriteError.conflict(fields:)`.
+`maxAttempts` is clamped to at least 1, cancellation is checked per attempt, and after the last attempt it throws
+`.conflict(fields: touchedFields)`. A patch without a `base` (or that touches `recurrence`) conflicts on any stale
+version. It fails closed when a retry is due, the write was versioned and the fresh event carries no `version`:
+retrying without one would be an unconditional write that could overwrite an edit made after the fetch, so it throws
+`.conflict(fields: touchedFields)`. Only a write that started unversioned (no `ref.version`) retries unconditionally.
+
+`delete` ignores `ref.version` on both connectors (no `If-Match`, no modification-date check): it is last-writer-wins,
+so deleting an event that someone else edited meanwhile deletes it anyway.
+
+**Provider mapping.**
+
+| Operation | Google | EventKit |
+|---|---|---|
+| create | `POST …/events?sendUpdates=…` (`conferenceDataVersion=1` for a generated Meet link) | `EKEvent` save |
+| update | `PATCH` of changed fields only, `If-Match`; attendee changes fetch the current event and send the full array | mutate and save |
+| delete | `DELETE …?sendUpdates=…` | `remove` with span |
+| respond | fetch, set own attendee's `responseStatus`, `PATCH` the full array with the fetched etag (a 412 restarts, three tries) | `.unsupported(fields: [.attendees])` |
+| `.thisInstance` | instance id (own etag) | `.thisEvent` |
+| `.allInSeries` | master id (an instance ref sends no `If-Match`, since its etag differs from the master's; a master ref keeps the lock, its version being the master's) | first occurrence with `.futureEvents`; no version check |
+| `.thisAndFollowing` | delete truncates the master's RRULE `UNTIL`; update truncates then inserts a new series (client-chosen id; rollback only after a definite failure; `.partial` if the rollback fails or the outcome is unknown; a patch that sets or clears `recurrence` replaces or omits the new series' rule instead of copying the master's); `respond` is `.unsupported(fields: [.attendees])` | `.futureEvents` |
+
+An `.allInSeries` update that changes timing is refused with `.unsupported(fields: [.timing])` unless `ref` is the
+series' first occurrence (the series' start equals `ref.originalStart`), on Google and EventKit: callers read expanded
+instances, so an instance's date would otherwise move the whole series' start.
+
+EventKit's declared capabilities: writes yes, `writableFields` = title, notes, location, timing, availability, reminders
+and recurrence, all three scopes, RSVP no, attendee editing no, notification control no. It refuses attendee changes,
+`respond`, `visibility` and a generated conference with `.unsupported`, and update or delete on a read-only calendar with
+`.forbidden` (an empty-patch update returns before that check). Its writes validate input before checking calendar access.
+
+A recurrence change (`.set` or `.clear`) with `.thisInstance` on an occurrence of a series is refused on both
+connectors with `.unsupported(fields: [.recurrence])`, before any request or store mutation: a rule belongs to the whole
+series (use `.allInSeries`, or `.thisAndFollowing` on Google, which starts a new series with the rule). EventKit, when a
+failed save leaves the in-memory event edited, discards it with `rollback()`.
+
+**Known limitations of Google's `.thisAndFollowing` (a split is a truncation plus a new series, not a native operation).**
+The new series starts at the occurrence's original slot with the master's length, so a moved occurrence does not move
+the following ones; a patch that sets `timing` applies its time to the new series instead. Beyond that:
+- Notifications: the truncation, the insert and any restore of the master's rule all carry the caller's `NotifyPolicy`, so on
+  an update guests may receive two messages (the cut and the new series). External iTIP guests would otherwise keep the
+  old series and also get the new one. A caller who wants silence passes `.none`.
+- If the split occurrence was moved and the patch sets no `timing`, it snaps back to its original slot in the new series,
+  and its old exception may linger next to it.
+- If the truncating `PATCH` fails in a way that may have been applied (a 5xx, a broken connection, a cancellation) on an
+  update, the connector restores the master's original rule (unconditionally, with the caller's `sendUpdates` policy, even if the caller was
+  cancelled) and rethrows the original error, so a retry is safe; if the restore fails too the result is
+  `WriteError.partial` naming both errors. A definite failure (412 as `.conflict([.recurrence])`, 400, 403, 404, auth or rate
+  limit) is not restored. A delete keeps the plain error: the truncation is the operation and repeating it is harmless.
+- An occurrence after the split point that was cancelled (deleted through the API) is not carried over: only `EXDATE`
+  lines are, so the cancelled occurrence may reappear in the new series.
+- The carried `EXDATE` lines keep the old time of day, so if the patch changes the series' time they no longer match the
+  new series' occurrences.
+- A modified exception after the split point stays with the old series. Whether Google still shows it past the old
+  series' new `UNTIL` (a possible duplicate next to the new series' own occurrence) is UNVERIFIED; the live smoke test
+  prints what the calendar shows (`LIVE split with later exceptions ...`) and the answer has not been recorded yet.
+
+**Testing seams (`CalendarTestSupport`).** `FakeWritableSource` is an in-memory `WritableCalendarSource` (non-recurring
+events, `writeCount`, `simulateExternalEdit`). `WritableSourceConformance.violations(of:calendarID:window:)` runs the
+behavior every writable source must have (create and read back, update touches only patched fields, empty patch writes
+nothing, unwritable fields throw `.unsupported`, delete and delete-again `.notFound`) and returns a list of violations;
+it runs against the fake and, live and opt-in, against the real EventKit source. Google is covered by request-shape tests
+with `FakeTransport`. Live tests are gated by `TIMETUG_LIVE_EVENTKIT=1` and `TIMETUG_LIVE_GOOGLE=1` and never run in CI.
+
+**Out of scope for Phase 3:** TimeTug write UI, cross-calendar link orchestration (kept in TimeTug's local store, not in
+provider metadata; a `metadata` field and capability can be added later without breaking this API), Microsoft, CalDAV.
+
+## 11. Known gaps
+
+- **EventKit identifiers and write behavior (unverified).** EventKit's `eventIdentifier` is, to our knowledge, shared by
+  every occurrence of a series (TimeTug's wrapper id already appends the start time for this reason), so the read model's
+  per-instance `eventID` promise is not kept for EventKit; writes identify the occurrence by `EventRef.originalStart`
+  (`occurrenceDate`). Reads now fill `seriesID`, `originalStart` and `version`. The EventKit spike has not been run: it
+  must confirm the shared identifier, the predicate lookup of a moved occurrence, `.futureEvents` on the first
+  occurrence, `refresh()` on a deleted event and `lastModifiedDate` granularity. Run
+  `TIMETUG_LIVE_EVENTKIT=1 swift test --package-path Packages/EventKitSource --filter eventKit` (see the spec's Risks).
+  This command runs inside a `timetug` checkout: `Packages/EventKitSource` is a package of that repository, not of this one.
+- **Google write behavior beyond the fake transport (unverified).** `supportsAttachments=true` on a split with
+  attachments, the Meet re-request on a new series, and the `COUNT` arithmetic (assumes `events.instances?showDeleted=true`
+  includes EXDATE'd occurrences) are checked only against the fake transport until the Google smoke test confirms them.
+  The same goes for how a split treats exceptions after the split point (see the known limitations in part 10).
+- **Reminder defaults.** Reads tell "the calendar's defaults" (`isCalendarDefault == true`) from "none" (`[]`) from "unknown" (nil). Writers accept reminders relative to the start with an on-screen alert (Google also email to the owner, 0 to 40320 minutes, at most 5; EventKit also absolute and location triggers and a sound); anything else throws `.unsupported(fields: [.reminders])` before any request. `EventDraft(copying:)` keeps unknown as defaults, `[]` as none, a list that is all calendar defaults as defaults, and otherwise copies only plain start-relative alerts. A patch or merge compares reminders as a set (ignoring order and `isCalendarDefault`).
+- **OAuth clients in release builds.** The Google client id and secret and the Microsoft client id are injected from
+  git-ignored configuration locally, and from optional repository secrets by `scripts/ci/google-oauth-config.sh` and
+  `scripts/ci/microsoft-oauth-config.sh` in the beta and release workflows (see `AGENTS.md`).
+- **Microsoft behavior beyond the fake transport (unverified).** Everything in part 12 is tested against fakes; the
+  opt-in live smoke test and the manual checklist in the Phase 4 spec are what confirm it against real accounts.
+- **CalDAV behavior beyond the fake server (unverified until the live run).** Everything in part 13 is tested against
+  an in-memory CalDAV server; the opt-in iCloud smoke test and the manual checklist in the Phase 5 spec confirm it
+  against iCloud. Other servers (Fastmail, Nextcloud) are untested live. `SCHEDULE-AGENT=CLIENT` is not used, so a
+  write that would email someone needs `NotifyPolicy.all`.
+
+## 12. `MicrosoftCalendar` (Phase 4)
+
+`docs/superpowers/specs/2026-09-25-calendar-connectors-phase4-microsoft-design.md` is the design and rationale; this part
+is the contract as built. Public surface: `MicrosoftOAuthConfig(clientID:redirectHost:)`,
+`MicrosoftConnectorKind(config:transport:now:sleep:pollInterval:hasher:)` (since 1.2.0 also `MicrosoftBrokeredConnectorKind`, part 15), and the `CalendarSource` returned by
+`makeSource` (id `microsoft-<connectionID>`), which is a `WritableCalendarSource`, a `SeriesSource` and a
+`PollingCalendarSource`. Everything else (the Graph client, DTOs and mappers) is internal. The connector is a small REST client over
+`HTTPTransport` and needs no Microsoft SDK.
+
+- **Kind:** id `microsoft`, display name "Microsoft", all platforms, `.oauth`. A public client: PKCE, no client secret,
+  the `common` authority (`https://login.microsoftonline.com/common/oauth2/v2.0/...`), so personal and work or school
+  accounts both sign in. Scopes: `offline_access`, `User.Read`, `MailboxSettings.Read`, `Calendars.Read` and
+  `Calendars.Read.Shared` (shared and delegated calendars). They are read-only for now (ADR 0017), so the source's write
+  methods fail with a 403 until the scopes are widened to `Calendars.ReadWrite` and `Calendars.ReadWrite.Shared`. Authorization requests carry `prompt=select_account` so a
+  browser already signed in to one Microsoft account does not silently pick it. A work account outside the registering
+  tenant may need its admin to approve the app while it has no verified publisher; that surfaces as the sign-in error,
+  it is not worked around. `invalid_grant` and `interaction_required` from the token endpoint are `.authExpired`.
+- **Redirect:** the registration lists `http://localhost` (Microsoft ignores the port for a loopback redirect).
+  `MicrosoftOAuthConfig.redirectHost` defaults to `localhost` and replaces the host in the redirect URI the session
+  reports (`127.0.0.1:<port>`); the loopback listener still binds the loopback interface. `nil` keeps the session's own host.
+- **Connection:** after the code exchange, `GET /me?$select=mail,userPrincipalName`; `config["email"]` and `displayName`
+  are `mail`, else `userPrincipalName`, lowercased. `reauthorize` throws `invalidResponse("signed in as a different
+  account")` on another identity. A response without a refresh token is `invalidResponse`. Secrets are stored only after
+  sign-in succeeds; a rotated refresh token is written back by `AccessTokenProvider`.
+- **Capabilities:** `canWrite`, `canEditAttendees`, `canRespondToInvite`, `.token` sync, every `EventField` writable, all
+  three recurrence scopes, `controlsNotifications == false`. Graph has no `sendUpdates`: on create, update and delete it
+  emails attendees as the server sees fit and `NotifyPolicy` is accepted and ignored. `respond` alone honors it:
+  `sendResponse` is false for `.none` and true otherwise. `providedFields` are Google's list without `.defaultReminders`
+  (Graph calendars carry no reminder defaults; `defaultReminders` is nil).
+- **Account time zone.** Times need a zone per calendar (which anchors all-day dates). Every calendar of the account gets the
+  mailbox's zone from `GET /me/mailboxSettings/timeZone`, a Windows or IANA name turned into a `TimeZone` by `WindowsTimeZones`
+  (a two-way table, pure Swift). A refused scope (403) or a name outside the table is UTC, so `CalendarDescriptor.timeZone` is
+  never nil; a network or server failure is rethrown instead, so events are not read in the wrong zone. The zone is read on each
+  `calendars()` call and remembered for `events(in:)`. Event reads send `Prefer: outlook.timezone="<name>"`, so an all-day event
+  falls on the date the user sees; a timed event's `timeZone` is its `originalStartTimeZone` when Graph gives one, else the
+  account zone.
+- **Reads:** `GET /me/calendars` (owned and shared; `hexColor` is the only color source, there is no fallback from Graph's
+  color name), then per calendar `calendarView` for the window, paged with `@odata.nextLink` (links must stay on
+  `graph.microsoft.com`), occurrences expanded, cancelled events dropped. Every request sends
+  `Prefer: IdType="ImmutableId"`; event reads also send `Prefer: outlook.body-content-type="text"` (an HTML body is stripped
+  to text anyway). A calendar that answers 404 or 403 is skipped. 429, 503 and 504 retry up to three times honoring
+  `Retry-After` (else jittered exponential backoff), then `.rateLimited` or `.server`; 401 refreshes once, then
+  `.authExpired`. `EventRef.seriesID` of an occurrence is the series master's id; a series master is its own series
+  (`seriesID` = its id, `originalStart` = its start).
+- **Change detection:** one `calendarView/delta` link per calendar (window now minus 30 days to now plus 365 days, pages of
+  200), stored in the `SyncStateStore` with its baseline date. The first call baselines and reports nothing; a poll walks to
+  the last page and reports `.eventsChanged(calendarIDs:)` when any item (including a removal) arrived. A baseline older than
+  14 days is renewed after the poll (so the window always keeps at least 16 days back and 350 days ahead), and so is one
+  Graph answers with 410 or a resync error; both report a change, because the renewal discards what it lists. A changed set
+  of calendars is `.calendarsChanged`.
+- **Writes** (`WritableCalendarSource`, part 10). A write validates before the first request. Graph has no `If-Match`
+  for events, so optimistic locking is a read just before the write, judged by `PatchMerge` against `EventPatch.base`
+  (a change landing between that read and the write is not caught). Limits, each reported as `WriteError.unsupported`
+  before any request:
+  - one reminder per event: an empty list turns it off, one plain on-screen start-relative reminder turns it on; several,
+    a repeat, an email or an end-relative one are refused, and `.clear` on reminders cannot be expressed (there is no
+    calendar default to fall back to);
+  - a recurrence can be set (rules Graph can express; Graph has one ordinal per pattern, no fifth, one month day, one
+    month for a yearly rule, and only a Monday week start) but not removed (`.clear` throws);
+  - a generated conference is a Teams meeting (`teamsForBusiness`); a personal account may refuse it, which comes back
+    as an error;
+  - `iCalUId` is read-only in Graph: `EventDraft.uid` is used only for the duplicate check (a lookup of
+    `iCalUId eq '<uid>'` on the target calendar; a hit throws `WriteError.alreadyExists(storedCopy)`) and is not stored, so
+    a created event has its own uid.
+  A `.thisInstance` write addresses the occurrence's own id (never looked up by `originalStart`); `.allInSeries` addresses the
+  master, and a timing change there needs the first occurrence (like Google and EventKit). A patch's timing is written as a
+  local `dateTime` plus a Windows zone name (a zone with no Windows name is written in UTC with the same instants); an
+  attendee patch sends the full list, as Graph replaces it; reminders and notes are text. Delete is a plain `DELETE`.
+  `respond` posts `accept`, `tentativelyAccept` or `decline`; `.needsAction` is `.invalid`, `.thisAndFollowing` is
+  `.unsupported(fields: [.attendees])`. Errors: 404 and 410 `.notFound`, 403 `.forbidden`, 400 `.invalid`; 409 and 412 are
+  unexpected (no write sends a precondition or a chosen id) and become `SourceError.invalidResponse`.
+- **`.thisAndFollowing`** is a truncation plus a new series, like Google's. At the series' first occurrence it is the same as
+  `.allInSeries`. Otherwise the master's range is rewritten to end the day before the split (`endDate`), and (for an update)
+  a new series is inserted from the occurrence's original slot, carrying the master's fields plus the patch. A `numbered`
+  range continues with the remaining count: the occurrences before the split are counted through the master's `instances`
+  endpoint, which may not list a deleted occurrence, so the count can be short. The insert carries a `transactionId`:
+  if its reply is lost it is sent once more and the server returns the first result. Anything that can fail without changing
+  anything happens before the truncation; if the insert fails for good the master's rule is restored (even when the
+  caller was cancelled); `WriteError.partial` reports a failed restore, or an insert whose outcome is unknown after the
+  retry. A truncation whose reply is lost on an update is restored too. The split point is `EventRef.originalStart`,
+  which is what an occurrence's `originalStart` provides. `NotifyPolicy` does not apply.
+- **`SeriesSource`:** `series(id:calendarID:)` reads the master and returns its rule and start. An unknown id, a cancelled
+  master or one that is not a `seriesMaster` with a recurrence is `SourceError.notFound`. Graph v1.0 does not list the
+  skipped or extra dates of a series, so `excludedDates` and `extraDates` are nil (as for EventKit); a pattern the mapper does not
+  know is kept in `unparsed`. The mapper reads every pattern Graph produces (`daily`, `weekly`, `absoluteMonthly`,
+  `relativeMonthly`, `absoluteYearly`, `relativeYearly`; `noEnd`, `numbered`, `endDate` as the end of that date in the
+  range's zone).
+- **Testing.** Unit tests run on `FakeTransport` in `MicrosoftCalendarTests` (with `AllDayConformance`,
+  `ProvidedFieldsConformance` and `WritableSourceConformance`). The live smoke test is opt-in and never runs in CI:
+  `TIMETUG_LIVE_MICROSOFT=1 MICROSOFT_OAUTH_CLIENT_ID=<your client id> swift test --package-path Packages/CalendarApple --filter microsoftWriteSmoke`
+  (interactive sign-in; writes events named "TimeTug write smoke" to the primary calendar and deletes them).
+  This command runs inside a `timetug` checkout: `Packages/CalendarApple` is a package of that repository, not of this one.
+
+## 13. `ICalendar` and `CalDAVCalendar` (Phase 5)
+
+`docs/superpowers/specs/2026-09-27-calendar-connectors-phase5-caldav-design.md` is the design (its "As built" section
+lists the differences and the known limitations); ADR 0016 records why iCalendar and expansion live in the library.
+Public surface: `ICloudConnectorKind(transport:now:sleep:pollInterval:)`,
+`CalDAVConnectorKind(transport:now:sleep:pollInterval:)`, the `CalDAVCalendarSource` returned by `makeSource` (a
+`WritableCalendarSource`, a `SeriesSource` and a `PollingCalendarSource`), and the `ICalendar` product. The WebDAV
+client, XML and discovery are internal.
+
+- **Kinds:** `icloud` ("iCloud", server `https://caldav.icloud.com`, credentials allowed to `icloud.com` and its
+  subdomains, provider `.iCloud`) and `caldav` ("Other CalDAV", server entered, credentials allowed to that host and its
+  subdomains, provider `.calDAV`). Both use service `.calDAV`, all platforms, and `.password(fields:)`: `username` and
+  `password` (secret), plus `serverURL` for `caldav`. Both adopt `CredentialPromptHelp` (help text; iCloud links to
+  account.apple.com for app-specific passwords). A server address without a scheme gets `https://`; plain `http` is
+  refused except to `localhost` and `127.0.0.1`.
+- **Sign-in:** the kind prompts once, then discovers: `PROPFIND` on `/.well-known/caldav` (then the entered URL on 404,
+  405 or 501), `current-user-principal`, then `calendar-home-set` and `calendar-user-address-set`, then `OPTIONS` for the
+  `DAV:` header. Nothing is stored until discovery succeeds. `Connection.config` holds `serverURL`, `username`,
+  `principalURL`, `homeURL`, `userAddresses` (newline-separated) and `autoSchedule`; the credential store holds
+  `username` and `password`. `displayName` is the user name for iCloud and when it contains "@", else `user@host`.
+  `reauthorize` throws `invalidResponse("signed in as a different account")` when the principal path or the host base
+  differs. A 401 is `.authExpired`. Retrying a rejected password is the host's job (TimeTug's sheet reopens with the
+  error).
+- **Transport and security:** Basic auth, UTF-8, only over HTTPS (or the loopback exception) and only to the allowed
+  hosts. The transport does not follow redirects (`URLSessionTransport(followsRedirects: false)`); `WebDAVClient`
+  follows up to 5 itself (303 becomes `GET`), checks every hop and every `href` against the host rule, and refuses
+  anything else with `invalidResponse`. 429 and 503 are `.rateLimited`, other 5xx `.server`. The password is never
+  in an error or a log.
+- **Calendars:** collections under the home with the `calendar` resource type that accept `VEVENT` (scheduling inbox
+  and outbox and notification collections are skipped). The id is the path below the home without the trailing slash
+  (stable across partition hosts). Colour from `calendar-color`, zone from `calendar-timezone` (else the source's
+  default zone), permissions from `current-user-privilege-set` (a server that reports none is treated as the owner's
+  own calendar; a subscribed calendar is read-only and has kind `.subscribed`). `isDefault` comes from
+  `schedule-default-calendar-URL` (on the principal or its scheduling inbox) when the server has one, else nil.
+- **Events:** `calendar-query` for the window, then client-side expansion (ADR 0016). A resource with overrides and no
+  master (an invitation to one occurrence) shows its overrides. `eventID` is the resource name, plus `#` and the
+  original start for an occurrence; `version` is the ETag; `uidScope` is `.global`. A `STATUS:CANCELLED` component is
+  read with `status == .cancelled`; the connector does not drop it (`CalendarBridge` does).
+- **Change detection:** `PROPFIND` depth 1 on the home for `getctag` and `sync-token`; a changed calendar set is
+  `.calendarsChanged`; a changed token runs `sync-collection` and reports `.eventsChanged(calendarIDs:)`. An invalid
+  token re-baselines and reports the calendar changed; a server without `sync-token` falls back to the ctag. The first
+  call is the baseline.
+- **Writes:** every write is a whole-resource `PUT` with `If-Match` (create uses `If-None-Match: *` and a new
+  `<uuid>.ics`), driven by `PatchMerge`; a stale write retries through `PatchMerge` and conflicts only on the fields both
+  sides changed. `.thisInstance` adds or edits an override; deleting an occurrence adds an `EXDATE` (with `If-Match`,
+  retried three times, then `conflict([.recurrence])`); `.allInSeries` delete is a plain `DELETE`. `.thisAndFollowing`
+  after the first occurrence truncates the master (`UNTIL`, or `COUNT` minus the instances before the split) and
+  creates a new resource with a new UID that carries the later overrides and `EXDATE`s (shifted when the start moves);
+  if the new resource cannot be stored the original is restored, and a failed or stale restore is `WriteError.partial`.
+  A draft's `uid` is used for the duplicate check (a `calendar-query` by UID; a hit is `alreadyExists`). `conference`
+  is not writable. `controlsNotifications == false`: the server schedules on its own, so a write that would tell
+  someone else with a policy other than `.all` throws `unsupported(fields: [.attendees])` before any write request (someone
+  else is an attendee or organizer that is not the account). `respond` sets the account's `PARTSTAT` on its own
+  attendee entry, always needs `.all` (the organizer is told) and needs `canRespondToInvite`.
+- **`SeriesSource`:** `series(id:calendarID:)` GETs the resource and returns the master's rules, `RDATE`s and
+  `EXDATE`s; an unknown id or a non-recurring resource is `.notFound`.
+- **Testing.** `CalDAVCalendarTests` run against `FakeCalDAVServer` (an in-memory `HTTPTransport`) with
+  `WritableSourceConformance`, `AllDayConformance` and `ProvidedFieldsConformance`. The live smoke test is opt-in and
+  never runs in CI: `TIMETUG_LIVE_ICLOUD=1 swift test --filter iCloudLiveSmoke`
+  (credentials from `~/.config/timetug/icloud-live`; writes only to a calendar named "TimeTug Live Test" and deletes only
+  the events it made, whose titles start with "TimeTug write smoke").
+
+## 14. `ICalSubscription` (Phase 6)
+
+One connector kind, `icalsub` ("iCal link"), reads a private calendar subscription link: a `webcal://` or `https://` address that serves a `VCALENDAR` (Meetup's Add to calendar links, a Google secret address, an Outlook published calendar). Design: `docs/superpowers/specs/2026-10-06-ical-subscription-link-design.md`; the credential decision is ADR 0018.
+
+- **Sign-in.** One secret field, `link`. `FeedLocation.url(from:)` maps `webcal`/`webcals` to `https`, allows plain `http` only for the loopback host, and refuses a link with a user name or password, a `file://` URL and a path. The feed is fetched and parsed before anything is stored; a feed with no events is valid.
+- **What is stored.** The link, in the `CredentialStore` under `link`. `Connection.config` is `["host": <host>]` and the display name is `"<calendar name> (<host>)"`, or the host alone. The link never appears in a message, `description` or log.
+- **Source.** `ICalSubscriptionSource` is a read-only `PollingCalendarSource` with one calendar, id `feed` (service `icalsub`, provider `.subscription`, kind `.subscribed`). The parsed feed is reused while younger than the poll interval (15 minutes). A feed is one `VCALENDAR`, so events are grouped by `UID` into one `EventResource` each and read with `EventReader`; an event without a `UID` gets a stable made-up one from its start and title.
+- **Fetching.** `FeedFetcher` follows redirects itself (at most 5, only to `https`), refuses a body larger than 10 MB once it has arrived (it is not aborted while streaming), and sends `If-None-Match` / `If-Modified-Since` only when a previous body is held and the server supplied validators (never on a redirect hop), and only when a conditional request was sent does a 304 count as unchanged. A redirect to an address with a user name or password is refused, and a transport failure whose message or error would carry the link is reported as a generic `SourceError.network`. 401, 403, 404 and 410 are `SourceError.authExpired` (the link was revoked or regenerated); 429 and 5xx are `SourceError.server(status:)`; a 200 that is not a calendar, any other status, a redirect with no usable `Location` or to a non-`https` address, and too many redirects are `SourceError.invalidResponse`, and the last good feed is kept.
+- **Retention.** `ICalSubscriptionKind(retention: RetentionWindow?)` (default `nil`: the library keeps everything). With a `RetentionWindow(daysBack:daysAhead:)`, a UID group (one event, or a series with its overrides) with no occurrence overlapping `[now - daysBack, now + daysAhead]` (by the injected clock, at each fetch) is dropped right after parsing; a group with at least one overlapping occurrence is kept whole, and so is a group whose `RRULE` cannot be read (`RecurrenceSet.hasUnreadableRule`: its occurrences are unknown, so it cannot be shown to be outside the window; it is reported as `rruleUnreadable`). The test is `EventReader.events(in:overlapping:context:)`, so rules, `RDATE`, `EXDATE` and overrides (moved in or out) count, all-day and zero-length events follow the reader's overlap rule, and expansion stays inside the window (an old unbounded series is cheap). TimeTug passes 3 days back (so multi-day and boundary-straddling events and time zone or daylight-saving edges are not lost) and 7 days ahead. Sign-in never rejects a feed because everything is outside the window.
+- **Change detection.** Each poll refetches the feed and compares what was retained (the header and the retained events, serialized), not the raw body, with what the last check saw, so an edit to an event outside the window is not a change; a 304 re-reads the held body, so an event that has come into the window as time passed is reported; a difference is `.eventsChanged(calendarIDs: ["feed"])`, independent of what `events(in:)` loaded since. The first check with nothing loaded is the baseline; a feed loaded earlier by `events(in:)` counts as the baseline. Each fetch takes a generation number when it starts: a fetch that finishes after a newer one neither replaces the stored feed nor reports a change, so overlapping calls report a change once. Nothing is persisted (`SyncStateStore` is not used by this kind), so after an app relaunch the first check re-baselines.
+- **Capabilities.** `canWrite = false`, `syncKind = .token`. Provided fields: `series`, `uidScope`, `provider`, `calendarTimeZone`. `participation`, `visibility`, `availability` and `reminders` are not declared: a feed may or may not carry them.
+- **Diagnostics.** `ICalSubscriptionKind(diagnostics:)` (default none) reports to a `DiagnosticLog` (section 3.10), category `icalsub`. Events: `fetchCompleted` (info: `status`, `conditional`, `notModified`, `hops`, `bytes`, and `ms` only when the source was given a clock), `fetchFailed` (warning: `reason` is one of `authExpired`, `server`, `network`, `invalidResponse`, `tooLarge`, `tooManyRedirects`, `redirectRefused`; `status` when there was one), `feedParsed` (info: `eventsInFeed`, `groupsKept`, `groupsDropped`, `retentionActive`, `unreadableRules`), `feedNotCalendar` (warning), `rruleUnreadable` (notice: private `uid`, or `syntheticUID: true` instead when the feed gave the event no UID of its own; logged once per unreadable rule, again if the rule is edited or breaks again, so a poll does not repeat it; the sign-in check logs it every time), `syntheticUID` (info: `count`), `changeReported` / `changeSuppressed` (info; a new body arrived but no change was reported: `reason` `unchangedRetained` when the retained events did not change, `staleFetch` when a newer check had already reported), `signInAccepted` / `signInRejected` (`reason` token only: `feedLoaded`, `invalidLink`, `authExpired`, `server`, `network`, `invalidResponse`). Never the link, its path or query, or any event text; the only strings are fixed tokens and private UIDs. A leak test enforces this.
+- **Not supported.** A downloaded `.ics` file (a one-time copy that would go stale), writes and RSVP, more than one feed per account.
+
+## 15. External token sources (release 1.2.0)
+
+For hosts whose operating system keeps the account: Windows' Web Account Manager (WAM) today, a mobile account broker
+later. The library never sees a password or a refresh token for such an account; the host's account service owns the
+sign-in, MFA, policy and refresh token, and the library asks it for short-lived access tokens. Design:
+`docs/superpowers/specs/2026-10-30-phase-6-wam-sign-in-design.md` in `timetug`. Everything here is an addition to 1.1.0:
+no existing symbol, message or persisted file changed.
+
+`CalendarCore` (all `public` and `Sendable`; structs, so later options are additive):
+
+```swift
+public struct ExternalAccount: Hashable {            // the host's account; `id` is authoritative
+    var id: String; var email: String?; var connectionID: ConnectionID?
+    init(id: String, email: String? = nil, connectionID: ConnectionID? = nil)
+}
+public struct ExternalAccessToken: Equatable { var accessToken: String; var expiresAt: Date }
+public struct ExternalSignInRequest {                 // account nil: a first sign-in; email: a picker hint
+    var account: ExternalAccount?; var email: String?; var scopes: [String]
+}
+public struct ExternalSignInResult { var account: ExternalAccount; var token: ExternalAccessToken }
+
+public protocol ExternalTokenSource: Sendable {
+    func accessToken(for: ExternalAccount, scopes: [String], forceRefresh: Bool) async throws -> ExternalAccessToken
+    func signIn(_: ExternalSignInRequest) async throws -> ExternalSignInResult
+}
+public protocol AccountIdentityFamily { var identityFamily: String { get } }   // optional; hosts check with `as?`
+```
+
+- **`ExternalTokenSource` contract.** `accessToken` is silent: it never shows user interface, and throws
+  `SourceError.authExpired` when the person must act (consent withdrawn, password changed, policy), `SourceError.network`
+  when offline. `forceRefresh` asks the host to skip its own cache (the library sends it once after a 401). `signIn` is the
+  host's own interactive sign-in; it throws `CancellationError` when the person dismisses the dialog (the library adds
+  nothing and shows no error) and may take as long as the person takes. Any other error is mapped to
+  `SourceError.invalidResponse` without the underlying description, because it could carry account data.
+- **`AccountIdentityFamily`** says that kinds with the same family and the same account name are one person's account.
+  `MicrosoftConnectorKind` and `MicrosoftBrokeredConnectorKind` both answer `"microsoft"`. A kind without it is its own
+  family (its kind id). The library does not enforce anything; a host's "already added" check uses it.
+
+`CalendarOAuth`:
+
+- `AccessTokenSupplying` (`accessToken()`, `invalidate()`), adopted by the existing `AccessTokenProvider` (a
+  conformance only) and by the new actor `ExternalAccessTokenProvider(account:scopes:source:now:)`. It serves a cached
+  token until 60 s before `expiresAt`; concurrent callers share one in-flight request; `invalidate()` drops the cache and
+  makes the next request pass `forceRefresh: true` (once). It never loops: a token the host returns already expired is
+  returned as it is, not cached, and the next call asks again.
+
+`MicrosoftCalendar`:
+
+- `MicrosoftBrokeredConnectorKind(tokenSource:transport:now:sleep:pollInterval:)`: id `microsoft-brokered`, display name
+  "Microsoft", all platforms, `.oauth` (no new `AuthorizationMethod` case). The host decides whether to offer it by
+  registering it. `scopes` is `MicrosoftConnectorKind.scopes` without `offline_access`, still read-only (ADR 0017).
+- `authorize`: `signIn` with no account, then `GET /me?$select=mail,userPrincipalName` with the returned token. The
+  email is Graph's (`mail`, else `userPrincipalName`, lowercased), never the host's claim. The connection is
+  `{kindID: "microsoft-brokered", displayName: <email>, config: {email, authMode: "external", externalAccountID}}`;
+  `externalAccountID` is the host's opaque account id. No secret is stored, and nothing is persisted if a step fails.
+- `reauthorize`: `signIn` with the stored account (`externalAccountID`, `email`, `connectionID`) and the stored email
+  as the hint; without a stored id the person picks, so a connection that `makeSource` rejected can be repaired. Another
+  email throws `invalidResponse("signed in as a different account")`; the result keeps its `connectionID` and takes
+  the new `externalAccountID`.
+- `makeSource`: the Graph source of part 12 with an `ExternalAccessTokenProvider`. A connection without
+  `externalAccountID` throws `invalidResponse("the account settings are incomplete; sign in again")`. Errors follow
+  part 12: a 401 invalidates once and retries with `forceRefresh`, a second 401 is `authExpired`; the host's
+  `authExpired` and `network` pass through.
+- Persisted: `Tests/PersistedFormats/1.2.0/` holds a brokered connection (`connections.json`) and its sync state
+  (`sync-state.json`, the same keys as a browser Microsoft connection), loaded by the `PersistedFormatTests`. A library older than 1.2.0 reading such a connection finds no kind and reports an unknown
+  account type.
+
+`CalendarTestSupport`: `FakeExternalTokenSource` scripts `accessToken` and `signIn` answers (each consumed in order, the
+last repeated) and records the calls, for this library's tests and for hosts'.
+
+## 16. Rust API (2.x)
+
+Moved: the Rust API reference is [api.md](api.md). Part 16.2 (what differs from Swift) is its section 9.
+
+## Calendar identity and permissions
+
+- **Service vs provider.** `service` is the connector a calendar is read through; `provider` is who hosts it. A Google calendar read directly has service and provider Google; read through Apple Calendar its service is EventKit and its provider is whatever EventKit reports. EventKit's provider comes from the account **type** only (`.local`, `.exchange` gives Microsoft, `.mobileMe` gives iCloud, `.calDAV` gives CalDAV, subscribed and birthday feeds give subscription); the account title is user-editable and never read. The same calendar may therefore read as CalDAV through EventKit and as Google through a direct connection.
+- **`isDefault`.** Google: `primary`. EventKit has one default calendar across all accounts: true for it, false for its siblings in the same account, nil for other accounts.
+- **Permissions.** Google roles map onto Graph-style flags (owner: view, edit, share, private; writer: view, edit, private; reader: view; freeBusyReader: none). EventKit: `canViewDetails` true, `canEdit` = `allowsContentModifications`, `canShare` and `canViewPrivate` nil (listed as `.permissionDetails` only by sources that fill them).
+- **Availability.** `Availability.closest(in:)` maps a value a calendar cannot store to the nearest one it can (tentative and unavailable to busy then free, busy to free, free to busy). A write returns the provider's stored copy; `EventDraft.adjustments(comparedTo:)` and `EventPatch.adjustments(comparedTo:)` report `.availability` and `.visibility` when the stored value differs. Reminder defaults, attendee order, all-day zones and text are provider normalization, not reported.
+- **Event dates.** `lastModified` and `created` (nil when the source does not say); `version` stays the opaque equality token.
+
+- **Copying and duplicates.** `EventDraft.uid` (only a `.global` uid is copied) makes `create` look for that event on the target calendar first; if it exists, `create` throws `WriteError.alreadyExists(storedCopy)` and writes nothing. Google stores the uid as `iCalUID` (unverified live); EventKit cannot set a UID and matches on `calendarItemExternalIdentifier` among the events around the draft's time.
+
+## Recurrence
+
+- `RecurrenceRule` (in `CalendarCore/Recurrence/`) is one type for reading and writing; see ADR 0015. `RecurrenceRule(rrule:in:)` throws `RecurrenceParseError.malformed` only for malformed text; `validate()` decides whether a rule can be written and throws `WriteError.unsupported(fields: [.recurrence])` for what no writer can express (sub-daily frequencies, `BYYEARDAY`, `BYWEEKNO`, `BYSETPOS`, `BYHOUR`, `BYMINUTE`, `BYSECOND`, a non-Monday `WKST`, unrecognized parts). `rruleString(allDay:in:)` renders every part in a fixed order.
+- `RecurrenceSet { rules, extraDates?, excludedDates?, unparsed }`, `init(iCalendarLines:timeZone:isAllDay:)` and `iCalendarLines(timeZone:isAllDay:)` read and write `RRULE`, `EXDATE` and `RDATE` (`TZID=`, UTC, floating and `VALUE=DATE` forms); lines it does not model are kept in `unparsed`.
+- `CalendarSeries { seriesID, calendarID, start, timeZone, isAllDay, recurrence }` and `protocol SeriesSource: CalendarSource { func series(id:calendarID:) async throws -> CalendarSeries }`. A source declares `ProvidedField.recurrenceRules` exactly when it conforms. An unknown id or an id that does not recur throws `SourceError.notFound`.
+- Google: the master's `recurrence` lines and `start`. EventKit: `EKRecurrenceRule` mapped; `extraDates` and `excludedDates` are nil (EventKit cannot list them). Microsoft: Graph's `patternedRecurrence` mapped (part 12); `extraDates` and `excludedDates` are nil too. CalDAV: the master's `RRULE`, `RDATE` and `EXDATE` lines (part 13). `CalDAVCalendar` also expands recurrence client-side with `RecurrenceSet.occurrences` (ADR 0016); the other connectors read occurrences the provider expanded.
+
+## Attendee addresses
+
+`Attendee.email` is the only identifier: a connector resolves a participant to an email before creating the `Attendee`, and if it cannot the attendee keeps its name with a nil email (no raw id is kept). `CalendarUserAddress.email(from:)` is the shared, I/O-free parser. EventKit resolves the rest through Contacts inside the connector (automatic, non-blocking access; see ADR 0012), which is why the host app needs `NSContactsUsageDescription` and the `com.apple.security.personal-information.addressbook` entitlement.

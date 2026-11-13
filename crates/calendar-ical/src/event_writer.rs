@@ -18,9 +18,11 @@ use crate::event_resource::EventResource;
 use crate::ical_values::ICalValues;
 use crate::time_zone_resolver::TimeZoneResolver;
 
+/// Builds and edits `VEVENT`s from drafts and patches.
 pub enum EventWriter {}
 
 impl EventWriter {
+    /// The `PRODID` this library writes into calendars it creates.
     pub const PRODUCT_ID: &'static str = "-//TimeTug//CalendarConnectors//EN";
 
     /// A new `VEVENT`. With attendees, `organizer_address` (the account's `mailto:` address) becomes the organizer and
@@ -116,6 +118,7 @@ impl EventWriter {
         )
     }
 
+    /// Replaces `DTSTART` and `DTEND` with `timing` (UTC when it carries no zone) and removes `DURATION`.
     pub fn set_timing(timing: &EventTiming, vevent: &mut ICalComponent) {
         let zone = timing.time_zone.clone().unwrap_or_else(Zone::utc);
         vevent.set(EventWriter::date_property(

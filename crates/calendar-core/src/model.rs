@@ -12,22 +12,53 @@ use crate::url_string::UrlString;
 raw_enum! {
     /// What a calendar is, for grouping and defaults: `birthdays` and `subscribed` (holidays, read-only feeds) are
     /// system-style calendars that rarely deserve a takeover.
-    pub enum CalendarKind { Standard = "standard", Subscribed = "subscribed", Birthdays = "birthdays" }
-}
-
-raw_enum! {
-    pub enum AccessRole {
-        Owner = "owner", Writer = "writer", Reader = "reader", FreeBusyReader = "freeBusyReader"
+    pub enum CalendarKind {
+        /// An ordinary calendar of events.
+        Standard = "standard",
+        /// A read-only feed, such as holidays or a subscription link.
+        Subscribed = "subscribed",
+        /// The birthdays calendar kept by the system or provider.
+        Birthdays = "birthdays",
     }
 }
 
 raw_enum! {
-    pub enum EventStatus { Confirmed = "confirmed", Tentative = "tentative", Cancelled = "cancelled" }
+    /// How much an account may do on a calendar; a summary of `CalendarPermissions`.
+    pub enum AccessRole {
+        /// Can edit events and manage who has access.
+        Owner = "owner",
+        /// Can edit events but not manage access.
+        Writer = "writer",
+        /// Can see event details but not edit.
+        Reader = "reader",
+        /// Can see only whether times are busy.
+        FreeBusyReader = "freeBusyReader",
+    }
 }
 
 raw_enum! {
+    /// Whether an event is firm, provisional or called off.
+    pub enum EventStatus {
+        /// The event is on.
+        Confirmed = "confirmed",
+        /// The event is provisional.
+        Tentative = "tentative",
+        /// The event was cancelled.
+        Cancelled = "cancelled",
+    }
+}
+
+raw_enum! {
+    /// How an event counts against its owner when scheduling.
     pub enum Availability {
-        Busy = "busy", Free = "free", Tentative = "tentative", Unavailable = "unavailable"
+        /// Shown as busy.
+        Busy = "busy",
+        /// Shown as free.
+        Free = "free",
+        /// Provisionally busy.
+        Tentative = "tentative",
+        /// Unavailable, for example out of office.
+        Unavailable = "unavailable",
     }
 }
 
@@ -51,16 +82,34 @@ impl Availability {
 }
 
 raw_enum! {
+    /// Who may see an event's details.
     pub enum Visibility {
-        Default = "default", PublicEvent = "publicEvent", PrivateEvent = "privateEvent",
-        Confidential = "confidential"
+        /// Follows the calendar's own default.
+        Default = "default",
+        /// Details are visible to everyone who can see the calendar.
+        PublicEvent = "publicEvent",
+        /// Details are hidden from others who can see the calendar.
+        PrivateEvent = "privateEvent",
+        /// Marked confidential by the provider.
+        Confidential = "confidential",
     }
 }
 
 raw_enum! {
+    /// A special type of event, where the provider has one.
     pub enum EventKind {
-        Standard = "standard", FocusTime = "focusTime", OutOfOffice = "outOfOffice",
-        WorkingLocation = "workingLocation", Birthday = "birthday", Other = "other"
+        /// An ordinary event.
+        Standard = "standard",
+        /// A block of focus time.
+        FocusTime = "focusTime",
+        /// The owner is out of office.
+        OutOfOffice = "outOfOffice",
+        /// Says where the owner works that day.
+        WorkingLocation = "workingLocation",
+        /// A birthday.
+        Birthday = "birthday",
+        /// A type the library does not model.
+        Other = "other",
     }
 }
 
@@ -68,27 +117,51 @@ raw_enum! {
     /// Where an event's `uid` can be compared: `.global` is an iCalendar UID, the same across any source; `.provider`
     /// is a provider-specific id (an Exchange object id) that only equals the ids of events from the same service and
     /// provider. (Swift `UIDScope`.)
-    pub enum UidScope { Global = "global", Provider = "provider" }
-}
-
-raw_enum! {
-    pub enum ResponseStatus {
-        Accepted = "accepted", Tentative = "tentative", Declined = "declined", NeedsAction = "needsAction"
+    pub enum UidScope {
+        /// An iCalendar UID, the same in every source.
+        Global = "global",
+        /// A provider-specific id, comparable only with events from the same service and provider.
+        Provider = "provider",
     }
 }
 
 raw_enum! {
-    pub enum AttendeeRole { Required = "required", Optional = "optional", Resource = "resource" }
+    /// An attendee's answer to an invitation.
+    pub enum ResponseStatus {
+        /// Will attend.
+        Accepted = "accepted",
+        /// May attend.
+        Tentative = "tentative",
+        /// Will not attend.
+        Declined = "declined",
+        /// Has not answered.
+        NeedsAction = "needsAction",
+    }
+}
+
+raw_enum! {
+    /// The part an attendee plays in an event.
+    pub enum AttendeeRole {
+        /// Expected to attend.
+        Required = "required",
+        /// Invited but not required.
+        Optional = "optional",
+        /// A room or piece of equipment rather than a person.
+        Resource = "resource",
+    }
 }
 
 /// Whether an event repeats. A real "no" has its own case, so `None` stays "the source does not say".
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum SeriesInfo {
+    /// The event does not repeat.
     NotRecurring,
     /// An instance of a series. `original_start` is the instance's slot in the series (it differs from `start` for a
     /// moved instance); `None` when the provider knows the series but not the slot.
     Occurrence {
+        /// Id shared by every instance of the series (and by its master).
         series_id: String,
+        /// The slot this instance occupies in the series.
         original_start: Option<Timestamp>,
     },
 }
@@ -96,14 +169,33 @@ pub enum SeriesInfo {
 /// The account owner's relation to an event. `NotInvited` is a real answer (an event you are not on).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum Participation {
+    /// The account owner is not an invitee.
     NotInvited,
+    /// The account owner is invited and has given this response.
     Invited(ResponseStatus),
 }
 
 raw_enum! {
+    /// The service that hosts a conference link.
     pub enum ConferenceProvider {
-        Meet = "meet", Teams = "teams", Zoom = "zoom", Webex = "webex", GoToMeeting = "goToMeeting",
-        Whereby = "whereby", Jitsi = "jitsi", Slack = "slack", Other = "other"
+        /// Google Meet.
+        Meet = "meet",
+        /// Microsoft Teams.
+        Teams = "teams",
+        /// Zoom.
+        Zoom = "zoom",
+        /// Webex.
+        Webex = "webex",
+        /// GoTo Meeting.
+        GoToMeeting = "goToMeeting",
+        /// Whereby.
+        Whereby = "whereby",
+        /// Jitsi.
+        Jitsi = "jitsi",
+        /// Slack huddles.
+        Slack = "slack",
+        /// A link with no recognised service, such as an event page.
+        Other = "other",
     }
 }
 
@@ -111,18 +203,33 @@ raw_enum! {
     /// Where a conference link came from, so consumers can decide how far to trust it. (`EventUrl` is Swift's
     /// `eventURL`.)
     pub enum ConferenceOrigin {
-        Structured = "structured", Location = "location", Url = "url", Notes = "notes", EventUrl = "eventURL"
+        /// Given by the provider as structured conference data.
+        Structured = "structured",
+        /// Found in the event's location text.
+        Location = "location",
+        /// Found in the event's url.
+        Url = "url",
+        /// Found in the event's notes.
+        Notes = "notes",
+        /// The event's own url, used as the link because nothing else was found.
+        EventUrl = "eventURL",
     }
 }
 
+/// A person or resource on an event.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Attendee {
+    /// Display name, if the provider gives one.
     pub name: Option<String>,
     /// Trimmed and lowercased; never empty. Set only through [`Attendee::new`] (Swift `private(set)`).
     email: Option<String>,
+    /// Whether the attendee is required, optional or a resource.
     pub role: AttendeeRole,
+    /// The attendee's answer to the invitation.
     pub response: ResponseStatus,
+    /// True when this attendee is the account the source belongs to.
     pub is_self: bool,
+    /// True when this attendee is the event's organizer.
     pub is_organizer: bool,
 }
 
@@ -147,6 +254,7 @@ impl Attendee {
         }
     }
 
+    /// The normalized email address, or `None` when the provider gave none.
     pub fn email(&self) -> Option<&str> {
         self.email.as_deref()
     }
@@ -166,10 +274,14 @@ impl Default for Attendee {
     }
 }
 
+/// A join link found on an event.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ConferenceInfo {
+    /// The link to open; always allowed by `JoinUrlPolicy`.
     pub url: UrlString,
+    /// The service that hosts the meeting.
     pub provider: ConferenceProvider,
+    /// Where the link was found.
     pub origin: ConferenceOrigin,
 }
 
@@ -218,7 +330,9 @@ impl ConferenceInfo {
 /// What a reminder counts from when it is relative to the event.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub enum ReminderAnchor {
+    /// The reminder is relative to the event's start.
     Start,
+    /// The reminder is relative to the event's end.
     End,
 }
 
@@ -240,7 +354,12 @@ fn hash_optional_f64<H: Hasher>(value: Option<f64>, state: &mut H) {
 pub enum ReminderTrigger {
     /// Seconds from the event's start or end; negative means before. EventKit's `relativeOffset`; `End` covers
     /// iCalendar `RELATED=END`, which EventKit cannot express.
-    Relative { offset: f64, to: ReminderAnchor },
+    Relative {
+        /// Seconds from the anchor; negative means before.
+        offset: f64,
+        /// Whether the offset counts from the event's start or its end.
+        to: ReminderAnchor,
+    },
     /// A fixed moment (EventKit `absoluteDate`).
     Absolute(Timestamp),
     /// Arriving at or leaving a place (EventKit `structuredLocation` and `proximity`).
@@ -270,31 +389,47 @@ impl Hash for ReminderTrigger {
 /// What the alert does, with its related value. `Other` keeps a provider value the library does not know.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub enum ReminderType {
+    /// An on-screen alert.
     #[default]
     Display,
+    /// An audible alert.
     Audio {
+        /// Name of the sound to play, if the provider names one.
         sound_name: Option<String>,
     },
     /// A `None` address means the account owner (Google).
     Email {
+        /// Address to send the email to; `None` means the account owner.
         address: Option<String>,
     },
+    /// A command or script to run (iCalendar `PROCEDURE`).
     Procedure {
+        /// What to run, if given.
         url: Option<UrlString>,
     },
+    /// A kind the library does not know, holding the provider's own name for it.
     Other(String),
 }
 
 raw_enum! {
-    pub enum ReminderProximity { Enter = "enter", Leave = "leave" }
+    /// Whether a location reminder fires on arriving at or leaving the place.
+    pub enum ReminderProximity {
+        /// Fires on arriving.
+        Enter = "enter",
+        /// Fires on leaving.
+        Leave = "leave",
+    }
 }
 
 /// A place, as plain values (no CoreLocation), so the library stays portable. Used by location reminders only; an
 /// event's own location stays the provider's raw text.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct StructuredLocation {
+    /// Name of the place.
     pub title: Option<String>,
+    /// Latitude in degrees.
     pub latitude: Option<f64>,
+    /// Longitude in degrees.
     pub longitude: Option<f64>,
     /// Metres; `None` means the platform default.
     pub radius: Option<f64>,
@@ -315,7 +450,9 @@ impl Hash for StructuredLocation {
 /// consumer decides which to honor and when to show them. It never filters, merges or schedules them.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Reminder {
+    /// When the reminder fires.
     pub trigger: ReminderTrigger,
+    /// What the reminder does.
     pub kind: ReminderType,
     /// How many more times it fires after the first (iCalendar REPEAT); 0 means once.
     pub repeat_count: i64,
@@ -433,6 +570,7 @@ macro_rules! string_backed {
                 $name(raw_value.into())
             }
 
+            /// The raw string value.
             pub fn raw_value(&self) -> &str {
                 &self.0
             }
@@ -448,9 +586,13 @@ string_backed! {
     /// The connector a calendar is read through (`ConnectorKind.id`): "eventkit", "google", "microsoft", "caldav",
     /// "icalsub". A string-backed value so a host can add its own without changing the library.
     CalendarService {
+        /// Apple's EventKit (Calendar app data on the device).
         event_kit = "eventkit",
+        /// Google Calendar API.
         google = "google",
+        /// Microsoft Graph.
         microsoft = "microsoft",
+        /// A CalDAV server.
         cal_dav = "caldav",
         /// An iCalendar subscription link (Meetup's Add to calendar links, a Google secret address, ...).
         ical_subscription = "icalsub",
@@ -463,7 +605,9 @@ string_backed! {
     /// source cannot tell. A string-backed value so hosts (and a CalDAV connector, which can pass the server's
     /// domain) can add their own.
     CalendarProvider {
+        /// Apple iCloud.
         icloud = "icloud",
+        /// Google.
         google = "google",
         /// Exchange, Outlook.com, Microsoft 365.
         microsoft = "microsoft",
@@ -481,9 +625,11 @@ string_backed! {
 pub struct CalendarPermissions {
     /// False means free/busy only.
     pub can_view_details: bool,
+    /// True when events can be created and changed on this calendar.
     pub can_edit: bool,
     /// Can manage who has access (Google's "owner"); `None` when the source does not say.
     pub can_share: Option<bool>,
+    /// Can see events marked private; `None` when the source does not say.
     pub can_view_private: Option<bool>,
 }
 
@@ -520,16 +666,21 @@ impl CalendarPermissions {
 /// One calendar within an account.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct CalendarDescriptor {
+    /// Calendar id, unique within its source.
     pub id: String,
+    /// Calendar name shown to the user.
     pub title: String,
     /// "#RRGGBB" uppercase, or `None` when unknown or invalid. Set through [`CalendarDescriptor::with_color_hex`].
     color_hex: Option<String>,
+    /// What the account may do on this calendar.
     pub permissions: CalendarPermissions,
     /// The calendar where new events go by default in its account; `None` when the source cannot tell.
     pub is_default: Option<bool>,
+    /// The calendar's own time zone, if known.
     pub time_zone: Option<Zone>,
     /// The owning account, e.g. the signed-in email.
     pub account_name: Option<String>,
+    /// What kind of calendar this is.
     pub kind: CalendarKind,
     /// The reminders a new event on this calendar gets when it does not set its own (Google's calendar defaults);
     /// `None` when the source does not say. Events with `useDefault` reminders carry these.
@@ -573,6 +724,7 @@ impl CalendarDescriptor {
         self
     }
 
+    /// The colour as `#RRGGBB` in upper case, or `None` when unknown or invalid.
     pub fn color_hex(&self) -> Option<&str> {
         self.color_hex.as_deref()
     }
@@ -600,6 +752,7 @@ impl CalendarDescriptor {
     }
 }
 
+/// One event, or one instance of a recurring event, as read from a source.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct CalendarEvent {
     /// Unique within its calendar (a recurring instance has its own id).
@@ -608,42 +761,55 @@ pub struct CalendarEvent {
     pub uid: Option<String>,
     /// What kind of id `uid` is; `None` when the source does not say (treated as `Provider`).
     pub uid_scope: Option<UidScope>,
+    /// Id of the calendar the event belongs to.
     pub calendar_id: String,
+    /// Event title; may be empty.
     pub title: String,
+    /// Free-text notes, `None` when empty.
     pub notes: Option<String>,
+    /// Location text as the provider gives it, `None` when empty.
     pub location: Option<String>,
     /// All-day: midnight of the first day in `time_zone`, `end` exclusive (midnight after the last day).
     pub start: Timestamp,
+    /// End instant; exclusive for an all-day event (midnight after the last day).
     pub end: Timestamp,
     /// The zone the event is shown in; always set. `start` and `end` (instants) are authoritative and this is a
     /// display hint: when the provider gives the event no zone the connector fills its fallback (Google: the
     /// calendar's zone, then UTC; EventKit: the device zone). An all-day event's days are read in this zone, not the
     /// device's.
     pub time_zone: Zone,
+    /// True for an event that spans whole days.
     pub is_all_day: bool,
+    /// Whether the event is confirmed, tentative or cancelled.
     pub status: EventStatus,
     /// The fields below marked "provided" follow one rule: a field listed in `SourceCapabilities.provided_fields` is
     /// never `None` on that source's events. A field that is not listed may be `None`, and `None` always means "this
     /// source does not say", never "none". A real "none" has its own value (`[]`, `NotRecurring`, `NotInvited`).
     /// Content fields every source supports (`notes`, `location`, `url`, `uid`, `organizer`) use `None` for "empty".
     pub availability: Option<Availability>,
+    /// Who may see the event's details, if the source says.
     pub visibility: Option<Visibility>,
+    /// The special type of the event, if the source says.
     pub kind: Option<EventKind>,
     /// Whether the event repeats and where it sits in its series.
     pub series: Option<SeriesInfo>,
+    /// The invitees, in the provider's order. Empty when there are none.
     pub attendees: Vec<Attendee>,
+    /// The organizer, if the event has one.
     pub organizer: Option<Attendee>,
     /// Join links, most likely first: the provider's structured links, then links found in the location, url and
     /// notes (see `ConferenceDetector`).
     pub conferences: Vec<ConferenceInfo>,
     /// An empty list means none; `None` means the source does not say.
     pub reminders: Option<Vec<Reminder>>,
+    /// The event's own link, `None` when it has none.
     pub url: Option<UrlString>,
     /// An opaque token that changes whenever the event changes; compare for equality only. Detects changes since a
     /// cached copy and is the base of optimistic writes (Google etag, EventKit modification date).
     pub version: Option<String>,
     /// When the provider last changed / first created the event; `None` when it does not say (EventKit may omit them).
     pub last_modified: Option<Timestamp>,
+    /// When the event was created, if the source says.
     pub created: Option<Timestamp>,
     /// The account owner's relation to the event, when the provider says.
     pub participation: Option<Participation>,
@@ -704,6 +870,7 @@ impl CalendarEvent {
         }
     }
 
+    /// The slot this instance occupies in its series; `None` for a single event and when the provider does not say.
     pub fn original_start(&self) -> Option<Timestamp> {
         match &self.series {
             Some(SeriesInfo::Occurrence { original_start, .. }) => *original_start,
