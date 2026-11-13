@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Prints the version a push to main should release.
+# Prints the version a push to the released branch should release
+# (--latest is the highest strict X.Y.Z tag reachable from the pushed commit, which release.yml computes with
+# `git tag --merged`, so on 1.x a 2.0.0 tag of the Rust line on main is never the base).
 #
 #   next-version.sh --latest <X.Y.Z or ""> --labels <comma-separated PR labels> [--override <X.Y.Z>]
 #

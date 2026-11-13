@@ -20,11 +20,15 @@ fail() { echo "FAIL: $*" >&2; exit 1; }
 "$PYTHON" - "$WORKFLOW" "$T/step.sh" "$T/step-env" <<'PY'
 import re, sys, yaml
 workflow, script, envfile = sys.argv[1:]
-job = yaml.safe_load(open(workflow))['jobs']['publish']
+document = yaml.safe_load(open(workflow))
+job = document['jobs']['publish']
 def check(condition, message):
     if not condition:
         sys.exit(f'FAIL: {workflow}: {message}')
-check(job.get('if') == "github.ref == 'refs/heads/main'", "job publish must run only for refs/heads/main")
+# This is the 1.x branch: the Swift line releases 1.x.y from here, and main (the Rust line) releases 2.x.
+triggers = document.get(True, document.get('on'))
+check(triggers.get('push') == {'branches': ['1.x']}, "the push trigger must be exactly the branch 1.x")
+check(job.get('if') == "github.ref == 'refs/heads/1.x'", "job publish must run only for refs/heads/1.x")
 check(job.get('environment') == 'publish', "job publish must use the publish environment")
 checkout = [s for s in job['steps'] if str(s.get('uses', '')).startswith('actions/checkout@')]
 check(len(checkout) == 1, "job publish must have exactly one checkout step")
@@ -38,6 +42,16 @@ open(envfile, 'w').write('\n'.join(sorted(steps[0].get('env', {}))) + '\n')
 PY
 [ "$(cat "$T/step-env")" = "$(printf 'GH_TOKEN\nOVERRIDE\nREPO\nSHA')" ] ||
   fail "the step's env changed ($(tr '\n' ' ' < "$T/step-env")); update this harness"
+
+# --- ci.yml on this branch: pushes to 1.x (not main) run the checks ---
+"$PYTHON" - ".github/workflows/ci.yml" <<'PY'
+import sys, yaml
+workflow = sys.argv[1]
+triggers = yaml.safe_load(open(workflow))
+triggers = triggers.get(True, triggers.get('on'))
+if triggers.get('push') != {'branches': ['1.x']}:
+    sys.exit(f'FAIL: {workflow}: the push trigger must be exactly the branch 1.x')
+PY
 
 # --- the notify job: pinned shape, then its dispatch step executed against a stub gh ---
 "$PYTHON" - "$WORKFLOW" "$T/notify.sh" <<'PY'
@@ -268,5 +282,20 @@ check "lower side-branch tag" 0 "version=1.2.1" 1
 # A reachable tag that is not strict X.Y.Z (a pre-release) is not the base.
 new_repo; tag 1.0.0; commit one; tag 1.1.0-rc1; commit two; run_step ""
 check "reachable pre-release tag" 0 "version=1.0.1" 2
+
+# 9. The 1.x line after the Rust 2.0.0 exists on main: 2.0.0 and its prereleases are not reachable from 1.x, so a
+# patch release from 1.x is 1.8.4 and a minor label gives 1.9.0 (the Mac keeps receiving 1.x fixes).
+new_repo; commit swift; tag 1.8.3
+git -C "$R" branch 1.x
+commit rust; tag 2.0.0-alpha.1; commit rust2; tag 2.0.0
+git -C "$R" checkout -q 1.x; commit fix; run_step ""
+check "1.x patch with 2.0.0 on main" 0 "version=1.8.4" 1
+grep -q "commits/$(git -C "$R" rev-parse HEAD)/pulls" "$STUB/calls" || fail "1.x: the API was not asked about HEAD"
+git -C "$R" rev-parse -q --verify refs/tags/2.0.0 >/dev/null || fail "1.x: the test setup lost the 2.0.0 tag"
+new_repo; commit swift; tag 1.8.3
+git -C "$R" branch 1.x
+commit rust; tag 2.0.0
+git -C "$R" checkout -q 1.x; commit fix; label HEAD "semver:minor"; run_step ""
+check "1.x minor with 2.0.0 on main" 0 "version=1.9.0" 1
 
 echo PASS
