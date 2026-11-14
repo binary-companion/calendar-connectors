@@ -1,0 +1,6 @@
+# Windows builds link the C runtime statically, so the engine is one DLL with no redistributable (design section 6.4).
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.aarch64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]

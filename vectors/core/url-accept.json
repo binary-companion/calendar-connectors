@@ -1,0 +1,3607 @@
+{
+  "area" : "core/url-accept",
+  "baseline" : "1.2.0",
+  "cases" : [
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com"
+      },
+      "name" : "url-accept-0001"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/"
+      },
+      "name" : "url-accept-0002"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://example.com/a/b?c=d#e",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://example.com/a/b?c=d#e"
+      },
+      "name" : "url-accept-0003"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://EXAMPLE.COM/Path",
+        "accepted" : true,
+        "host" : "EXAMPLE.COM",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://EXAMPLE.COM/Path"
+      },
+      "name" : "url-accept-0004"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://Example.COM:8443/x",
+        "accepted" : true,
+        "host" : "Example.COM",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://Example.COM:8443/x"
+      },
+      "name" : "url-accept-0005"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://example.com:80/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://example.com:80/"
+      },
+      "name" : "url-accept-0006"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com./",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com./"
+      },
+      "name" : "url-accept-0007"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com../",
+        "accepted" : true,
+        "host" : "example.com..",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com../"
+      },
+      "name" : "url-accept-0008"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://.example.com/",
+        "accepted" : true,
+        "host" : ".example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://.example.com/"
+      },
+      "name" : "url-accept-0009"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://exa mple.com/"
+      },
+      "name" : "url-accept-0010"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a%20b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a b"
+      },
+      "name" : "url-accept-0011"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a%20b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a%20b"
+      },
+      "name" : "url-accept-0012"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a%252",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a%2"
+      },
+      "name" : "url-accept-0013"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a%25zz",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a%zz"
+      },
+      "name" : "url-accept-0014"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%25",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/%"
+      },
+      "name" : "url-accept-0015"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/?q=a%20b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/?q=a b"
+      },
+      "name" : "url-accept-0016"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/?q=%E2%9C%93",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/?q=%E2%9C%93"
+      },
+      "name" : "url-accept-0017"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%C3%A9",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/é"
+      },
+      "name" : "url-accept-0018"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%E4%B8%AD%E6%96%87",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/中文"
+      },
+      "name" : "url-accept-0019"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/?q=%C3%A9",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/?q=é"
+      },
+      "name" : "url-accept-0020"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/#%C3%A9",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/#é"
+      },
+      "name" : "url-accept-0021"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://xn--mnchen-3ya.de/",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.de",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://münchen.de/"
+      },
+      "name" : "url-accept-0022"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://xn--fiq228c.example/",
+        "accepted" : true,
+        "host" : "xn--fiq228c.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://中文.example/"
+      },
+      "name" : "url-accept-0023"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://xn--mnchen-3ya.de/",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.de",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://xn--mnchen-3ya.de/"
+      },
+      "name" : "url-accept-0024"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://xn--938h.example/",
+        "accepted" : true,
+        "host" : "xn--938h.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://🙂.example/"
+      },
+      "name" : "url-accept-0025"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.xn--com-dma/",
+        "accepted" : true,
+        "host" : "example.xn--com-dma",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://EXAMPLE.comé/"
+      },
+      "name" : "url-accept-0026"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "example.com",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "example.com"
+      },
+      "name" : "url-accept-0027"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "www.example.com/path",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "www.example.com/path"
+      },
+      "name" : "url-accept-0028"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "//example.com/x",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "//example.com/x"
+      },
+      "name" : "url-accept-0029"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "/relative/path",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "/relative/path"
+      },
+      "name" : "url-accept-0030"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "relative",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "relative"
+      },
+      "name" : "url-accept-0031"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : ""
+      },
+      "name" : "url-accept-0032"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "%20",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : " "
+      },
+      "name" : "url-accept-0033"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://"
+      },
+      "name" : "url-accept-0034"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https:",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https:"
+      },
+      "name" : "url-accept-0035"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https:/",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https:/"
+      },
+      "name" : "url-accept-0036"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https:/example.com",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https:/example.com"
+      },
+      "name" : "url-accept-0037"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https:example.com",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https:example.com"
+      },
+      "name" : "url-accept-0038"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://"
+      },
+      "name" : "url-accept-0039"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http:///x",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http:///x"
+      },
+      "name" : "url-accept-0040"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https:///missing-host",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https:///missing-host"
+      },
+      "name" : "url-accept-0041"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "://example.com",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : ""
+      },
+      "input" : {
+        "string" : "://example.com"
+      },
+      "name" : "url-accept-0042"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1http://example.com"
+      },
+      "name" : "url-accept-0043"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "ht tp://example.com"
+      },
+      "name" : "url-accept-0044"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h+t.t-p://example.com",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "h+t.t-p"
+      },
+      "input" : {
+        "string" : "h+t.t-p://example.com"
+      },
+      "name" : "url-accept-0045"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "mailto:a@example.test",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "mailto"
+      },
+      "input" : {
+        "string" : "mailto:a@example.test"
+      },
+      "name" : "url-accept-0046"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "tel:+15555550100",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "tel"
+      },
+      "input" : {
+        "string" : "tel:+15555550100"
+      },
+      "name" : "url-accept-0047"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "javascript:alert(1)",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "javascript"
+      },
+      "input" : {
+        "string" : "javascript:alert(1)"
+      },
+      "name" : "url-accept-0048"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "data:text/html,hello",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "data"
+      },
+      "input" : {
+        "string" : "data:text/html,hello"
+      },
+      "name" : "url-accept-0049"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "file:///tmp/payload",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "file"
+      },
+      "input" : {
+        "string" : "file:///tmp/payload"
+      },
+      "name" : "url-accept-0050"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "file://localhost/tmp/x",
+        "accepted" : true,
+        "host" : "localhost",
+        "scheme" : "file"
+      },
+      "input" : {
+        "string" : "file://localhost/tmp/x"
+      },
+      "name" : "url-accept-0051"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "custom://example.com/run",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "custom"
+      },
+      "input" : {
+        "string" : "custom://example.com/run"
+      },
+      "name" : "url-accept-0052"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://zoom.us/join?confno=123",
+        "accepted" : true,
+        "host" : "zoom.us",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://zoom.us/join?confno=123"
+      },
+      "name" : "url-accept-0053"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://acme.zoom.us/join",
+        "accepted" : true,
+        "host" : "acme.zoom.us",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://acme.zoom.us/join"
+      },
+      "name" : "url-accept-0054"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "ZOOMMTG://ZOOM.US/join",
+        "accepted" : true,
+        "host" : "ZOOM.US",
+        "scheme" : "ZOOMMTG"
+      },
+      "input" : {
+        "string" : "ZOOMMTG://ZOOM.US/join"
+      },
+      "name" : "url-accept-0055"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg:///join",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg:///join"
+      },
+      "name" : "url-accept-0056"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "ftp://example.com/x",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "ftp"
+      },
+      "input" : {
+        "string" : "ftp://example.com/x"
+      },
+      "name" : "url-accept-0057"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://user:pass@example.com/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://user:pass@example.com/"
+      },
+      "name" : "url-accept-0058"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://user@example.com/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://user@example.com/"
+      },
+      "name" : "url-accept-0059"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://:pass@example.com/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://:pass@example.com/"
+      },
+      "name" : "url-accept-0060"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://user:@example.com/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://user:@example.com/"
+      },
+      "name" : "url-accept-0061"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://us%20er@example.com/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://us er@example.com/"
+      },
+      "name" : "url-accept-0062"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://127.0.0.1/",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://127.0.0.1/"
+      },
+      "name" : "url-accept-0063"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://127.0.0.1:99999/",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://127.0.0.1:99999/"
+      },
+      "name" : "url-accept-0064"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://256.256.256.256/",
+        "accepted" : true,
+        "host" : "256.256.256.256",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://256.256.256.256/"
+      },
+      "name" : "url-accept-0065"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://[::1]/",
+        "accepted" : true,
+        "host" : "::1",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://[::1]/"
+      },
+      "name" : "url-accept-0066"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://[::1]:8080/x",
+        "accepted" : true,
+        "host" : "::1",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://[::1]:8080/x"
+      },
+      "name" : "url-accept-0067"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://[2001:db8::1]/",
+        "accepted" : true,
+        "host" : "2001:db8::1",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://[2001:db8::1]/"
+      },
+      "name" : "url-accept-0068"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://[not-ipv6]/",
+        "accepted" : true,
+        "host" : "not-ipv6",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://[not-ipv6]/"
+      },
+      "name" : "url-accept-0069"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com:/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com:/"
+      },
+      "name" : "url-accept-0070"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://example.com:abc/"
+      },
+      "name" : "url-accept-0071"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://example.com:-1/"
+      },
+      "name" : "url-accept-0072"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com:0/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com:0/"
+      },
+      "name" : "url-accept-0073"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com:65536/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com:65536/"
+      },
+      "name" : "url-accept-0074"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%09",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/\t"
+      },
+      "name" : "url-accept-0075"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%0A",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/\n"
+      },
+      "name" : "url-accept-0076"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%00",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/\u0000"
+      },
+      "name" : "url-accept-0077"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://exa\tmple.com/"
+      },
+      "name" : "url-accept-0078"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "\thttps://example.com/"
+      },
+      "name" : "url-accept-0079"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%20",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/ "
+      },
+      "name" : "url-accept-0080"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a%5Cb",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a\\b"
+      },
+      "name" : "url-accept-0081"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https:%5C%5Cexample.com%5Cx",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https:\\\\example.com\\x"
+      },
+      "name" : "url-accept-0082"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a%7Cb",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a|b"
+      },
+      "name" : "url-accept-0083"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a%5Eb",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a^b"
+      },
+      "name" : "url-accept-0084"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%7Bx%7D",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/{x}"
+      },
+      "name" : "url-accept-0085"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%3Cx%3E",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/<x>"
+      },
+      "name" : "url-accept-0086"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%22x%22",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/\"x\""
+      },
+      "name" : "url-accept-0087"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a%60b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a`b"
+      },
+      "name" : "url-accept-0088"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://exa_mple.com/",
+        "accepted" : true,
+        "host" : "exa_mple.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://exa_mple.com/"
+      },
+      "name" : "url-accept-0089"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://exa-mple.com/",
+        "accepted" : true,
+        "host" : "exa-mple.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://exa-mple.com/"
+      },
+      "name" : "url-accept-0090"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://-example.com/",
+        "accepted" : true,
+        "host" : "-example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://-example.com/"
+      },
+      "name" : "url-accept-0091"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example-.com/",
+        "accepted" : true,
+        "host" : "example-.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example-.com/"
+      },
+      "name" : "url-accept-0092"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com?x=1",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com?x=1"
+      },
+      "name" : "url-accept-0093"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com#frag",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com#frag"
+      },
+      "name" : "url-accept-0094"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/#",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/#"
+      },
+      "name" : "url-accept-0095"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/?",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/?"
+      },
+      "name" : "url-accept-0096"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/??a?b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/??a?b"
+      },
+      "name" : "url-accept-0097"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/#%23a",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/##a"
+      },
+      "name" : "url-accept-0098"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a/../b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a/../b"
+      },
+      "name" : "url-accept-0099"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/./b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/./b"
+      },
+      "name" : "url-accept-0100"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com//b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com//b"
+      },
+      "name" : "url-accept-0101"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%2e%2e/b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/%2e%2e/b"
+      },
+      "name" : "url-accept-0102"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/a;b=c;d",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/a;b=c;d"
+      },
+      "name" : "url-accept-0103"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://x.test:8443/a;b",
+        "accepted" : true,
+        "host" : "x.test",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://x.test:8443/a;b"
+      },
+      "name" : "url-accept-0104"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://acme.zoom.us/j/123456789?pwd=abc",
+        "accepted" : true,
+        "host" : "acme.zoom.us",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://acme.zoom.us/j/123456789?pwd=abc"
+      },
+      "name" : "url-accept-0105"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://meet.google.com/abc-defg-hij",
+        "accepted" : true,
+        "host" : "meet.google.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://meet.google.com/abc-defg-hij"
+      },
+      "name" : "url-accept-0106"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2",
+        "accepted" : true,
+        "host" : "teams.microsoft.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://teams.microsoft.com/l/meetup-join/19%3ameeting?a=1&b=2"
+      },
+      "name" : "url-accept-0107"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://www.google.com/url?q=https://acme.zoom.us/j/1&sa=D",
+        "accepted" : true,
+        "host" : "www.google.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://www.google.com/url?q=https://acme.zoom.us/j/1&sa=D"
+      },
+      "name" : "url-accept-0108"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fteams.microsoft.com%2Fl%2Fmeetup-join%2F0&data=05",
+        "accepted" : true,
+        "host" : "nam02.safelinks.protection.outlook.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://nam02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fteams.microsoft.com%2Fl%2Fmeetup-join%2F0&data=05"
+      },
+      "name" : "url-accept-0109"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "url-accept-0110"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.example/",
+        "accepted" : true,
+        "host" : "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.example/"
+      },
+      "name" : "url-accept-0111"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/?q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/?q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&q=1&"
+      },
+      "name" : "url-accept-0112"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%EF%BC%8E",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/．"
+      },
+      "name" : "url-accept-0113"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example。com/"
+      },
+      "name" : "url-accept-0114"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://example.com／x"
+      },
+      "name" : "url-accept-0115"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://ｅxample.com/"
+      },
+      "name" : "url-accept-0116"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%E2%80%AEx",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/‮x"
+      },
+      "name" : "url-accept-0117"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com/%E2%80%8B",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com/​"
+      },
+      "name" : "url-accept-0118"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://0x7f.1/",
+        "accepted" : true,
+        "host" : "0x7f.1",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://0x7f.1/"
+      },
+      "name" : "url-accept-0119"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://2130706433/",
+        "accepted" : true,
+        "host" : "2130706433",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://2130706433/"
+      },
+      "name" : "url-accept-0120"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "http://example.com:80:80/"
+      },
+      "name" : "url-accept-0121"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "http://[::1"
+      },
+      "name" : "url-accept-0122"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "http://::1/"
+      },
+      "name" : "url-accept-0123"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "http://exa[mple.com/"
+      },
+      "name" : "url-accept-0124"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "http://exa]mple.com/"
+      },
+      "name" : "url-accept-0125"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "geo:37.786971,-122.399677",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "geo"
+      },
+      "input" : {
+        "string" : "geo:37.786971,-122.399677"
+      },
+      "name" : "url-accept-0126"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "sms:+15555550100",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "sms"
+      },
+      "input" : {
+        "string" : "sms:+15555550100"
+      },
+      "name" : "url-accept-0127"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-apple.systempreferences:",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "x-apple.systempreferences"
+      },
+      "input" : {
+        "string" : "x-apple.systempreferences:"
+      },
+      "name" : "url-accept-0128"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://example.com/cal.ics",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://example.com/cal.ics"
+      },
+      "name" : "url-accept-0129"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcals://example.com/cal.ics",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "webcals"
+      },
+      "input" : {
+        "string" : "webcals://example.com/cal.ics"
+      },
+      "name" : "url-accept-0130"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTP://EXAMPLE.COM",
+        "accepted" : true,
+        "host" : "EXAMPLE.COM",
+        "scheme" : "HTTP"
+      },
+      "input" : {
+        "string" : "HTTP://EXAMPLE.COM"
+      },
+      "name" : "url-accept-0131"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://u:p@example.com/a",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://u:p@example.com/a"
+      },
+      "name" : "url-accept-0132"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://ex%41mple.com/a%5Cb",
+        "accepted" : true,
+        "host" : "exAmple.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://ex%41mple.com/a\\b"
+      },
+      "name" : "url-accept-0133"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://xn--mnchen-3ya.example",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://xn--mnchen-3ya.example"
+      },
+      "name" : "url-accept-0134"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-custom://ex%41mple.com/a%20b",
+        "accepted" : true,
+        "host" : "exAmple.com",
+        "scheme" : "x-custom"
+      },
+      "input" : {
+        "string" : "x-custom://ex%41mple.com/a%20b"
+      },
+      "name" : "url-accept-0135"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "zoommtg://exa mple.com/a#f"
+      },
+      "name" : "url-accept-0136"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h:///a?b=c%20d",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h:///a?b=c d"
+      },
+      "name" : "url-accept-0137"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://-bad-.example/a?b=c%20d",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://-bad-.example/a?b=c d"
+      },
+      "name" : "url-accept-0138"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://example.com",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://example.com"
+      },
+      "name" : "url-accept-0139"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://example.com/a%252",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://example.com/a%2"
+      },
+      "name" : "url-accept-0140"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://-bad-.example/a",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://-bad-.example/a"
+      },
+      "name" : "url-accept-0141"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://ex%41mple.com/a",
+        "accepted" : true,
+        "host" : "exAmple.com",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://ex%41mple.com/a"
+      },
+      "name" : "url-accept-0142"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://xn--mnchen-3ya.example/a?b=c%20d",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://münchen.example/a?b=c d"
+      },
+      "name" : "url-accept-0143"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://xn--mnchen-3ya.example",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://münchen.example"
+      },
+      "name" : "url-accept-0144"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://xn--mnchen-3ya.example/a?b=c%20d",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://xn--mnchen-3ya.example/a?b=c d"
+      },
+      "name" : "url-accept-0145"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://xn--mnchen-3ya.example/a%20b",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://xn--mnchen-3ya.example/a b"
+      },
+      "name" : "url-accept-0146"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "x-custom://exa mple.com/a?b=c d"
+      },
+      "name" : "url-accept-0147"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://xn--mnchen-3ya.example/a#f",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://xn--mnchen-3ya.example/a#f"
+      },
+      "name" : "url-accept-0148"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-custom://example.com%2F/a%20b",
+        "accepted" : true,
+        "host" : "example.com/",
+        "scheme" : "x-custom"
+      },
+      "input" : {
+        "string" : "x-custom://example.com%2F/a b"
+      },
+      "name" : "url-accept-0149"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "http://exa mple.com/a\\b"
+      },
+      "name" : "url-accept-0150"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://-bad-.example/%C3%A9",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://-bad-.example/é"
+      },
+      "name" : "url-accept-0151"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://xn--mnchen-3ya.example/%F0%9F%99%82",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://xn--mnchen-3ya.example/🙂"
+      },
+      "name" : "url-accept-0152"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "h://exa mple.com/a%20b"
+      },
+      "name" : "url-accept-0153"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "a+b://exa mple.com/a%20b"
+      },
+      "name" : "url-accept-0154"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://example.com/a%20b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://example.com/a b"
+      },
+      "name" : "url-accept-0155"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x:///a\\b"
+      },
+      "name" : "url-accept-0156"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://127.0.0.1/",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://127.0.0.1/"
+      },
+      "name" : "url-accept-0157"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://-bad-.example/a/b/",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://-bad-.example/a/b/"
+      },
+      "name" : "url-accept-0158"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h:///a#f%20g",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h:///a#f g"
+      },
+      "name" : "url-accept-0159"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "h://exa mple.com/a%20b"
+      },
+      "name" : "url-accept-0160"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://ex%41mple.com/a?b=c%20d",
+        "accepted" : true,
+        "host" : "exAmple.com",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://ex%41mple.com/a?b=c d"
+      },
+      "name" : "url-accept-0161"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://u:p@example.com",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://u:p@example.com"
+      },
+      "name" : "url-accept-0162"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://xn--mnchen-3ya.example/a/./b",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://münchen.example/a/./b"
+      },
+      "name" : "url-accept-0163"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "x-custom://exa mple.com/a?b=c"
+      },
+      "name" : "url-accept-0164"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg:///..",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg:///.."
+      },
+      "name" : "url-accept-0165"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://u:p@example.com",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://u:p@example.com"
+      },
+      "name" : "url-accept-0166"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "x-custom://exa mple.com/;x=1"
+      },
+      "name" : "url-accept-0167"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://-bad-.example/a",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://-bad-.example/a"
+      },
+      "name" : "url-accept-0168"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://Example.COM/a#f",
+        "accepted" : true,
+        "host" : "Example.COM",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://Example.COM/a#f"
+      },
+      "name" : "url-accept-0169"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://example.com/a%20b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://example.com/a b"
+      },
+      "name" : "url-accept-0170"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-custom://Example.COM/;x=1",
+        "accepted" : true,
+        "host" : "Example.COM",
+        "scheme" : "x-custom"
+      },
+      "input" : {
+        "string" : "x-custom://Example.COM/;x=1"
+      },
+      "name" : "url-accept-0171"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://u:p@example.com/a?b=c%20d",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://u:p@example.com/a?b=c d"
+      },
+      "name" : "url-accept-0172"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "a+b://exa mple.com/a?b=c d"
+      },
+      "name" : "url-accept-0173"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://Example.COM/a?b=c",
+        "accepted" : true,
+        "host" : "Example.COM",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://Example.COM/a?b=c"
+      },
+      "name" : "url-accept-0174"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://example.com%2F/a#f",
+        "accepted" : true,
+        "host" : "example.com/",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://example.com%2F/a#f"
+      },
+      "name" : "url-accept-0175"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://example.com./a?b=c",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://example.com./a?b=c"
+      },
+      "name" : "url-accept-0176"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://xn--mnchen-3ya.example/a?b=c%20d",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://münchen.example/a?b=c d"
+      },
+      "name" : "url-accept-0177"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h:///",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h:///"
+      },
+      "name" : "url-accept-0178"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://127.0.0.1/a/./b",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://127.0.0.1/a/./b"
+      },
+      "name" : "url-accept-0179"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://ex%41mple.com/a",
+        "accepted" : true,
+        "host" : "exAmple.com",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://ex%41mple.com/a"
+      },
+      "name" : "url-accept-0180"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://-bad-.example/a%20b",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://-bad-.example/a b"
+      },
+      "name" : "url-accept-0181"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-custom://example.com%2F/a%20b",
+        "accepted" : true,
+        "host" : "example.com/",
+        "scheme" : "x-custom"
+      },
+      "input" : {
+        "string" : "x-custom://example.com%2F/a b"
+      },
+      "name" : "url-accept-0182"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://example.com./a?b=c",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://example.com./a?b=c"
+      },
+      "name" : "url-accept-0183"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "x-custom://exa mple.com/a?b=c"
+      },
+      "name" : "url-accept-0184"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://127.0.0.1/..",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://127.0.0.1/.."
+      },
+      "name" : "url-accept-0185"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://exa mple.com/a%2"
+      },
+      "name" : "url-accept-0186"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-custom://Example.COM/a%252",
+        "accepted" : true,
+        "host" : "Example.COM",
+        "scheme" : "x-custom"
+      },
+      "input" : {
+        "string" : "x-custom://Example.COM/a%2"
+      },
+      "name" : "url-accept-0187"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-custom://Example.COM/a/./b",
+        "accepted" : true,
+        "host" : "Example.COM",
+        "scheme" : "x-custom"
+      },
+      "input" : {
+        "string" : "x-custom://Example.COM/a/./b"
+      },
+      "name" : "url-accept-0188"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://-bad-.example/a#f%20g",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://-bad-.example/a#f g"
+      },
+      "name" : "url-accept-0189"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://xn--mnchen-3ya.example",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://münchen.example"
+      },
+      "name" : "url-accept-0190"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://a.b.example.com/a#f",
+        "accepted" : true,
+        "host" : "a.b.example.com",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://a.b.example.com/a#f"
+      },
+      "name" : "url-accept-0191"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://[::1]/a#f%20g",
+        "accepted" : true,
+        "host" : "::1",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://[::1]/a#f g"
+      },
+      "name" : "url-accept-0192"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg:///%C3%A9",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg:///é"
+      },
+      "name" : "url-accept-0193"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http:///",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http:///"
+      },
+      "name" : "url-accept-0194"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://xn--mnchen-3ya.example/;x=1",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://münchen.example/;x=1"
+      },
+      "name" : "url-accept-0195"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h:///a%5Cb",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h:///a\\b"
+      },
+      "name" : "url-accept-0196"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://127.0.0.1/a",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://127.0.0.1/a"
+      },
+      "name" : "url-accept-0197"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://example.com%2F/a#f",
+        "accepted" : true,
+        "host" : "example.com/",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://example.com%2F/a#f"
+      },
+      "name" : "url-accept-0198"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal:///a%5Cb",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal:///a\\b"
+      },
+      "name" : "url-accept-0199"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://-bad-.example/",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://-bad-.example/"
+      },
+      "name" : "url-accept-0200"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com./a%20b",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com./a b"
+      },
+      "name" : "url-accept-0201"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://example.com./a%252",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://example.com./a%2"
+      },
+      "name" : "url-accept-0202"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://Example.COM/..",
+        "accepted" : true,
+        "host" : "Example.COM",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://Example.COM/.."
+      },
+      "name" : "url-accept-0203"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://xn--mnchen-3ya.example/%F0%9F%99%82",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://münchen.example/🙂"
+      },
+      "name" : "url-accept-0204"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://a.b.example.com/;x=1",
+        "accepted" : true,
+        "host" : "a.b.example.com",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://a.b.example.com/;x=1"
+      },
+      "name" : "url-accept-0205"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://example.com:8080/a#f%20g",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://example.com:8080/a#f g"
+      },
+      "name" : "url-accept-0206"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://[::1]/a%20b",
+        "accepted" : true,
+        "host" : "::1",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://[::1]/a b"
+      },
+      "name" : "url-accept-0207"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "HTTPS://exa mple.com/%E4%B8%AD"
+      },
+      "name" : "url-accept-0208"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://a.b.example.com/a?b=c",
+        "accepted" : true,
+        "host" : "a.b.example.com",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://a.b.example.com/a?b=c"
+      },
+      "name" : "url-accept-0209"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com%2F/a/./b",
+        "accepted" : true,
+        "host" : "example.com/",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com%2F/a/./b"
+      },
+      "name" : "url-accept-0210"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://127.0.0.1/%C3%A9",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://127.0.0.1/é"
+      },
+      "name" : "url-accept-0211"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://127.0.0.1/..",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://127.0.0.1/.."
+      },
+      "name" : "url-accept-0212"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-custom://example.com:8080/a",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "x-custom"
+      },
+      "input" : {
+        "string" : "x-custom://example.com:8080/a"
+      },
+      "name" : "url-accept-0213"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "zoommtg://ex%zzmple.com/"
+      },
+      "name" : "url-accept-0214"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://Example.COM/a/b/",
+        "accepted" : true,
+        "host" : "Example.COM",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://Example.COM/a/b/"
+      },
+      "name" : "url-accept-0215"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://Example.COM/%F0%9F%99%82",
+        "accepted" : true,
+        "host" : "Example.COM",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://Example.COM/🙂"
+      },
+      "name" : "url-accept-0216"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://u:p@example.com/a/./b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://u:p@example.com/a/./b"
+      },
+      "name" : "url-accept-0217"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://[::1]/a%252",
+        "accepted" : true,
+        "host" : "::1",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://[::1]/a%2"
+      },
+      "name" : "url-accept-0218"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://127.0.0.1/%C3%A9",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://127.0.0.1/é"
+      },
+      "name" : "url-accept-0219"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-custom://",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "x-custom"
+      },
+      "input" : {
+        "string" : "x-custom://"
+      },
+      "name" : "url-accept-0220"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "webcal://ex%zzmple.com/a%20b"
+      },
+      "name" : "url-accept-0221"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://a.b.example.com/a#f%20g",
+        "accepted" : true,
+        "host" : "a.b.example.com",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://a.b.example.com/a#f g"
+      },
+      "name" : "url-accept-0222"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://xn--mnchen-3ya.example/a%20b",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://münchen.example/a b"
+      },
+      "name" : "url-accept-0223"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://example.com%2F/a#f",
+        "accepted" : true,
+        "host" : "example.com/",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://example.com%2F/a#f"
+      },
+      "name" : "url-accept-0224"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "HTTPS://ex%zzmple.com/.."
+      },
+      "name" : "url-accept-0225"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg:///..",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg:///.."
+      },
+      "name" : "url-accept-0226"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://example.com%2F/a%252",
+        "accepted" : true,
+        "host" : "example.com/",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://example.com%2F/a%2"
+      },
+      "name" : "url-accept-0227"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://-bad-.example/..",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://-bad-.example/.."
+      },
+      "name" : "url-accept-0228"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://xn--mnchen-3ya.example/%F0%9F%99%82",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://münchen.example/🙂"
+      },
+      "name" : "url-accept-0229"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://xn--mnchen-3ya.example/a/b/"
+      },
+      "name" : "url-accept-0230"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://example.com/%E4%B8%AD",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://example.com/%E4%B8%AD"
+      },
+      "name" : "url-accept-0231"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://127.0.0.1/🙂"
+      },
+      "name" : "url-accept-0232"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://exa mple.com/a%2"
+      },
+      "name" : "url-accept-0233"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://example.com:8080/a#f",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://example.com:8080/a#f"
+      },
+      "name" : "url-accept-0234"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "a+b://exa mple.com/a?b=c"
+      },
+      "name" : "url-accept-0235"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://127.0.0.1/a/b/",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://127.0.0.1/a/b/"
+      },
+      "name" : "url-accept-0236"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com./a#f%20g",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com./a#f g"
+      },
+      "name" : "url-accept-0237"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://xn--mnchen-3ya.example/a?b=c",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://xn--mnchen-3ya.example/a?b=c"
+      },
+      "name" : "url-accept-0238"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://example.com:8080/..",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://example.com:8080/.."
+      },
+      "name" : "url-accept-0239"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://Example.COM/.."
+      },
+      "name" : "url-accept-0240"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://a.b.example.com/a?b=c%20d",
+        "accepted" : true,
+        "host" : "a.b.example.com",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://a.b.example.com/a?b=c d"
+      },
+      "name" : "url-accept-0241"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "h://ex%zzmple.com/a?b=c"
+      },
+      "name" : "url-accept-0242"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://xn--mnchen-3ya.example/a%20b",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://xn--mnchen-3ya.example/a b"
+      },
+      "name" : "url-accept-0243"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://-bad-.example/a%20b",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://-bad-.example/a%20b"
+      },
+      "name" : "url-accept-0244"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://-bad-.example/..",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://-bad-.example/.."
+      },
+      "name" : "url-accept-0245"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "x-custom:///a#f",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "x-custom"
+      },
+      "input" : {
+        "string" : "x-custom:///a#f"
+      },
+      "name" : "url-accept-0246"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://exa mple.com/é"
+      },
+      "name" : "url-accept-0247"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://ex%41mple.com/a?b=c",
+        "accepted" : true,
+        "host" : "exAmple.com",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://ex%41mple.com/a?b=c"
+      },
+      "name" : "url-accept-0248"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://example.com%2F/%E4%B8%AD",
+        "accepted" : true,
+        "host" : "example.com/",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://example.com%2F/%E4%B8%AD"
+      },
+      "name" : "url-accept-0249"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://exa mple.com/a?b=c"
+      },
+      "name" : "url-accept-0250"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://[::1]",
+        "accepted" : true,
+        "host" : "::1",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://[::1]"
+      },
+      "name" : "url-accept-0251"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS:///a/./b",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS:///a/./b"
+      },
+      "name" : "url-accept-0252"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://a.b.example.com/;x=1",
+        "accepted" : true,
+        "host" : "a.b.example.com",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://a.b.example.com/;x=1"
+      },
+      "name" : "url-accept-0253"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://[::1]/a/b/",
+        "accepted" : true,
+        "host" : "::1",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://[::1]/a/b/"
+      },
+      "name" : "url-accept-0254"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://example.com./",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://example.com./"
+      },
+      "name" : "url-accept-0255"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://-bad-.example/a#f",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://-bad-.example/a#f"
+      },
+      "name" : "url-accept-0256"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://example.com./a?b=c",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://example.com./a?b=c"
+      },
+      "name" : "url-accept-0257"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://-bad-.example/🙂"
+      },
+      "name" : "url-accept-0258"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://u:p@example.com/a/b/",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://u:p@example.com/a/b/"
+      },
+      "name" : "url-accept-0259"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://Example.COM/a/b/"
+      },
+      "name" : "url-accept-0260"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://ex%zzmple.com/a%2"
+      },
+      "name" : "url-accept-0261"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://u:p@example.com/a/./b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://u:p@example.com/a/./b"
+      },
+      "name" : "url-accept-0262"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://example.com%2F/;x=1",
+        "accepted" : true,
+        "host" : "example.com/",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://example.com%2F/;x=1"
+      },
+      "name" : "url-accept-0263"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://127.0.0.1/a?b=c%20d",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://127.0.0.1/a?b=c d"
+      },
+      "name" : "url-accept-0264"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http:///..",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http:///.."
+      },
+      "name" : "url-accept-0265"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://xn--mnchen-3ya.example/a?b=c",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://xn--mnchen-3ya.example/a?b=c"
+      },
+      "name" : "url-accept-0266"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://example.com/a%252",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://example.com/a%2"
+      },
+      "name" : "url-accept-0267"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://-bad-.example/%C3%A9",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://-bad-.example/é"
+      },
+      "name" : "url-accept-0268"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "http://example.com/a/./b",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "http"
+      },
+      "input" : {
+        "string" : "http://example.com/a/./b"
+      },
+      "name" : "url-accept-0269"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://ex%41mple.com/a/b/",
+        "accepted" : true,
+        "host" : "exAmple.com",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://ex%41mple.com/a/b/"
+      },
+      "name" : "url-accept-0270"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://ex%41mple.com/%E4%B8%AD",
+        "accepted" : true,
+        "host" : "exAmple.com",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://ex%41mple.com/%E4%B8%AD"
+      },
+      "name" : "url-accept-0271"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://[::1]/;x=1",
+        "accepted" : true,
+        "host" : "::1",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://[::1]/;x=1"
+      },
+      "name" : "url-accept-0272"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://127.0.0.1/..",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://127.0.0.1/.."
+      },
+      "name" : "url-accept-0273"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://a.b.example.com/a/b/",
+        "accepted" : true,
+        "host" : "a.b.example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://a.b.example.com/a/b/"
+      },
+      "name" : "url-accept-0274"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://xn--mnchen-3ya.example/a%5Cb",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://xn--mnchen-3ya.example/a\\b"
+      },
+      "name" : "url-accept-0275"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "https://-bad-.example/a/./b",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "https"
+      },
+      "input" : {
+        "string" : "https://-bad-.example/a/./b"
+      },
+      "name" : "url-accept-0276"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://xn--mnchen-3ya.example/a/./b",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://xn--mnchen-3ya.example/a/./b"
+      },
+      "name" : "url-accept-0277"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://xn--mnchen-3ya.example/a/./b",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://xn--mnchen-3ya.example/a/./b"
+      },
+      "name" : "url-accept-0278"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://xn--mnchen-3ya.example/..",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://münchen.example/.."
+      },
+      "name" : "url-accept-0279"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://example.com./..",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://example.com./.."
+      },
+      "name" : "url-accept-0280"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://exa mple.com/a%20b"
+      },
+      "name" : "url-accept-0281"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://127.0.0.1/a?b=c",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://127.0.0.1/a?b=c"
+      },
+      "name" : "url-accept-0282"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://u:p@example.com/%E4%B8%AD",
+        "accepted" : true,
+        "host" : "example.com",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://u:p@example.com/%E4%B8%AD"
+      },
+      "name" : "url-accept-0283"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://exa mple.com/a\\b"
+      },
+      "name" : "url-accept-0284"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://ex%zzmple.com/"
+      },
+      "name" : "url-accept-0285"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://-bad-.example/a#f",
+        "accepted" : true,
+        "host" : "-bad-.example",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://-bad-.example/a#f"
+      },
+      "name" : "url-accept-0286"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg://example.com./a#f",
+        "accepted" : true,
+        "host" : "example.com.",
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg://example.com./a#f"
+      },
+      "name" : "url-accept-0287"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "HTTPS://127.0.0.1/..",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "HTTPS"
+      },
+      "input" : {
+        "string" : "HTTPS://127.0.0.1/.."
+      },
+      "name" : "url-accept-0288"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "zoommtg:///a#f",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "zoommtg"
+      },
+      "input" : {
+        "string" : "zoommtg:///a#f"
+      },
+      "name" : "url-accept-0289"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "http://exa mple.com/.."
+      },
+      "name" : "url-accept-0290"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "https://ex%zzmple.com/a?b=c d"
+      },
+      "name" : "url-accept-0291"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a+b://127.0.0.1/a%5Cb",
+        "accepted" : true,
+        "host" : "127.0.0.1",
+        "scheme" : "a+b"
+      },
+      "input" : {
+        "string" : "a+b://127.0.0.1/a\\b"
+      },
+      "name" : "url-accept-0292"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://-bad-.example/a%2"
+      },
+      "name" : "url-accept-0293"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x://[::1]/a%2"
+      },
+      "name" : "url-accept-0294"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b://xn--mnchen-3ya.example/a%20b",
+        "accepted" : true,
+        "host" : "xn--mnchen-3ya.example",
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b://münchen.example/a%20b"
+      },
+      "name" : "url-accept-0295"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "x-custom://ex%zzmple.com/a"
+      },
+      "name" : "url-accept-0296"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "webcal://a.b.example.com/a%252",
+        "accepted" : true,
+        "host" : "a.b.example.com",
+        "scheme" : "webcal"
+      },
+      "input" : {
+        "string" : "webcal://a.b.example.com/a%2"
+      },
+      "name" : "url-accept-0297"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "a.b:///a%20b",
+        "accepted" : true,
+        "host" : null,
+        "scheme" : "a.b"
+      },
+      "input" : {
+        "string" : "a.b:///a b"
+      },
+      "name" : "url-accept-0298"
+    },
+    {
+      "expected" : {
+        "absoluteString" : "h://[::1]/a?b=c",
+        "accepted" : true,
+        "host" : "::1",
+        "scheme" : "h"
+      },
+      "input" : {
+        "string" : "h://[::1]/a?b=c"
+      },
+      "name" : "url-accept-0299"
+    },
+    {
+      "expected" : {
+        "absoluteString" : null,
+        "accepted" : false,
+        "host" : null,
+        "scheme" : null
+      },
+      "input" : {
+        "string" : "1x:///a\\b"
+      },
+      "name" : "url-accept-0300"
+    }
+  ],
+  "schema" : 1
+}

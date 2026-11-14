@@ -1,0 +1,4787 @@
+{
+  "area" : "zones/windows-names",
+  "baseline" : "1.2.0",
+  "cases" : [
+    {
+      "expected" : {
+        "identifier" : "Australia/Darwin"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "AUS Central Standard Time"
+      },
+      "name" : "windows-timezone-0001"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Sydney"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "AUS Eastern Standard Time"
+      },
+      "name" : "windows-timezone-0002"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Kabul"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Afghanistan Standard Time"
+      },
+      "name" : "windows-timezone-0003"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Anchorage"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Alaskan Standard Time"
+      },
+      "name" : "windows-timezone-0004"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Adak"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Aleutian Standard Time"
+      },
+      "name" : "windows-timezone-0005"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Barnaul"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Altai Standard Time"
+      },
+      "name" : "windows-timezone-0006"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Riyadh"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Arab Standard Time"
+      },
+      "name" : "windows-timezone-0007"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Dubai"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Arabian Standard Time"
+      },
+      "name" : "windows-timezone-0008"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Baghdad"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Arabic Standard Time"
+      },
+      "name" : "windows-timezone-0009"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Argentina/Buenos_Aires"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Argentina Standard Time"
+      },
+      "name" : "windows-timezone-0010"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Astrakhan"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Astrakhan Standard Time"
+      },
+      "name" : "windows-timezone-0011"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Halifax"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Atlantic Standard Time"
+      },
+      "name" : "windows-timezone-0012"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Eucla"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Aus Central W. Standard Time"
+      },
+      "name" : "windows-timezone-0013"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Baku"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Azerbaijan Standard Time"
+      },
+      "name" : "windows-timezone-0014"
+    },
+    {
+      "expected" : {
+        "identifier" : "Atlantic/Azores"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Azores Standard Time"
+      },
+      "name" : "windows-timezone-0015"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Bahia"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Bahia Standard Time"
+      },
+      "name" : "windows-timezone-0016"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Dhaka"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Bangladesh Standard Time"
+      },
+      "name" : "windows-timezone-0017"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Minsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Belarus Standard Time"
+      },
+      "name" : "windows-timezone-0018"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Bougainville"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Bougainville Standard Time"
+      },
+      "name" : "windows-timezone-0019"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Regina"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Canada Central Standard Time"
+      },
+      "name" : "windows-timezone-0020"
+    },
+    {
+      "expected" : {
+        "identifier" : "Atlantic/Cape_Verde"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Cape Verde Standard Time"
+      },
+      "name" : "windows-timezone-0021"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Yerevan"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Caucasus Standard Time"
+      },
+      "name" : "windows-timezone-0022"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Adelaide"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Cen. Australia Standard Time"
+      },
+      "name" : "windows-timezone-0023"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Guatemala"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Central America Standard Time"
+      },
+      "name" : "windows-timezone-0024"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Almaty"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Central Asia Standard Time"
+      },
+      "name" : "windows-timezone-0025"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Cuiaba"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Central Brazilian Standard Time"
+      },
+      "name" : "windows-timezone-0026"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Budapest"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Central Europe Standard Time"
+      },
+      "name" : "windows-timezone-0027"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Warsaw"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Central European Standard Time"
+      },
+      "name" : "windows-timezone-0028"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Guadalcanal"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Central Pacific Standard Time"
+      },
+      "name" : "windows-timezone-0029"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Chicago"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Central Standard Time"
+      },
+      "name" : "windows-timezone-0030"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Mexico_City"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Central Standard Time (Mexico)"
+      },
+      "name" : "windows-timezone-0031"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Chatham"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Chatham Islands Standard Time"
+      },
+      "name" : "windows-timezone-0032"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Shanghai"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "China Standard Time"
+      },
+      "name" : "windows-timezone-0033"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Havana"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Cuba Standard Time"
+      },
+      "name" : "windows-timezone-0034"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+12"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Dateline Standard Time"
+      },
+      "name" : "windows-timezone-0035"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Nairobi"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "E. Africa Standard Time"
+      },
+      "name" : "windows-timezone-0036"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Brisbane"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "E. Australia Standard Time"
+      },
+      "name" : "windows-timezone-0037"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Chisinau"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "E. Europe Standard Time"
+      },
+      "name" : "windows-timezone-0038"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Sao_Paulo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "E. South America Standard Time"
+      },
+      "name" : "windows-timezone-0039"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Easter"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Easter Island Standard Time"
+      },
+      "name" : "windows-timezone-0040"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/New_York"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Eastern Standard Time"
+      },
+      "name" : "windows-timezone-0041"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Cancun"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Eastern Standard Time (Mexico)"
+      },
+      "name" : "windows-timezone-0042"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Cairo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Egypt Standard Time"
+      },
+      "name" : "windows-timezone-0043"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Yekaterinburg"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Ekaterinburg Standard Time"
+      },
+      "name" : "windows-timezone-0044"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Kiev"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "FLE Standard Time"
+      },
+      "name" : "windows-timezone-0045"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Fiji"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Fiji Standard Time"
+      },
+      "name" : "windows-timezone-0046"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/London"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "GMT Standard Time"
+      },
+      "name" : "windows-timezone-0047"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Bucharest"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "GTB Standard Time"
+      },
+      "name" : "windows-timezone-0048"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tbilisi"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Georgian Standard Time"
+      },
+      "name" : "windows-timezone-0049"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Godthab"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Greenland Standard Time"
+      },
+      "name" : "windows-timezone-0050"
+    },
+    {
+      "expected" : {
+        "identifier" : "Atlantic/Reykjavik"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Greenwich Standard Time"
+      },
+      "name" : "windows-timezone-0051"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Port-au-Prince"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Haiti Standard Time"
+      },
+      "name" : "windows-timezone-0052"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Honolulu"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Hawaiian Standard Time"
+      },
+      "name" : "windows-timezone-0053"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Calcutta"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "India Standard Time"
+      },
+      "name" : "windows-timezone-0054"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tehran"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Iran Standard Time"
+      },
+      "name" : "windows-timezone-0055"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Jerusalem"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Israel Standard Time"
+      },
+      "name" : "windows-timezone-0056"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Amman"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Jordan Standard Time"
+      },
+      "name" : "windows-timezone-0057"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Kaliningrad"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Kaliningrad Standard Time"
+      },
+      "name" : "windows-timezone-0058"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Seoul"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Korea Standard Time"
+      },
+      "name" : "windows-timezone-0059"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Tripoli"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Libya Standard Time"
+      },
+      "name" : "windows-timezone-0060"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Kiritimati"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Line Islands Standard Time"
+      },
+      "name" : "windows-timezone-0061"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Lord_Howe"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Lord Howe Standard Time"
+      },
+      "name" : "windows-timezone-0062"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Magadan"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Magadan Standard Time"
+      },
+      "name" : "windows-timezone-0063"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Punta_Arenas"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Magallanes Standard Time"
+      },
+      "name" : "windows-timezone-0064"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Marquesas"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Marquesas Standard Time"
+      },
+      "name" : "windows-timezone-0065"
+    },
+    {
+      "expected" : {
+        "identifier" : "Indian/Mauritius"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Mauritius Standard Time"
+      },
+      "name" : "windows-timezone-0066"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Beirut"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Middle East Standard Time"
+      },
+      "name" : "windows-timezone-0067"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Montevideo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Montevideo Standard Time"
+      },
+      "name" : "windows-timezone-0068"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Casablanca"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Morocco Standard Time"
+      },
+      "name" : "windows-timezone-0069"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Denver"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Mountain Standard Time"
+      },
+      "name" : "windows-timezone-0070"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Mazatlan"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Mountain Standard Time (Mexico)"
+      },
+      "name" : "windows-timezone-0071"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Rangoon"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Myanmar Standard Time"
+      },
+      "name" : "windows-timezone-0072"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Novosibirsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "N. Central Asia Standard Time"
+      },
+      "name" : "windows-timezone-0073"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Windhoek"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Namibia Standard Time"
+      },
+      "name" : "windows-timezone-0074"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Katmandu"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Nepal Standard Time"
+      },
+      "name" : "windows-timezone-0075"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Auckland"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "New Zealand Standard Time"
+      },
+      "name" : "windows-timezone-0076"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/St_Johns"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Newfoundland Standard Time"
+      },
+      "name" : "windows-timezone-0077"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Norfolk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Norfolk Standard Time"
+      },
+      "name" : "windows-timezone-0078"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Irkutsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "North Asia East Standard Time"
+      },
+      "name" : "windows-timezone-0079"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Krasnoyarsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "North Asia Standard Time"
+      },
+      "name" : "windows-timezone-0080"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Pyongyang"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "North Korea Standard Time"
+      },
+      "name" : "windows-timezone-0081"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Omsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Omsk Standard Time"
+      },
+      "name" : "windows-timezone-0082"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Santiago"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific SA Standard Time"
+      },
+      "name" : "windows-timezone-0083"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Los_Angeles"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific Standard Time"
+      },
+      "name" : "windows-timezone-0084"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Tijuana"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific Standard Time (Mexico)"
+      },
+      "name" : "windows-timezone-0085"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Karachi"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pakistan Standard Time"
+      },
+      "name" : "windows-timezone-0086"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Asuncion"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Paraguay Standard Time"
+      },
+      "name" : "windows-timezone-0087"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Qyzylorda"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Qyzylorda Standard Time"
+      },
+      "name" : "windows-timezone-0088"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Paris"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Romance Standard Time"
+      },
+      "name" : "windows-timezone-0089"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Srednekolymsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Russia Time Zone 10"
+      },
+      "name" : "windows-timezone-0090"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Kamchatka"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Russia Time Zone 11"
+      },
+      "name" : "windows-timezone-0091"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Samara"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Russia Time Zone 3"
+      },
+      "name" : "windows-timezone-0092"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Moscow"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Russian Standard Time"
+      },
+      "name" : "windows-timezone-0093"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Cayenne"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "SA Eastern Standard Time"
+      },
+      "name" : "windows-timezone-0094"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Bogota"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "SA Pacific Standard Time"
+      },
+      "name" : "windows-timezone-0095"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/La_Paz"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "SA Western Standard Time"
+      },
+      "name" : "windows-timezone-0096"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Bangkok"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "SE Asia Standard Time"
+      },
+      "name" : "windows-timezone-0097"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Miquelon"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Saint Pierre Standard Time"
+      },
+      "name" : "windows-timezone-0098"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Sakhalin"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Sakhalin Standard Time"
+      },
+      "name" : "windows-timezone-0099"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Apia"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Samoa Standard Time"
+      },
+      "name" : "windows-timezone-0100"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Sao_Tome"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Sao Tome Standard Time"
+      },
+      "name" : "windows-timezone-0101"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Saratov"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Saratov Standard Time"
+      },
+      "name" : "windows-timezone-0102"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Singapore"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Singapore Standard Time"
+      },
+      "name" : "windows-timezone-0103"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Johannesburg"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "South Africa Standard Time"
+      },
+      "name" : "windows-timezone-0104"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Juba"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "South Sudan Standard Time"
+      },
+      "name" : "windows-timezone-0105"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Colombo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Sri Lanka Standard Time"
+      },
+      "name" : "windows-timezone-0106"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Khartoum"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Sudan Standard Time"
+      },
+      "name" : "windows-timezone-0107"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Damascus"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Syria Standard Time"
+      },
+      "name" : "windows-timezone-0108"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Taipei"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Taipei Standard Time"
+      },
+      "name" : "windows-timezone-0109"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Hobart"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Tasmania Standard Time"
+      },
+      "name" : "windows-timezone-0110"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Araguaina"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Tocantins Standard Time"
+      },
+      "name" : "windows-timezone-0111"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tokyo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Tokyo Standard Time"
+      },
+      "name" : "windows-timezone-0112"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tomsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Tomsk Standard Time"
+      },
+      "name" : "windows-timezone-0113"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Tongatapu"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Tonga Standard Time"
+      },
+      "name" : "windows-timezone-0114"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Chita"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Transbaikal Standard Time"
+      },
+      "name" : "windows-timezone-0115"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Istanbul"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Turkey Standard Time"
+      },
+      "name" : "windows-timezone-0116"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Grand_Turk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Turks And Caicos Standard Time"
+      },
+      "name" : "windows-timezone-0117"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Indianapolis"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "US Eastern Standard Time"
+      },
+      "name" : "windows-timezone-0118"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Phoenix"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "US Mountain Standard Time"
+      },
+      "name" : "windows-timezone-0119"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/UTC"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "UTC"
+      },
+      "name" : "windows-timezone-0120"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT-12"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "UTC+12"
+      },
+      "name" : "windows-timezone-0121"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT-13"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "UTC+13"
+      },
+      "name" : "windows-timezone-0122"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+2"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "UTC-02"
+      },
+      "name" : "windows-timezone-0123"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+8"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "UTC-08"
+      },
+      "name" : "windows-timezone-0124"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+9"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "UTC-09"
+      },
+      "name" : "windows-timezone-0125"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+11"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "UTC-11"
+      },
+      "name" : "windows-timezone-0126"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Ulaanbaatar"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Ulaanbaatar Standard Time"
+      },
+      "name" : "windows-timezone-0127"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Caracas"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Venezuela Standard Time"
+      },
+      "name" : "windows-timezone-0128"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Vladivostok"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Vladivostok Standard Time"
+      },
+      "name" : "windows-timezone-0129"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Volgograd"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Volgograd Standard Time"
+      },
+      "name" : "windows-timezone-0130"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Perth"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "W. Australia Standard Time"
+      },
+      "name" : "windows-timezone-0131"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Lagos"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "W. Central Africa Standard Time"
+      },
+      "name" : "windows-timezone-0132"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Berlin"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "W. Europe Standard Time"
+      },
+      "name" : "windows-timezone-0133"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Hovd"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "W. Mongolia Standard Time"
+      },
+      "name" : "windows-timezone-0134"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tashkent"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "West Asia Standard Time"
+      },
+      "name" : "windows-timezone-0135"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Hebron"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "West Bank Standard Time"
+      },
+      "name" : "windows-timezone-0136"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Port_Moresby"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "West Pacific Standard Time"
+      },
+      "name" : "windows-timezone-0137"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Yakutsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Yakutsk Standard Time"
+      },
+      "name" : "windows-timezone-0138"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Whitehorse"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Yukon Standard Time"
+      },
+      "name" : "windows-timezone-0139"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Cairo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Cairo"
+      },
+      "name" : "windows-timezone-0140"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Casablanca"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Casablanca"
+      },
+      "name" : "windows-timezone-0141"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Johannesburg"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Johannesburg"
+      },
+      "name" : "windows-timezone-0142"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Juba"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Juba"
+      },
+      "name" : "windows-timezone-0143"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Khartoum"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Khartoum"
+      },
+      "name" : "windows-timezone-0144"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Lagos"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Lagos"
+      },
+      "name" : "windows-timezone-0145"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Nairobi"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Nairobi"
+      },
+      "name" : "windows-timezone-0146"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Sao_Tome"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Sao_Tome"
+      },
+      "name" : "windows-timezone-0147"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Tripoli"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Tripoli"
+      },
+      "name" : "windows-timezone-0148"
+    },
+    {
+      "expected" : {
+        "identifier" : "Africa/Windhoek"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Africa/Windhoek"
+      },
+      "name" : "windows-timezone-0149"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Adak"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Adak"
+      },
+      "name" : "windows-timezone-0150"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Anchorage"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Anchorage"
+      },
+      "name" : "windows-timezone-0151"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Araguaina"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Araguaina"
+      },
+      "name" : "windows-timezone-0152"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Argentina/Buenos_Aires"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Argentina/Buenos_Aires"
+      },
+      "name" : "windows-timezone-0153"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Asuncion"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Asuncion"
+      },
+      "name" : "windows-timezone-0154"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Bahia"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Bahia"
+      },
+      "name" : "windows-timezone-0155"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Bogota"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Bogota"
+      },
+      "name" : "windows-timezone-0156"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Cancun"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Cancun"
+      },
+      "name" : "windows-timezone-0157"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Caracas"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Caracas"
+      },
+      "name" : "windows-timezone-0158"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Cayenne"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Cayenne"
+      },
+      "name" : "windows-timezone-0159"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Chicago"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Chicago"
+      },
+      "name" : "windows-timezone-0160"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Cuiaba"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Cuiaba"
+      },
+      "name" : "windows-timezone-0161"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Denver"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Denver"
+      },
+      "name" : "windows-timezone-0162"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Godthab"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Godthab"
+      },
+      "name" : "windows-timezone-0163"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Grand_Turk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Grand_Turk"
+      },
+      "name" : "windows-timezone-0164"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Guatemala"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Guatemala"
+      },
+      "name" : "windows-timezone-0165"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Halifax"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Halifax"
+      },
+      "name" : "windows-timezone-0166"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Havana"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Havana"
+      },
+      "name" : "windows-timezone-0167"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Indianapolis"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Indianapolis"
+      },
+      "name" : "windows-timezone-0168"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/La_Paz"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/La_Paz"
+      },
+      "name" : "windows-timezone-0169"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Los_Angeles"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Los_Angeles"
+      },
+      "name" : "windows-timezone-0170"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Mazatlan"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Mazatlan"
+      },
+      "name" : "windows-timezone-0171"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Mexico_City"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Mexico_City"
+      },
+      "name" : "windows-timezone-0172"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Miquelon"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Miquelon"
+      },
+      "name" : "windows-timezone-0173"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Montevideo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Montevideo"
+      },
+      "name" : "windows-timezone-0174"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/New_York"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/New_York"
+      },
+      "name" : "windows-timezone-0175"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Phoenix"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Phoenix"
+      },
+      "name" : "windows-timezone-0176"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Port-au-Prince"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Port-au-Prince"
+      },
+      "name" : "windows-timezone-0177"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Punta_Arenas"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Punta_Arenas"
+      },
+      "name" : "windows-timezone-0178"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Regina"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Regina"
+      },
+      "name" : "windows-timezone-0179"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Santiago"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Santiago"
+      },
+      "name" : "windows-timezone-0180"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Sao_Paulo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Sao_Paulo"
+      },
+      "name" : "windows-timezone-0181"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/St_Johns"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/St_Johns"
+      },
+      "name" : "windows-timezone-0182"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Tijuana"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Tijuana"
+      },
+      "name" : "windows-timezone-0183"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Whitehorse"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Whitehorse"
+      },
+      "name" : "windows-timezone-0184"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Almaty"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Almaty"
+      },
+      "name" : "windows-timezone-0185"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Amman"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Amman"
+      },
+      "name" : "windows-timezone-0186"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Baghdad"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Baghdad"
+      },
+      "name" : "windows-timezone-0187"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Baku"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Baku"
+      },
+      "name" : "windows-timezone-0188"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Bangkok"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Bangkok"
+      },
+      "name" : "windows-timezone-0189"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Barnaul"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Barnaul"
+      },
+      "name" : "windows-timezone-0190"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Beirut"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Beirut"
+      },
+      "name" : "windows-timezone-0191"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Calcutta"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Calcutta"
+      },
+      "name" : "windows-timezone-0192"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Chita"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Chita"
+      },
+      "name" : "windows-timezone-0193"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Colombo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Colombo"
+      },
+      "name" : "windows-timezone-0194"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Damascus"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Damascus"
+      },
+      "name" : "windows-timezone-0195"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Dhaka"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Dhaka"
+      },
+      "name" : "windows-timezone-0196"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Dubai"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Dubai"
+      },
+      "name" : "windows-timezone-0197"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Hebron"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Hebron"
+      },
+      "name" : "windows-timezone-0198"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Hovd"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Hovd"
+      },
+      "name" : "windows-timezone-0199"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Irkutsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Irkutsk"
+      },
+      "name" : "windows-timezone-0200"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Jerusalem"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Jerusalem"
+      },
+      "name" : "windows-timezone-0201"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Kabul"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Kabul"
+      },
+      "name" : "windows-timezone-0202"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Kamchatka"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Kamchatka"
+      },
+      "name" : "windows-timezone-0203"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Karachi"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Karachi"
+      },
+      "name" : "windows-timezone-0204"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Katmandu"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Katmandu"
+      },
+      "name" : "windows-timezone-0205"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Krasnoyarsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Krasnoyarsk"
+      },
+      "name" : "windows-timezone-0206"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Magadan"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Magadan"
+      },
+      "name" : "windows-timezone-0207"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Novosibirsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Novosibirsk"
+      },
+      "name" : "windows-timezone-0208"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Omsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Omsk"
+      },
+      "name" : "windows-timezone-0209"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Pyongyang"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Pyongyang"
+      },
+      "name" : "windows-timezone-0210"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Qyzylorda"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Qyzylorda"
+      },
+      "name" : "windows-timezone-0211"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Rangoon"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Rangoon"
+      },
+      "name" : "windows-timezone-0212"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Riyadh"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Riyadh"
+      },
+      "name" : "windows-timezone-0213"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Sakhalin"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Sakhalin"
+      },
+      "name" : "windows-timezone-0214"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Seoul"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Seoul"
+      },
+      "name" : "windows-timezone-0215"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Shanghai"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Shanghai"
+      },
+      "name" : "windows-timezone-0216"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Singapore"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Singapore"
+      },
+      "name" : "windows-timezone-0217"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Srednekolymsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Srednekolymsk"
+      },
+      "name" : "windows-timezone-0218"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Taipei"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Taipei"
+      },
+      "name" : "windows-timezone-0219"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tashkent"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Tashkent"
+      },
+      "name" : "windows-timezone-0220"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tbilisi"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Tbilisi"
+      },
+      "name" : "windows-timezone-0221"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tehran"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Tehran"
+      },
+      "name" : "windows-timezone-0222"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tokyo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Tokyo"
+      },
+      "name" : "windows-timezone-0223"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tomsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Tomsk"
+      },
+      "name" : "windows-timezone-0224"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Ulaanbaatar"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Ulaanbaatar"
+      },
+      "name" : "windows-timezone-0225"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Vladivostok"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Vladivostok"
+      },
+      "name" : "windows-timezone-0226"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Yakutsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Yakutsk"
+      },
+      "name" : "windows-timezone-0227"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Yekaterinburg"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Yekaterinburg"
+      },
+      "name" : "windows-timezone-0228"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Yerevan"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Yerevan"
+      },
+      "name" : "windows-timezone-0229"
+    },
+    {
+      "expected" : {
+        "identifier" : "Atlantic/Azores"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Atlantic/Azores"
+      },
+      "name" : "windows-timezone-0230"
+    },
+    {
+      "expected" : {
+        "identifier" : "Atlantic/Cape_Verde"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Atlantic/Cape_Verde"
+      },
+      "name" : "windows-timezone-0231"
+    },
+    {
+      "expected" : {
+        "identifier" : "Atlantic/Reykjavik"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Atlantic/Reykjavik"
+      },
+      "name" : "windows-timezone-0232"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Adelaide"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Australia/Adelaide"
+      },
+      "name" : "windows-timezone-0233"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Brisbane"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Australia/Brisbane"
+      },
+      "name" : "windows-timezone-0234"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Darwin"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Australia/Darwin"
+      },
+      "name" : "windows-timezone-0235"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Eucla"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Australia/Eucla"
+      },
+      "name" : "windows-timezone-0236"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Hobart"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Australia/Hobart"
+      },
+      "name" : "windows-timezone-0237"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Lord_Howe"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Australia/Lord_Howe"
+      },
+      "name" : "windows-timezone-0238"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Perth"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Australia/Perth"
+      },
+      "name" : "windows-timezone-0239"
+    },
+    {
+      "expected" : {
+        "identifier" : "Australia/Sydney"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Australia/Sydney"
+      },
+      "name" : "windows-timezone-0240"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+11"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT+11"
+      },
+      "name" : "windows-timezone-0241"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+12"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT+12"
+      },
+      "name" : "windows-timezone-0242"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+2"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT+2"
+      },
+      "name" : "windows-timezone-0243"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+8"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT+8"
+      },
+      "name" : "windows-timezone-0244"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+9"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT+9"
+      },
+      "name" : "windows-timezone-0245"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT-12"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT-12"
+      },
+      "name" : "windows-timezone-0246"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT-13"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT-13"
+      },
+      "name" : "windows-timezone-0247"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/UTC"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/UTC"
+      },
+      "name" : "windows-timezone-0248"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Astrakhan"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Astrakhan"
+      },
+      "name" : "windows-timezone-0249"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Berlin"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Berlin"
+      },
+      "name" : "windows-timezone-0250"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Bucharest"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Bucharest"
+      },
+      "name" : "windows-timezone-0251"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Budapest"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Budapest"
+      },
+      "name" : "windows-timezone-0252"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Chisinau"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Chisinau"
+      },
+      "name" : "windows-timezone-0253"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Istanbul"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Istanbul"
+      },
+      "name" : "windows-timezone-0254"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Kaliningrad"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Kaliningrad"
+      },
+      "name" : "windows-timezone-0255"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Kiev"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Kiev"
+      },
+      "name" : "windows-timezone-0256"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/London"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/London"
+      },
+      "name" : "windows-timezone-0257"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Minsk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Minsk"
+      },
+      "name" : "windows-timezone-0258"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Moscow"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Moscow"
+      },
+      "name" : "windows-timezone-0259"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Paris"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Paris"
+      },
+      "name" : "windows-timezone-0260"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Samara"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Samara"
+      },
+      "name" : "windows-timezone-0261"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Saratov"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Saratov"
+      },
+      "name" : "windows-timezone-0262"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Volgograd"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Volgograd"
+      },
+      "name" : "windows-timezone-0263"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Warsaw"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Warsaw"
+      },
+      "name" : "windows-timezone-0264"
+    },
+    {
+      "expected" : {
+        "identifier" : "Indian/Mauritius"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Indian/Mauritius"
+      },
+      "name" : "windows-timezone-0265"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Apia"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Apia"
+      },
+      "name" : "windows-timezone-0266"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Auckland"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Auckland"
+      },
+      "name" : "windows-timezone-0267"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Bougainville"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Bougainville"
+      },
+      "name" : "windows-timezone-0268"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Chatham"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Chatham"
+      },
+      "name" : "windows-timezone-0269"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Easter"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Easter"
+      },
+      "name" : "windows-timezone-0270"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Fiji"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Fiji"
+      },
+      "name" : "windows-timezone-0271"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Guadalcanal"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Guadalcanal"
+      },
+      "name" : "windows-timezone-0272"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Honolulu"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Honolulu"
+      },
+      "name" : "windows-timezone-0273"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Kiritimati"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Kiritimati"
+      },
+      "name" : "windows-timezone-0274"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Marquesas"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Marquesas"
+      },
+      "name" : "windows-timezone-0275"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Norfolk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Norfolk"
+      },
+      "name" : "windows-timezone-0276"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Port_Moresby"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Port_Moresby"
+      },
+      "name" : "windows-timezone-0277"
+    },
+    {
+      "expected" : {
+        "identifier" : "Pacific/Tongatapu"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific/Tongatapu"
+      },
+      "name" : "windows-timezone-0278"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Kolkata"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Kolkata"
+      },
+      "name" : "windows-timezone-0279"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Kathmandu"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Kathmandu"
+      },
+      "name" : "windows-timezone-0280"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Yangon"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Asia/Yangon"
+      },
+      "name" : "windows-timezone-0281"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Kyiv"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Europe/Kyiv"
+      },
+      "name" : "windows-timezone-0282"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Nuuk"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Nuuk"
+      },
+      "name" : "windows-timezone-0283"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Buenos_Aires"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Buenos_Aires"
+      },
+      "name" : "windows-timezone-0284"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Indiana/Indianapolis"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Indiana/Indianapolis"
+      },
+      "name" : "windows-timezone-0285"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Chihuahua"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/Chihuahua"
+      },
+      "name" : "windows-timezone-0286"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/UTC"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "UTC"
+      },
+      "name" : "windows-timezone-0287"
+    },
+    {
+      "expected" : {
+        "identifier" : "GMT"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "GMT"
+      },
+      "name" : "windows-timezone-0288"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT"
+      },
+      "name" : "windows-timezone-0289"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/Universal"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/Universal"
+      },
+      "name" : "windows-timezone-0290"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Z"
+      },
+      "name" : "windows-timezone-0291"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Customized Time Zone"
+      },
+      "name" : "windows-timezone-0292"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : ""
+      },
+      "name" : "windows-timezone-0293"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : " "
+      },
+      "name" : "windows-timezone-0294"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/New_York"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "  Eastern Standard Time  "
+      },
+      "name" : "windows-timezone-0295"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Los_Angeles"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "\tPacific Standard Time\n"
+      },
+      "name" : "windows-timezone-0296"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "eastern standard time"
+      },
+      "name" : "windows-timezone-0297"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "EASTERN STANDARD TIME"
+      },
+      "name" : "windows-timezone-0298"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Cancun"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Eastern Standard Time (Mexico) "
+      },
+      "name" : "windows-timezone-0299"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Nowhere Standard Time"
+      },
+      "name" : "windows-timezone-0300"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Mars/Olympus"
+      },
+      "name" : "windows-timezone-0301"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "(UTC-05:00) Eastern Time (US & Canada)"
+      },
+      "name" : "windows-timezone-0302"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Eastern"
+      },
+      "name" : "windows-timezone-0303"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Standard Time"
+      },
+      "name" : "windows-timezone-0304"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT+5"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT+5"
+      },
+      "name" : "windows-timezone-0305"
+    },
+    {
+      "expected" : {
+        "identifier" : "Etc/GMT-14"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Etc/GMT-14"
+      },
+      "name" : "windows-timezone-0306"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/New_York"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "America/New_York "
+      },
+      "name" : "windows-timezone-0307"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Paris"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : " Europe/Paris"
+      },
+      "name" : "windows-timezone-0308"
+    },
+    {
+      "expected" : {
+        "identifier" : null
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "europe/paris"
+      },
+      "name" : "windows-timezone-0309"
+    },
+    {
+      "expected" : {
+        "identifier" : "America/Tijuana"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Pacific Standard Time (Mexico)"
+      },
+      "name" : "windows-timezone-0310"
+    },
+    {
+      "expected" : {
+        "identifier" : "GMT+0100"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "UTC+1"
+      },
+      "name" : "windows-timezone-0311"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Paris"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Romance Standard Time"
+      },
+      "name" : "windows-timezone-0312"
+    },
+    {
+      "expected" : {
+        "identifier" : "Europe/Berlin"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "W. Europe Standard Time"
+      },
+      "name" : "windows-timezone-0313"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Tokyo"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Tokyo Standard Time"
+      },
+      "name" : "windows-timezone-0314"
+    },
+    {
+      "expected" : {
+        "identifier" : "Asia/Singapore"
+      },
+      "input" : {
+        "fn" : "timeZone",
+        "name" : "Singapore Standard Time"
+      },
+      "name" : "windows-timezone-0315"
+    },
+    {
+      "expected" : {
+        "name" : "Egypt Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Cairo"
+      },
+      "name" : "windows-name-0316"
+    },
+    {
+      "expected" : {
+        "name" : "Morocco Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Casablanca"
+      },
+      "name" : "windows-name-0317"
+    },
+    {
+      "expected" : {
+        "name" : "South Africa Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Johannesburg"
+      },
+      "name" : "windows-name-0318"
+    },
+    {
+      "expected" : {
+        "name" : "South Sudan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Juba"
+      },
+      "name" : "windows-name-0319"
+    },
+    {
+      "expected" : {
+        "name" : "Sudan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Khartoum"
+      },
+      "name" : "windows-name-0320"
+    },
+    {
+      "expected" : {
+        "name" : "W. Central Africa Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Lagos"
+      },
+      "name" : "windows-name-0321"
+    },
+    {
+      "expected" : {
+        "name" : "E. Africa Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Nairobi"
+      },
+      "name" : "windows-name-0322"
+    },
+    {
+      "expected" : {
+        "name" : "Sao Tome Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Sao_Tome"
+      },
+      "name" : "windows-name-0323"
+    },
+    {
+      "expected" : {
+        "name" : "Libya Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Tripoli"
+      },
+      "name" : "windows-name-0324"
+    },
+    {
+      "expected" : {
+        "name" : "Namibia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Windhoek"
+      },
+      "name" : "windows-name-0325"
+    },
+    {
+      "expected" : {
+        "name" : "Aleutian Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Adak"
+      },
+      "name" : "windows-name-0326"
+    },
+    {
+      "expected" : {
+        "name" : "Alaskan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Anchorage"
+      },
+      "name" : "windows-name-0327"
+    },
+    {
+      "expected" : {
+        "name" : "Tocantins Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Araguaina"
+      },
+      "name" : "windows-name-0328"
+    },
+    {
+      "expected" : {
+        "name" : "Argentina Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Argentina/Buenos_Aires"
+      },
+      "name" : "windows-name-0329"
+    },
+    {
+      "expected" : {
+        "name" : "Paraguay Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Asuncion"
+      },
+      "name" : "windows-name-0330"
+    },
+    {
+      "expected" : {
+        "name" : "Bahia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Bahia"
+      },
+      "name" : "windows-name-0331"
+    },
+    {
+      "expected" : {
+        "name" : "SA Pacific Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Bogota"
+      },
+      "name" : "windows-name-0332"
+    },
+    {
+      "expected" : {
+        "name" : "Eastern Standard Time (Mexico)"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Cancun"
+      },
+      "name" : "windows-name-0333"
+    },
+    {
+      "expected" : {
+        "name" : "Venezuela Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Caracas"
+      },
+      "name" : "windows-name-0334"
+    },
+    {
+      "expected" : {
+        "name" : "SA Eastern Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Cayenne"
+      },
+      "name" : "windows-name-0335"
+    },
+    {
+      "expected" : {
+        "name" : "Central Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Chicago"
+      },
+      "name" : "windows-name-0336"
+    },
+    {
+      "expected" : {
+        "name" : "Central Brazilian Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Cuiaba"
+      },
+      "name" : "windows-name-0337"
+    },
+    {
+      "expected" : {
+        "name" : "Mountain Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Denver"
+      },
+      "name" : "windows-name-0338"
+    },
+    {
+      "expected" : {
+        "name" : "Greenland Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Godthab"
+      },
+      "name" : "windows-name-0339"
+    },
+    {
+      "expected" : {
+        "name" : "Turks And Caicos Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Grand_Turk"
+      },
+      "name" : "windows-name-0340"
+    },
+    {
+      "expected" : {
+        "name" : "Central America Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Guatemala"
+      },
+      "name" : "windows-name-0341"
+    },
+    {
+      "expected" : {
+        "name" : "Atlantic Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Halifax"
+      },
+      "name" : "windows-name-0342"
+    },
+    {
+      "expected" : {
+        "name" : "Cuba Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Havana"
+      },
+      "name" : "windows-name-0343"
+    },
+    {
+      "expected" : {
+        "name" : "US Eastern Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Indianapolis"
+      },
+      "name" : "windows-name-0344"
+    },
+    {
+      "expected" : {
+        "name" : "SA Western Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/La_Paz"
+      },
+      "name" : "windows-name-0345"
+    },
+    {
+      "expected" : {
+        "name" : "Pacific Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Los_Angeles"
+      },
+      "name" : "windows-name-0346"
+    },
+    {
+      "expected" : {
+        "name" : "Mountain Standard Time (Mexico)"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Mazatlan"
+      },
+      "name" : "windows-name-0347"
+    },
+    {
+      "expected" : {
+        "name" : "Central Standard Time (Mexico)"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Mexico_City"
+      },
+      "name" : "windows-name-0348"
+    },
+    {
+      "expected" : {
+        "name" : "Saint Pierre Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Miquelon"
+      },
+      "name" : "windows-name-0349"
+    },
+    {
+      "expected" : {
+        "name" : "Montevideo Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Montevideo"
+      },
+      "name" : "windows-name-0350"
+    },
+    {
+      "expected" : {
+        "name" : "Eastern Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/New_York"
+      },
+      "name" : "windows-name-0351"
+    },
+    {
+      "expected" : {
+        "name" : "US Mountain Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Phoenix"
+      },
+      "name" : "windows-name-0352"
+    },
+    {
+      "expected" : {
+        "name" : "Haiti Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Port-au-Prince"
+      },
+      "name" : "windows-name-0353"
+    },
+    {
+      "expected" : {
+        "name" : "Magallanes Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Punta_Arenas"
+      },
+      "name" : "windows-name-0354"
+    },
+    {
+      "expected" : {
+        "name" : "Canada Central Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Regina"
+      },
+      "name" : "windows-name-0355"
+    },
+    {
+      "expected" : {
+        "name" : "Pacific SA Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Santiago"
+      },
+      "name" : "windows-name-0356"
+    },
+    {
+      "expected" : {
+        "name" : "E. South America Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Sao_Paulo"
+      },
+      "name" : "windows-name-0357"
+    },
+    {
+      "expected" : {
+        "name" : "Newfoundland Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/St_Johns"
+      },
+      "name" : "windows-name-0358"
+    },
+    {
+      "expected" : {
+        "name" : "Pacific Standard Time (Mexico)"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Tijuana"
+      },
+      "name" : "windows-name-0359"
+    },
+    {
+      "expected" : {
+        "name" : "Yukon Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Whitehorse"
+      },
+      "name" : "windows-name-0360"
+    },
+    {
+      "expected" : {
+        "name" : "Central Asia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Almaty"
+      },
+      "name" : "windows-name-0361"
+    },
+    {
+      "expected" : {
+        "name" : "Jordan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Amman"
+      },
+      "name" : "windows-name-0362"
+    },
+    {
+      "expected" : {
+        "name" : "Arabic Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Baghdad"
+      },
+      "name" : "windows-name-0363"
+    },
+    {
+      "expected" : {
+        "name" : "Azerbaijan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Baku"
+      },
+      "name" : "windows-name-0364"
+    },
+    {
+      "expected" : {
+        "name" : "SE Asia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Bangkok"
+      },
+      "name" : "windows-name-0365"
+    },
+    {
+      "expected" : {
+        "name" : "Altai Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Barnaul"
+      },
+      "name" : "windows-name-0366"
+    },
+    {
+      "expected" : {
+        "name" : "Middle East Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Beirut"
+      },
+      "name" : "windows-name-0367"
+    },
+    {
+      "expected" : {
+        "name" : "India Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Calcutta"
+      },
+      "name" : "windows-name-0368"
+    },
+    {
+      "expected" : {
+        "name" : "Transbaikal Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Chita"
+      },
+      "name" : "windows-name-0369"
+    },
+    {
+      "expected" : {
+        "name" : "Sri Lanka Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Colombo"
+      },
+      "name" : "windows-name-0370"
+    },
+    {
+      "expected" : {
+        "name" : "Syria Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Damascus"
+      },
+      "name" : "windows-name-0371"
+    },
+    {
+      "expected" : {
+        "name" : "Bangladesh Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Dhaka"
+      },
+      "name" : "windows-name-0372"
+    },
+    {
+      "expected" : {
+        "name" : "Arabian Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Dubai"
+      },
+      "name" : "windows-name-0373"
+    },
+    {
+      "expected" : {
+        "name" : "West Bank Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Hebron"
+      },
+      "name" : "windows-name-0374"
+    },
+    {
+      "expected" : {
+        "name" : "W. Mongolia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Hovd"
+      },
+      "name" : "windows-name-0375"
+    },
+    {
+      "expected" : {
+        "name" : "North Asia East Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Irkutsk"
+      },
+      "name" : "windows-name-0376"
+    },
+    {
+      "expected" : {
+        "name" : "Israel Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Jerusalem"
+      },
+      "name" : "windows-name-0377"
+    },
+    {
+      "expected" : {
+        "name" : "Afghanistan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Kabul"
+      },
+      "name" : "windows-name-0378"
+    },
+    {
+      "expected" : {
+        "name" : "Russia Time Zone 11"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Kamchatka"
+      },
+      "name" : "windows-name-0379"
+    },
+    {
+      "expected" : {
+        "name" : "Pakistan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Karachi"
+      },
+      "name" : "windows-name-0380"
+    },
+    {
+      "expected" : {
+        "name" : "Nepal Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Katmandu"
+      },
+      "name" : "windows-name-0381"
+    },
+    {
+      "expected" : {
+        "name" : "North Asia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Krasnoyarsk"
+      },
+      "name" : "windows-name-0382"
+    },
+    {
+      "expected" : {
+        "name" : "Magadan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Magadan"
+      },
+      "name" : "windows-name-0383"
+    },
+    {
+      "expected" : {
+        "name" : "N. Central Asia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Novosibirsk"
+      },
+      "name" : "windows-name-0384"
+    },
+    {
+      "expected" : {
+        "name" : "Omsk Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Omsk"
+      },
+      "name" : "windows-name-0385"
+    },
+    {
+      "expected" : {
+        "name" : "North Korea Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Pyongyang"
+      },
+      "name" : "windows-name-0386"
+    },
+    {
+      "expected" : {
+        "name" : "Qyzylorda Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Qyzylorda"
+      },
+      "name" : "windows-name-0387"
+    },
+    {
+      "expected" : {
+        "name" : "Myanmar Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Rangoon"
+      },
+      "name" : "windows-name-0388"
+    },
+    {
+      "expected" : {
+        "name" : "Arab Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Riyadh"
+      },
+      "name" : "windows-name-0389"
+    },
+    {
+      "expected" : {
+        "name" : "Sakhalin Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Sakhalin"
+      },
+      "name" : "windows-name-0390"
+    },
+    {
+      "expected" : {
+        "name" : "Korea Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Seoul"
+      },
+      "name" : "windows-name-0391"
+    },
+    {
+      "expected" : {
+        "name" : "China Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Shanghai"
+      },
+      "name" : "windows-name-0392"
+    },
+    {
+      "expected" : {
+        "name" : "Singapore Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Singapore"
+      },
+      "name" : "windows-name-0393"
+    },
+    {
+      "expected" : {
+        "name" : "Russia Time Zone 10"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Srednekolymsk"
+      },
+      "name" : "windows-name-0394"
+    },
+    {
+      "expected" : {
+        "name" : "Taipei Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Taipei"
+      },
+      "name" : "windows-name-0395"
+    },
+    {
+      "expected" : {
+        "name" : "West Asia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Tashkent"
+      },
+      "name" : "windows-name-0396"
+    },
+    {
+      "expected" : {
+        "name" : "Georgian Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Tbilisi"
+      },
+      "name" : "windows-name-0397"
+    },
+    {
+      "expected" : {
+        "name" : "Iran Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Tehran"
+      },
+      "name" : "windows-name-0398"
+    },
+    {
+      "expected" : {
+        "name" : "Tokyo Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "windows-name-0399"
+    },
+    {
+      "expected" : {
+        "name" : "Tomsk Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Tomsk"
+      },
+      "name" : "windows-name-0400"
+    },
+    {
+      "expected" : {
+        "name" : "Ulaanbaatar Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Ulaanbaatar"
+      },
+      "name" : "windows-name-0401"
+    },
+    {
+      "expected" : {
+        "name" : "Vladivostok Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Vladivostok"
+      },
+      "name" : "windows-name-0402"
+    },
+    {
+      "expected" : {
+        "name" : "Yakutsk Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Yakutsk"
+      },
+      "name" : "windows-name-0403"
+    },
+    {
+      "expected" : {
+        "name" : "Ekaterinburg Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Yekaterinburg"
+      },
+      "name" : "windows-name-0404"
+    },
+    {
+      "expected" : {
+        "name" : "Caucasus Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Yerevan"
+      },
+      "name" : "windows-name-0405"
+    },
+    {
+      "expected" : {
+        "name" : "Azores Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Atlantic/Azores"
+      },
+      "name" : "windows-name-0406"
+    },
+    {
+      "expected" : {
+        "name" : "Cape Verde Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Atlantic/Cape_Verde"
+      },
+      "name" : "windows-name-0407"
+    },
+    {
+      "expected" : {
+        "name" : "Greenwich Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Atlantic/Reykjavik"
+      },
+      "name" : "windows-name-0408"
+    },
+    {
+      "expected" : {
+        "name" : "Cen. Australia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Australia/Adelaide"
+      },
+      "name" : "windows-name-0409"
+    },
+    {
+      "expected" : {
+        "name" : "E. Australia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Australia/Brisbane"
+      },
+      "name" : "windows-name-0410"
+    },
+    {
+      "expected" : {
+        "name" : "AUS Central Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Australia/Darwin"
+      },
+      "name" : "windows-name-0411"
+    },
+    {
+      "expected" : {
+        "name" : "Aus Central W. Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "windows-name-0412"
+    },
+    {
+      "expected" : {
+        "name" : "Tasmania Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Australia/Hobart"
+      },
+      "name" : "windows-name-0413"
+    },
+    {
+      "expected" : {
+        "name" : "Lord Howe Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Australia/Lord_Howe"
+      },
+      "name" : "windows-name-0414"
+    },
+    {
+      "expected" : {
+        "name" : "W. Australia Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Australia/Perth"
+      },
+      "name" : "windows-name-0415"
+    },
+    {
+      "expected" : {
+        "name" : "AUS Eastern Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Australia/Sydney"
+      },
+      "name" : "windows-name-0416"
+    },
+    {
+      "expected" : {
+        "name" : "UTC-11"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/GMT+11"
+      },
+      "name" : "windows-name-0417"
+    },
+    {
+      "expected" : {
+        "name" : "Dateline Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/GMT+12"
+      },
+      "name" : "windows-name-0418"
+    },
+    {
+      "expected" : {
+        "name" : "UTC-02"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/GMT+2"
+      },
+      "name" : "windows-name-0419"
+    },
+    {
+      "expected" : {
+        "name" : "UTC-08"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/GMT+8"
+      },
+      "name" : "windows-name-0420"
+    },
+    {
+      "expected" : {
+        "name" : "UTC-09"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/GMT+9"
+      },
+      "name" : "windows-name-0421"
+    },
+    {
+      "expected" : {
+        "name" : "UTC+12"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/GMT-12"
+      },
+      "name" : "windows-name-0422"
+    },
+    {
+      "expected" : {
+        "name" : "UTC+13"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/GMT-13"
+      },
+      "name" : "windows-name-0423"
+    },
+    {
+      "expected" : {
+        "name" : "UTC"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/UTC"
+      },
+      "name" : "windows-name-0424"
+    },
+    {
+      "expected" : {
+        "name" : "Astrakhan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Astrakhan"
+      },
+      "name" : "windows-name-0425"
+    },
+    {
+      "expected" : {
+        "name" : "W. Europe Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Berlin"
+      },
+      "name" : "windows-name-0426"
+    },
+    {
+      "expected" : {
+        "name" : "GTB Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Bucharest"
+      },
+      "name" : "windows-name-0427"
+    },
+    {
+      "expected" : {
+        "name" : "Central Europe Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Budapest"
+      },
+      "name" : "windows-name-0428"
+    },
+    {
+      "expected" : {
+        "name" : "E. Europe Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Chisinau"
+      },
+      "name" : "windows-name-0429"
+    },
+    {
+      "expected" : {
+        "name" : "Turkey Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Istanbul"
+      },
+      "name" : "windows-name-0430"
+    },
+    {
+      "expected" : {
+        "name" : "Kaliningrad Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Kaliningrad"
+      },
+      "name" : "windows-name-0431"
+    },
+    {
+      "expected" : {
+        "name" : "FLE Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Kiev"
+      },
+      "name" : "windows-name-0432"
+    },
+    {
+      "expected" : {
+        "name" : "GMT Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/London"
+      },
+      "name" : "windows-name-0433"
+    },
+    {
+      "expected" : {
+        "name" : "Belarus Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Minsk"
+      },
+      "name" : "windows-name-0434"
+    },
+    {
+      "expected" : {
+        "name" : "Russian Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Moscow"
+      },
+      "name" : "windows-name-0435"
+    },
+    {
+      "expected" : {
+        "name" : "Romance Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Paris"
+      },
+      "name" : "windows-name-0436"
+    },
+    {
+      "expected" : {
+        "name" : "Russia Time Zone 3"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Samara"
+      },
+      "name" : "windows-name-0437"
+    },
+    {
+      "expected" : {
+        "name" : "Saratov Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Saratov"
+      },
+      "name" : "windows-name-0438"
+    },
+    {
+      "expected" : {
+        "name" : "Volgograd Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Volgograd"
+      },
+      "name" : "windows-name-0439"
+    },
+    {
+      "expected" : {
+        "name" : "Central European Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Warsaw"
+      },
+      "name" : "windows-name-0440"
+    },
+    {
+      "expected" : {
+        "name" : "Mauritius Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Indian/Mauritius"
+      },
+      "name" : "windows-name-0441"
+    },
+    {
+      "expected" : {
+        "name" : "Samoa Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "windows-name-0442"
+    },
+    {
+      "expected" : {
+        "name" : "New Zealand Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Auckland"
+      },
+      "name" : "windows-name-0443"
+    },
+    {
+      "expected" : {
+        "name" : "Bougainville Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Bougainville"
+      },
+      "name" : "windows-name-0444"
+    },
+    {
+      "expected" : {
+        "name" : "Chatham Islands Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Chatham"
+      },
+      "name" : "windows-name-0445"
+    },
+    {
+      "expected" : {
+        "name" : "Easter Island Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Easter"
+      },
+      "name" : "windows-name-0446"
+    },
+    {
+      "expected" : {
+        "name" : "Fiji Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Fiji"
+      },
+      "name" : "windows-name-0447"
+    },
+    {
+      "expected" : {
+        "name" : "Central Pacific Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Guadalcanal"
+      },
+      "name" : "windows-name-0448"
+    },
+    {
+      "expected" : {
+        "name" : "Hawaiian Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Honolulu"
+      },
+      "name" : "windows-name-0449"
+    },
+    {
+      "expected" : {
+        "name" : "Line Islands Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Kiritimati"
+      },
+      "name" : "windows-name-0450"
+    },
+    {
+      "expected" : {
+        "name" : "Marquesas Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Marquesas"
+      },
+      "name" : "windows-name-0451"
+    },
+    {
+      "expected" : {
+        "name" : "Norfolk Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Norfolk"
+      },
+      "name" : "windows-name-0452"
+    },
+    {
+      "expected" : {
+        "name" : "West Pacific Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Port_Moresby"
+      },
+      "name" : "windows-name-0453"
+    },
+    {
+      "expected" : {
+        "name" : "Tonga Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Tongatapu"
+      },
+      "name" : "windows-name-0454"
+    },
+    {
+      "expected" : {
+        "name" : "India Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Kolkata"
+      },
+      "name" : "windows-name-0455"
+    },
+    {
+      "expected" : {
+        "name" : "Nepal Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Kathmandu"
+      },
+      "name" : "windows-name-0456"
+    },
+    {
+      "expected" : {
+        "name" : "Myanmar Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Yangon"
+      },
+      "name" : "windows-name-0457"
+    },
+    {
+      "expected" : {
+        "name" : "FLE Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Kyiv"
+      },
+      "name" : "windows-name-0458"
+    },
+    {
+      "expected" : {
+        "name" : "Greenland Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Nuuk"
+      },
+      "name" : "windows-name-0459"
+    },
+    {
+      "expected" : {
+        "name" : "Argentina Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Buenos_Aires"
+      },
+      "name" : "windows-name-0460"
+    },
+    {
+      "expected" : {
+        "name" : "US Eastern Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Indiana/Indianapolis"
+      },
+      "name" : "windows-name-0461"
+    },
+    {
+      "expected" : {
+        "name" : "Mountain Standard Time (Mexico)"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Chihuahua"
+      },
+      "name" : "windows-name-0462"
+    },
+    {
+      "expected" : {
+        "name" : "UTC"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "UTC"
+      },
+      "name" : "windows-name-0463"
+    },
+    {
+      "expected" : {
+        "name" : "UTC"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "GMT"
+      },
+      "name" : "windows-name-0464"
+    },
+    {
+      "expected" : {
+        "name" : "UTC"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/GMT"
+      },
+      "name" : "windows-name-0465"
+    },
+    {
+      "expected" : {
+        "name" : "UTC"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/Universal"
+      },
+      "name" : "windows-name-0466"
+    },
+    {
+      "expected" : {
+        "name" : null
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Fakaofo"
+      },
+      "name" : "windows-name-0467"
+    },
+    {
+      "expected" : {
+        "name" : null
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Midway"
+      },
+      "name" : "windows-name-0468"
+    },
+    {
+      "expected" : {
+        "name" : "US Mountain Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Phoenix"
+      },
+      "name" : "windows-name-0469"
+    },
+    {
+      "expected" : {
+        "name" : null
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Europe/Dublin"
+      },
+      "name" : "windows-name-0470"
+    },
+    {
+      "expected" : {
+        "name" : "W. Central Africa Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Africa/Lagos"
+      },
+      "name" : "windows-name-0471"
+    },
+    {
+      "expected" : {
+        "name" : "Afghanistan Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Kabul"
+      },
+      "name" : "windows-name-0472"
+    },
+    {
+      "expected" : {
+        "name" : "Pacific SA Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "America/Santiago"
+      },
+      "name" : "windows-name-0473"
+    },
+    {
+      "expected" : {
+        "name" : "Aus Central W. Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Australia/Eucla"
+      },
+      "name" : "windows-name-0474"
+    },
+    {
+      "expected" : {
+        "name" : "Samoa Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Pacific/Apia"
+      },
+      "name" : "windows-name-0475"
+    },
+    {
+      "expected" : {
+        "name" : "Tokyo Standard Time"
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Asia/Tokyo"
+      },
+      "name" : "windows-name-0476"
+    },
+    {
+      "expected" : {
+        "name" : null
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Etc/GMT+5"
+      },
+      "name" : "windows-name-0477"
+    },
+    {
+      "expected" : {
+        "name" : null
+      },
+      "input" : {
+        "fn" : "windowsName",
+        "zone" : "Antarctica/Troll"
+      },
+      "name" : "windows-name-0478"
+    }
+  ],
+  "schema" : 1
+}

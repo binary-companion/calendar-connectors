@@ -2,6 +2,12 @@
 # Prints the version a push to main should release.
 #
 #   next-version.sh --latest <X.Y.Z or ""> --labels <comma-separated PR labels> [--override <X.Y.Z>]
+#   next-version.sh --prerelease <identifiers>     (the v2 prerelease form)
+#
+# The prerelease form prints 2.0.0-<identifiers>, for the Release workflow dispatched on v2 with its `prerelease`
+# input (for example alpha.1 gives 2.0.0-alpha.1). It ignores --latest and --labels, which still need a value only when
+# given, and cannot be combined with --override. The identifiers are the pre-release part of semver: dot-separated,
+# each non-empty and made of [0-9A-Za-z-], a numeric one without a leading zero. Anything else exits 2.
 #
 # Exit codes: 0 printed a version; 2 bad usage or malformed input, or an override below --latest; 3 no tag
 # exists and no override was given (the extraction push: nothing is released until the first version is
@@ -13,15 +19,16 @@
 # tag exists yet (the first release).
 set -euo pipefail
 set -f
-latest="" labels="" override=""
+latest="" labels="" override="" prerelease="" have_prerelease=""
 while [ $# -gt 0 ]; do
   case "$1" in
-    --latest|--labels|--override)
+    --latest|--labels|--override|--prerelease)
       [ $# -ge 2 ] || { echo "$1 needs a value" >&2; exit 2; }
       case "$1" in
         --latest) latest="$2" ;;
         --labels) labels="$2" ;;
         --override) override="$2" ;;
+        --prerelease) prerelease="$2"; have_prerelease=1 ;;
       esac
       shift 2 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
@@ -45,6 +52,22 @@ below() {
   done
   return 1
 }
+if [ -n "$have_prerelease" ]; then
+  [ -z "$override" ] || { echo "--prerelease cannot be combined with --override" >&2; exit 2; }
+  pre_identifier='^([0-9]|[1-9][0-9]+|[0-9]*[A-Za-z-][0-9A-Za-z-]*)$'
+  [ -n "$prerelease" ] || { echo "prerelease is empty" >&2; exit 2; }
+  # read below is line based: a newline would hide everything after it from the validation.
+  [[ "$prerelease" =~ ^[0-9A-Za-z.-]+$ ]] ||
+    { echo "prerelease may hold only [0-9A-Za-z.-]: $prerelease" >&2; exit 2; }
+  IFS='.' read -r -a identifiers <<< "$prerelease.x"
+  unset 'identifiers[${#identifiers[@]}-1]'
+  for identifier in "${identifiers[@]}"; do
+    [[ "$identifier" =~ $pre_identifier ]] ||
+      { echo "prerelease is not dot-separated semver identifiers ([0-9A-Za-z-], no leading zero in a number): $prerelease" >&2; exit 2; }
+  done
+  echo "2.0.0-$prerelease"
+  exit 0
+fi
 if [ -n "$override" ]; then
   [[ "$override" =~ $semver ]] || { echo "override is not X.Y.Z: $override" >&2; exit 2; }
   if [ -n "$latest" ]; then

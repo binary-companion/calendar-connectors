@@ -3,6 +3,12 @@
 # by default; the highest wins, so a replaced pending run cannot lose a major). Nothing is released
 # while the repository has no X.Y.Z tag (the first version is dispatched by hand), nor when the
 # pushed commit already carries one (a re-run).
+#
+# The v2 line (Rust) has a prerelease path: dispatch this workflow on the v2 ref with the `prerelease` input
+# (`gh workflow run Release --repo binary-companion/calendar-connectors --ref v2 -f prerelease=alpha.1`). It tags the
+# v2 commit 2.0.0-<prerelease> and publishes a GitHub prerelease: no package (this repository has none) and no
+# `library-released` dispatch, so no dependent is told. It is refused on any other ref. The strict X.Y.Z tag
+# patterns elsewhere (this file, compat.py) never match a prerelease tag, so 1.x releases from main are unaffected.
 name: Release
 
 on:
@@ -14,6 +20,10 @@ on:
         description: "X.Y.Z to publish. Needed for the first release and for recovery. A version lower than the latest tag is refused; the latest tag itself recovers its missing release."
         required: false
         type: string
+      prerelease:
+        description: "On the v2 ref only: publish 2.0.0-<prerelease> as a GitHub prerelease (for example alpha.1). No package, no dependents notified."
+        required: false
+        type: string
 
 concurrency:
   group: release
@@ -23,7 +33,8 @@ permissions: {}
 
 jobs:
   publish:
-    if: github.ref == 'refs/heads/main'
+    # A dispatch that carries a prerelease is never a normal release, whatever its ref.
+    if: github.ref == 'refs/heads/main' && inputs.prerelease == ''
     runs-on: ubuntu-latest
     environment: publish
     permissions:
@@ -84,6 +95,49 @@ jobs:
           VERSION: ${{ steps.version.outputs.version }}
           SHA: ${{ github.sha }}
         run: gh release create "$VERSION" --target "$SHA" --title "$VERSION" --generate-notes
+
+  # Prerelease of the v2 line: the tag goes on the dispatched v2 commit. There is no environment: the publish
+  # environment is limited to main, and this job only uses the workflow's own token (contents: write). Whoever can
+  # dispatch a workflow on v2 can already push code there. Nothing here sends a dispatch to a dependent.
+  prerelease:
+    if: inputs.prerelease != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Compute the prerelease version
+        id: version
+        env:
+          REF: ${{ github.ref }}
+          SHA: ${{ github.sha }}
+          PRERELEASE: ${{ inputs.prerelease }}
+        run: |
+          set -euo pipefail
+          if [ "$REF" != "refs/heads/v2" ]; then
+            echo "::error::A prerelease is published from the v2 ref only (this run is on $REF)."
+            exit 1
+          fi
+          version="$(scripts/release/next-version.sh --prerelease "$PRERELEASE")"
+          # Tags are immutable: a tag of this name on another commit is a different prerelease, not a re-run.
+          existing="$(git rev-list -n 1 "refs/tags/$version" 2>/dev/null || true)"
+          if [ -n "$existing" ] && [ "$existing" != "$SHA" ]; then
+            echo "::error::$version already exists on $existing, not on $SHA; pick another prerelease name."
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Publishing prerelease $version from $SHA"
+      - name: Create the tag and the prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+          SHA: ${{ github.sha }}
+        run: gh release create "$VERSION" --target "$SHA" --title "$VERSION" --generate-notes --prerelease
 
   # Tells each dependent that a version exists, so its own workflow can open a bump pull request.
   # Skipped when nothing was released. The token comes from the timetug-bot GitHub App, installed on

@@ -1,0 +1,5627 @@
+{
+  "area" : "ical/content-lines",
+  "baseline" : "1.2.0",
+  "cases" : [
+    {
+      "expected" : {
+        "lines" : [
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : ""
+      },
+      "name" : "content-unfold-0001"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1"
+      },
+      "name" : "content-unfold-0002"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1",
+          "B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1\r\nB:2"
+      },
+      "name" : "content-unfold-0003"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1",
+          "B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1\nB:2"
+      },
+      "name" : "content-unfold-0004"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1",
+          "B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1\rB:2"
+      },
+      "name" : "content-unfold-0005"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1\r\n B:2"
+      },
+      "name" : "content-unfold-0006"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:long folded"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:long\r\n  folded"
+      },
+      "name" : "content-unfold-0007"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:longfolded"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:long\r\n\tfolded"
+      },
+      "name" : "content-unfold-0008"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:longfoldedmore"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:long\n folded\n more"
+      },
+      "name" : "content-unfold-0009"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1",
+          "",
+          "B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1\r\n\r\nB:2"
+      },
+      "name" : "content-unfold-0010"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1\r\n"
+      },
+      "name" : "content-unfold-0011"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "",
+          "A:1"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "\r\nA:1"
+      },
+      "name" : "content-unfold-0012"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          " A:1"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : " A:1"
+      },
+      "name" : "content-unfold-0013"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1",
+          "x"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1\r\n\r\n x"
+      },
+      "name" : "content-unfold-0014"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:éè"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:é\r\n è"
+      },
+      "name" : "content-unfold-0015"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:🙂🙂"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:🙂\r\n 🙂"
+      },
+      "name" : "content-unfold-0016"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUMMARY:café",
+          " ́"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUMMARY:café\r\n ́"
+      },
+      "name" : "content-unfold-0017"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1",
+          "",
+          "B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1\r\r\nB:2"
+      },
+      "name" : "content-unfold-0018"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1",
+          "",
+          "B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1\n\rB:2"
+      },
+      "name" : "content-unfold-0019"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:xyz",
+          "B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:x\r\n y\r\n z\r\nB:2"
+      },
+      "name" : "content-unfold-0020"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "﻿A:1"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "﻿A:1"
+      },
+      "name" : "content-unfold-0021"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1 B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1 B:2"
+      },
+      "name" : "content-unfold-0022"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "A:1B:2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "A:1B:2"
+      },
+      "name" : "content-unfold-0023"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\r\r\n"
+      },
+      "name" : "content-unfold-0024"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "",
+          "BEGIN:VEVENT",
+          "BEGIN:VEVENT",
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "\rB\r\n EGIN:VEVENT\r\nBE\n\tGIN:VEVENT\nSUMMARY:\n\tPlanning, part 2\r\n"
+      },
+      "name" : "content-unfold-0025"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n aaaaaaaaaaa\n"
+      },
+      "name" : "content-unfold-0026"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "content-unfold-0027"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "",
+          "END:VEVENT",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "\r\nEND:VEVENT\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\r\n"
+      },
+      "name" : "content-unfold-0028"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "END:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\nEND:VEVENT\n"
+      },
+      "name" : "content-unfold-0029"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\r\n"
+      },
+      "name" : "content-unfold-0030"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "",
+          "",
+          "SUMMARY:Planning, part 2",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEV\r\n ENT\n\r\n\r\nSUMMARY:Planning, part 2\rX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n\taaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n"
+      },
+      "name" : "content-unfold-0031"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "DESCRIPTION:café 🙂  中文",
+          "BEGIN:VEVENT",
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "DESCRIPTION:café 🙂 \r\n  中文\nBEGIN:VEVENT\r\nSUMMARY:Planning, part 2\r\n"
+      },
+      "name" : "content-unfold-0032"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "DESCRIPTION:café 🙂 中文",
+          "END:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\r\nATTENDEE;CN=\"Doe, \r\n Jane\":mailto:jane@example.test\rDESCRIPTION:café 🙂 中文\r\nEND:VEVENT\n"
+      },
+      "name" : "content-unfold-0033"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVEN"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVEN"
+      },
+      "name" : "content-unfold-0034"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUMMARY:Plann\r\n\ting, part 2\r\n"
+      },
+      "name" : "content-unfold-0035"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUMMARY:Planning, part 2",
+          "",
+          "X-LONG:aaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUMMARY:Planning, part 2\r\n\r\nX-LONG:aaaaaa\r  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "content-unfold-0036"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "END:VEVENT",
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r\nEND:VEVENT\r\nBEGIN:VEVENT\n"
+      },
+      "name" : "content-unfold-0037"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "END:VEVENT",
+          "DESCRIPTION:café 🙂 中文",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\r\nEND:VEVENT\r\nDESCRIPTION:café 🙂 中文\rX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "content-unfold-0038"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "ATTENDEE;CN=\"Doe, Jane\" :mailto:jane@example.test",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\rATTENDEE;CN=\"Doe, Jane\"\n  :mailto:jane@example.test\r\n"
+      },
+      "name" : "content-unfold-0039"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "EN D:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "EN\r\n  D:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0040"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:V EVENT",
+          "",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:V\n  EVENT\n\r\n"
+      },
+      "name" : "content-unfold-0041"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "END:VEVE NT",
+          "X-LONG:aaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\rEND:VEVE\r\n  NT\r\nX-LONG:aaaaaaaaaaaaaa\n  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n"
+      },
+      "name" : "content-unfold-0042"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "DESCRIPTION:café 🙂 中文",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "DESCRIPTION:café 🙂 中文\r"
+      },
+      "name" : "content-unfold-0043"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "ATTE NDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "END:VEVENT",
+          "SUMMARY:Planning, part 2",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "ATTE\r  NDEE;CN=\"Doe, Jane\":mailto:jane@example.test\r\nEND:V\r\n\tEVENT\rSUMMARY:Planning, part 2\r\nX-LONG:aaaaaaaaaaaaaaaaa\r\n aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n"
+      },
+      "name" : "content-unfold-0044"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVEN T",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVEN\n  T\n"
+      },
+      "name" : "content-unfold-0045"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "SUMMARY:Planning, part 2",
+          "BEGIN:VEVENT",
+          "BEGIN:VEVENT",
+          "",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r\nSUMMARY:Planning, part 2\r\nBEGIN:VEVEN\r T\nBE\r GIN:VEVENT\r\n\r\n"
+      },
+      "name" : "content-unfold-0046"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "",
+          "EN D:VEVENT",
+          "DESCRIPTION:café 🙂 中文",
+          "DESCRIPTION:café 🙂 中文",
+          "END:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "\r\nEN\r\n  D:VEVENT\rDESCRIPTION:café 🙂 中文\r\nDESCRIPTION:café 🙂 中文\nEND:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0047"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "",
+          "END:VEVENT",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n\r\nEND:VEVENT\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n"
+      },
+      "name" : "content-unfold-0048"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n"
+      },
+      "name" : "content-unfold-0049"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "",
+          "END:VEVEN"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "\r\nEND:VEVEN"
+      },
+      "name" : "content-unfold-0050"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "D ESCRIPTION:café 🙂 中文",
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r aaaaaaaaaaaaaaaaaaaaaa\rX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nD\n  ESCRIPTION:café 🙂 中文\nSUMMARY:Planning, \n\tpart 2\r\n"
+      },
+      "name" : "content-unfold-0051"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "DESCRIPTION:café 🙂 中文",
+          "END:VEVENT",
+          "DESCRIPTION:café 🙂 中文",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\rDESCRIPTION:café 🙂 中文\r\nEN\r D:VEVENT\nDESCRIPTI\r\n\tON:café 🙂 中文\r"
+      },
+      "name" : "content-unfold-0052"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUMMARY:Planning, part 2",
+          "SUMMARY:Planning, part 2",
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUMMARY:Planning, part 2\r\nSUMMARY:Planning, part 2\r\nBEGIN:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0053"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "BEGIN:VEVENT",
+          "BEGIN: VEVENT",
+          "END:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\rATTENDEE;CN=\"Doe, Jane\":mai\n\tlto:jane@example.test\r\nBEGIN:VEVEN\r\tT\r\nBEGIN:\r\n  VEVENT\nEND:VEVENT\n"
+      },
+      "name" : "content-unfold-0054"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "DESCRIPTION:café 🙂 中文",
+          "END:VEVENT"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "DESCRIPTION:café 🙂 中文\r\nEND:VEVENT"
+      },
+      "name" : "content-unfold-0055"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVEN\r\n\tT\n"
+      },
+      "name" : "content-unfold-0056"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "E ND:VEVENT",
+          "BEGIN:VEVENT",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "END:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "E\r\n  ND:VEVENT\r\nBEGIN:VEVENT\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nATTENDEE;CN=\"Doe, Jane\":mailto:jane@ex\r\n ample.test\r\nEND:VEVENT\r"
+      },
+      "name" : "content-unfold-0057"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUM MARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUM\r\n  MARY:Planning, part 2\r\n"
+      },
+      "name" : "content-unfold-0058"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "END:VEVENT",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "BEGIN:VEVENT",
+          "END:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\r\nEND\r\n :VEVENT\rX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\rBEGIN:\r\n VEVENT\r\nEND:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0059"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUMMARY:Planning, part 2",
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUMMARY:Planning, part 2\r\nSUMMARY:Planning, part 2\r\n"
+      },
+      "name" : "content-unfold-0060"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "DESCRIPTI ON:café 🙂 中文",
+          "DESCRIPTION:café 🙂 中文",
+          "DESCRIPTI ON:café 🙂 中文",
+          "DESCRIPTION:café 🙂 中文",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\r\nDESCRIPTI\r\n  ON:café 🙂 中文\r\nDESCRIP\n TION:café 🙂 中文\rDESCRIPTI\r\n  ON:café 🙂 中文\r\nDESCRIPTION:café 🙂 中文\n"
+      },
+      "name" : "content-unfold-0061"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "",
+          "DESCRIPTION:café 🙂 中文",
+          "",
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r\n\r\nDESCRIPTION:café 🙂 中文\r\n\r\nSUMMARY:Planning, part 2\r\n"
+      },
+      "name" : "content-unfold-0062"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT"
+      },
+      "name" : "content-unfold-0063"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r"
+      },
+      "name" : "content-unfold-0064"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "DESCRIPTION:café 🙂 中文",
+          "END:VEVENT",
+          "BEGIN:VEVENT",
+          "SUMMARY:Planning, part 2",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "DESCRIPTION:café 🙂 中文\nEND:VEVENT\rBEGIN:VEVENT\r\nSUMMARY:Planning, part 2\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n"
+      },
+      "name" : "content-unfold-0065"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "",
+          "END:VEV ENT"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "\nEND:VEV\n  ENT"
+      },
+      "name" : "content-unfold-0066"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "SUMMARY:Plan ning, part 2",
+          "",
+          "SUMMARY:Planning, part "
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nSUMMARY:Plan\r\n  ning, part 2\r\n\r\nSUMMARY:Planning, part "
+      },
+      "name" : "content-unfold-0067"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "DESCRIPTION:café 🙂 中文",
+          "",
+          "END:VEVENT",
+          "",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\rDESCRIPTION:café 🙂 中文\n\r\nEND:VEVENT\r\r\n"
+      },
+      "name" : "content-unfold-0068"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT"
+      },
+      "name" : "content-unfold-0069"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "DESCRIPTION:café 🙂 中文",
+          "DESCRIPTION:café 🙂 中文",
+          "D ESCRIPTION:café 🙂 中文",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "DESCRIPTION:café 🙂 中文\r\nDESCRIPTION:café 🙂 中文\nD\r\n  ESCRIPTION:café 🙂 中文\r"
+      },
+      "name" : "content-unfold-0070"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "E ND:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "E\r\n  ND:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0071"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "END:VEVENT"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r\nEND:VEVENT"
+      },
+      "name" : "content-unfold-0072"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0073"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUMMARY:Planning, part 2",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "END:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUMMARY:Planning, part 2\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\r\nEND:VEVENT\n"
+      },
+      "name" : "content-unfold-0074"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "DESCRIPTION:café 🙂 中文",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\rDE\r\tSCRIPTION:café 🙂 中文\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n"
+      },
+      "name" : "content-unfold-0075"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "DESCRIPTION:café 🙂 中文",
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "DESCRIPTION:café 🙂 中文\r\nBEGIN:VEVENT\n"
+      },
+      "name" : "content-unfold-0076"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SU MMARY:Planning, part 2",
+          "",
+          "DESCRIPTION:café 🙂 中文",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SU\r\n  MMARY:Planning, part 2\r\r\nDESCRIPTION:café 🙂 中文\r\n"
+      },
+      "name" : "content-unfold-0077"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUMMARY:Planning, part 2",
+          "DESCRIPTION:café 🙂 中文"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUMMARY:Planning, part 2\r\nDESCRIPTION:café 🙂 中文"
+      },
+      "name" : "content-unfold-0078"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\rATTENDEE;\r\n\tCN=\"Doe, Jane\":mailto:jane@example.test\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "content-unfold-0079"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "",
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "\nSUMMARY:Planning, part 2\r"
+      },
+      "name" : "content-unfold-0080"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "",
+          "SUMMARY:Planning, part  2",
+          "SUMMARY:Planning, part 2",
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "\r\nSUMMARY:Planning, part\r\n   2\r\nSUMMARY:Planning, part 2\rBEGIN:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0081"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "",
+          "BEGIN:VEVENT",
+          "SUMMARY:Planning, part 2",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "DESCRIPTION:café 🙂 中文",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "\r\nBEGIN:VEVENT\nSUMMARY:Planning, part 2\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nDESCRIPTION:café 🙂 中文\r\n"
+      },
+      "name" : "content-unfold-0082"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "DESCRIPTION:café 🙂 中文",
+          "END:VEVENT",
+          "DESCRIPTION:café 🙂 中"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "DESCRIPTION:café 🙂 中文\r\nEND:VEVEN\r\n\tT\nDESCRIPTION:café 🙂 中"
+      },
+      "name" : "content-unfold-0083"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\n\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "content-unfold-0084"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "DESCRIPTION:café 🙂 中文",
+          "BEGIN:VEVENT",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "B\r\n EGIN:VEVENT\r\nDESCRIPTI\r\n ON:café 🙂 中文\nBEGIN:VEVE\r\n NT\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n\taaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "name" : "content-unfold-0085"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "SUMMARY:Planning, part 2",
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n\rX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nSUMMARY:Planning, part 2\r\nSUMMARY:Planning, part 2\r"
+      },
+      "name" : "content-unfold-0086"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEV\r\n ENT\r"
+      },
+      "name" : "content-unfold-0087"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "SUMMARY:Planning, part 2"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\r\nSUMMARY:Planning, part 2"
+      },
+      "name" : "content-unfold-0088"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "DESCRIPTION :café 🙂 中文",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\nATTENDEE;CN=\"Doe, Ja\r\n ne\":mailto:jane@example.test\rX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nDESCRIPTION\r\n  :café 🙂 中文\r\nATTENDEE;CN=\"Doe, Jane\":mai\r\n lto:jane@example.test\r\n"
+      },
+      "name" : "content-unfold-0089"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "END:VEV ENT",
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\r\nEND:VEV\n  ENT\nSUMMARY:Planning, part \r 2\r\n"
+      },
+      "name" : "content-unfold-0090"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUMM\r\n ARY:Planning, part 2\r\n"
+      },
+      "name" : "content-unfold-0091"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "END:VEVENT",
+          "BEGIN: VEVENT",
+          "DESCRIPTION:café 🙂 中文",
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "END:VEVENT\r\nBEGIN:\n  VEVENT\r\nDESCRIPTION:café 🙂 中文\r\nBEGIN:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0092"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "END:VEVEN T",
+          "BEGIN:VEVENT",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaa",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nEND:VEVEN\r\n  T\r\nBEGIN:VEVENT\rATTENDEE;CN=\"Doe, Jane\":mailto:jan\r\n e@example.test\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r  aaaaaaaaaaaaaaaaaaaaaa\r\n"
+      },
+      "name" : "content-unfold-0093"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "END:VEVENT",
+          "SUMMARY:Planning, part 2",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n\taaaaaaaaaaaaaa\r\nEND:V\n EVENT\r\nSUMMARY:Planning, part 2\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nBEGIN:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0094"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "BEGIN:VEVENT",
+          "DESCRIPTION:café 🙂  中文",
+          "BEGIN:VEVENT",
+          "BEGIN:VEVEN"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\nBEGIN:VEVENT\r\nDESCRIPTION:café 🙂\r   中文\r\nBEGIN:VEVENT\nBEG\r\n IN:VEVEN"
+      },
+      "name" : "content-unfold-0095"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "DESCR IPTION:café 🙂 中文",
+          "SUMMARY:Planning, part 2",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r\nDESCR\r\n  IPTION:café 🙂 中文\r\nSUMMARY:Planning, part 2\r\n"
+      },
+      "name" : "content-unfold-0096"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          "X-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r\nX-LONG:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n\r\nATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\r\nBEGIN:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0097"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "BEGIN:VEVENT",
+          ""
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "BEGIN:VEVENT\r\n"
+      },
+      "name" : "content-unfold-0098"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "BEGIN:VEVENT"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "ATTENDEE;CN=\"Doe, Jane\r\n\t\":mailto:jane@example.test\r\nBEGIN:VEVENT"
+      },
+      "name" : "content-unfold-0099"
+    },
+    {
+      "expected" : {
+        "lines" : [
+          "SUMMARY:Planning, part 2",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test",
+          "DESCRIPTION:café 🙂 中文",
+          "",
+          "ATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test"
+        ]
+      },
+      "input" : {
+        "fn" : "unfold",
+        "text" : "SUMMARY:Planning, part 2\nATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test\r\nDESCRIPTION:café 🙂 中文\r\n\nATTENDEE;CN=\"Doe, Jane\":mailto:jane@example.test"
+      },
+      "name" : "content-unfold-0100"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "Planning\\, part 2\\nwith notes"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY:Planning\\, part 2\\nwith notes"
+      },
+      "name" : "content-parseLine-0101"
+    },
+    {
+      "expected" : {
+        "name" : "ATTENDEE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "ROLE",
+            "values" : [
+              "REQ-PARTICIPANT"
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "mailto:a@x.test",
+              "mailto:b@x.test"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@x.test"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ATTENDEE;CN=\"Doe, Jane\";ROLE=REQ-PARTICIPANT;DELEGATED-FROM=\"mailto:a@x.test\",\"mailto:b@x.test\":mailto:jane@x.test"
+      },
+      "name" : "content-parseLine-0102"
+    },
+    {
+      "expected" : {
+        "name" : "URL",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "https://x.test:8443/a;b"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "URL:https://x.test:8443/a;b"
+      },
+      "name" : "content-parseLine-0103"
+    },
+    {
+      "expected" : {
+        "name" : "X-CUSTOM",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "X-FLAG",
+            "values" : [
+              "1"
+            ]
+          }
+        ],
+        "value" : "kept"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-CUSTOM;X-FLAG=1:kept"
+      },
+      "name" : "content-parseLine-0104"
+    },
+    {
+      "expected" : {
+        "name" : "DTSTART",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "America/New_York"
+            ]
+          }
+        ],
+        "value" : "20260102T090000"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTSTART;TZID=America/New_York:20260102T090000"
+      },
+      "name" : "content-parseLine-0105"
+    },
+    {
+      "expected" : {
+        "name" : "DTSTART",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "VALUE",
+            "values" : [
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "20260102"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTSTART;VALUE=DATE:20260102"
+      },
+      "name" : "content-parseLine-0106"
+    },
+    {
+      "expected" : {
+        "name" : "A",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : ""
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A:"
+      },
+      "name" : "content-parseLine-0107"
+    },
+    {
+      "expected" : {
+        "name" : "A",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : ":"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A::"
+      },
+      "name" : "content-parseLine-0108"
+    },
+    {
+      "expected" : {
+        "name" : "A",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : ";,:"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A:;,:"
+      },
+      "name" : "content-parseLine-0109"
+    },
+    {
+      "expected" : {
+        "name" : "A",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "lower"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "a:lower"
+      },
+      "name" : "content-parseLine-0110"
+    },
+    {
+      "expected" : {
+        "name" : "X-A",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "P",
+            "values" : [
+              ""
+            ]
+          }
+        ],
+        "value" : "v"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-A;P=:v"
+      },
+      "name" : "content-parseLine-0111"
+    },
+    {
+      "expected" : {
+        "name" : "X-A",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "P",
+            "values" : [
+              ""
+            ]
+          }
+        ],
+        "value" : "v"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-A;P=\"\":v"
+      },
+      "name" : "content-parseLine-0112"
+    },
+    {
+      "expected" : {
+        "name" : "X-A",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "P",
+            "values" : [
+              "a;b:c,d"
+            ]
+          }
+        ],
+        "value" : "v"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-A;P=\"a;b:c,d\":v"
+      },
+      "name" : "content-parseLine-0113"
+    },
+    {
+      "expected" : {
+        "name" : "X-A",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "P",
+            "values" : [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        ],
+        "value" : "v"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-A;P=a,b,c:v"
+      },
+      "name" : "content-parseLine-0114"
+    },
+    {
+      "expected" : {
+        "name" : "X-A",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "P",
+            "values" : [
+              "a"
+            ]
+          },
+          {
+            "name" : "Q",
+            "values" : [
+              "b"
+            ]
+          }
+        ],
+        "value" : "v"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-A;P=a;Q=b:v"
+      },
+      "name" : "content-parseLine-0115"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: X-A;P=\"a\"\"b\":v",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-A;P=\"a\"\"b\":v"
+      },
+      "name" : "content-parseLine-0116"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "café 🙂"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY:café 🙂"
+      },
+      "name" : "content-parseLine-0117"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "é"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY:é"
+      },
+      "name" : "content-parseLine-0118"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: SUMMARY:́x",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY:́x"
+      },
+      "name" : "content-parseLine-0119"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "👨‍👩‍👧"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY:👨‍👩‍👧"
+      },
+      "name" : "content-parseLine-0120"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARÝ",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "x"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARÝ:x"
+      },
+      "name" : "content-parseLine-0121"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY;́P=1",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "x"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY;́P=1:x"
+      },
+      "name" : "content-parseLine-0122"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: A:́",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A:́"
+      },
+      "name" : "content-parseLine-0123"
+    },
+    {
+      "expected" : {
+        "name" : "ÁB",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ÁB:c"
+      },
+      "name" : "content-parseLine-0124"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: ",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : ""
+      },
+      "name" : "content-parseLine-0125"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: :",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : ":"
+      },
+      "name" : "content-parseLine-0126"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: :v",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : ":v"
+      },
+      "name" : "content-parseLine-0127"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: ;P=1:v",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : ";P=1:v"
+      },
+      "name" : "content-parseLine-0128"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: NOCOLON",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "NOCOLON"
+      },
+      "name" : "content-parseLine-0129"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: A;P",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A;P"
+      },
+      "name" : "content-parseLine-0130"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: A;P=",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A;P="
+      },
+      "name" : "content-parseLine-0131"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: A;=v:x",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A;=v:x"
+      },
+      "name" : "content-parseLine-0132"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: A;P=\"unterminated:v",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A;P=\"unterminated:v"
+      },
+      "name" : "content-parseLine-0133"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: A;P=v",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A;P=v"
+      },
+      "name" : "content-parseLine-0134"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: A;P=v;Q",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A;P=v;Q"
+      },
+      "name" : "content-parseLine-0135"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: A;P=\"x\"y:v",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A;P=\"x\"y:v"
+      },
+      "name" : "content-parseLine-0136"
+    },
+    {
+      "expected" : {
+        "message" : "bad content line: A;:v",
+        "ok" : false
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A;:v"
+      },
+      "name" : "content-parseLine-0137"
+    },
+    {
+      "expected" : {
+        "name" : "A",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "P",
+            "values" : [
+              "1",
+              ""
+            ]
+          }
+        ],
+        "value" : "v"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "A;P=1,:v"
+      },
+      "name" : "content-parseLine-0138"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "DATE",
+              "a;b",
+              "café"
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY;PARTSTAT=\"DATE\",\"a;b\",café:FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-parseLine-0139"
+    },
+    {
+      "expected" : {
+        "name" : "ATTENDEE",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ATTENDEE:20260102T090000Z"
+      },
+      "name" : "content-parseLine-0140"
+    },
+    {
+      "expected" : {
+        "name" : "LOCATION",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : ""
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "Location:"
+      },
+      "name" : "content-parseLine-0141"
+    },
+    {
+      "expected" : {
+        "name" : "ORGANIZER",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "plain"
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "🙂",
+              "plain"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ORGANIZER;ROLE=\"plain\";TZID=🙂,plain;SENT-BY=DATE:mailto:jane@example.test"
+      },
+      "name" : "content-parseLine-0142"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY:Planning\\, part 2"
+      },
+      "name" : "content-parseLine-0143"
+    },
+    {
+      "expected" : {
+        "name" : "EXDATE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "a;b",
+              "a;b",
+              "a;b"
+            ]
+          }
+        ],
+        "value" : "x\\ny"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "EXDATE;PARTSTAT=\"a;b\",\"a;b\",\"a;b\":x\\ny"
+      },
+      "name" : "content-parseLine-0144"
+    },
+    {
+      "expected" : {
+        "name" : "DTEND",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTEND:https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-parseLine-0145"
+    },
+    {
+      "expected" : {
+        "name" : "EXDATE",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "中文"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "EXDATE:中文"
+      },
+      "name" : "content-parseLine-0146"
+    },
+    {
+      "expected" : {
+        "name" : "RRULE",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "café 🙂"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "RRULE:café 🙂"
+      },
+      "name" : "content-parseLine-0147"
+    },
+    {
+      "expected" : {
+        "name" : "UID",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "🙂",
+              "REQ-PARTICIPANT",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "uid;X-NUM-GUESTS=🙂,REQ-PARTICIPANT,plain:mailto:jane@example.test"
+      },
+      "name" : "content-parseLine-0148"
+    },
+    {
+      "expected" : {
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-APPLE-STRUCTURED-LOCATION:FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-parseLine-0149"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "x:y",
+              "America/New_York"
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "café"
+            ]
+          }
+        ],
+        "value" : "x\\ny"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY;ROLE=\"x:y\",America/New_York;TZID=café:x\\ny"
+      },
+      "name" : "content-parseLine-0150"
+    },
+    {
+      "expected" : {
+        "name" : "ATTENDEE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "x:y"
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "a:b:c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ATTENDEE;CN=\"x:y\";DELEGATED-FROM=\"DATE\":a:b:c"
+      },
+      "name" : "content-parseLine-0151"
+    },
+    {
+      "expected" : {
+        "name" : "UID",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "café",
+              "Doe, Jane",
+              "🙂"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "uid;DELEGATED-FROM=café,\"Doe, Jane\",\"🙂\";VALUE=REQ-PARTICIPANT,plain:20260102T090000Z"
+      },
+      "name" : "content-parseLine-0152"
+    },
+    {
+      "expected" : {
+        "name" : "EXDATE",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "a:b:c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "EXDATE:a:b:c"
+      },
+      "name" : "content-parseLine-0153"
+    },
+    {
+      "expected" : {
+        "name" : "DTSTART",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTSTART:https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-parseLine-0154"
+    },
+    {
+      "expected" : {
+        "name" : "DTSTART",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTSTART;CN=🙂:20260102T090000Z"
+      },
+      "name" : "content-parseLine-0155"
+    },
+    {
+      "expected" : {
+        "name" : "ATTENDEE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "mailto:a@x.test",
+              ""
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "REQ-PARTICIPANT"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ATTENDEE;DELEGATED-FROM=\"mailto:a@x.test\",;VALUE=REQ-PARTICIPANT:a;b;c"
+      },
+      "name" : "content-parseLine-0156"
+    },
+    {
+      "expected" : {
+        "name" : "ATTENDEE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "Doe, Jane",
+              "REQ-PARTICIPANT"
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "America/New_York"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "mailto:a@x.test",
+              "café",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ATTENDEE;LANGUAGE=\"Doe, Jane\",REQ-PARTICIPANT;TZID=America/New_York;VALUE=\"mailto:a@x.test\",café,plain:mailto:jane@example.test"
+      },
+      "name" : "content-parseLine-0157"
+    },
+    {
+      "expected" : {
+        "name" : "RRULE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "café",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "RRULE;ROLE=café,🙂:a;b;c"
+      },
+      "name" : "content-parseLine-0158"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY:https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-parseLine-0159"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "America/New_York"
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "America/New_York",
+              "a;b"
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "x:y",
+              "x:y",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY;CN=America/New_York;DELEGATED-FROM=\"America/New_York\",\"a;b\";LANGUAGE=\"x:y\",\"x:y\",plain:https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-parseLine-0160"
+    },
+    {
+      "expected" : {
+        "name" : "DTEND",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : ""
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTEND:"
+      },
+      "name" : "content-parseLine-0161"
+    },
+    {
+      "expected" : {
+        "name" : "EXDATE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "DATE",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "EXDATE;TZID=REQ-PARTICIPANT,DATE,\"🙂\":a;b;c"
+      },
+      "name" : "content-parseLine-0162"
+    },
+    {
+      "expected" : {
+        "name" : "LOCATION",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "Location:20260102T090000Z"
+      },
+      "name" : "content-parseLine-0163"
+    },
+    {
+      "expected" : {
+        "name" : "UID",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "a;b;c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "uid:a;b;c"
+      },
+      "name" : "content-parseLine-0164"
+    },
+    {
+      "expected" : {
+        "name" : "DESCRIPTION",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DESCRIPTION:https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-parseLine-0165"
+    },
+    {
+      "expected" : {
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "a;b;c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-APPLE-STRUCTURED-LOCATION:a;b;c"
+      },
+      "name" : "content-parseLine-0166"
+    },
+    {
+      "expected" : {
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "plain"
+            ]
+          },
+          {
+            "name" : "CN",
+            "values" : [
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "1"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-APPLE-STRUCTURED-LOCATION;LANGUAGE=plain;CN=\"mailto:a@x.test\";VALUE=1:mailto:jane@example.test"
+      },
+      "name" : "content-parseLine-0167"
+    },
+    {
+      "expected" : {
+        "name" : "X-WR-CALNAME",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "café 🙂"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-WR-CALNAME:café 🙂"
+      },
+      "name" : "content-parseLine-0168"
+    },
+    {
+      "expected" : {
+        "name" : "LOCATION",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "a;b"
+            ]
+          },
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "REQ-PARTICIPANT"
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "",
+              "Doe, Jane"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "Location;CN=\"a;b\";X-NUM-GUESTS=REQ-PARTICIPANT;TZID=,\"Doe, Jane\":a;b;c"
+      },
+      "name" : "content-parseLine-0169"
+    },
+    {
+      "expected" : {
+        "name" : "LOCATION",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "Doe, Jane"
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "Location;LANGUAGE=\"Doe, Jane\":FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-parseLine-0170"
+    },
+    {
+      "expected" : {
+        "name" : "ATTENDEE",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ATTENDEE:Planning\\, part 2"
+      },
+      "name" : "content-parseLine-0171"
+    },
+    {
+      "expected" : {
+        "name" : "X-WR-CALNAME",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "café 🙂"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-WR-CALNAME:café 🙂"
+      },
+      "name" : "content-parseLine-0172"
+    },
+    {
+      "expected" : {
+        "name" : "EXDATE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "EXDATE;PARTSTAT=\"Doe, Jane\";SENT-BY=🙂:20260102T090000Z"
+      },
+      "name" : "content-parseLine-0173"
+    },
+    {
+      "expected" : {
+        "name" : "DESCRIPTION",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "plain"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "mailto:a@x.test",
+              "1",
+              "REQ-PARTICIPANT"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "REQ-PARTICIPANT"
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DESCRIPTION;TZID=REQ-PARTICIPANT,plain;SENT-BY=\"mailto:a@x.test\",1,REQ-PARTICIPANT;VALUE=\"REQ-PARTICIPANT\":FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-parseLine-0174"
+    },
+    {
+      "expected" : {
+        "name" : "ORGANIZER",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "DATE",
+              "café",
+              "a;b"
+            ]
+          }
+        ],
+        "value" : ""
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ORGANIZER;LANGUAGE=DATE,café,\"a;b\":"
+      },
+      "name" : "content-parseLine-0175"
+    },
+    {
+      "expected" : {
+        "name" : "DTSTART",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "café"
+            ]
+          },
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "Doe, Jane"
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTSTART;DELEGATED-FROM=café;X-NUM-GUESTS=\"Doe, Jane\":中文"
+      },
+      "name" : "content-parseLine-0176"
+    },
+    {
+      "expected" : {
+        "name" : "ATTENDEE",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ATTENDEE:Planning\\, part 2"
+      },
+      "name" : "content-parseLine-0177"
+    },
+    {
+      "expected" : {
+        "name" : "RRULE",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : ""
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "RRULE:"
+      },
+      "name" : "content-parseLine-0178"
+    },
+    {
+      "expected" : {
+        "name" : "X-WR-CALNAME",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-WR-CALNAME:mailto:jane@example.test"
+      },
+      "name" : "content-parseLine-0179"
+    },
+    {
+      "expected" : {
+        "name" : "DTSTART",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "café 🙂"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTSTART:café 🙂"
+      },
+      "name" : "content-parseLine-0180"
+    },
+    {
+      "expected" : {
+        "name" : "ATTENDEE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "plain"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ATTENDEE;TZID=plain:20260102T090000Z"
+      },
+      "name" : "content-parseLine-0181"
+    },
+    {
+      "expected" : {
+        "name" : "ATTENDEE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "🙂"
+            ]
+          },
+          {
+            "name" : "CN",
+            "values" : [
+              "café"
+            ]
+          }
+        ],
+        "value" : "café 🙂"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ATTENDEE;SENT-BY=🙂;CN=café:café 🙂"
+      },
+      "name" : "content-parseLine-0182"
+    },
+    {
+      "expected" : {
+        "name" : "EXDATE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "",
+              "café"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "EXDATE;CN=,café:a;b;c"
+      },
+      "name" : "content-parseLine-0183"
+    },
+    {
+      "expected" : {
+        "name" : "DESCRIPTION",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              ""
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DESCRIPTION;CN=:Planning\\, part 2"
+      },
+      "name" : "content-parseLine-0184"
+    },
+    {
+      "expected" : {
+        "name" : "DESCRIPTION",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "plain"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DESCRIPTION;TZID=plain:20260102T090000Z"
+      },
+      "name" : "content-parseLine-0185"
+    },
+    {
+      "expected" : {
+        "name" : "X-WR-CALNAME",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "VALUE",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "a;b",
+              ""
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "café",
+              "America/New_York"
+            ]
+          }
+        ],
+        "value" : ""
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-WR-CALNAME;VALUE=REQ-PARTICIPANT,\"a;b\",;TZID=café,America/New_York:"
+      },
+      "name" : "content-parseLine-0186"
+    },
+    {
+      "expected" : {
+        "name" : "ORGANIZER",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "Doe, Jane",
+              "America/New_York"
+            ]
+          },
+          {
+            "name" : "CN",
+            "values" : [
+              "America/New_York",
+              "a;b",
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "plain",
+              "café",
+              "a;b"
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ORGANIZER;CN=\"Doe, Jane\",America/New_York;CN=America/New_York,\"a;b\",\"mailto:a@x.test\";X-NUM-GUESTS=plain,café,\"a;b\":中文"
+      },
+      "name" : "content-parseLine-0187"
+    },
+    {
+      "expected" : {
+        "name" : "EXDATE",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "plain",
+              "x:y",
+              "Doe, Jane"
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "EXDATE;SENT-BY=plain,\"x:y\",\"Doe, Jane\":FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-parseLine-0188"
+    },
+    {
+      "expected" : {
+        "name" : "X-WR-CALNAME",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "🙂",
+              "plain",
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-WR-CALNAME;CN=\"🙂\",plain,DATE:20260102T090000Z"
+      },
+      "name" : "content-parseLine-0189"
+    },
+    {
+      "expected" : {
+        "name" : "DTEND",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTEND:https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-parseLine-0190"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "café",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY;ROLE=café,\"plain\":https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-parseLine-0191"
+    },
+    {
+      "expected" : {
+        "name" : "ORGANIZER",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "café",
+              "café",
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "🙂",
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "x\\ny"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ORGANIZER;X-NUM-GUESTS=café,café,\"Doe, Jane\";TZID=🙂,DATE:x\\ny"
+      },
+      "name" : "content-parseLine-0192"
+    },
+    {
+      "expected" : {
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "Doe, Jane",
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "café",
+              "a;b",
+              "x:y"
+            ]
+          }
+        ],
+        "value" : "café 🙂"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "X-APPLE-STRUCTURED-LOCATION;LANGUAGE=\"Doe, Jane\",\"mailto:a@x.test\";DELEGATED-FROM=\"Doe, Jane\";PARTSTAT=\"café\",\"a;b\",\"x:y\":café 🙂"
+      },
+      "name" : "content-parseLine-0193"
+    },
+    {
+      "expected" : {
+        "name" : "DTSTART",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "",
+              "America/New_York",
+              "America/New_York"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTSTART;DELEGATED-FROM=\"Doe, Jane\";SENT-BY=,America/New_York,America/New_York:20260102T090000Z"
+      },
+      "name" : "content-parseLine-0194"
+    },
+    {
+      "expected" : {
+        "name" : "ORGANIZER",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "x\\ny"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "ORGANIZER:x\\ny"
+      },
+      "name" : "content-parseLine-0195"
+    },
+    {
+      "expected" : {
+        "name" : "DTSTART",
+        "ok" : true,
+        "parameters" : [
+
+        ],
+        "value" : "中文"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTSTART:中文"
+      },
+      "name" : "content-parseLine-0196"
+    },
+    {
+      "expected" : {
+        "name" : "UID",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "VALUE",
+            "values" : [
+              "plain"
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "DATE",
+              "mailto:a@x.test",
+              "1"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "uid;VALUE=plain;LANGUAGE=DATE,\"mailto:a@x.test\",\"1\":20260102T090000Z"
+      },
+      "name" : "content-parseLine-0197"
+    },
+    {
+      "expected" : {
+        "name" : "DESCRIPTION",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "a;b"
+            ]
+          },
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "café"
+            ]
+          },
+          {
+            "name" : "ROLE",
+            "values" : [
+              "America/New_York"
+            ]
+          }
+        ],
+        "value" : "x\\ny"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DESCRIPTION;ROLE=\"a;b\";X-NUM-GUESTS=café;ROLE=America/New_York:x\\ny"
+      },
+      "name" : "content-parseLine-0198"
+    },
+    {
+      "expected" : {
+        "name" : "DTEND",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "VALUE",
+            "values" : [
+              "DATE",
+              "1"
+            ]
+          }
+        ],
+        "value" : "a:b:c"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "DTEND;VALUE=DATE,1:a:b:c"
+      },
+      "name" : "content-parseLine-0199"
+    },
+    {
+      "expected" : {
+        "name" : "SUMMARY",
+        "ok" : true,
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "🙂"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "",
+              "🙂",
+              ""
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "DATE",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "parseLine",
+        "line" : "SUMMARY;X-NUM-GUESTS=🙂;SENT-BY=,🙂,;DELEGATED-FROM=DATE,plain:FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-parseLine-0200"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY:Planning"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+
+        ],
+        "value" : "Planning"
+      },
+      "name" : "content-contentLine-0201"
+    },
+    {
+      "expected" : {
+        "text" : "ATTENDEE;CN=\"Doe, Jane\";ROLE=REQ-PARTICIPANT:mailto:jane@x.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ATTENDEE",
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "ROLE",
+            "values" : [
+              "REQ-PARTICIPANT"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@x.test"
+      },
+      "name" : "content-contentLine-0202"
+    },
+    {
+      "expected" : {
+        "text" : "ATTENDEE;DELEGATED-FROM=\"mailto:a@x.test\",\"mailto:b@x.test\":mailto:jane@x.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ATTENDEE",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "mailto:a@x.test",
+              "mailto:b@x.test"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@x.test"
+      },
+      "name" : "content-contentLine-0203"
+    },
+    {
+      "expected" : {
+        "text" : "X-A;P=:"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-A",
+        "parameters" : [
+          {
+            "name" : "P",
+            "values" : [
+              ""
+            ]
+          }
+        ],
+        "value" : ""
+      },
+      "name" : "content-contentLine-0204"
+    },
+    {
+      "expected" : {
+        "text" : "X-A;P=\"a;b\";Q=\"c:d\";R=\"e,f\":v"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-A",
+        "parameters" : [
+          {
+            "name" : "P",
+            "values" : [
+              "a;b"
+            ]
+          },
+          {
+            "name" : "Q",
+            "values" : [
+              "c:d"
+            ]
+          },
+          {
+            "name" : "R",
+            "values" : [
+              "e,f"
+            ]
+          }
+        ],
+        "value" : "v"
+      },
+      "name" : "content-contentLine-0205"
+    },
+    {
+      "expected" : {
+        "text" : "X-A;P=:v"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-A",
+        "parameters" : [
+          {
+            "name" : "P",
+            "values" : [
+
+            ]
+          }
+        ],
+        "value" : "v"
+      },
+      "name" : "content-contentLine-0206"
+    },
+    {
+      "expected" : {
+        "text" : "UID;X-NUM-GUESTS=\"Doe, Jane\",1,1;VALUE=DATE;X-NUM-GUESTS=REQ-PARTICIPANT:FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "UID",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "Doe, Jane",
+              "1",
+              "1"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "DATE"
+            ]
+          },
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "REQ-PARTICIPANT"
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-contentLine-0207"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME;X-NUM-GUESTS=\"mailto:a@x.test\",café,;TZID=café:mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "mailto:a@x.test",
+              "café",
+              ""
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "café"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0208"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY;X-NUM-GUESTS=café;PARTSTAT=1,\"x:y\",1:20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "café"
+            ]
+          },
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "1",
+              "x:y",
+              "1"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "name" : "content-contentLine-0209"
+    },
+    {
+      "expected" : {
+        "text" : "EXDATE;X-NUM-GUESTS=\"x:y\",\"Doe, Jane\",DATE:https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "EXDATE",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "x:y",
+              "Doe, Jane",
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0210"
+    },
+    {
+      "expected" : {
+        "text" : "LOCATION;TZID=\"mailto:a@x.test\";DELEGATED-FROM=REQ-PARTICIPANT;PARTSTAT=🙂:x\\ny"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "LOCATION",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "REQ-PARTICIPANT"
+            ]
+          },
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "x\\ny"
+      },
+      "name" : "content-contentLine-0211"
+    },
+    {
+      "expected" : {
+        "text" : "ATTENDEE:x\\ny"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ATTENDEE",
+        "parameters" : [
+
+        ],
+        "value" : "x\\ny"
+      },
+      "name" : "content-contentLine-0212"
+    },
+    {
+      "expected" : {
+        "text" : "UID;DELEGATED-FROM=\"a;b\";SENT-BY=,🙂,DATE:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "UID",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "a;b"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "",
+              "🙂",
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0213"
+    },
+    {
+      "expected" : {
+        "text" : "DESCRIPTION:20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DESCRIPTION",
+        "parameters" : [
+
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "name" : "content-contentLine-0214"
+    },
+    {
+      "expected" : {
+        "text" : "DTSTART:FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTSTART",
+        "parameters" : [
+
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-contentLine-0215"
+    },
+    {
+      "expected" : {
+        "text" : "X-APPLE-STRUCTURED-LOCATION;DELEGATED-FROM=America/New_York,America/New_York;ROLE=\"mailto:a@x.test\",1;LANGUAGE=café,\"mailto:a@x.test\",:FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "America/New_York",
+              "America/New_York"
+            ]
+          },
+          {
+            "name" : "ROLE",
+            "values" : [
+              "mailto:a@x.test",
+              "1"
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "café",
+              "mailto:a@x.test",
+              ""
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-contentLine-0216"
+    },
+    {
+      "expected" : {
+        "text" : "LOCATION;TZID=America/New_York:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "LOCATION",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "America/New_York"
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0217"
+    },
+    {
+      "expected" : {
+        "text" : "X-APPLE-STRUCTURED-LOCATION:中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "parameters" : [
+
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0218"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND:a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0219"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY;TZID=America/New_York;SENT-BY=café,\"mailto:a@x.test\";ROLE=America/New_York,café:https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "America/New_York"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "café",
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "ROLE",
+            "values" : [
+              "America/New_York",
+              "café"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0220"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY;CN=\"mailto:a@x.test\",:中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "mailto:a@x.test",
+              ""
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0221"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND:x\\ny"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+
+        ],
+        "value" : "x\\ny"
+      },
+      "name" : "content-contentLine-0222"
+    },
+    {
+      "expected" : {
+        "text" : "UID;DELEGATED-FROM=\"Doe, Jane\";CN=🙂,\"mailto:a@x.test\",\"mailto:a@x.test\";VALUE=\"x:y\",\"Doe, Jane\",café:20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "UID",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "CN",
+            "values" : [
+              "🙂",
+              "mailto:a@x.test",
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "x:y",
+              "Doe, Jane",
+              "café"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "name" : "content-contentLine-0223"
+    },
+    {
+      "expected" : {
+        "text" : "X-APPLE-STRUCTURED-LOCATION;VALUE=DATE,🙂:中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "parameters" : [
+          {
+            "name" : "VALUE",
+            "values" : [
+              "DATE",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0224"
+    },
+    {
+      "expected" : {
+        "text" : "DTSTART;ROLE=\"mailto:a@x.test\",plain:a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTSTART",
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "mailto:a@x.test",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0225"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME;TZID=;DELEGATED-FROM=;LANGUAGE=\"mailto:a@x.test\",\"x:y\",REQ-PARTICIPANT:mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              ""
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              ""
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "mailto:a@x.test",
+              "x:y",
+              "REQ-PARTICIPANT"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0226"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND;LANGUAGE=\"Doe, Jane\",America/New_York,🙂:FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "Doe, Jane",
+              "America/New_York",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-contentLine-0227"
+    },
+    {
+      "expected" : {
+        "text" : "ORGANIZER:中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ORGANIZER",
+        "parameters" : [
+
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0228"
+    },
+    {
+      "expected" : {
+        "text" : "RRULE;TZID=\"a;b\",\"a;b\",plain:https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "RRULE",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "a;b",
+              "a;b",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0229"
+    },
+    {
+      "expected" : {
+        "text" : "RRULE;LANGUAGE=plain,\"Doe, Jane\",\"x:y\";VALUE=REQ-PARTICIPANT,America/New_York,\"x:y\";X-NUM-GUESTS=🙂,REQ-PARTICIPANT,\"a;b\":https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "RRULE",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "plain",
+              "Doe, Jane",
+              "x:y"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "America/New_York",
+              "x:y"
+            ]
+          },
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "🙂",
+              "REQ-PARTICIPANT",
+              "a;b"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0230"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME:a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0231"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME;TZID=\"a;b\";VALUE=plain,REQ-PARTICIPANT,\"Doe, Jane\";VALUE=1,plain:mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "a;b"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "plain",
+              "REQ-PARTICIPANT",
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "1",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0232"
+    },
+    {
+      "expected" : {
+        "text" : "EXDATE;DELEGATED-FROM=\"mailto:a@x.test\":mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "EXDATE",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "mailto:a@x.test"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0233"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME;PARTSTAT=,REQ-PARTICIPANT;DELEGATED-FROM=\"x:y\",🙂:https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "",
+              "REQ-PARTICIPANT"
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "x:y",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0234"
+    },
+    {
+      "expected" : {
+        "text" : "LOCATION;TZID=\"x:y\";LANGUAGE=1,\"x:y\";DELEGATED-FROM=\"x:y\",plain:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "LOCATION",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "x:y"
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "1",
+              "x:y"
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "x:y",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0235"
+    },
+    {
+      "expected" : {
+        "text" : "X-APPLE-STRUCTURED-LOCATION;VALUE=America/New_York;VALUE=\"a;b\",\"Doe, Jane\";X-NUM-GUESTS=REQ-PARTICIPANT,\"x:y\":a:b:c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "parameters" : [
+          {
+            "name" : "VALUE",
+            "values" : [
+              "America/New_York"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "a;b",
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "x:y"
+            ]
+          }
+        ],
+        "value" : "a:b:c"
+      },
+      "name" : "content-contentLine-0236"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND;CN=REQ-PARTICIPANT;TZID=REQ-PARTICIPANT,REQ-PARTICIPANT,\"a;b\":mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "REQ-PARTICIPANT"
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "REQ-PARTICIPANT",
+              "a;b"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0237"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND;VALUE=1,café,:https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+          {
+            "name" : "VALUE",
+            "values" : [
+              "1",
+              "café",
+              ""
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0238"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY;X-NUM-GUESTS=;LANGUAGE=🙂:20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              ""
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "name" : "content-contentLine-0239"
+    },
+    {
+      "expected" : {
+        "text" : "UID;TZID=\"x:y\",\"Doe, Jane\",DATE;ROLE=1;SENT-BY=,\"a;b\",\"Doe, Jane\":a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "UID",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "x:y",
+              "Doe, Jane",
+              "DATE"
+            ]
+          },
+          {
+            "name" : "ROLE",
+            "values" : [
+              "1"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "",
+              "a;b",
+              "Doe, Jane"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0240"
+    },
+    {
+      "expected" : {
+        "text" : "ORGANIZER:mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ORGANIZER",
+        "parameters" : [
+
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0241"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME;LANGUAGE=plain,\"a;b\";CN=\"Doe, Jane\",DATE:a:b:c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "plain",
+              "a;b"
+            ]
+          },
+          {
+            "name" : "CN",
+            "values" : [
+              "Doe, Jane",
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "a:b:c"
+      },
+      "name" : "content-contentLine-0242"
+    },
+    {
+      "expected" : {
+        "text" : "RRULE:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "RRULE",
+        "parameters" : [
+
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0243"
+    },
+    {
+      "expected" : {
+        "text" : "EXDATE;X-NUM-GUESTS=café,America/New_York,\"mailto:a@x.test\":café 🙂"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "EXDATE",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "café",
+              "America/New_York",
+              "mailto:a@x.test"
+            ]
+          }
+        ],
+        "value" : "café 🙂"
+      },
+      "name" : "content-contentLine-0244"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND:a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0245"
+    },
+    {
+      "expected" : {
+        "text" : "DTSTART:a:b:c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTSTART",
+        "parameters" : [
+
+        ],
+        "value" : "a:b:c"
+      },
+      "name" : "content-contentLine-0246"
+    },
+    {
+      "expected" : {
+        "text" : "ORGANIZER:mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ORGANIZER",
+        "parameters" : [
+
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0247"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME;PARTSTAT=\"x:y\",;SENT-BY=\"Doe, Jane\",plain:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "x:y",
+              ""
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "Doe, Jane",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0248"
+    },
+    {
+      "expected" : {
+        "text" : "RRULE:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "RRULE",
+        "parameters" : [
+
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0249"
+    },
+    {
+      "expected" : {
+        "text" : "EXDATE;TZID=REQ-PARTICIPANT,café;LANGUAGE=DATE:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "EXDATE",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "café"
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0250"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY;SENT-BY=1,REQ-PARTICIPANT,\"Doe, Jane\":FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "1",
+              "REQ-PARTICIPANT",
+              "Doe, Jane"
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-contentLine-0251"
+    },
+    {
+      "expected" : {
+        "text" : "RRULE:"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "RRULE",
+        "parameters" : [
+
+        ],
+        "value" : ""
+      },
+      "name" : "content-contentLine-0252"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY;SENT-BY=\"a;b\",🙂:x\\ny"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "a;b",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "x\\ny"
+      },
+      "name" : "content-contentLine-0253"
+    },
+    {
+      "expected" : {
+        "text" : "ATTENDEE:https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ATTENDEE",
+        "parameters" : [
+
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0254"
+    },
+    {
+      "expected" : {
+        "text" : "DESCRIPTION;X-NUM-GUESTS=DATE,café;PARTSTAT=café:中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DESCRIPTION",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "DATE",
+              "café"
+            ]
+          },
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "café"
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0255"
+    },
+    {
+      "expected" : {
+        "text" : "ORGANIZER;TZID=\"Doe, Jane\",\"x:y\";TZID=\"mailto:a@x.test\",\"x:y\":中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ORGANIZER",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "Doe, Jane",
+              "x:y"
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "mailto:a@x.test",
+              "x:y"
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0256"
+    },
+    {
+      "expected" : {
+        "text" : "DESCRIPTION;ROLE=plain,🙂;LANGUAGE=\"Doe, Jane\";SENT-BY=plain,1,🙂:20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DESCRIPTION",
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "plain",
+              "🙂"
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "plain",
+              "1",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "name" : "content-contentLine-0257"
+    },
+    {
+      "expected" : {
+        "text" : "ATTENDEE;LANGUAGE=REQ-PARTICIPANT,\"Doe, Jane\",café:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ATTENDEE",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "Doe, Jane",
+              "café"
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0258"
+    },
+    {
+      "expected" : {
+        "text" : "ATTENDEE;LANGUAGE=\"a;b\",;TZID=\"Doe, Jane\",DATE,DATE:20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ATTENDEE",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "a;b",
+              ""
+            ]
+          },
+          {
+            "name" : "TZID",
+            "values" : [
+              "Doe, Jane",
+              "DATE",
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "name" : "content-contentLine-0259"
+    },
+    {
+      "expected" : {
+        "text" : "UID;PARTSTAT=\"x:y\";SENT-BY=café,America/New_York:café 🙂"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "UID",
+        "parameters" : [
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "x:y"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "café",
+              "America/New_York"
+            ]
+          }
+        ],
+        "value" : "café 🙂"
+      },
+      "name" : "content-contentLine-0260"
+    },
+    {
+      "expected" : {
+        "text" : "EXDATE;ROLE=\"a;b\";CN=DATE,\"a;b\",America/New_York:https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "EXDATE",
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "a;b"
+            ]
+          },
+          {
+            "name" : "CN",
+            "values" : [
+              "DATE",
+              "a;b",
+              "America/New_York"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0261"
+    },
+    {
+      "expected" : {
+        "text" : "LOCATION;DELEGATED-FROM=DATE,DATE,\"a;b\";X-NUM-GUESTS=REQ-PARTICIPANT,plain,\"a;b\";CN=🙂,\"a;b\",\"mailto:a@x.test\":café 🙂"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "LOCATION",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "DATE",
+              "DATE",
+              "a;b"
+            ]
+          },
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "plain",
+              "a;b"
+            ]
+          },
+          {
+            "name" : "CN",
+            "values" : [
+              "🙂",
+              "a;b",
+              "mailto:a@x.test"
+            ]
+          }
+        ],
+        "value" : "café 🙂"
+      },
+      "name" : "content-contentLine-0262"
+    },
+    {
+      "expected" : {
+        "text" : "DESCRIPTION;LANGUAGE=\"mailto:a@x.test\";SENT-BY=\"mailto:a@x.test\";SENT-BY=plain,\"x:y\",plain:a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DESCRIPTION",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "plain",
+              "x:y",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0263"
+    },
+    {
+      "expected" : {
+        "text" : "RRULE:x\\ny"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "RRULE",
+        "parameters" : [
+
+        ],
+        "value" : "x\\ny"
+      },
+      "name" : "content-contentLine-0264"
+    },
+    {
+      "expected" : {
+        "text" : "X-APPLE-STRUCTURED-LOCATION:x\\ny"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "parameters" : [
+
+        ],
+        "value" : "x\\ny"
+      },
+      "name" : "content-contentLine-0265"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND;X-NUM-GUESTS=\"mailto:a@x.test\";LANGUAGE=café,café:https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "café",
+              "café"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0266"
+    },
+    {
+      "expected" : {
+        "text" : "ORGANIZER;VALUE=\"x:y\";PARTSTAT=\"Doe, Jane\":"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ORGANIZER",
+        "parameters" : [
+          {
+            "name" : "VALUE",
+            "values" : [
+              "x:y"
+            ]
+          },
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "Doe, Jane"
+            ]
+          }
+        ],
+        "value" : ""
+      },
+      "name" : "content-contentLine-0267"
+    },
+    {
+      "expected" : {
+        "text" : "RRULE;ROLE=\"a;b\",🙂:a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "RRULE",
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "a;b",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0268"
+    },
+    {
+      "expected" : {
+        "text" : "ATTENDEE;X-NUM-GUESTS=café,🙂:mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ATTENDEE",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "café",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0269"
+    },
+    {
+      "expected" : {
+        "text" : "ATTENDEE;CN=\"mailto:a@x.test\":中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ATTENDEE",
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "mailto:a@x.test"
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0270"
+    },
+    {
+      "expected" : {
+        "text" : "RRULE;LANGUAGE=\"mailto:a@x.test\",\"a;b\":a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "RRULE",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "mailto:a@x.test",
+              "a;b"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0271"
+    },
+    {
+      "expected" : {
+        "text" : "LOCATION;LANGUAGE=\"a;b\",café:中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "LOCATION",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "a;b",
+              "café"
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0272"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND;CN=DATE;X-NUM-GUESTS=America/New_York:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "DATE"
+            ]
+          },
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "America/New_York"
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0273"
+    },
+    {
+      "expected" : {
+        "text" : "ATTENDEE:a:b:c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ATTENDEE",
+        "parameters" : [
+
+        ],
+        "value" : "a:b:c"
+      },
+      "name" : "content-contentLine-0274"
+    },
+    {
+      "expected" : {
+        "text" : "X-APPLE-STRUCTURED-LOCATION;CN=1,\"Doe, Jane\":a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "1",
+              "Doe, Jane"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0275"
+    },
+    {
+      "expected" : {
+        "text" : "DTSTART;LANGUAGE=\"mailto:a@x.test\",café,DATE:"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTSTART",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "mailto:a@x.test",
+              "café",
+              "DATE"
+            ]
+          }
+        ],
+        "value" : ""
+      },
+      "name" : "content-contentLine-0276"
+    },
+    {
+      "expected" : {
+        "text" : "LOCATION;DELEGATED-FROM=\"mailto:a@x.test\",:20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "LOCATION",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "mailto:a@x.test",
+              ""
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "name" : "content-contentLine-0277"
+    },
+    {
+      "expected" : {
+        "text" : "EXDATE;ROLE=café,REQ-PARTICIPANT,1:FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "EXDATE",
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "café",
+              "REQ-PARTICIPANT",
+              "1"
+            ]
+          }
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-contentLine-0278"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND;DELEGATED-FROM=\"x:y\",DATE:x\\ny"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "x:y",
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "x\\ny"
+      },
+      "name" : "content-contentLine-0279"
+    },
+    {
+      "expected" : {
+        "text" : "LOCATION:FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "LOCATION",
+        "parameters" : [
+
+        ],
+        "value" : "FREQ=WEEKLY;BYDAY=MO,WE"
+      },
+      "name" : "content-contentLine-0280"
+    },
+    {
+      "expected" : {
+        "text" : "LOCATION;PARTSTAT=\"mailto:a@x.test\",America/New_York;VALUE=\"mailto:a@x.test\",plain,\"Doe, Jane\";ROLE=\"mailto:a@x.test\",\"x:y\",\"Doe, Jane\":café 🙂"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "LOCATION",
+        "parameters" : [
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "mailto:a@x.test",
+              "America/New_York"
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "mailto:a@x.test",
+              "plain",
+              "Doe, Jane"
+            ]
+          },
+          {
+            "name" : "ROLE",
+            "values" : [
+              "mailto:a@x.test",
+              "x:y",
+              "Doe, Jane"
+            ]
+          }
+        ],
+        "value" : "café 🙂"
+      },
+      "name" : "content-contentLine-0281"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY;TZID=\"x:y\",\"a;b\":Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "x:y",
+              "a;b"
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0282"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND:中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0283"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY;SENT-BY=REQ-PARTICIPANT,🙂:"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "REQ-PARTICIPANT",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : ""
+      },
+      "name" : "content-contentLine-0284"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME;DELEGATED-FROM=\"x:y\";PARTSTAT=plain,\"Doe, Jane\",DATE:a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "x:y"
+            ]
+          },
+          {
+            "name" : "PARTSTAT",
+            "values" : [
+              "plain",
+              "Doe, Jane",
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0285"
+    },
+    {
+      "expected" : {
+        "text" : "X-APPLE-STRUCTURED-LOCATION;VALUE=\"Doe, Jane\",café,1:a;b;c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "parameters" : [
+          {
+            "name" : "VALUE",
+            "values" : [
+              "Doe, Jane",
+              "café",
+              "1"
+            ]
+          }
+        ],
+        "value" : "a;b;c"
+      },
+      "name" : "content-contentLine-0286"
+    },
+    {
+      "expected" : {
+        "text" : "X-APPLE-STRUCTURED-LOCATION;X-NUM-GUESTS=DATE,,;DELEGATED-FROM=;LANGUAGE=plain,\"mailto:a@x.test\":https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "parameters" : [
+          {
+            "name" : "X-NUM-GUESTS",
+            "values" : [
+              "DATE",
+              "",
+              ""
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              ""
+            ]
+          },
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "plain",
+              "mailto:a@x.test"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0287"
+    },
+    {
+      "expected" : {
+        "text" : "ORGANIZER;DELEGATED-FROM=🙂;ROLE=,\"mailto:a@x.test\":https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ORGANIZER",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "🙂"
+            ]
+          },
+          {
+            "name" : "ROLE",
+            "values" : [
+              "",
+              "mailto:a@x.test"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0288"
+    },
+    {
+      "expected" : {
+        "text" : "UID;CN=1,\"x:y\":https://example.test:8443/a;b?q=1,2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "UID",
+        "parameters" : [
+          {
+            "name" : "CN",
+            "values" : [
+              "1",
+              "x:y"
+            ]
+          }
+        ],
+        "value" : "https://example.test:8443/a;b?q=1,2"
+      },
+      "name" : "content-contentLine-0289"
+    },
+    {
+      "expected" : {
+        "text" : "DTSTART:mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTSTART",
+        "parameters" : [
+
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0290"
+    },
+    {
+      "expected" : {
+        "text" : "X-APPLE-STRUCTURED-LOCATION;SENT-BY=REQ-PARTICIPANT,;VALUE=\"x:y\",America/New_York,\"a;b\";CN=café:"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-APPLE-STRUCTURED-LOCATION",
+        "parameters" : [
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "REQ-PARTICIPANT",
+              ""
+            ]
+          },
+          {
+            "name" : "VALUE",
+            "values" : [
+              "x:y",
+              "America/New_York",
+              "a;b"
+            ]
+          },
+          {
+            "name" : "CN",
+            "values" : [
+              "café"
+            ]
+          }
+        ],
+        "value" : ""
+      },
+      "name" : "content-contentLine-0291"
+    },
+    {
+      "expected" : {
+        "text" : "RRULE;DELEGATED-FROM=,🙂,🙂:中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "RRULE",
+        "parameters" : [
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "",
+              "🙂",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0292"
+    },
+    {
+      "expected" : {
+        "text" : "SUMMARY;SENT-BY=plain,\"mailto:a@x.test\";DELEGATED-FROM=plain:a:b:c"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "SUMMARY",
+        "parameters" : [
+          {
+            "name" : "SENT-BY",
+            "values" : [
+              "plain",
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "plain"
+            ]
+          }
+        ],
+        "value" : "a:b:c"
+      },
+      "name" : "content-contentLine-0293"
+    },
+    {
+      "expected" : {
+        "text" : "DTSTART;ROLE=DATE,🙂,DATE;DELEGATED-FROM=🙂,plain:Planning\\, part 2"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTSTART",
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "DATE",
+              "🙂",
+              "DATE"
+            ]
+          },
+          {
+            "name" : "DELEGATED-FROM",
+            "values" : [
+              "🙂",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "Planning\\, part 2"
+      },
+      "name" : "content-contentLine-0294"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME;TZID=1,\"mailto:a@x.test\";CN=1,\"a;b\":中文"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+          {
+            "name" : "TZID",
+            "values" : [
+              "1",
+              "mailto:a@x.test"
+            ]
+          },
+          {
+            "name" : "CN",
+            "values" : [
+              "1",
+              "a;b"
+            ]
+          }
+        ],
+        "value" : "中文"
+      },
+      "name" : "content-contentLine-0295"
+    },
+    {
+      "expected" : {
+        "text" : "DTEND:café 🙂"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "DTEND",
+        "parameters" : [
+
+        ],
+        "value" : "café 🙂"
+      },
+      "name" : "content-contentLine-0296"
+    },
+    {
+      "expected" : {
+        "text" : "EXDATE;ROLE=café,café,🙂:café 🙂"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "EXDATE",
+        "parameters" : [
+          {
+            "name" : "ROLE",
+            "values" : [
+              "café",
+              "café",
+              "🙂"
+            ]
+          }
+        ],
+        "value" : "café 🙂"
+      },
+      "name" : "content-contentLine-0297"
+    },
+    {
+      "expected" : {
+        "text" : "LOCATION:20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "LOCATION",
+        "parameters" : [
+
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "name" : "content-contentLine-0298"
+    },
+    {
+      "expected" : {
+        "text" : "X-WR-CALNAME;LANGUAGE=café,café,plain:mailto:jane@example.test"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "X-WR-CALNAME",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "café",
+              "café",
+              "plain"
+            ]
+          }
+        ],
+        "value" : "mailto:jane@example.test"
+      },
+      "name" : "content-contentLine-0299"
+    },
+    {
+      "expected" : {
+        "text" : "ORGANIZER;LANGUAGE=DATE:20260102T090000Z"
+      },
+      "input" : {
+        "fn" : "contentLine",
+        "name" : "ORGANIZER",
+        "parameters" : [
+          {
+            "name" : "LANGUAGE",
+            "values" : [
+              "DATE"
+            ]
+          }
+        ],
+        "value" : "20260102T090000Z"
+      },
+      "name" : "content-contentLine-0300"
+    }
+  ],
+  "schema" : 1
+}

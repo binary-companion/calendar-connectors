@@ -1,0 +1,4837 @@
+{
+  "area" : "zones/known",
+  "baseline" : "1.2.0",
+  "cases" : [
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Abidjan"
+      },
+      "input" : {
+        "identifier" : "Africa/Abidjan"
+      },
+      "name" : "known-0001"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Accra"
+      },
+      "input" : {
+        "identifier" : "Africa/Accra"
+      },
+      "name" : "known-0002"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Addis_Ababa"
+      },
+      "input" : {
+        "identifier" : "Africa/Addis_Ababa"
+      },
+      "name" : "known-0003"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Algiers"
+      },
+      "input" : {
+        "identifier" : "Africa/Algiers"
+      },
+      "name" : "known-0004"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Asmara"
+      },
+      "input" : {
+        "identifier" : "Africa/Asmara"
+      },
+      "name" : "known-0005"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Bamako"
+      },
+      "input" : {
+        "identifier" : "Africa/Bamako"
+      },
+      "name" : "known-0006"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Bangui"
+      },
+      "input" : {
+        "identifier" : "Africa/Bangui"
+      },
+      "name" : "known-0007"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Banjul"
+      },
+      "input" : {
+        "identifier" : "Africa/Banjul"
+      },
+      "name" : "known-0008"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Bissau"
+      },
+      "input" : {
+        "identifier" : "Africa/Bissau"
+      },
+      "name" : "known-0009"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Blantyre"
+      },
+      "input" : {
+        "identifier" : "Africa/Blantyre"
+      },
+      "name" : "known-0010"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Brazzaville"
+      },
+      "input" : {
+        "identifier" : "Africa/Brazzaville"
+      },
+      "name" : "known-0011"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Bujumbura"
+      },
+      "input" : {
+        "identifier" : "Africa/Bujumbura"
+      },
+      "name" : "known-0012"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Cairo"
+      },
+      "input" : {
+        "identifier" : "Africa/Cairo"
+      },
+      "name" : "known-0013"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Casablanca"
+      },
+      "input" : {
+        "identifier" : "Africa/Casablanca"
+      },
+      "name" : "known-0014"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Ceuta"
+      },
+      "input" : {
+        "identifier" : "Africa/Ceuta"
+      },
+      "name" : "known-0015"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Conakry"
+      },
+      "input" : {
+        "identifier" : "Africa/Conakry"
+      },
+      "name" : "known-0016"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Dakar"
+      },
+      "input" : {
+        "identifier" : "Africa/Dakar"
+      },
+      "name" : "known-0017"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Dar_es_Salaam"
+      },
+      "input" : {
+        "identifier" : "Africa/Dar_es_Salaam"
+      },
+      "name" : "known-0018"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Djibouti"
+      },
+      "input" : {
+        "identifier" : "Africa/Djibouti"
+      },
+      "name" : "known-0019"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Douala"
+      },
+      "input" : {
+        "identifier" : "Africa/Douala"
+      },
+      "name" : "known-0020"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/El_Aaiun"
+      },
+      "input" : {
+        "identifier" : "Africa/El_Aaiun"
+      },
+      "name" : "known-0021"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Freetown"
+      },
+      "input" : {
+        "identifier" : "Africa/Freetown"
+      },
+      "name" : "known-0022"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Gaborone"
+      },
+      "input" : {
+        "identifier" : "Africa/Gaborone"
+      },
+      "name" : "known-0023"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Harare"
+      },
+      "input" : {
+        "identifier" : "Africa/Harare"
+      },
+      "name" : "known-0024"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Johannesburg"
+      },
+      "input" : {
+        "identifier" : "Africa/Johannesburg"
+      },
+      "name" : "known-0025"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Juba"
+      },
+      "input" : {
+        "identifier" : "Africa/Juba"
+      },
+      "name" : "known-0026"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Kampala"
+      },
+      "input" : {
+        "identifier" : "Africa/Kampala"
+      },
+      "name" : "known-0027"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Khartoum"
+      },
+      "input" : {
+        "identifier" : "Africa/Khartoum"
+      },
+      "name" : "known-0028"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Kigali"
+      },
+      "input" : {
+        "identifier" : "Africa/Kigali"
+      },
+      "name" : "known-0029"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Kinshasa"
+      },
+      "input" : {
+        "identifier" : "Africa/Kinshasa"
+      },
+      "name" : "known-0030"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Lagos"
+      },
+      "input" : {
+        "identifier" : "Africa/Lagos"
+      },
+      "name" : "known-0031"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Libreville"
+      },
+      "input" : {
+        "identifier" : "Africa/Libreville"
+      },
+      "name" : "known-0032"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Lome"
+      },
+      "input" : {
+        "identifier" : "Africa/Lome"
+      },
+      "name" : "known-0033"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Luanda"
+      },
+      "input" : {
+        "identifier" : "Africa/Luanda"
+      },
+      "name" : "known-0034"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Lubumbashi"
+      },
+      "input" : {
+        "identifier" : "Africa/Lubumbashi"
+      },
+      "name" : "known-0035"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Lusaka"
+      },
+      "input" : {
+        "identifier" : "Africa/Lusaka"
+      },
+      "name" : "known-0036"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Malabo"
+      },
+      "input" : {
+        "identifier" : "Africa/Malabo"
+      },
+      "name" : "known-0037"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Maputo"
+      },
+      "input" : {
+        "identifier" : "Africa/Maputo"
+      },
+      "name" : "known-0038"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Maseru"
+      },
+      "input" : {
+        "identifier" : "Africa/Maseru"
+      },
+      "name" : "known-0039"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Mbabane"
+      },
+      "input" : {
+        "identifier" : "Africa/Mbabane"
+      },
+      "name" : "known-0040"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Mogadishu"
+      },
+      "input" : {
+        "identifier" : "Africa/Mogadishu"
+      },
+      "name" : "known-0041"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Monrovia"
+      },
+      "input" : {
+        "identifier" : "Africa/Monrovia"
+      },
+      "name" : "known-0042"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Nairobi"
+      },
+      "input" : {
+        "identifier" : "Africa/Nairobi"
+      },
+      "name" : "known-0043"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Ndjamena"
+      },
+      "input" : {
+        "identifier" : "Africa/Ndjamena"
+      },
+      "name" : "known-0044"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Niamey"
+      },
+      "input" : {
+        "identifier" : "Africa/Niamey"
+      },
+      "name" : "known-0045"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Nouakchott"
+      },
+      "input" : {
+        "identifier" : "Africa/Nouakchott"
+      },
+      "name" : "known-0046"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Ouagadougou"
+      },
+      "input" : {
+        "identifier" : "Africa/Ouagadougou"
+      },
+      "name" : "known-0047"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Porto-Novo"
+      },
+      "input" : {
+        "identifier" : "Africa/Porto-Novo"
+      },
+      "name" : "known-0048"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Sao_Tome"
+      },
+      "input" : {
+        "identifier" : "Africa/Sao_Tome"
+      },
+      "name" : "known-0049"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Tripoli"
+      },
+      "input" : {
+        "identifier" : "Africa/Tripoli"
+      },
+      "name" : "known-0050"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Tunis"
+      },
+      "input" : {
+        "identifier" : "Africa/Tunis"
+      },
+      "name" : "known-0051"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Africa/Windhoek"
+      },
+      "input" : {
+        "identifier" : "Africa/Windhoek"
+      },
+      "name" : "known-0052"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Adak"
+      },
+      "input" : {
+        "identifier" : "America/Adak"
+      },
+      "name" : "known-0053"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Anchorage"
+      },
+      "input" : {
+        "identifier" : "America/Anchorage"
+      },
+      "name" : "known-0054"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Anguilla"
+      },
+      "input" : {
+        "identifier" : "America/Anguilla"
+      },
+      "name" : "known-0055"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Antigua"
+      },
+      "input" : {
+        "identifier" : "America/Antigua"
+      },
+      "name" : "known-0056"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Araguaina"
+      },
+      "input" : {
+        "identifier" : "America/Araguaina"
+      },
+      "name" : "known-0057"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/Buenos_Aires"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/Buenos_Aires"
+      },
+      "name" : "known-0058"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/Catamarca"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/Catamarca"
+      },
+      "name" : "known-0059"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/Cordoba"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/Cordoba"
+      },
+      "name" : "known-0060"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/Jujuy"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/Jujuy"
+      },
+      "name" : "known-0061"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/La_Rioja"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/La_Rioja"
+      },
+      "name" : "known-0062"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/Mendoza"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/Mendoza"
+      },
+      "name" : "known-0063"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/Rio_Gallegos"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/Rio_Gallegos"
+      },
+      "name" : "known-0064"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/Salta"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/Salta"
+      },
+      "name" : "known-0065"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/San_Juan"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/San_Juan"
+      },
+      "name" : "known-0066"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/San_Luis"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/San_Luis"
+      },
+      "name" : "known-0067"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/Tucuman"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/Tucuman"
+      },
+      "name" : "known-0068"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Argentina/Ushuaia"
+      },
+      "input" : {
+        "identifier" : "America/Argentina/Ushuaia"
+      },
+      "name" : "known-0069"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Aruba"
+      },
+      "input" : {
+        "identifier" : "America/Aruba"
+      },
+      "name" : "known-0070"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Asuncion"
+      },
+      "input" : {
+        "identifier" : "America/Asuncion"
+      },
+      "name" : "known-0071"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Atikokan"
+      },
+      "input" : {
+        "identifier" : "America/Atikokan"
+      },
+      "name" : "known-0072"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Bahia"
+      },
+      "input" : {
+        "identifier" : "America/Bahia"
+      },
+      "name" : "known-0073"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Bahia_Banderas"
+      },
+      "input" : {
+        "identifier" : "America/Bahia_Banderas"
+      },
+      "name" : "known-0074"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Barbados"
+      },
+      "input" : {
+        "identifier" : "America/Barbados"
+      },
+      "name" : "known-0075"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Belem"
+      },
+      "input" : {
+        "identifier" : "America/Belem"
+      },
+      "name" : "known-0076"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Belize"
+      },
+      "input" : {
+        "identifier" : "America/Belize"
+      },
+      "name" : "known-0077"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Blanc-Sablon"
+      },
+      "input" : {
+        "identifier" : "America/Blanc-Sablon"
+      },
+      "name" : "known-0078"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Boa_Vista"
+      },
+      "input" : {
+        "identifier" : "America/Boa_Vista"
+      },
+      "name" : "known-0079"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Bogota"
+      },
+      "input" : {
+        "identifier" : "America/Bogota"
+      },
+      "name" : "known-0080"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Boise"
+      },
+      "input" : {
+        "identifier" : "America/Boise"
+      },
+      "name" : "known-0081"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Cambridge_Bay"
+      },
+      "input" : {
+        "identifier" : "America/Cambridge_Bay"
+      },
+      "name" : "known-0082"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Campo_Grande"
+      },
+      "input" : {
+        "identifier" : "America/Campo_Grande"
+      },
+      "name" : "known-0083"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Cancun"
+      },
+      "input" : {
+        "identifier" : "America/Cancun"
+      },
+      "name" : "known-0084"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Caracas"
+      },
+      "input" : {
+        "identifier" : "America/Caracas"
+      },
+      "name" : "known-0085"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Cayenne"
+      },
+      "input" : {
+        "identifier" : "America/Cayenne"
+      },
+      "name" : "known-0086"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Cayman"
+      },
+      "input" : {
+        "identifier" : "America/Cayman"
+      },
+      "name" : "known-0087"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Chicago"
+      },
+      "input" : {
+        "identifier" : "America/Chicago"
+      },
+      "name" : "known-0088"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Chihuahua"
+      },
+      "input" : {
+        "identifier" : "America/Chihuahua"
+      },
+      "name" : "known-0089"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Ciudad_Juarez"
+      },
+      "input" : {
+        "identifier" : "America/Ciudad_Juarez"
+      },
+      "name" : "known-0090"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Costa_Rica"
+      },
+      "input" : {
+        "identifier" : "America/Costa_Rica"
+      },
+      "name" : "known-0091"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Coyhaique"
+      },
+      "input" : {
+        "identifier" : "America/Coyhaique"
+      },
+      "name" : "known-0092"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Creston"
+      },
+      "input" : {
+        "identifier" : "America/Creston"
+      },
+      "name" : "known-0093"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Cuiaba"
+      },
+      "input" : {
+        "identifier" : "America/Cuiaba"
+      },
+      "name" : "known-0094"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Curacao"
+      },
+      "input" : {
+        "identifier" : "America/Curacao"
+      },
+      "name" : "known-0095"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Danmarkshavn"
+      },
+      "input" : {
+        "identifier" : "America/Danmarkshavn"
+      },
+      "name" : "known-0096"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Dawson"
+      },
+      "input" : {
+        "identifier" : "America/Dawson"
+      },
+      "name" : "known-0097"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Dawson_Creek"
+      },
+      "input" : {
+        "identifier" : "America/Dawson_Creek"
+      },
+      "name" : "known-0098"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Denver"
+      },
+      "input" : {
+        "identifier" : "America/Denver"
+      },
+      "name" : "known-0099"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Detroit"
+      },
+      "input" : {
+        "identifier" : "America/Detroit"
+      },
+      "name" : "known-0100"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Dominica"
+      },
+      "input" : {
+        "identifier" : "America/Dominica"
+      },
+      "name" : "known-0101"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Edmonton"
+      },
+      "input" : {
+        "identifier" : "America/Edmonton"
+      },
+      "name" : "known-0102"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Eirunepe"
+      },
+      "input" : {
+        "identifier" : "America/Eirunepe"
+      },
+      "name" : "known-0103"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/El_Salvador"
+      },
+      "input" : {
+        "identifier" : "America/El_Salvador"
+      },
+      "name" : "known-0104"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Fort_Nelson"
+      },
+      "input" : {
+        "identifier" : "America/Fort_Nelson"
+      },
+      "name" : "known-0105"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Fortaleza"
+      },
+      "input" : {
+        "identifier" : "America/Fortaleza"
+      },
+      "name" : "known-0106"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Glace_Bay"
+      },
+      "input" : {
+        "identifier" : "America/Glace_Bay"
+      },
+      "name" : "known-0107"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Godthab"
+      },
+      "input" : {
+        "identifier" : "America/Godthab"
+      },
+      "name" : "known-0108"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Goose_Bay"
+      },
+      "input" : {
+        "identifier" : "America/Goose_Bay"
+      },
+      "name" : "known-0109"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Grand_Turk"
+      },
+      "input" : {
+        "identifier" : "America/Grand_Turk"
+      },
+      "name" : "known-0110"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Grenada"
+      },
+      "input" : {
+        "identifier" : "America/Grenada"
+      },
+      "name" : "known-0111"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Guadeloupe"
+      },
+      "input" : {
+        "identifier" : "America/Guadeloupe"
+      },
+      "name" : "known-0112"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Guatemala"
+      },
+      "input" : {
+        "identifier" : "America/Guatemala"
+      },
+      "name" : "known-0113"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Guayaquil"
+      },
+      "input" : {
+        "identifier" : "America/Guayaquil"
+      },
+      "name" : "known-0114"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Guyana"
+      },
+      "input" : {
+        "identifier" : "America/Guyana"
+      },
+      "name" : "known-0115"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Halifax"
+      },
+      "input" : {
+        "identifier" : "America/Halifax"
+      },
+      "name" : "known-0116"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Havana"
+      },
+      "input" : {
+        "identifier" : "America/Havana"
+      },
+      "name" : "known-0117"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Hermosillo"
+      },
+      "input" : {
+        "identifier" : "America/Hermosillo"
+      },
+      "name" : "known-0118"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Indiana/Indianapolis"
+      },
+      "input" : {
+        "identifier" : "America/Indiana/Indianapolis"
+      },
+      "name" : "known-0119"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Indiana/Knox"
+      },
+      "input" : {
+        "identifier" : "America/Indiana/Knox"
+      },
+      "name" : "known-0120"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Indiana/Marengo"
+      },
+      "input" : {
+        "identifier" : "America/Indiana/Marengo"
+      },
+      "name" : "known-0121"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Indiana/Petersburg"
+      },
+      "input" : {
+        "identifier" : "America/Indiana/Petersburg"
+      },
+      "name" : "known-0122"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Indiana/Tell_City"
+      },
+      "input" : {
+        "identifier" : "America/Indiana/Tell_City"
+      },
+      "name" : "known-0123"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Indiana/Vevay"
+      },
+      "input" : {
+        "identifier" : "America/Indiana/Vevay"
+      },
+      "name" : "known-0124"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Indiana/Vincennes"
+      },
+      "input" : {
+        "identifier" : "America/Indiana/Vincennes"
+      },
+      "name" : "known-0125"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Indiana/Winamac"
+      },
+      "input" : {
+        "identifier" : "America/Indiana/Winamac"
+      },
+      "name" : "known-0126"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Inuvik"
+      },
+      "input" : {
+        "identifier" : "America/Inuvik"
+      },
+      "name" : "known-0127"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Iqaluit"
+      },
+      "input" : {
+        "identifier" : "America/Iqaluit"
+      },
+      "name" : "known-0128"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Jamaica"
+      },
+      "input" : {
+        "identifier" : "America/Jamaica"
+      },
+      "name" : "known-0129"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Juneau"
+      },
+      "input" : {
+        "identifier" : "America/Juneau"
+      },
+      "name" : "known-0130"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Kentucky/Louisville"
+      },
+      "input" : {
+        "identifier" : "America/Kentucky/Louisville"
+      },
+      "name" : "known-0131"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Kentucky/Monticello"
+      },
+      "input" : {
+        "identifier" : "America/Kentucky/Monticello"
+      },
+      "name" : "known-0132"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Kralendijk"
+      },
+      "input" : {
+        "identifier" : "America/Kralendijk"
+      },
+      "name" : "known-0133"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/La_Paz"
+      },
+      "input" : {
+        "identifier" : "America/La_Paz"
+      },
+      "name" : "known-0134"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Lima"
+      },
+      "input" : {
+        "identifier" : "America/Lima"
+      },
+      "name" : "known-0135"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Los_Angeles"
+      },
+      "input" : {
+        "identifier" : "America/Los_Angeles"
+      },
+      "name" : "known-0136"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Lower_Princes"
+      },
+      "input" : {
+        "identifier" : "America/Lower_Princes"
+      },
+      "name" : "known-0137"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Maceio"
+      },
+      "input" : {
+        "identifier" : "America/Maceio"
+      },
+      "name" : "known-0138"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Managua"
+      },
+      "input" : {
+        "identifier" : "America/Managua"
+      },
+      "name" : "known-0139"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Manaus"
+      },
+      "input" : {
+        "identifier" : "America/Manaus"
+      },
+      "name" : "known-0140"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Marigot"
+      },
+      "input" : {
+        "identifier" : "America/Marigot"
+      },
+      "name" : "known-0141"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Martinique"
+      },
+      "input" : {
+        "identifier" : "America/Martinique"
+      },
+      "name" : "known-0142"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Matamoros"
+      },
+      "input" : {
+        "identifier" : "America/Matamoros"
+      },
+      "name" : "known-0143"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Mazatlan"
+      },
+      "input" : {
+        "identifier" : "America/Mazatlan"
+      },
+      "name" : "known-0144"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Menominee"
+      },
+      "input" : {
+        "identifier" : "America/Menominee"
+      },
+      "name" : "known-0145"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Merida"
+      },
+      "input" : {
+        "identifier" : "America/Merida"
+      },
+      "name" : "known-0146"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Metlakatla"
+      },
+      "input" : {
+        "identifier" : "America/Metlakatla"
+      },
+      "name" : "known-0147"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Mexico_City"
+      },
+      "input" : {
+        "identifier" : "America/Mexico_City"
+      },
+      "name" : "known-0148"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Miquelon"
+      },
+      "input" : {
+        "identifier" : "America/Miquelon"
+      },
+      "name" : "known-0149"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Moncton"
+      },
+      "input" : {
+        "identifier" : "America/Moncton"
+      },
+      "name" : "known-0150"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Monterrey"
+      },
+      "input" : {
+        "identifier" : "America/Monterrey"
+      },
+      "name" : "known-0151"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Montevideo"
+      },
+      "input" : {
+        "identifier" : "America/Montevideo"
+      },
+      "name" : "known-0152"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Montreal"
+      },
+      "input" : {
+        "identifier" : "America/Montreal"
+      },
+      "name" : "known-0153"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Montserrat"
+      },
+      "input" : {
+        "identifier" : "America/Montserrat"
+      },
+      "name" : "known-0154"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Nassau"
+      },
+      "input" : {
+        "identifier" : "America/Nassau"
+      },
+      "name" : "known-0155"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/New_York"
+      },
+      "input" : {
+        "identifier" : "America/New_York"
+      },
+      "name" : "known-0156"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Nipigon"
+      },
+      "input" : {
+        "identifier" : "America/Nipigon"
+      },
+      "name" : "known-0157"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Nome"
+      },
+      "input" : {
+        "identifier" : "America/Nome"
+      },
+      "name" : "known-0158"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Noronha"
+      },
+      "input" : {
+        "identifier" : "America/Noronha"
+      },
+      "name" : "known-0159"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/North_Dakota/Beulah"
+      },
+      "input" : {
+        "identifier" : "America/North_Dakota/Beulah"
+      },
+      "name" : "known-0160"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/North_Dakota/Center"
+      },
+      "input" : {
+        "identifier" : "America/North_Dakota/Center"
+      },
+      "name" : "known-0161"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/North_Dakota/New_Salem"
+      },
+      "input" : {
+        "identifier" : "America/North_Dakota/New_Salem"
+      },
+      "name" : "known-0162"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Nuuk"
+      },
+      "input" : {
+        "identifier" : "America/Nuuk"
+      },
+      "name" : "known-0163"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Ojinaga"
+      },
+      "input" : {
+        "identifier" : "America/Ojinaga"
+      },
+      "name" : "known-0164"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Panama"
+      },
+      "input" : {
+        "identifier" : "America/Panama"
+      },
+      "name" : "known-0165"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Pangnirtung"
+      },
+      "input" : {
+        "identifier" : "America/Pangnirtung"
+      },
+      "name" : "known-0166"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Paramaribo"
+      },
+      "input" : {
+        "identifier" : "America/Paramaribo"
+      },
+      "name" : "known-0167"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Phoenix"
+      },
+      "input" : {
+        "identifier" : "America/Phoenix"
+      },
+      "name" : "known-0168"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Port-au-Prince"
+      },
+      "input" : {
+        "identifier" : "America/Port-au-Prince"
+      },
+      "name" : "known-0169"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Port_of_Spain"
+      },
+      "input" : {
+        "identifier" : "America/Port_of_Spain"
+      },
+      "name" : "known-0170"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Porto_Velho"
+      },
+      "input" : {
+        "identifier" : "America/Porto_Velho"
+      },
+      "name" : "known-0171"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Puerto_Rico"
+      },
+      "input" : {
+        "identifier" : "America/Puerto_Rico"
+      },
+      "name" : "known-0172"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Punta_Arenas"
+      },
+      "input" : {
+        "identifier" : "America/Punta_Arenas"
+      },
+      "name" : "known-0173"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Rainy_River"
+      },
+      "input" : {
+        "identifier" : "America/Rainy_River"
+      },
+      "name" : "known-0174"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Rankin_Inlet"
+      },
+      "input" : {
+        "identifier" : "America/Rankin_Inlet"
+      },
+      "name" : "known-0175"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Recife"
+      },
+      "input" : {
+        "identifier" : "America/Recife"
+      },
+      "name" : "known-0176"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Regina"
+      },
+      "input" : {
+        "identifier" : "America/Regina"
+      },
+      "name" : "known-0177"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Resolute"
+      },
+      "input" : {
+        "identifier" : "America/Resolute"
+      },
+      "name" : "known-0178"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Rio_Branco"
+      },
+      "input" : {
+        "identifier" : "America/Rio_Branco"
+      },
+      "name" : "known-0179"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Santa_Isabel"
+      },
+      "input" : {
+        "identifier" : "America/Santa_Isabel"
+      },
+      "name" : "known-0180"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Santarem"
+      },
+      "input" : {
+        "identifier" : "America/Santarem"
+      },
+      "name" : "known-0181"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Santiago"
+      },
+      "input" : {
+        "identifier" : "America/Santiago"
+      },
+      "name" : "known-0182"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Santo_Domingo"
+      },
+      "input" : {
+        "identifier" : "America/Santo_Domingo"
+      },
+      "name" : "known-0183"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Sao_Paulo"
+      },
+      "input" : {
+        "identifier" : "America/Sao_Paulo"
+      },
+      "name" : "known-0184"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Scoresbysund"
+      },
+      "input" : {
+        "identifier" : "America/Scoresbysund"
+      },
+      "name" : "known-0185"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Shiprock"
+      },
+      "input" : {
+        "identifier" : "America/Shiprock"
+      },
+      "name" : "known-0186"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Sitka"
+      },
+      "input" : {
+        "identifier" : "America/Sitka"
+      },
+      "name" : "known-0187"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/St_Barthelemy"
+      },
+      "input" : {
+        "identifier" : "America/St_Barthelemy"
+      },
+      "name" : "known-0188"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/St_Johns"
+      },
+      "input" : {
+        "identifier" : "America/St_Johns"
+      },
+      "name" : "known-0189"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/St_Kitts"
+      },
+      "input" : {
+        "identifier" : "America/St_Kitts"
+      },
+      "name" : "known-0190"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/St_Lucia"
+      },
+      "input" : {
+        "identifier" : "America/St_Lucia"
+      },
+      "name" : "known-0191"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/St_Thomas"
+      },
+      "input" : {
+        "identifier" : "America/St_Thomas"
+      },
+      "name" : "known-0192"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/St_Vincent"
+      },
+      "input" : {
+        "identifier" : "America/St_Vincent"
+      },
+      "name" : "known-0193"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Swift_Current"
+      },
+      "input" : {
+        "identifier" : "America/Swift_Current"
+      },
+      "name" : "known-0194"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Tegucigalpa"
+      },
+      "input" : {
+        "identifier" : "America/Tegucigalpa"
+      },
+      "name" : "known-0195"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Thule"
+      },
+      "input" : {
+        "identifier" : "America/Thule"
+      },
+      "name" : "known-0196"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Thunder_Bay"
+      },
+      "input" : {
+        "identifier" : "America/Thunder_Bay"
+      },
+      "name" : "known-0197"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Tijuana"
+      },
+      "input" : {
+        "identifier" : "America/Tijuana"
+      },
+      "name" : "known-0198"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Toronto"
+      },
+      "input" : {
+        "identifier" : "America/Toronto"
+      },
+      "name" : "known-0199"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Tortola"
+      },
+      "input" : {
+        "identifier" : "America/Tortola"
+      },
+      "name" : "known-0200"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Vancouver"
+      },
+      "input" : {
+        "identifier" : "America/Vancouver"
+      },
+      "name" : "known-0201"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Whitehorse"
+      },
+      "input" : {
+        "identifier" : "America/Whitehorse"
+      },
+      "name" : "known-0202"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Winnipeg"
+      },
+      "input" : {
+        "identifier" : "America/Winnipeg"
+      },
+      "name" : "known-0203"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Yakutat"
+      },
+      "input" : {
+        "identifier" : "America/Yakutat"
+      },
+      "name" : "known-0204"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "America/Yellowknife"
+      },
+      "input" : {
+        "identifier" : "America/Yellowknife"
+      },
+      "name" : "known-0205"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/Casey"
+      },
+      "input" : {
+        "identifier" : "Antarctica/Casey"
+      },
+      "name" : "known-0206"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/Davis"
+      },
+      "input" : {
+        "identifier" : "Antarctica/Davis"
+      },
+      "name" : "known-0207"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/DumontDUrville"
+      },
+      "input" : {
+        "identifier" : "Antarctica/DumontDUrville"
+      },
+      "name" : "known-0208"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/Macquarie"
+      },
+      "input" : {
+        "identifier" : "Antarctica/Macquarie"
+      },
+      "name" : "known-0209"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/Mawson"
+      },
+      "input" : {
+        "identifier" : "Antarctica/Mawson"
+      },
+      "name" : "known-0210"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/McMurdo"
+      },
+      "input" : {
+        "identifier" : "Antarctica/McMurdo"
+      },
+      "name" : "known-0211"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/Palmer"
+      },
+      "input" : {
+        "identifier" : "Antarctica/Palmer"
+      },
+      "name" : "known-0212"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/Rothera"
+      },
+      "input" : {
+        "identifier" : "Antarctica/Rothera"
+      },
+      "name" : "known-0213"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/South_Pole"
+      },
+      "input" : {
+        "identifier" : "Antarctica/South_Pole"
+      },
+      "name" : "known-0214"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/Syowa"
+      },
+      "input" : {
+        "identifier" : "Antarctica/Syowa"
+      },
+      "name" : "known-0215"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/Troll"
+      },
+      "input" : {
+        "identifier" : "Antarctica/Troll"
+      },
+      "name" : "known-0216"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Antarctica/Vostok"
+      },
+      "input" : {
+        "identifier" : "Antarctica/Vostok"
+      },
+      "name" : "known-0217"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Arctic/Longyearbyen"
+      },
+      "input" : {
+        "identifier" : "Arctic/Longyearbyen"
+      },
+      "name" : "known-0218"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Aden"
+      },
+      "input" : {
+        "identifier" : "Asia/Aden"
+      },
+      "name" : "known-0219"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Almaty"
+      },
+      "input" : {
+        "identifier" : "Asia/Almaty"
+      },
+      "name" : "known-0220"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Amman"
+      },
+      "input" : {
+        "identifier" : "Asia/Amman"
+      },
+      "name" : "known-0221"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Anadyr"
+      },
+      "input" : {
+        "identifier" : "Asia/Anadyr"
+      },
+      "name" : "known-0222"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Aqtau"
+      },
+      "input" : {
+        "identifier" : "Asia/Aqtau"
+      },
+      "name" : "known-0223"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Aqtobe"
+      },
+      "input" : {
+        "identifier" : "Asia/Aqtobe"
+      },
+      "name" : "known-0224"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Ashgabat"
+      },
+      "input" : {
+        "identifier" : "Asia/Ashgabat"
+      },
+      "name" : "known-0225"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Atyrau"
+      },
+      "input" : {
+        "identifier" : "Asia/Atyrau"
+      },
+      "name" : "known-0226"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Baghdad"
+      },
+      "input" : {
+        "identifier" : "Asia/Baghdad"
+      },
+      "name" : "known-0227"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Bahrain"
+      },
+      "input" : {
+        "identifier" : "Asia/Bahrain"
+      },
+      "name" : "known-0228"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Baku"
+      },
+      "input" : {
+        "identifier" : "Asia/Baku"
+      },
+      "name" : "known-0229"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Bangkok"
+      },
+      "input" : {
+        "identifier" : "Asia/Bangkok"
+      },
+      "name" : "known-0230"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Barnaul"
+      },
+      "input" : {
+        "identifier" : "Asia/Barnaul"
+      },
+      "name" : "known-0231"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Beirut"
+      },
+      "input" : {
+        "identifier" : "Asia/Beirut"
+      },
+      "name" : "known-0232"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Bishkek"
+      },
+      "input" : {
+        "identifier" : "Asia/Bishkek"
+      },
+      "name" : "known-0233"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Brunei"
+      },
+      "input" : {
+        "identifier" : "Asia/Brunei"
+      },
+      "name" : "known-0234"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Calcutta"
+      },
+      "input" : {
+        "identifier" : "Asia/Calcutta"
+      },
+      "name" : "known-0235"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Chita"
+      },
+      "input" : {
+        "identifier" : "Asia/Chita"
+      },
+      "name" : "known-0236"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Choibalsan"
+      },
+      "input" : {
+        "identifier" : "Asia/Choibalsan"
+      },
+      "name" : "known-0237"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Chongqing"
+      },
+      "input" : {
+        "identifier" : "Asia/Chongqing"
+      },
+      "name" : "known-0238"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Colombo"
+      },
+      "input" : {
+        "identifier" : "Asia/Colombo"
+      },
+      "name" : "known-0239"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Damascus"
+      },
+      "input" : {
+        "identifier" : "Asia/Damascus"
+      },
+      "name" : "known-0240"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Dhaka"
+      },
+      "input" : {
+        "identifier" : "Asia/Dhaka"
+      },
+      "name" : "known-0241"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Dili"
+      },
+      "input" : {
+        "identifier" : "Asia/Dili"
+      },
+      "name" : "known-0242"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Dubai"
+      },
+      "input" : {
+        "identifier" : "Asia/Dubai"
+      },
+      "name" : "known-0243"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Dushanbe"
+      },
+      "input" : {
+        "identifier" : "Asia/Dushanbe"
+      },
+      "name" : "known-0244"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Famagusta"
+      },
+      "input" : {
+        "identifier" : "Asia/Famagusta"
+      },
+      "name" : "known-0245"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Gaza"
+      },
+      "input" : {
+        "identifier" : "Asia/Gaza"
+      },
+      "name" : "known-0246"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Harbin"
+      },
+      "input" : {
+        "identifier" : "Asia/Harbin"
+      },
+      "name" : "known-0247"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Hebron"
+      },
+      "input" : {
+        "identifier" : "Asia/Hebron"
+      },
+      "name" : "known-0248"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Ho_Chi_Minh"
+      },
+      "input" : {
+        "identifier" : "Asia/Ho_Chi_Minh"
+      },
+      "name" : "known-0249"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Hong_Kong"
+      },
+      "input" : {
+        "identifier" : "Asia/Hong_Kong"
+      },
+      "name" : "known-0250"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Hovd"
+      },
+      "input" : {
+        "identifier" : "Asia/Hovd"
+      },
+      "name" : "known-0251"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Irkutsk"
+      },
+      "input" : {
+        "identifier" : "Asia/Irkutsk"
+      },
+      "name" : "known-0252"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Jakarta"
+      },
+      "input" : {
+        "identifier" : "Asia/Jakarta"
+      },
+      "name" : "known-0253"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Jayapura"
+      },
+      "input" : {
+        "identifier" : "Asia/Jayapura"
+      },
+      "name" : "known-0254"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Jerusalem"
+      },
+      "input" : {
+        "identifier" : "Asia/Jerusalem"
+      },
+      "name" : "known-0255"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Kabul"
+      },
+      "input" : {
+        "identifier" : "Asia/Kabul"
+      },
+      "name" : "known-0256"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Kamchatka"
+      },
+      "input" : {
+        "identifier" : "Asia/Kamchatka"
+      },
+      "name" : "known-0257"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Karachi"
+      },
+      "input" : {
+        "identifier" : "Asia/Karachi"
+      },
+      "name" : "known-0258"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Kashgar"
+      },
+      "input" : {
+        "identifier" : "Asia/Kashgar"
+      },
+      "name" : "known-0259"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Kathmandu"
+      },
+      "input" : {
+        "identifier" : "Asia/Kathmandu"
+      },
+      "name" : "known-0260"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Katmandu"
+      },
+      "input" : {
+        "identifier" : "Asia/Katmandu"
+      },
+      "name" : "known-0261"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Khandyga"
+      },
+      "input" : {
+        "identifier" : "Asia/Khandyga"
+      },
+      "name" : "known-0262"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Krasnoyarsk"
+      },
+      "input" : {
+        "identifier" : "Asia/Krasnoyarsk"
+      },
+      "name" : "known-0263"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Kuala_Lumpur"
+      },
+      "input" : {
+        "identifier" : "Asia/Kuala_Lumpur"
+      },
+      "name" : "known-0264"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Kuching"
+      },
+      "input" : {
+        "identifier" : "Asia/Kuching"
+      },
+      "name" : "known-0265"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Kuwait"
+      },
+      "input" : {
+        "identifier" : "Asia/Kuwait"
+      },
+      "name" : "known-0266"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Macau"
+      },
+      "input" : {
+        "identifier" : "Asia/Macau"
+      },
+      "name" : "known-0267"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Magadan"
+      },
+      "input" : {
+        "identifier" : "Asia/Magadan"
+      },
+      "name" : "known-0268"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Makassar"
+      },
+      "input" : {
+        "identifier" : "Asia/Makassar"
+      },
+      "name" : "known-0269"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Manila"
+      },
+      "input" : {
+        "identifier" : "Asia/Manila"
+      },
+      "name" : "known-0270"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Muscat"
+      },
+      "input" : {
+        "identifier" : "Asia/Muscat"
+      },
+      "name" : "known-0271"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Nicosia"
+      },
+      "input" : {
+        "identifier" : "Asia/Nicosia"
+      },
+      "name" : "known-0272"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Novokuznetsk"
+      },
+      "input" : {
+        "identifier" : "Asia/Novokuznetsk"
+      },
+      "name" : "known-0273"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Novosibirsk"
+      },
+      "input" : {
+        "identifier" : "Asia/Novosibirsk"
+      },
+      "name" : "known-0274"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Omsk"
+      },
+      "input" : {
+        "identifier" : "Asia/Omsk"
+      },
+      "name" : "known-0275"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Oral"
+      },
+      "input" : {
+        "identifier" : "Asia/Oral"
+      },
+      "name" : "known-0276"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Phnom_Penh"
+      },
+      "input" : {
+        "identifier" : "Asia/Phnom_Penh"
+      },
+      "name" : "known-0277"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Pontianak"
+      },
+      "input" : {
+        "identifier" : "Asia/Pontianak"
+      },
+      "name" : "known-0278"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Pyongyang"
+      },
+      "input" : {
+        "identifier" : "Asia/Pyongyang"
+      },
+      "name" : "known-0279"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Qatar"
+      },
+      "input" : {
+        "identifier" : "Asia/Qatar"
+      },
+      "name" : "known-0280"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Qostanay"
+      },
+      "input" : {
+        "identifier" : "Asia/Qostanay"
+      },
+      "name" : "known-0281"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Qyzylorda"
+      },
+      "input" : {
+        "identifier" : "Asia/Qyzylorda"
+      },
+      "name" : "known-0282"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Rangoon"
+      },
+      "input" : {
+        "identifier" : "Asia/Rangoon"
+      },
+      "name" : "known-0283"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Riyadh"
+      },
+      "input" : {
+        "identifier" : "Asia/Riyadh"
+      },
+      "name" : "known-0284"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Sakhalin"
+      },
+      "input" : {
+        "identifier" : "Asia/Sakhalin"
+      },
+      "name" : "known-0285"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Samarkand"
+      },
+      "input" : {
+        "identifier" : "Asia/Samarkand"
+      },
+      "name" : "known-0286"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Seoul"
+      },
+      "input" : {
+        "identifier" : "Asia/Seoul"
+      },
+      "name" : "known-0287"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Shanghai"
+      },
+      "input" : {
+        "identifier" : "Asia/Shanghai"
+      },
+      "name" : "known-0288"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Singapore"
+      },
+      "input" : {
+        "identifier" : "Asia/Singapore"
+      },
+      "name" : "known-0289"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Srednekolymsk"
+      },
+      "input" : {
+        "identifier" : "Asia/Srednekolymsk"
+      },
+      "name" : "known-0290"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Taipei"
+      },
+      "input" : {
+        "identifier" : "Asia/Taipei"
+      },
+      "name" : "known-0291"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Tashkent"
+      },
+      "input" : {
+        "identifier" : "Asia/Tashkent"
+      },
+      "name" : "known-0292"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Tbilisi"
+      },
+      "input" : {
+        "identifier" : "Asia/Tbilisi"
+      },
+      "name" : "known-0293"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Tehran"
+      },
+      "input" : {
+        "identifier" : "Asia/Tehran"
+      },
+      "name" : "known-0294"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Thimphu"
+      },
+      "input" : {
+        "identifier" : "Asia/Thimphu"
+      },
+      "name" : "known-0295"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Tokyo"
+      },
+      "input" : {
+        "identifier" : "Asia/Tokyo"
+      },
+      "name" : "known-0296"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Tomsk"
+      },
+      "input" : {
+        "identifier" : "Asia/Tomsk"
+      },
+      "name" : "known-0297"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Ulaanbaatar"
+      },
+      "input" : {
+        "identifier" : "Asia/Ulaanbaatar"
+      },
+      "name" : "known-0298"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Urumqi"
+      },
+      "input" : {
+        "identifier" : "Asia/Urumqi"
+      },
+      "name" : "known-0299"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Ust-Nera"
+      },
+      "input" : {
+        "identifier" : "Asia/Ust-Nera"
+      },
+      "name" : "known-0300"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Vientiane"
+      },
+      "input" : {
+        "identifier" : "Asia/Vientiane"
+      },
+      "name" : "known-0301"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Vladivostok"
+      },
+      "input" : {
+        "identifier" : "Asia/Vladivostok"
+      },
+      "name" : "known-0302"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Yakutsk"
+      },
+      "input" : {
+        "identifier" : "Asia/Yakutsk"
+      },
+      "name" : "known-0303"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Yangon"
+      },
+      "input" : {
+        "identifier" : "Asia/Yangon"
+      },
+      "name" : "known-0304"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Yekaterinburg"
+      },
+      "input" : {
+        "identifier" : "Asia/Yekaterinburg"
+      },
+      "name" : "known-0305"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Yerevan"
+      },
+      "input" : {
+        "identifier" : "Asia/Yerevan"
+      },
+      "name" : "known-0306"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/Azores"
+      },
+      "input" : {
+        "identifier" : "Atlantic/Azores"
+      },
+      "name" : "known-0307"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/Bermuda"
+      },
+      "input" : {
+        "identifier" : "Atlantic/Bermuda"
+      },
+      "name" : "known-0308"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/Canary"
+      },
+      "input" : {
+        "identifier" : "Atlantic/Canary"
+      },
+      "name" : "known-0309"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/Cape_Verde"
+      },
+      "input" : {
+        "identifier" : "Atlantic/Cape_Verde"
+      },
+      "name" : "known-0310"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/Faroe"
+      },
+      "input" : {
+        "identifier" : "Atlantic/Faroe"
+      },
+      "name" : "known-0311"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/Madeira"
+      },
+      "input" : {
+        "identifier" : "Atlantic/Madeira"
+      },
+      "name" : "known-0312"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/Reykjavik"
+      },
+      "input" : {
+        "identifier" : "Atlantic/Reykjavik"
+      },
+      "name" : "known-0313"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/South_Georgia"
+      },
+      "input" : {
+        "identifier" : "Atlantic/South_Georgia"
+      },
+      "name" : "known-0314"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/St_Helena"
+      },
+      "input" : {
+        "identifier" : "Atlantic/St_Helena"
+      },
+      "name" : "known-0315"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Atlantic/Stanley"
+      },
+      "input" : {
+        "identifier" : "Atlantic/Stanley"
+      },
+      "name" : "known-0316"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Adelaide"
+      },
+      "input" : {
+        "identifier" : "Australia/Adelaide"
+      },
+      "name" : "known-0317"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Brisbane"
+      },
+      "input" : {
+        "identifier" : "Australia/Brisbane"
+      },
+      "name" : "known-0318"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Broken_Hill"
+      },
+      "input" : {
+        "identifier" : "Australia/Broken_Hill"
+      },
+      "name" : "known-0319"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Currie"
+      },
+      "input" : {
+        "identifier" : "Australia/Currie"
+      },
+      "name" : "known-0320"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Darwin"
+      },
+      "input" : {
+        "identifier" : "Australia/Darwin"
+      },
+      "name" : "known-0321"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Eucla"
+      },
+      "input" : {
+        "identifier" : "Australia/Eucla"
+      },
+      "name" : "known-0322"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Hobart"
+      },
+      "input" : {
+        "identifier" : "Australia/Hobart"
+      },
+      "name" : "known-0323"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Lindeman"
+      },
+      "input" : {
+        "identifier" : "Australia/Lindeman"
+      },
+      "name" : "known-0324"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Lord_Howe"
+      },
+      "input" : {
+        "identifier" : "Australia/Lord_Howe"
+      },
+      "name" : "known-0325"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Melbourne"
+      },
+      "input" : {
+        "identifier" : "Australia/Melbourne"
+      },
+      "name" : "known-0326"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Perth"
+      },
+      "input" : {
+        "identifier" : "Australia/Perth"
+      },
+      "name" : "known-0327"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Australia/Sydney"
+      },
+      "input" : {
+        "identifier" : "Australia/Sydney"
+      },
+      "name" : "known-0328"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Amsterdam"
+      },
+      "input" : {
+        "identifier" : "Europe/Amsterdam"
+      },
+      "name" : "known-0329"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Andorra"
+      },
+      "input" : {
+        "identifier" : "Europe/Andorra"
+      },
+      "name" : "known-0330"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Astrakhan"
+      },
+      "input" : {
+        "identifier" : "Europe/Astrakhan"
+      },
+      "name" : "known-0331"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Athens"
+      },
+      "input" : {
+        "identifier" : "Europe/Athens"
+      },
+      "name" : "known-0332"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Belgrade"
+      },
+      "input" : {
+        "identifier" : "Europe/Belgrade"
+      },
+      "name" : "known-0333"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Berlin"
+      },
+      "input" : {
+        "identifier" : "Europe/Berlin"
+      },
+      "name" : "known-0334"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Bratislava"
+      },
+      "input" : {
+        "identifier" : "Europe/Bratislava"
+      },
+      "name" : "known-0335"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Brussels"
+      },
+      "input" : {
+        "identifier" : "Europe/Brussels"
+      },
+      "name" : "known-0336"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Bucharest"
+      },
+      "input" : {
+        "identifier" : "Europe/Bucharest"
+      },
+      "name" : "known-0337"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Budapest"
+      },
+      "input" : {
+        "identifier" : "Europe/Budapest"
+      },
+      "name" : "known-0338"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Busingen"
+      },
+      "input" : {
+        "identifier" : "Europe/Busingen"
+      },
+      "name" : "known-0339"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Chisinau"
+      },
+      "input" : {
+        "identifier" : "Europe/Chisinau"
+      },
+      "name" : "known-0340"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Copenhagen"
+      },
+      "input" : {
+        "identifier" : "Europe/Copenhagen"
+      },
+      "name" : "known-0341"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Dublin"
+      },
+      "input" : {
+        "identifier" : "Europe/Dublin"
+      },
+      "name" : "known-0342"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Gibraltar"
+      },
+      "input" : {
+        "identifier" : "Europe/Gibraltar"
+      },
+      "name" : "known-0343"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Guernsey"
+      },
+      "input" : {
+        "identifier" : "Europe/Guernsey"
+      },
+      "name" : "known-0344"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Helsinki"
+      },
+      "input" : {
+        "identifier" : "Europe/Helsinki"
+      },
+      "name" : "known-0345"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Isle_of_Man"
+      },
+      "input" : {
+        "identifier" : "Europe/Isle_of_Man"
+      },
+      "name" : "known-0346"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Istanbul"
+      },
+      "input" : {
+        "identifier" : "Europe/Istanbul"
+      },
+      "name" : "known-0347"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Jersey"
+      },
+      "input" : {
+        "identifier" : "Europe/Jersey"
+      },
+      "name" : "known-0348"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Kaliningrad"
+      },
+      "input" : {
+        "identifier" : "Europe/Kaliningrad"
+      },
+      "name" : "known-0349"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Kiev"
+      },
+      "input" : {
+        "identifier" : "Europe/Kiev"
+      },
+      "name" : "known-0350"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Kirov"
+      },
+      "input" : {
+        "identifier" : "Europe/Kirov"
+      },
+      "name" : "known-0351"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Kyiv"
+      },
+      "input" : {
+        "identifier" : "Europe/Kyiv"
+      },
+      "name" : "known-0352"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Lisbon"
+      },
+      "input" : {
+        "identifier" : "Europe/Lisbon"
+      },
+      "name" : "known-0353"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Ljubljana"
+      },
+      "input" : {
+        "identifier" : "Europe/Ljubljana"
+      },
+      "name" : "known-0354"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/London"
+      },
+      "input" : {
+        "identifier" : "Europe/London"
+      },
+      "name" : "known-0355"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Luxembourg"
+      },
+      "input" : {
+        "identifier" : "Europe/Luxembourg"
+      },
+      "name" : "known-0356"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Madrid"
+      },
+      "input" : {
+        "identifier" : "Europe/Madrid"
+      },
+      "name" : "known-0357"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Malta"
+      },
+      "input" : {
+        "identifier" : "Europe/Malta"
+      },
+      "name" : "known-0358"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Mariehamn"
+      },
+      "input" : {
+        "identifier" : "Europe/Mariehamn"
+      },
+      "name" : "known-0359"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Minsk"
+      },
+      "input" : {
+        "identifier" : "Europe/Minsk"
+      },
+      "name" : "known-0360"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Monaco"
+      },
+      "input" : {
+        "identifier" : "Europe/Monaco"
+      },
+      "name" : "known-0361"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Moscow"
+      },
+      "input" : {
+        "identifier" : "Europe/Moscow"
+      },
+      "name" : "known-0362"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Oslo"
+      },
+      "input" : {
+        "identifier" : "Europe/Oslo"
+      },
+      "name" : "known-0363"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Paris"
+      },
+      "input" : {
+        "identifier" : "Europe/Paris"
+      },
+      "name" : "known-0364"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Podgorica"
+      },
+      "input" : {
+        "identifier" : "Europe/Podgorica"
+      },
+      "name" : "known-0365"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Prague"
+      },
+      "input" : {
+        "identifier" : "Europe/Prague"
+      },
+      "name" : "known-0366"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Riga"
+      },
+      "input" : {
+        "identifier" : "Europe/Riga"
+      },
+      "name" : "known-0367"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Rome"
+      },
+      "input" : {
+        "identifier" : "Europe/Rome"
+      },
+      "name" : "known-0368"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Samara"
+      },
+      "input" : {
+        "identifier" : "Europe/Samara"
+      },
+      "name" : "known-0369"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/San_Marino"
+      },
+      "input" : {
+        "identifier" : "Europe/San_Marino"
+      },
+      "name" : "known-0370"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Sarajevo"
+      },
+      "input" : {
+        "identifier" : "Europe/Sarajevo"
+      },
+      "name" : "known-0371"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Saratov"
+      },
+      "input" : {
+        "identifier" : "Europe/Saratov"
+      },
+      "name" : "known-0372"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Simferopol"
+      },
+      "input" : {
+        "identifier" : "Europe/Simferopol"
+      },
+      "name" : "known-0373"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Skopje"
+      },
+      "input" : {
+        "identifier" : "Europe/Skopje"
+      },
+      "name" : "known-0374"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Sofia"
+      },
+      "input" : {
+        "identifier" : "Europe/Sofia"
+      },
+      "name" : "known-0375"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Stockholm"
+      },
+      "input" : {
+        "identifier" : "Europe/Stockholm"
+      },
+      "name" : "known-0376"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Tallinn"
+      },
+      "input" : {
+        "identifier" : "Europe/Tallinn"
+      },
+      "name" : "known-0377"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Tirane"
+      },
+      "input" : {
+        "identifier" : "Europe/Tirane"
+      },
+      "name" : "known-0378"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Ulyanovsk"
+      },
+      "input" : {
+        "identifier" : "Europe/Ulyanovsk"
+      },
+      "name" : "known-0379"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Uzhgorod"
+      },
+      "input" : {
+        "identifier" : "Europe/Uzhgorod"
+      },
+      "name" : "known-0380"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Vaduz"
+      },
+      "input" : {
+        "identifier" : "Europe/Vaduz"
+      },
+      "name" : "known-0381"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Vatican"
+      },
+      "input" : {
+        "identifier" : "Europe/Vatican"
+      },
+      "name" : "known-0382"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Vienna"
+      },
+      "input" : {
+        "identifier" : "Europe/Vienna"
+      },
+      "name" : "known-0383"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Vilnius"
+      },
+      "input" : {
+        "identifier" : "Europe/Vilnius"
+      },
+      "name" : "known-0384"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Volgograd"
+      },
+      "input" : {
+        "identifier" : "Europe/Volgograd"
+      },
+      "name" : "known-0385"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Warsaw"
+      },
+      "input" : {
+        "identifier" : "Europe/Warsaw"
+      },
+      "name" : "known-0386"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Zagreb"
+      },
+      "input" : {
+        "identifier" : "Europe/Zagreb"
+      },
+      "name" : "known-0387"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Zaporozhye"
+      },
+      "input" : {
+        "identifier" : "Europe/Zaporozhye"
+      },
+      "name" : "known-0388"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Zurich"
+      },
+      "input" : {
+        "identifier" : "Europe/Zurich"
+      },
+      "name" : "known-0389"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "GMT"
+      },
+      "input" : {
+        "identifier" : "GMT"
+      },
+      "name" : "known-0390"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Antananarivo"
+      },
+      "input" : {
+        "identifier" : "Indian/Antananarivo"
+      },
+      "name" : "known-0391"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Chagos"
+      },
+      "input" : {
+        "identifier" : "Indian/Chagos"
+      },
+      "name" : "known-0392"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Christmas"
+      },
+      "input" : {
+        "identifier" : "Indian/Christmas"
+      },
+      "name" : "known-0393"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Cocos"
+      },
+      "input" : {
+        "identifier" : "Indian/Cocos"
+      },
+      "name" : "known-0394"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Comoro"
+      },
+      "input" : {
+        "identifier" : "Indian/Comoro"
+      },
+      "name" : "known-0395"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Kerguelen"
+      },
+      "input" : {
+        "identifier" : "Indian/Kerguelen"
+      },
+      "name" : "known-0396"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Mahe"
+      },
+      "input" : {
+        "identifier" : "Indian/Mahe"
+      },
+      "name" : "known-0397"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Maldives"
+      },
+      "input" : {
+        "identifier" : "Indian/Maldives"
+      },
+      "name" : "known-0398"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Mauritius"
+      },
+      "input" : {
+        "identifier" : "Indian/Mauritius"
+      },
+      "name" : "known-0399"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Mayotte"
+      },
+      "input" : {
+        "identifier" : "Indian/Mayotte"
+      },
+      "name" : "known-0400"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Indian/Reunion"
+      },
+      "input" : {
+        "identifier" : "Indian/Reunion"
+      },
+      "name" : "known-0401"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Apia"
+      },
+      "input" : {
+        "identifier" : "Pacific/Apia"
+      },
+      "name" : "known-0402"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Auckland"
+      },
+      "input" : {
+        "identifier" : "Pacific/Auckland"
+      },
+      "name" : "known-0403"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Bougainville"
+      },
+      "input" : {
+        "identifier" : "Pacific/Bougainville"
+      },
+      "name" : "known-0404"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Chatham"
+      },
+      "input" : {
+        "identifier" : "Pacific/Chatham"
+      },
+      "name" : "known-0405"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Chuuk"
+      },
+      "input" : {
+        "identifier" : "Pacific/Chuuk"
+      },
+      "name" : "known-0406"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Easter"
+      },
+      "input" : {
+        "identifier" : "Pacific/Easter"
+      },
+      "name" : "known-0407"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Efate"
+      },
+      "input" : {
+        "identifier" : "Pacific/Efate"
+      },
+      "name" : "known-0408"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Enderbury"
+      },
+      "input" : {
+        "identifier" : "Pacific/Enderbury"
+      },
+      "name" : "known-0409"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Fakaofo"
+      },
+      "input" : {
+        "identifier" : "Pacific/Fakaofo"
+      },
+      "name" : "known-0410"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Fiji"
+      },
+      "input" : {
+        "identifier" : "Pacific/Fiji"
+      },
+      "name" : "known-0411"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Funafuti"
+      },
+      "input" : {
+        "identifier" : "Pacific/Funafuti"
+      },
+      "name" : "known-0412"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Galapagos"
+      },
+      "input" : {
+        "identifier" : "Pacific/Galapagos"
+      },
+      "name" : "known-0413"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Gambier"
+      },
+      "input" : {
+        "identifier" : "Pacific/Gambier"
+      },
+      "name" : "known-0414"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Guadalcanal"
+      },
+      "input" : {
+        "identifier" : "Pacific/Guadalcanal"
+      },
+      "name" : "known-0415"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Guam"
+      },
+      "input" : {
+        "identifier" : "Pacific/Guam"
+      },
+      "name" : "known-0416"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Honolulu"
+      },
+      "input" : {
+        "identifier" : "Pacific/Honolulu"
+      },
+      "name" : "known-0417"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Johnston"
+      },
+      "input" : {
+        "identifier" : "Pacific/Johnston"
+      },
+      "name" : "known-0418"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Kanton"
+      },
+      "input" : {
+        "identifier" : "Pacific/Kanton"
+      },
+      "name" : "known-0419"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Kiritimati"
+      },
+      "input" : {
+        "identifier" : "Pacific/Kiritimati"
+      },
+      "name" : "known-0420"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Kosrae"
+      },
+      "input" : {
+        "identifier" : "Pacific/Kosrae"
+      },
+      "name" : "known-0421"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Kwajalein"
+      },
+      "input" : {
+        "identifier" : "Pacific/Kwajalein"
+      },
+      "name" : "known-0422"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Majuro"
+      },
+      "input" : {
+        "identifier" : "Pacific/Majuro"
+      },
+      "name" : "known-0423"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Marquesas"
+      },
+      "input" : {
+        "identifier" : "Pacific/Marquesas"
+      },
+      "name" : "known-0424"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Midway"
+      },
+      "input" : {
+        "identifier" : "Pacific/Midway"
+      },
+      "name" : "known-0425"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Nauru"
+      },
+      "input" : {
+        "identifier" : "Pacific/Nauru"
+      },
+      "name" : "known-0426"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Niue"
+      },
+      "input" : {
+        "identifier" : "Pacific/Niue"
+      },
+      "name" : "known-0427"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Norfolk"
+      },
+      "input" : {
+        "identifier" : "Pacific/Norfolk"
+      },
+      "name" : "known-0428"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Noumea"
+      },
+      "input" : {
+        "identifier" : "Pacific/Noumea"
+      },
+      "name" : "known-0429"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Pago_Pago"
+      },
+      "input" : {
+        "identifier" : "Pacific/Pago_Pago"
+      },
+      "name" : "known-0430"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Palau"
+      },
+      "input" : {
+        "identifier" : "Pacific/Palau"
+      },
+      "name" : "known-0431"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Pitcairn"
+      },
+      "input" : {
+        "identifier" : "Pacific/Pitcairn"
+      },
+      "name" : "known-0432"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Pohnpei"
+      },
+      "input" : {
+        "identifier" : "Pacific/Pohnpei"
+      },
+      "name" : "known-0433"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Ponape"
+      },
+      "input" : {
+        "identifier" : "Pacific/Ponape"
+      },
+      "name" : "known-0434"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Port_Moresby"
+      },
+      "input" : {
+        "identifier" : "Pacific/Port_Moresby"
+      },
+      "name" : "known-0435"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Rarotonga"
+      },
+      "input" : {
+        "identifier" : "Pacific/Rarotonga"
+      },
+      "name" : "known-0436"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Saipan"
+      },
+      "input" : {
+        "identifier" : "Pacific/Saipan"
+      },
+      "name" : "known-0437"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Tahiti"
+      },
+      "input" : {
+        "identifier" : "Pacific/Tahiti"
+      },
+      "name" : "known-0438"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Tarawa"
+      },
+      "input" : {
+        "identifier" : "Pacific/Tarawa"
+      },
+      "name" : "known-0439"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Tongatapu"
+      },
+      "input" : {
+        "identifier" : "Pacific/Tongatapu"
+      },
+      "name" : "known-0440"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Truk"
+      },
+      "input" : {
+        "identifier" : "Pacific/Truk"
+      },
+      "name" : "known-0441"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Wake"
+      },
+      "input" : {
+        "identifier" : "Pacific/Wake"
+      },
+      "name" : "known-0442"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Wallis"
+      },
+      "input" : {
+        "identifier" : "Pacific/Wallis"
+      },
+      "name" : "known-0443"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "US/Pacific"
+      },
+      "input" : {
+        "identifier" : "US/Pacific"
+      },
+      "name" : "known-0444"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "US/Eastern"
+      },
+      "input" : {
+        "identifier" : "US/Eastern"
+      },
+      "name" : "known-0445"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "US/Central"
+      },
+      "input" : {
+        "identifier" : "US/Central"
+      },
+      "name" : "known-0446"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "US/Mountain"
+      },
+      "input" : {
+        "identifier" : "US/Mountain"
+      },
+      "name" : "known-0447"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "GMT+0500"
+      },
+      "input" : {
+        "identifier" : "GMT+5"
+      },
+      "name" : "known-0448"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "GMT-0500"
+      },
+      "input" : {
+        "identifier" : "GMT-5"
+      },
+      "name" : "known-0449"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "GMT+0530"
+      },
+      "input" : {
+        "identifier" : "GMT+05:30"
+      },
+      "name" : "known-0450"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "GMT"
+      },
+      "input" : {
+        "identifier" : "UTC"
+      },
+      "name" : "known-0451"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "GMT+0100"
+      },
+      "input" : {
+        "identifier" : "UTC+1"
+      },
+      "name" : "known-0452"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "Z"
+      },
+      "name" : "known-0453"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Etc/GMT-14"
+      },
+      "input" : {
+        "identifier" : "Etc/GMT-14"
+      },
+      "name" : "known-0454"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Etc/GMT+12"
+      },
+      "input" : {
+        "identifier" : "Etc/GMT+12"
+      },
+      "name" : "known-0455"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "Etc/GMT+13"
+      },
+      "name" : "known-0456"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Etc/UTC"
+      },
+      "input" : {
+        "identifier" : "Etc/UTC"
+      },
+      "name" : "known-0457"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Etc/GMT0"
+      },
+      "input" : {
+        "identifier" : "Etc/GMT0"
+      },
+      "name" : "known-0458"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "GMT0"
+      },
+      "input" : {
+        "identifier" : "GMT0"
+      },
+      "name" : "known-0459"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Universal"
+      },
+      "input" : {
+        "identifier" : "Universal"
+      },
+      "name" : "known-0460"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Zulu"
+      },
+      "input" : {
+        "identifier" : "Zulu"
+      },
+      "name" : "known-0461"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "EST"
+      },
+      "input" : {
+        "identifier" : "EST"
+      },
+      "name" : "known-0462"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "PST8PDT"
+      },
+      "input" : {
+        "identifier" : "PST8PDT"
+      },
+      "name" : "known-0463"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "america/new_york"
+      },
+      "name" : "known-0464"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "AMERICA/NEW_YORK"
+      },
+      "name" : "known-0465"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "utc"
+      },
+      "name" : "known-0466"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "gmt"
+      },
+      "name" : "known-0467"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "europe/london"
+      },
+      "name" : "known-0468"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : ""
+      },
+      "name" : "known-0469"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : " "
+      },
+      "name" : "known-0470"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "America/New_York "
+      },
+      "name" : "known-0471"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : " Europe/Paris"
+      },
+      "name" : "known-0472"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "Mars/Olympus"
+      },
+      "name" : "known-0473"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "Nowhere/Special"
+      },
+      "name" : "known-0474"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Calcutta"
+      },
+      "input" : {
+        "identifier" : "Asia/Calcutta"
+      },
+      "name" : "known-0475"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Kolkata"
+      },
+      "input" : {
+        "identifier" : "Asia/Kolkata"
+      },
+      "name" : "known-0476"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Asia/Katmandu"
+      },
+      "input" : {
+        "identifier" : "Asia/Katmandu"
+      },
+      "name" : "known-0477"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Kiev"
+      },
+      "input" : {
+        "identifier" : "Europe/Kiev"
+      },
+      "name" : "known-0478"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Europe/Kyiv"
+      },
+      "input" : {
+        "identifier" : "Europe/Kyiv"
+      },
+      "name" : "known-0479"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "America//New_York"
+      },
+      "name" : "known-0480"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "../etc/localtime"
+      },
+      "name" : "known-0481"
+    },
+    {
+      "expected" : {
+        "accepted" : false,
+        "identifier" : null
+      },
+      "input" : {
+        "identifier" : "America/New York"
+      },
+      "name" : "known-0482"
+    },
+    {
+      "expected" : {
+        "accepted" : true,
+        "identifier" : "Pacific/Samoa"
+      },
+      "input" : {
+        "identifier" : "Pacific/Samoa"
+      },
+      "name" : "known-0483"
+    }
+  ],
+  "schema" : 1
+}
