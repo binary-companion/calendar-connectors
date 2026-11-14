@@ -1,5 +1,6 @@
-# Continuous integration for the library: a Cargo workspace (v2 is Rust-only). Runs on pull requests and on every push
-# to main and v2. The job ids are the names the branch protection of main and v2 requires; see "Required checks" below.
+# Continuous integration for the library: a Cargo workspace (Rust since 2.0.0; the Swift line is on branch 1.x, which has
+# its own copy of this file). Runs on pull requests and on every push to main. The job ids are the names the branch
+# protection of main requires; see "Required checks" below.
 #   macos, linux, windows-x64, windows-arm64
 #                 cargo test --workspace and a release build on that platform (the pinned toolchain of rust-toolchain.toml).
 #   architecture  crate dependency rules, the tokio feature rule, repository contracts (pinned Microsoft scopes, workflow
@@ -12,7 +13,7 @@ name: CI
 
 on:
   push:
-    branches: [main, v2]
+    branches: [main]
   pull_request:
     # labeled and unlabeled: adding or removing semver:major turns the compat checks off or on again.
     types: [opened, synchronize, reopened, labeled, unlabeled]

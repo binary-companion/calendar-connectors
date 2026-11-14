@@ -4,8 +4,7 @@
 # vectors were written with shows up here without waiting for a pull request. Windows bundles its database and is
 # covered by the CI jobs on every pull request.
 # A failed scheduled run opens one issue (unless one is already open). Scheduled workflows only run from the default
-# branch (main until v2 replaces it; on main this file is the Swift version of the check); workflow_dispatch starts
-# the check by hand from any branch, v2 included.
+# branch (main, the Rust library since 2.0.0); workflow_dispatch starts the check by hand from any branch.
 name: Vectors drift
 
 on:
