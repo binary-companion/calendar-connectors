@@ -4,6 +4,7 @@ mod support;
 
 mod change_detection_tests;
 mod connector_kind_tests;
+mod live_write_smoke;
 mod mapper_tests;
 mod persisted_format_tests;
 mod rust_additions_tests;

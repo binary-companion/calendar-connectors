@@ -8,6 +8,7 @@ mod change_detection_tests;
 mod connector_kind_tests;
 mod fake_graph;
 mod graph_time_vectors;
+mod live_write_smoke;
 mod mapper_tests;
 mod persisted_format_tests;
 mod recurrence_mapper_tests;

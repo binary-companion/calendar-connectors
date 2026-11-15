@@ -4,6 +4,7 @@ mod all_day_conformance_tests;
 mod collecting_diagnostic_log_tests;
 mod fake_external_token_source_tests;
 mod fake_transport_tests;
+mod live_transport_tests;
 mod provided_fields_tests;
 mod support;
 mod writable_source_tests;
