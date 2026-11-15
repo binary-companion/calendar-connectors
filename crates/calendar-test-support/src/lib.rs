@@ -5,7 +5,8 @@
 //!
 //! Every file of the Swift target is ported: `AllDayConformance`, `CollectingDiagnosticLog`,
 //! `FakeExternalTokenSource`, `FakeTransport` (with `TestNow` and the response builders), `FakeWritableSource`,
-//! `ProvidedFieldsConformance` and `WritableSourceConformance`.
+//! `ProvidedFieldsConformance` and `WritableSourceConformance`. `live` (Unix only) holds the helpers of the opt-in live
+//! write smoke tests of the Google and Microsoft crates.
 
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
 
@@ -14,6 +15,8 @@ pub mod collecting_diagnostic_log;
 pub mod fake_external_token_source;
 pub mod fake_transport;
 pub mod fake_writable_source;
+#[cfg(unix)]
+pub mod live;
 pub mod provided_fields_conformance;
 pub mod writable_source_conformance;
 
