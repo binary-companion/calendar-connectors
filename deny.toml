@@ -20,6 +20,8 @@ unmaintained = "all"
 ignore = []
 
 [licenses]
+# Permissive licences only, and no exception. A crate under MPL-2.0 or another copyleft licence is an owner decision (the owner
+# accepted UniFFI's MPL-2.0 on 2026-11-15 for timetug-shared, which links this library; see docs/licensing.md).
 # Not every licence in the list is in use today.
 unused-allowed-license = "allow"
 allow = [

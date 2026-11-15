@@ -26,4 +26,4 @@ The crates are not published to a registry. Hosts take them from a git tag: `2.0
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE). The dependencies are all permissively licensed; [docs/licensing.md](docs/licensing.md) says what that means for a product that links the library, including the MPL-2.0 UniFFI that `timetug-shared` adds.
