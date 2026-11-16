@@ -1,3 +1,5 @@
+# The action is pinned to a commit of binary-companion/.github (the repositories' workflow contracts require
+# pins). To move to a newer version, replace the SHA with the current `gh api repos/binary-companion/.github/commits/main --jq .sha`.
 # Copy to .github/workflows/tracking.yml in a tracked repository, with .github/tracking.yml next to it
 # (`projects: [binary-companion/timetug]`). Change the workflow name in workflow_run to the repo's CI workflow.
 # The job runs in the `tracking` environment (create it in the repository, no protection rules needed) so the
@@ -8,7 +10,7 @@ on:
   issues:
     types: [opened, closed, reopened]
   pull_request:
-    types: [opened, reopened, ready_for_review, closed]
+    types: [opened, reopened, edited, ready_for_review, closed]
   workflow_run:
     workflows: [CI]
     types: [completed]
@@ -24,7 +26,7 @@ jobs:
     # Fork pull requests get no secrets; skip them.
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
-      - uses: binary-companion/.github/.github/actions/tracking@d8da081e41605b48fc9942089b45a451d80802a3 # main
+      - uses: binary-companion/.github/.github/actions/tracking@a5d8f044d03c599f628d162006359343055bb417 # main
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
