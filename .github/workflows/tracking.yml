@@ -24,7 +24,7 @@ jobs:
     # Fork pull requests get no secrets; skip them.
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
-      - uses: binary-companion/.github/.github/actions/tracking@main
+      - uses: binary-companion/.github/.github/actions/tracking@d8da081e41605b48fc9942089b45a451d80802a3 # main
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
