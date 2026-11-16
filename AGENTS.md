@@ -75,3 +75,7 @@ Breaking changes to the public API need `semver:major`. The agent never merges o
 ## CI workflows
 
 - `.github/workflows/index.yml` (`Code index`): on pushes to `main` builds the semantic code index incrementally from the previous `qindex` artifact against a throwaway Qdrant and publishes it as the `qindex` artifact (90 days) for agents' index skill. `scripts/dev/qindex.py` is a copy of the index skill's script (`~/.agents/skills/index/scripts/qindex.py`): keep the two identical (`diff` them) and keep the library versions in the workflow equal to the skill's. The export records the model and chunker version, and the skill refuses an index that does not match and builds locally instead.
+
+## Tracking work
+
+Work here is tracked in GitHub issues and the **Libraries** org project, not in progress documents. Follow the [`tracking-work-in-issues`](https://github.com/binary-companion/timetug/blob/master/.agents/skills/tracking-work-in-issues/SKILL.md) skill (in `binary-companion/timetug`): where an issue goes, what it contains, status and the Agent field, sub-issues and blockers, and owner steps as Manual Tasks in the private `binary-companion/manual-configuration` repository. Each issue must be readable on its own, and a pull request closes its issue with `Fixes #N`.
