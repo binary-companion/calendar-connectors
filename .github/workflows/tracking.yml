@@ -1,5 +1,8 @@
 # Copy to .github/workflows/tracking.yml in a tracked repository, with .github/tracking.yml next to it
 # (`projects: [binary-companion/timetug]`). Change the workflow name in workflow_run to the repo's CI workflow.
+# The job runs in the `tracking` environment (create it in the repository, no protection rules needed) so the
+# App credentials are only used inside a named environment, as the repository contracts require. A private
+# repository on the free plan has no environments: drop the `environment:` line there.
 name: Tracking
 on:
   issues:
@@ -16,5 +19,12 @@ permissions:
   contents: read
 jobs:
   tracking:
-    uses: binary-companion/.github/.github/workflows/tracking.yml@main
-    secrets: inherit
+    runs-on: ubuntu-latest
+    environment: tracking
+    # Fork pull requests get no secrets; skip them.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: binary-companion/.github/.github/actions/tracking@main
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
