@@ -1,0 +1,20 @@
+# Copy to .github/workflows/tracking.yml in a tracked repository, with .github/tracking.yml next to it
+# (`projects: [binary-companion/timetug]`). Change the workflow name in workflow_run to the repo's CI workflow.
+name: Tracking
+on:
+  issues:
+    types: [opened, closed, reopened]
+  pull_request:
+    types: [opened, reopened, ready_for_review, closed]
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tracking:
+    uses: binary-companion/.github/.github/workflows/tracking.yml@main
+    secrets: inherit
