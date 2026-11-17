@@ -14,6 +14,6 @@ jobs:
   pr-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: binary-companion/.github/.github/actions/pr-check@583a02551018296f21e2cee1c4db2a88dc2f9b68 # main
+      - uses: binary-companion/.github/.github/actions/pr-check@02396ba9041150a40ce198751c4e64e7ac1ab7fd # main
         with:
           token: ${{ github.token }}
