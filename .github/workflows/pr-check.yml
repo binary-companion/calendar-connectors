@@ -1,0 +1,19 @@
+# Copy to .github/workflows/pr-check.yml in a tracked repository. It uses only the automatic token (no secrets),
+# so it passes the repositories' workflow contracts. The action is pinned to a commit of binary-companion/.github
+# (the contracts require pins); to update, use `gh api repos/binary-companion/.github/commits/main --jq .sha`.
+# The repository also needs .github/tracking.yml (`projects: [binary-companion/timetug]`) for the sweeper.
+name: PR issue link
+on:
+  pull_request:
+    types: [opened, edited, reopened, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read
+jobs:
+  pr-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: binary-companion/.github/.github/actions/pr-check@02396ba9041150a40ce198751c4e64e7ac1ab7fd # main
+        with:
+          token: ${{ github.token }}
