@@ -1,0 +1,20 @@
+# Keeps the project board right the moment an issue is opened, closed or reopened (the central sweeper in
+# binary-companion/.github reconciles whatever events miss). Runs only on issue events, which run from the default
+# branch, and reads the GitHub App key from the `tracking` environment (default branch only), so pull-request code
+# never meets the key. The action is pinned to a commit of binary-companion/.github; update with
+# `gh api repos/binary-companion/.github/commits/main --jq .sha`.
+name: Track issue
+on:
+  issues:
+    types: [opened, closed, reopened]
+permissions:
+  contents: read
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    environment: tracking
+    steps:
+      - uses: binary-companion/.github/.github/actions/track@32921506f15cf31f0d587298b895b3323992a855 # main
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
