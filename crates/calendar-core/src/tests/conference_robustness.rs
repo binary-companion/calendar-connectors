@@ -4,9 +4,16 @@
 
 use crate::UrlString;
 use crate::conference_detector::ConferenceDetector;
+use crate::join_url_policy::JoinUrlPolicy;
 
 /// Runs `text` through everything the detector does, as each of the three places it reads (location, URL, notes).
 fn probe(text: &str) {
+    // Text a host hands over that `parse` refuses must still be safe to hold (see `UrlString::lenient`).
+    let kept = UrlString::lenient(text);
+    assert_eq!(kept.as_str(), text);
+    let _ = (kept.scheme(), kept.host(), kept.path(), kept.query_items(), kept.user(), kept.password(), kept.parsed());
+    let _ = JoinUrlPolicy::is_allowed(&kept);
+    let _ = ConferenceDetector::conferences(&[], None, Some(&kept), None);
     let link = UrlString::parse(text);
     if let Some(link) = &link {
         let _ = (
@@ -143,11 +150,74 @@ impl Rng {
 #[test]
 fn generated_text_never_panics() {
     let pieces: Vec<&str> = vec![
-        "https://", "http://", "zoommtg://", "HTTPS://", "httpſ://", "zoom.us", "meet.google.com", "teams.microsoft.com",
-        "safelinks.protection.outlook.com", "www.google.com", "app.slack.com", "/j/", "/huddle", "/url", "?", "&", "&amp;",
-        "=", "url", "q", "%", "%2", "%25", "%E2%98", "%FF", "%00", "#", "@", ":", "::", "[", "]", "[::1]", ".", "..", "-",
-        "/", "//", " ", "\n", "\t", "\u{a0}", "\u{2028}", "\u{3000}", "\u{200b}", "\u{200d}", "\u{301}", "\u{202e}", "\0",
-        "<", ">", "\"", "'", "(", ")", ";", ",", "!", "日本", "é", "ſ", "😀", "xn--", "9", "123", "pwd", "a", "Z",
+        "https://",
+        "http://",
+        "zoommtg://",
+        "HTTPS://",
+        "httpſ://",
+        "zoom.us",
+        "meet.google.com",
+        "teams.microsoft.com",
+        "safelinks.protection.outlook.com",
+        "www.google.com",
+        "app.slack.com",
+        "/j/",
+        "/huddle",
+        "/url",
+        "?",
+        "&",
+        "&amp;",
+        "=",
+        "url",
+        "q",
+        "%",
+        "%2",
+        "%25",
+        "%E2%98",
+        "%FF",
+        "%00",
+        "#",
+        "@",
+        ":",
+        "::",
+        "[",
+        "]",
+        "[::1]",
+        ".",
+        "..",
+        "-",
+        "/",
+        "//",
+        " ",
+        "\n",
+        "\t",
+        "\u{a0}",
+        "\u{2028}",
+        "\u{3000}",
+        "\u{200b}",
+        "\u{200d}",
+        "\u{301}",
+        "\u{202e}",
+        "\0",
+        "<",
+        ">",
+        "\"",
+        "'",
+        "(",
+        ")",
+        ";",
+        ",",
+        "!",
+        "日本",
+        "é",
+        "ſ",
+        "😀",
+        "xn--",
+        "9",
+        "123",
+        "pwd",
+        "a",
+        "Z",
     ];
     let mut rng = Rng(0x9E37_79B9_7F4A_7C15);
     for _ in 0..60_000 {
@@ -158,4 +228,21 @@ fn generated_text_never_panics() {
         }
         probe(&text);
     }
+}
+
+#[test]
+fn text_the_parser_refuses_is_held_as_given_and_is_never_a_join_link() {
+    for text in ["https://exa mple.com/x", "https://[::1", "https://zoom.us:abc/", "not a url at all", "", "https://%.com"] {
+        assert!(UrlString::parse(text).is_none(), "{text} should be refused by `parse`");
+        let kept = UrlString::lenient(text);
+        assert_eq!(kept.as_str(), text);
+        assert!(!JoinUrlPolicy::is_allowed(&kept), "{text}");
+        assert!(ConferenceDetector::conferences(&[], None, Some(&kept), None).is_empty(), "{text}");
+    }
+}
+
+#[test]
+fn text_that_parses_is_the_same_as_lenient() {
+    let text = "https://zoom.us/j/123?pwd=abc";
+    assert_eq!(UrlString::lenient(text), UrlString::parse(text).unwrap());
 }
