@@ -5,6 +5,7 @@ mod all_day_vectors;
 mod calendar_user_address_tests;
 mod change_monitor_tests;
 mod conference_detector_tests;
+mod conference_robustness;
 mod conference_vectors;
 mod connection_tests;
 mod diagnostic_log_tests;
