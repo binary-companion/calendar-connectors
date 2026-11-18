@@ -11,7 +11,15 @@ fn probe(text: &str) {
     // Text a host hands over that `parse` refuses must still be safe to hold (see `UrlString::lenient`).
     let kept = UrlString::lenient(text);
     assert_eq!(kept.as_str(), text);
-    let _ = (kept.scheme(), kept.host(), kept.path(), kept.query_items(), kept.user(), kept.password(), kept.parsed());
+    let _ = (
+        kept.scheme(),
+        kept.host(),
+        kept.path(),
+        kept.query_items(),
+        kept.user(),
+        kept.password(),
+        kept.parsed(),
+    );
     let _ = JoinUrlPolicy::is_allowed(&kept);
     let _ = ConferenceDetector::conferences(&[], None, Some(&kept), None);
     let link = UrlString::parse(text);
@@ -232,12 +240,24 @@ fn generated_text_never_panics() {
 
 #[test]
 fn text_the_parser_refuses_is_held_as_given_and_is_never_a_join_link() {
-    for text in ["https://exa mple.com/x", "https://[::1", "https://zoom.us:abc/", "", "https://%.com"] {
-        assert!(UrlString::parse(text).is_none(), "{text} should be refused by `parse`");
+    for text in [
+        "https://exa mple.com/x",
+        "https://[::1",
+        "https://zoom.us:abc/",
+        "",
+        "https://%.com",
+    ] {
+        assert!(
+            UrlString::parse(text).is_none(),
+            "{text} should be refused by `parse`"
+        );
         let kept = UrlString::lenient(text);
         assert_eq!(kept.as_str(), text);
         assert!(!JoinUrlPolicy::is_allowed(&kept), "{text}");
-        assert!(ConferenceDetector::conferences(&[], None, Some(&kept), None).is_empty(), "{text}");
+        assert!(
+            ConferenceDetector::conferences(&[], None, Some(&kept), None).is_empty(),
+            "{text}"
+        );
     }
 }
 
