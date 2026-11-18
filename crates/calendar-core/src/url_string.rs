@@ -27,6 +27,14 @@ impl UrlString {
         Some(UrlString(text.to_string()))
     }
 
+    /// The text as a host handed it over, without checking that it is a link. For text that crosses the foreign-function
+    /// boundary, where refusing it would end the host process (a refused argument in an exported function is a panic,
+    /// which a host binding turns into a trap): every accessor answers `None` or empty for text `parse` refuses, so
+    /// such a value is held but never found to be a link, a host, a conference or a join link.
+    pub fn lenient(text: &str) -> UrlString {
+        UrlString(text.to_string())
+    }
+
     /// The text this link was made from, unchanged.
     pub fn as_str(&self) -> &str {
         &self.0
